@@ -330,3 +330,4 @@ if __name__ == "__main__":
     else:
         # Affichage standard
         print(json.dumps(parsed_json, indent=4, ensure_ascii=False))
+        
