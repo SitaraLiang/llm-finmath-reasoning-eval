@@ -2,51 +2,77 @@
 
 % @ASSUMPTION_GLOBAL
 $W_t$ is a Brownian Motion.
+
 \begin{parts}
+
 % @QUESTION
 \part When 
+
 % @ASSUMPTION
 $\tau$ is a bounded stopping time,
 % @ASSUMPTION_END
+
 compute $\E(W_\tau)$.
 % @QUESTION_END
+
 \begin{xsolution}
+
 % @LIST_START
+
 % @ATOM
+
 % @PRECOND
 $(W_t)_{t\geq 0}$ is a martingale. 
+
 % @PRECOND
 $\tau$ is a bounded stopping time.
+
 % @ARGUMENT
 Apply Doob's optional stopping theorem to $(W_t)_{t\geq 0}$ at $\tau$.
+
 % @OUTCOME
 \[
 \mathbb{E}[W_\tau] = 0,
 \]
+
 % @LIST_END
 \end{xsolution}
+
 % @QUESTION
 \part When 
+
 % @ASSUMPTION
 $\tau$ is a bounded stopping time,
 % @ASSUMPTION_END
+
 compute  $\E(W_\tau^2)$.
 % @QUESTION_END
+
 \begin{xsolution}
+
 % @LIST_START
+
 % @ATOM
+
 % @PRECOND
 $(W_t^2-t)_{t\geq 0}$ is a martingale. 
+
 % @PRECOND
 $\tau$ is a bounded stopping time.
+
 % @ARGUMENT
 Apply Doob's optional stopping theorem to $(W_t^2-t)_{t\geq 0}$ at $\tau$.
+
 % @OUTCOME
 \[
 \mathbb{E}[W_\tau^2] = \mathbb{E}[\tau].
 \]
+
 % @LIST_END
 \end{xsolution}
+
 \begin{intuition}
 Note that $(W_t^2 - t)_{t \geq 0}$ is a martingale.
 \end{intuition}
+
+\end{parts}

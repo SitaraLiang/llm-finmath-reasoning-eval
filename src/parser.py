@@ -1,5 +1,6 @@
 import argparse
 import json
+from pathlib import Path
 import re
 import sys
 
@@ -281,6 +282,65 @@ def parse_latex_exercise(latex_content: str) -> dict:
     return exercise
 
 
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+DEFAULT_INPUT_DIR = PROJECT_ROOT / "data" / "raw_tex" / "en"
+DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "data" / "ground_truth" / "en"
+
+
+def read_latex_file(filepath: Path) -> str:
+    try:
+        return filepath.read_text(encoding="utf-8")
+    except FileNotFoundError:
+        print(f"Error: The file '{filepath}' was not found.", file=sys.stderr)
+        sys.exit(1)
+    except Exception as e:
+        print(f"Error reading file '{filepath}': {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+def write_json_file(output_path: Path, parsed_json: dict) -> None:
+    try:
+        output_path.parent.mkdir(parents=True, exist_ok=True)
+        output_path.write_text(
+            json.dumps(parsed_json, indent=4, ensure_ascii=False),
+            encoding="utf-8",
+        )
+        print(f"Successfully saved parsed JSON to {output_path}")
+    except Exception as e:
+        print(f"Error saving JSON to file '{output_path}': {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+def parse_file_to_json(input_path: Path, output_path: Path) -> None:
+    latex_content = read_latex_file(input_path)
+    parsed_json = parse_latex_exercise(latex_content)
+    write_json_file(output_path, parsed_json)
+
+
+def parse_directory_to_json(input_dir: Path, output_dir: Path) -> None:
+    if not input_dir.exists():
+        print(f"Error: The input directory '{input_dir}' does not exist.", file=sys.stderr)
+        sys.exit(1)
+    if not input_dir.is_dir():
+        print(f"Error: The input path '{input_dir}' is not a directory.", file=sys.stderr)
+        sys.exit(1)
+
+    tex_files = sorted(input_dir.glob("*.tex"))
+    if not tex_files:
+        print(
+            f"Error: The input directory '{input_dir}' does not contain any .tex files.",
+            file=sys.stderr,
+        )
+        sys.exit(1)
+
+    output_dir.mkdir(parents=True, exist_ok=True)
+    for input_path in tex_files:
+        output_path = output_dir / f"{input_path.stem}.json"
+        parse_file_to_json(input_path, output_path)
+
+    print(f"Parsed {len(tex_files)} file(s) from {input_dir} to {output_dir}")
+
+
 if __name__ == "__main__":
     # Configuration d'argparse
     parser = argparse.ArgumentParser(
@@ -289,45 +349,42 @@ if __name__ == "__main__":
     parser.add_argument(
         "-i",
         "--input",
-        dest="filepath",
-        type=str, 
-        help="Path to the input LaTeX (.tex) file.", 
-        default="../data/raw_tex/pc2_q1.tex"
+        dest="input_path",
+        type=Path,
+        help=(
+            "Path to an input .tex file or to an input directory containing one "
+            ".tex file per exercise."
+        ),
+        default=DEFAULT_INPUT_DIR,
     )
     parser.add_argument(
         "-o",
         "--output",
-        type=str,
-        help="Path to save the output JSON file (optional).",
-        default="../data/ground_truth/pc2_q1.json",
+        dest="output_path",
+        type=Path,
+        help=(
+            "Path to an output .json file when parsing one input file, or to an "
+            "output directory when parsing an input directory."
+        ),
+        default=DEFAULT_OUTPUT_DIR,
     )
 
     args = parser.parse_args()
 
-    # Reading tex files
-    try:
-        with open(args.filepath, "r", encoding="utf-8") as f:
-            latex_content = f.read()
-    except FileNotFoundError:
-        print(f"Error: The file '{args.filepath}' was not found.", file=sys.stderr)
-        sys.exit(1)
-    except Exception as e:
-        print(f"Error reading file: {e}", file=sys.stderr)
-        sys.exit(1)
-
-    # Parsing
-    parsed_json = parse_latex_exercise(latex_content)
-
-    # Store the parsed JSON as ground truth
-    if args.output:
-        try:
-            with open(args.output, "w", encoding="utf-8") as f:
-                json.dump(parsed_json, f, indent=4, ensure_ascii=False)
-            print(f"Successfully saved parsed JSON to {args.output}")
-        except Exception as e:
-            print(f"Error saving JSON to file: {e}", file=sys.stderr)
+    if args.input_path.is_dir():
+        if args.output_path.suffix == ".json":
+            print(
+                "Error: When input is a directory, output must also be a directory.",
+                file=sys.stderr,
+            )
             sys.exit(1)
+        parse_directory_to_json(args.input_path, args.output_path)
+    elif args.input_path.is_file():
+        output_path = args.output_path
+        if output_path.suffix != ".json":
+            output_path.mkdir(parents=True, exist_ok=True)
+            output_path = output_path / f"{args.input_path.stem}.json"
+        parse_file_to_json(args.input_path, output_path)
     else:
-        # Affichage standard
-        print(json.dumps(parsed_json, indent=4, ensure_ascii=False))
-        
+        print(f"Error: The input path '{args.input_path}' does not exist.", file=sys.stderr)
+        sys.exit(1)
