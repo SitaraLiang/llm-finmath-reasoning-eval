@@ -1,0 +1,157 @@
+\titledquestion{Another definition of Brownian motion}
+\begin{parts}
+    % @QUESTION
+    \part Show that a process 
+    $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if:
+        \begin{itemize}
+        \item[i')] $X_0=0$,
+        \item[ii')] $(X_t)_{t\in \R^+}$ is a centered Gaussian process,
+        \item[iii')] ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+        \end{itemize}
+    % @QUESTION_END
+    \begin{xsolution}
+    % @SET_START
+    Let us start with the direction: Brownian $\Rightarrow$ Gaussian process.
+    % @LIST_START
+    \begin{enumerate}
+        \item Independence structure of increments :  
+           % @ATOM
+           % @PRECOND
+           For \(s \leq t\), we decompose \(X_t = X_s + (X_t - X_s)\).
+           % @ARGUMENT
+           Independence of \(X_s\) and \(X_t - X_s\) 
+           % @ARGUMENT_END
+           implies that the covariance reduces to :  
+           \[
+           \mathrm{Cov}(X_s, X_t) = \mathrm{Cov}(X_s, X_s) + \mathrm{Cov}(X_s, X_t - X_s) = \mathrm{Var}(X_s) + 0 = s
+           \]  
+           which directly gives 
+           % @OUTCOME
+           \(\mathrm{Cov}(X_s, X_t) = \min(s,t)\).
+           % @ATOM_END
+        \item Gaussian character :  
+           % @ATOM
+           % @PRECOND
+           Standard Brownian motion has Gaussian increments and 
+           % @PRECOND
+           \(X_0 = 0\), 
+           % @PRECOND_END
+           so any finite linear combination of \((X_{t_1}, \dots, X_{t_n})\) is 
+           % @ARGUMENT
+           a linear combination of independent Gaussian increments thus it is Gaussian.  
+           % @OUTCOME
+           The process is therefore centered Gaussian.
+           % @ATOM_END
+    \end{enumerate}    
+    %These two points essentially exploit \emph{independence of increments} and \emph{normality} of increments.
+    % @LIST_END
+    Then the converse:
+    % @LIST_START
+    \begin{enumerate}
+    \item Computation of covariance of increments :  
+       % @ATOM
+       % @PRECOND
+       Using property ($iii'$)
+       % @PRECOND
+       Compute $\text{Cov}(X_t - X_s, X_v - X_u)$
+       for \(s < t \leq u < v\).
+       % @ARGUMENT:calculus
+       \[
+       \text{Cov}(X_t - X_s, X_v - X_u) = \min(t,v) - \min(t,u) - \min(s,v) + \min(s,u)
+       \]
+       This always gives 0, proving that 
+       % @OUTCOME
+       disjoint increments are uncorrelated, hence independent 
+       % @OUTCOME_END
+       (since Gaussian vector).
+       % @ATOM_END
+    \item Computation of variance of increments :  
+       % @ATOM
+       % @PRECOND
+       Compute the variance of an increment of $X$:
+       % @PRECOND_END
+       % This is a calculus step
+       For \(s < t\) :
+       \[
+       \text{Var}(X_t - X_s) = t + s - 2s = t - s
+       \]
+       % but the argument is
+       % @ARGUMENT
+       thus the law depends only on \(t-s\).
+       % @OUTCOME
+       This shows that the increments are stationary 
+       % @OUTCOME <-- 2 outcomes!
+       and have law \(\mathcal{N}(0, t-s)\).
+       % @ATOM_END
+    % @ATOM
+    These two points:
+    % @PRECOND
+    disjoint increments are independent, and
+    % @PRECOND
+    the law of increments is Gaussian centered of variance $t-s$, i.e. \(\mathcal{N}(0, t-s)\),
+    % @ARGUMENT
+    plus the assumption of continuity of paths 
+    % @ARGUMENT <-- alternative ARGUMENT!
+    (or by taking the continuous version via Kolmogorov's theorem) give 
+    % @OUTCOME 
+    the classical definition of Brownian motion.
+    \end{enumerate}
+    % @LIST_END
+    % @SET_END
+    \end{xsolution}
+
+    % @QUESTION
+    \part Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac
+    1t}, t>0, X_0=0 \}$
+    is a Brownian motion too.
+    \begin{xsolution}
+    % @SET_START
+    % @ATOM
+    For the continuity at 0,
+    % @PRECOND
+    compute $\lim_{t \to 0^+} t W_{1/t}$:
+    % @PRECOND_END
+    \[
+    \lim_{t \to 0^+} t W_{1/t} = \lim_{s \to \infty} \frac{W_s}{s} = 0 \quad \text{a.s.}
+    \]
+    % @ARGUMENT
+    Hence by the law of large numbers for Brownian motion:
+    % @OUTCOME 
+    $\lim_{t \to 0^+} t W_{1/t} = 0$ a.s.
+    % @ATOM
+    \\
+    For the centered Gaussian character :  
+    % @PRECOND
+    For any arbitrary \(t_1, \dots, t_n\), the vector \((X_{t_1}, \dots, X_{t_n})\) 
+    % @ARGUMENT
+    is a linear combination of the \(W_{1/t_i}\) 
+    % @OUTCOME 
+    thus it is centered Gaussian.
+    \\
+    % @ATOM
+    For the Brownian covariance :  
+    % <-- no precond
+    % @ARGUMENT:computation
+    \[
+    \mathbb{E}[X_t X_s] = ts \cdot \min\left(\frac{1}{t}, \frac{1}{s}\right) = \min(t,s),
+    \]
+    % @OUTCOME 
+    i.e. $\mathbb{E}[X_t X_s] = \min(t,s)$.
+    \\
+    % @ATOM
+    Finally
+    % @PRECOND
+    continuity: $\lim_{t \to 0^+} X_t = 0$ a.s.,
+    % @PRECOND
+    Gaussianity: the vector \((X_{t_1}, \dots, X_{t_n})\) is centered Gaussian for any set of times, and
+    % @PRECOND
+    covariance: $\mathbb{E}[X_t X_s] = \min(t,s)$,
+    % @PRECOND
+    adding \(X_0 = 0\)
+    % @ARGUMENT
+    we get by definition of a Brownian motion
+    % @OUTCOME
+    that \(X\) is a Brownian motion.
+    % @SET_END
+    \end{xsolution}
+\end{parts}
