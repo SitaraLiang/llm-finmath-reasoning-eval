@@ -305,7 +305,7 @@ def write_json_file(output_path: Path, parsed_json: dict) -> None:
             json.dumps(parsed_json, indent=4, ensure_ascii=False),
             encoding="utf-8",
         )
-        print(f"Successfully saved parsed JSON to {output_path}")
+        #print(f"Successfully saved parsed JSON to {output_path}")
     except Exception as e:
         print(f"Error saving JSON to file '{output_path}': {e}", file=sys.stderr)
         sys.exit(1)
@@ -338,7 +338,8 @@ def parse_directory_to_json(input_dir: Path, output_dir: Path) -> None:
         output_path = output_dir / f"{input_path.stem}.json"
         parse_file_to_json(input_path, output_path)
 
-    print(f"Parsed {len(tex_files)} file(s) from {input_dir} to {output_dir}")
+    print("Parsing complete.")
+    print(f".tex files parsed: {len(tex_files)}")
 
 
 if __name__ == "__main__":
