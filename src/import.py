@@ -61,6 +61,12 @@ def get_language(path: Path) -> str:
     return path.stem.split("_")[-1]
 
 
+def get_destination_name(path: Path) -> str:
+    """Remove the language suffix from a pc{n}_q{m}_{lang}.tex filename."""
+    pc_part, q_part, _ = path.stem.split("_")
+    return f"{pc_part}_{q_part}{path.suffix}"
+
+
 def find_tex_files(source_dir: Path) -> list[Path]:
     """Return exercise .tex files under source_dir, searched recursively."""
     exercise_dir = resolve_exercise_dir(source_dir)
@@ -79,14 +85,14 @@ def find_tex_files(source_dir: Path) -> list[Path]:
 
 
 def copy_tex_files(tex_files: list[Path], destination_dir: Path) -> int:
-    """Copy .tex files into destination_dir/{lang} while preserving file names."""
+    """Copy .tex files into destination_dir/{lang} without language in the file name."""
     destination_dir.mkdir(parents=True, exist_ok=True)
 
     copied = 0
     for source_file in tex_files:
         language_dir = destination_dir / get_language(source_file)
         language_dir.mkdir(parents=True, exist_ok=True)
-        destination_file = language_dir / source_file.name
+        destination_file = language_dir / get_destination_name(source_file)
         shutil.copy2(source_file, destination_file)
         copied += 1
 
