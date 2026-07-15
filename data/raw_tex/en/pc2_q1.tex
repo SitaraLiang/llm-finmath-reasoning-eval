@@ -55,7 +55,7 @@
        % @PRECOND
        Compute $\text{Cov}(X_t - X_s, X_v - X_u)$
        for \(s < t \leq u < v\).
-       % @ARGUMENT:calculus
+       % @ARGUMENT:CALCUL
        \[
        \text{Cov}(X_t - X_s, X_v - X_u) = \min(t,v) - \min(t,u) - \min(s,v) + \min(s,u)
        \]
@@ -80,7 +80,7 @@
        thus the law depends only on \(t-s\).
        % @OUTCOME
        This shows that the increments are stationary 
-       % @OUTCOME <-- 2 outcomes!
+       % @OUTCOME
        and have law \(\mathcal{N}(0, t-s)\).
        % @ATOM_END
     % @ATOM
@@ -90,9 +90,9 @@
     % @PRECOND
     the law of increments is Gaussian centered of variance $t-s$, i.e. \(\mathcal{N}(0, t-s)\),
     % @ARGUMENT
-    plus the assumption of continuity of paths 
-    % @ARGUMENT <-- alternative ARGUMENT!
-    (or by taking the continuous version via Kolmogorov's theorem) give 
+    plus the assumption of continuity of paths (or by taking the continuous version via Kolmogorov's theorem)
+    % @ARGUMENT_END
+    give 
     % @OUTCOME 
     the classical definition of Brownian motion.
     \end{enumerate}
@@ -130,8 +130,7 @@
     \\
     % @ATOM
     For the Brownian covariance :  
-    % <-- no precond
-    % @ARGUMENT:computation
+    % @ARGUMENT:CALCUL
     \[
     \mathbb{E}[X_t X_s] = ts \cdot \min\left(\frac{1}{t}, \frac{1}{s}\right) = \min(t,s),
     \]

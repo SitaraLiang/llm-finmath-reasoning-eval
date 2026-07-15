@@ -104,6 +104,212 @@ def extract_question_block(question_zone: str) -> tuple[str, list[str]]:
     return clean_text(question_text), assumptions
 
 
+def normalize_outcomes(outcomes: list[str]) -> str | list[str]:
+    if not outcomes:
+        return ""
+    if len(outcomes) == 1:
+        return outcomes[0]
+    return outcomes
+
+
+def clean_argument_text(value: str) -> str:
+    value = strip_leading_conjunction(value)
+    value = strip_trailing_sentence_punctuation(strip_trailing_conjunction(value))
+    value = value.replace("(or by taking", "or by taking")
+    return value
+
+
+def clean_outcome_text(value: str) -> str:
+    value = re.sub(r"^which directly gives\s+", "", value)
+    if value.startswith("\\("):
+        value = strip_trailing_sentence_punctuation(value)
+    if value.startswith("So ") or value.startswith("The process is therefore") or value.startswith("This always gives"):
+        value = strip_trailing_sentence_punctuation(value)
+    return value
+
+
+def parse_atom_block(block_lines: list[str]) -> dict:
+    atom = {"preconditions": [], "arguments": [], "outcome": ""}
+    outcomes = []
+    current_tag = None
+    current_buffer = []
+
+    def flush_current() -> None:
+        nonlocal current_tag, current_buffer
+        value = clean_text(" ".join(current_buffer))
+        if current_tag == "PRECOND":
+            stripped = strip_trailing_conjunction(value)
+            if stripped != value:
+                value = strip_trailing_sentence_punctuation(stripped)
+            elif (
+                "standard Brownian motion" in value
+                or value.startswith("$X_0")
+                or value.startswith("Assume ")
+            ):
+                value = strip_trailing_sentence_punctuation(value)
+            append_unique(atom["preconditions"], value)
+        elif current_tag == "ARGUMENT":
+            append_unique(atom["arguments"], clean_argument_text(value))
+        elif current_tag == "ARGUMENT:CALCUL":
+            prefix = ":computation" if not atom["preconditions"] else ":calculus"
+            append_unique(atom["arguments"], clean_text(f"{prefix} {value}"))
+        elif current_tag == "OUTCOME":
+            value = clean_outcome_text(value)
+            if value:
+                outcomes.append(value)
+        current_buffer = []
+
+    for line in block_lines:
+        line_stripped = line.strip()
+
+        if has_tag(line_stripped, "PRECOND"):
+            flush_current()
+            current_tag = "PRECOND"
+            content_line = remove_tag_prefix(line, "PRECOND")
+            if content_line:
+                current_buffer.append(content_line)
+
+        elif has_tag(line_stripped, "ARGUMENT:CALCUL"):
+            flush_current()
+            current_tag = "ARGUMENT:CALCUL"
+            content_line = remove_tag_prefix(line, "ARGUMENT:CALCUL")
+            if content_line:
+                current_buffer.append(content_line)
+
+        elif has_tag(line_stripped, "ARGUMENT"):
+            flush_current()
+            current_tag = "ARGUMENT"
+            content_line = remove_tag_prefix(line, "ARGUMENT")
+            if content_line:
+                current_buffer.append(content_line)
+
+        elif has_tag(line_stripped, "OUTCOME"):
+            flush_current()
+            current_tag = "OUTCOME"
+            content_line = remove_tag_prefix(line, "OUTCOME")
+            if content_line:
+                current_buffer.append(content_line)
+
+        elif (
+            has_tag(line_stripped, "PRECOND_END")
+            or has_tag(line_stripped, "ARGUMENT_END")
+            or has_tag(line_stripped, "OUTCOME_END")
+            or has_tag(line_stripped, "ATOM_END")
+        ):
+            for end_tag in ["PRECOND_END", "ARGUMENT_END", "OUTCOME_END", "ATOM_END"]:
+                if has_tag(line_stripped, end_tag) and current_tag:
+                    before_end = split_before_tag(line, end_tag)
+                    break
+            else:
+                before_end = ""
+            if before_end:
+                current_buffer.append(before_end)
+            flush_current()
+            current_tag = None
+
+            if has_tag(line_stripped, "ATOM_END"):
+                break
+
+        elif (
+            has_tag(line_stripped, "LIST_END")
+            or has_tag(line_stripped, "SET_END")
+            or has_tag(line_stripped, "LIST_START")
+            or has_tag(line_stripped, "SET_START")
+        ):
+            if current_tag:
+                before_end = re.split(r"%@(?:LIST_END|SET_END|LIST_START|SET_START)\b", line, maxsplit=1)[0].strip()
+                if before_end:
+                    current_buffer.append(before_end)
+            flush_current()
+            current_tag = None
+
+        elif current_tag and line_stripped:
+            current_buffer.append(line_stripped)
+
+    flush_current()
+
+    atom["preconditions"] = [p for p in atom["preconditions"] if p]
+    atom["arguments"] = [a for a in atom["arguments"] if a]
+    atom["outcome"] = normalize_outcomes(outcomes)
+    return atom
+
+
+def add_atom_to_container(container: dict, atom: dict) -> None:
+    if atom["arguments"]:
+        container[f"atom{len(container) + 1}"] = atom
+
+
+def parse_solution_structure(solution_text: str) -> dict:
+    lines = solution_text.split("\n")
+    root = {}
+    flat_atoms = []
+    current_list = None
+    list_count = 0
+    root_atom_count = 0
+    saw_set = False
+    saw_list = False
+    i = 0
+
+    while i < len(lines):
+        line_stripped = lines[i].strip()
+
+        if has_tag(line_stripped, "SET_START"):
+            saw_set = True
+            i += 1
+            continue
+
+        if has_tag(line_stripped, "LIST_START"):
+            saw_list = True
+            list_count += 1
+            current_list = {}
+            root[f"list{list_count}"] = current_list
+            i += 1
+            continue
+
+        if has_tag(line_stripped, "LIST_END"):
+            current_list = None
+            i += 1
+            continue
+
+        if has_tag(line_stripped, "SET_END"):
+            current_list = None
+            i += 1
+            continue
+
+        if has_tag(line_stripped, "ATOM"):
+            block_lines = []
+            i += 1
+            while i < len(lines):
+                next_line = lines[i].strip()
+                if (
+                    has_tag(next_line, "ATOM")
+                    or has_tag(next_line, "LIST_END")
+                    or has_tag(next_line, "SET_END")
+                ):
+                    break
+                block_lines.append(lines[i])
+                i += 1
+
+            atom = parse_atom_block(block_lines)
+            if current_list is not None:
+                add_atom_to_container(current_list, atom)
+            elif saw_set:
+                if atom["arguments"]:
+                    root_atom_count += 1
+                    root[f"atom{root_atom_count}"] = atom
+            elif atom["arguments"]:
+                flat_atoms.append(atom)
+            continue
+
+        i += 1
+
+    if saw_set:
+        return {"atoms_set": root}
+    if saw_list:
+        return {"atoms_list": root}
+    return {"atoms": flat_atoms}
+
+
 def parse_latex_exercise(latex_content: str) -> dict:
     # Initialisation de l'exercice
     exercise = {"context": "", "assumption_global": [], "subquestions": []}
@@ -153,129 +359,8 @@ def parse_latex_exercise(latex_content: str) -> dict:
             )
             if solution_zone_match:
                 solution_text = solution_zone_match.group(1)
-
-                # Découpage par blocs d'atomes
-                atom_blocks = re.split(r"%@ATOM\b", solution_text)
-
-                for block in atom_blocks[1:]:
-                    atom = {"preconditions": [], "arguments": [], "outcome": ""}
-
-                    lines = block.split("\n")
-                    current_tag = None
-                    current_buffer = []
-
-                    def flush_current():
-                        nonlocal current_tag, current_buffer
-                        value = clean_text(" ".join(current_buffer))
-                        if current_tag == "PRECOND":
-                            stripped = strip_trailing_conjunction(value)
-                            if stripped != value:
-                                value = strip_trailing_sentence_punctuation(stripped)
-                            elif (
-                                "standard Brownian motion" in value
-                                or value.startswith("$X_0")
-                                or value.startswith("Assume ")
-                            ):
-                                value = strip_trailing_sentence_punctuation(value)
-                            append_unique(atom["preconditions"], value)
-                        elif current_tag == "ARGUMENT":
-                            value = strip_leading_conjunction(value)
-                            value = strip_trailing_sentence_punctuation(strip_trailing_conjunction(value))
-                            append_unique(atom["arguments"], value)
-                        elif current_tag == "ARGUMENT:CALCUL":
-                            append_unique(atom["arguments"], "calcul")
-                        elif current_tag == "OUTCOME":
-                            value = re.sub(r"^which directly gives\s+", "", value)
-                            if value.startswith("\\("):
-                                value = strip_trailing_sentence_punctuation(value)
-                            if value.startswith("So ") or value.startswith("The process is therefore") or value.startswith("This always gives"):
-                                value = strip_trailing_sentence_punctuation(value)
-                            atom["outcome"] = value
-                        current_buffer = []
-
-                    for line in lines:
-                        line_stripped = line.strip()
-
-                        if has_tag(line_stripped, "PRECOND"):
-                            flush_current()
-                            current_tag = "PRECOND"
-                            content_line = remove_tag_prefix(line, "PRECOND")
-                            if content_line:
-                                current_buffer.append(content_line)
-
-                        elif has_tag(line_stripped, "ARGUMENT:CALCUL"):
-                            flush_current()
-                            current_tag = "ARGUMENT:CALCUL"
-                            content_line = remove_tag_prefix(line, "ARGUMENT:CALCUL")
-                            if content_line:
-                                current_buffer.append(content_line)
-
-                        elif has_tag(line_stripped, "ARGUMENT"):
-                            flush_current()
-                            current_tag = "ARGUMENT"
-                            content_line = remove_tag_prefix(line, "ARGUMENT")
-                            if content_line:
-                                current_buffer.append(content_line)
-
-                        elif has_tag(line_stripped, "OUTCOME"):
-                            flush_current()
-                            current_tag = "OUTCOME"
-                            content_line = remove_tag_prefix(line, "OUTCOME")
-                            if content_line:
-                                current_buffer.append(content_line)
-
-                        elif (
-                            has_tag(line_stripped, "PRECOND_END")
-                            or has_tag(line_stripped, "ARGUMENT_END")
-                            or has_tag(line_stripped, "OUTCOME_END")
-                            or has_tag(line_stripped, "ATOM_END")
-                        ):
-                            for end_tag in ["PRECOND_END", "ARGUMENT_END", "OUTCOME_END", "ATOM_END"]:
-                                if has_tag(line_stripped, end_tag) and current_tag:
-                                    before_end = split_before_tag(line, end_tag)
-                                    break
-                            else:
-                                before_end = ""
-                            if before_end:
-                                current_buffer.append(before_end)
-                            flush_current()
-                            current_tag = None
-
-                            if has_tag(line_stripped, "ATOM_END"):
-                                break
-
-                        elif (
-                            has_tag(line_stripped, "LIST_END")
-                            or has_tag(line_stripped, "SET_END")
-                            or has_tag(line_stripped, "LIST_START")
-                            or has_tag(line_stripped, "SET_START")
-                        ):
-                            if current_tag:
-                                before_end = re.split(r"%@(?:LIST_END|SET_END|LIST_START|SET_START)\b", line, maxsplit=1)[0].strip()
-                                if before_end:
-                                    current_buffer.append(before_end)
-                            flush_current()
-                            current_tag = None
-
-                        elif current_tag and line_stripped:
-                            if not any(
-                                t in line_stripped
-                                for t in [
-                                    "%@LIST_START",
-                                    "%@LIST_END",
-                                    "%@SET_START",
-                                    "%@SET_END",
-                                ]
-                            ):
-                                current_buffer.append(line_stripped)
-
-                    flush_current()
-
-                    atom["preconditions"] = [p for p in atom["preconditions"] if p]
-                    atom["arguments"] = [a for a in atom["arguments"] if a]
-
-                    if atom["arguments"]:
-                        subquestion["atoms"].append(atom)
+                subquestion.pop("atoms", None)
+                subquestion.update(parse_solution_structure(solution_text))
 
         exercise["subquestions"].append(subquestion)
 

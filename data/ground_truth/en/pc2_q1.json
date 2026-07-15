@@ -5,63 +5,69 @@
         {
             "question": "Show that a process $(X_t)_{t\\in \\R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\\in \\R^+}$ is a centered Gaussian process, ${\\rm Cov}(X_s,X_t)=\\inf(s,t).$",
             "assumptions": [],
-            "atoms": [
-                {
-                    "preconditions": [
-                        "For \\(s \\leq t\\), we decompose \\(X_t = X_s + (X_t - X_s)\\)."
-                    ],
-                    "arguments": [
-                        "Independence of \\(X_s\\) and \\(X_t - X_s\\)"
-                    ],
-                    "outcome": "\\(\\mathrm{Cov}(X_s, X_t) = \\min(s,t)\\)"
+            "atoms_set": {
+                "list1": {
+                    "atom1": {
+                        "preconditions": [
+                            "For \\(s \\leq t\\), we decompose \\(X_t = X_s + (X_t - X_s)\\)."
+                        ],
+                        "arguments": [
+                            "Independence of \\(X_s\\) and \\(X_t - X_s\\)"
+                        ],
+                        "outcome": "\\(\\mathrm{Cov}(X_s, X_t) = \\min(s,t)\\)"
+                    },
+                    "atom2": {
+                        "preconditions": [
+                            "Standard Brownian motion has Gaussian increments",
+                            "\\(X_0 = 0\\),"
+                        ],
+                        "arguments": [
+                            "a linear combination of independent Gaussian increments thus it is Gaussian"
+                        ],
+                        "outcome": "The process is therefore centered Gaussian"
+                    }
                 },
-                {
-                    "preconditions": [
-                        "Standard Brownian motion has Gaussian increments",
-                        "\\(X_0 = 0\\),"
-                    ],
-                    "arguments": [
-                        "a linear combination of independent Gaussian increments thus it is Gaussian"
-                    ],
-                    "outcome": "The process is therefore centered Gaussian"
-                },
-                {
-                    "preconditions": [
-                        "Using property ($iii'$)",
-                        "Compute $\\text{Cov}(X_t - X_s, X_v - X_u)$ for \\(s < t \\leq u < v\\)."
-                    ],
-                    "arguments": [
-                        ":calculus \\[ \\text{Cov}(X_t - X_s, X_v - X_u) = \\min(t,v) - \\min(t,u) - \\min(s,v) + \\min(s,u) \\] This always gives 0, proving that"
-                    ],
-                    "outcome": "disjoint increments are uncorrelated, hence independent"
-                },
-                {
-                    "preconditions": [
-                        "Compute the variance of an increment of $X$"
-                    ],
-                    "arguments": [
-                        "thus the law depends only on \\(t-s\\)"
-                    ],
-                    "outcome": "<-- 2 outcomes! and have law \\(\\mathcal{N}(0, t-s)\\)."
-                },
-                {
-                    "preconditions": [
-                        "disjoint increments are independent",
-                        "the law of increments is Gaussian centered of variance $t-s$, i.e. \\(\\mathcal{N}(0, t-s)\\),"
-                    ],
-                    "arguments": [
-                        "plus the assumption of continuity of paths",
-                        "<-- alternative ARGUMENT! (or by taking the continuous version via Kolmogorov's theorem) give"
-                    ],
-                    "outcome": "the classical definition of Brownian motion."
+                "list2": {
+                    "atom1": {
+                        "preconditions": [
+                            "Using property ($iii'$)",
+                            "Compute $\\text{Cov}(X_t - X_s, X_v - X_u)$ for \\(s < t \\leq u < v\\)."
+                        ],
+                        "arguments": [
+                            ":calculus \\[ \\text{Cov}(X_t - X_s, X_v - X_u) = \\min(t,v) - \\min(t,u) - \\min(s,v) + \\min(s,u) \\] This always gives 0, proving that"
+                        ],
+                        "outcome": "disjoint increments are uncorrelated, hence independent"
+                    },
+                    "atom2": {
+                        "preconditions": [
+                            "Compute the variance of an increment of $X$"
+                        ],
+                        "arguments": [
+                            "thus the law depends only on \\(t-s\\)"
+                        ],
+                        "outcome": [
+                            "This shows that the increments are stationary",
+                            "and have law \\(\\mathcal{N}(0, t-s)\\)."
+                        ]
+                    },
+                    "atom3": {
+                        "preconditions": [
+                            "disjoint increments are independent",
+                            "the law of increments is Gaussian centered of variance $t-s$, i.e. \\(\\mathcal{N}(0, t-s)\\),"
+                        ],
+                        "arguments": [
+                            "plus the assumption of continuity of paths or by taking the continuous version via Kolmogorov's theorem)"
+                        ],
+                        "outcome": "the classical definition of Brownian motion."
+                    }
                 }
-            ]
+            }
         },
         {
             "question": "Show that if $W_t$ is a Brownian motion, $ \\{X_t=t\\;W_{\\frac 1t}, t>0, X_0=0 \\}$ is a Brownian motion too.",
             "assumptions": [],
-            "atoms": [
-                {
+            "atoms_set": {
+                "atom1": {
                     "preconditions": [
                         "compute $\\lim_{t \\to 0^+} t W_{1/t}$"
                     ],
@@ -70,7 +76,7 @@
                     ],
                     "outcome": "$\\lim_{t \\to 0^+} t W_{1/t} = 0$ a.s."
                 },
-                {
+                "atom2": {
                     "preconditions": [
                         "For any arbitrary \\(t_1, \\dots, t_n\\), the vector \\((X_{t_1}, \\dots, X_{t_n})\\)"
                     ],
@@ -79,14 +85,14 @@
                     ],
                     "outcome": "thus it is centered Gaussian. \\\\"
                 },
-                {
+                "atom3": {
                     "preconditions": [],
                     "arguments": [
                         ":computation \\[ \\mathbb{E}[X_t X_s] = ts \\cdot \\min\\left(\\frac{1}{t}, \\frac{1}{s}\\right) = \\min(t,s), \\]"
                     ],
                     "outcome": "i.e. $\\mathbb{E}[X_t X_s] = \\min(t,s)$. \\\\"
                 },
-                {
+                "atom4": {
                     "preconditions": [
                         "continuity: $\\lim_{t \\to 0^+} X_t = 0$ a.s.,",
                         "Gaussianity: the vector \\((X_{t_1}, \\dots, X_{t_n})\\) is centered Gaussian for any set of times",
@@ -98,7 +104,7 @@
                     ],
                     "outcome": "that \\(X\\) is a Brownian motion."
                 }
-            ]
+            }
         }
     ]
 }
