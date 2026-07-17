@@ -1,0 +1,26 @@
+context: ''
+assumption_global:
+- $W_t$ is a Brownian Motion.
+subquestions:
+-   question: When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+    assumptions:
+    - $\tau$ is a bounded stopping time
+    atoms:
+    -   preconditions:
+        - $(W_t)_{t\geq 0}$ is a martingale.
+        - $\tau$ is a bounded stopping time.
+        arguments:
+        - Apply Doob's optional stopping theorem to $(W_t)_{t\geq 0}$ at $\tau$
+        outcomes:
+        - \[ \mathbb{E}[W_\tau] = 0, \]
+-   question: When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+    assumptions:
+    - $\tau$ is a bounded stopping time
+    atoms:
+    -   preconditions:
+        - $(W_t^2-t)_{t\geq 0}$ is a martingale.
+        - $\tau$ is a bounded stopping time.
+        arguments:
+        - Apply Doob's optional stopping theorem to $(W_t^2-t)_{t\geq 0}$ at $\tau$
+        outcomes:
+        - \[ \mathbb{E}[W_\tau^2] = \mathbb{E}[\tau]. \]

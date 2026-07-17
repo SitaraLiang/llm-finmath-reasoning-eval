@@ -1,11 +1,22 @@
 import argparse
-import json
 from pathlib import Path
 import re
 import sys
 
+import yaml
 
-TAG_RE = r"%@(?:CONTEXT|ASSUMPTION_GLOBAL|ASSUMPTION(?:_END)?|QUESTION(?:_END)?|ATOM(?:_END)?|PRECOND(?:_END)?|ARGUMENT(?:_END|:CALCUL)?|OUTCOME(?:_END)?|LIST_START|LIST_END|SET_START|SET_END)\b"
+
+TAG_RE = r"%@(?:CONTEXT|ASSUMPTION_GLOBAL|ASSUMPTION(?:_END)?|QUESTION(?:_END)?|ATOM(?:_END)?|PRECOND(?:_END)?|ARGUMENT(?:_END|:CALCUL)?|OUTCOME(?:_END)?|STRENGTH|LIST_START|LIST_END|SET_START|SET_END)\b"
+
+
+class AnnotationParseError(ValueError):
+    """Raised when annotated LaTeX tags are malformed or unclosed."""
+
+    def __init__(self, message: str, source_name: str = "<latex>", line_number: int | None = None):
+        location = source_name
+        if line_number is not None:
+            location = f"{location}:{line_number}"
+        super().__init__(f"{location}: {message}")
 
 
 def normalize_tags(latex_content: str) -> str:
@@ -89,6 +100,15 @@ def split_before_tag(line: str, tag: str) -> str:
     return re.split(rf"%@{tag}\b", line, maxsplit=1)[0].strip()
 
 
+def strip_latex_comment(line: str) -> str:
+    return re.split(r"(?<!\\)%", line, maxsplit=1)[0].strip()
+
+
+def is_non_tag_comment(line: str) -> bool:
+    stripped = line.strip()
+    return stripped.startswith("%") and not re.search(TAG_RE, stripped)
+
+
 def extract_question_block(question_zone: str) -> tuple[str, list[str]]:
     assumptions = split_tagged_items(question_zone, "ASSUMPTION")
 
@@ -102,14 +122,6 @@ def extract_question_block(question_zone: str) -> tuple[str, list[str]]:
     question_text = re.sub(TAG_RE, " ", question_text)
 
     return clean_text(question_text), assumptions
-
-
-def normalize_outcomes(outcomes: list[str]) -> str | list[str]:
-    if not outcomes:
-        return ""
-    if len(outcomes) == 1:
-        return outcomes[0]
-    return outcomes
 
 
 def clean_argument_text(value: str) -> str:
@@ -128,9 +140,22 @@ def clean_outcome_text(value: str) -> str:
     return value
 
 
-def parse_atom_block(block_lines: list[str]) -> dict:
-    atom = {"preconditions": [], "arguments": [], "outcome": ""}
-    outcomes = []
+def parse_strength(value: str, source_name: str, line_number: int) -> float:
+    numeric_match = re.match(r"^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?", value.strip())
+    if numeric_match:
+        return float(numeric_match.group(0))
+    try:
+        return float(value)
+    except ValueError as exc:
+        raise AnnotationParseError(
+            f"Invalid @STRENGTH value {value!r}; expected a numeric value.",
+            source_name,
+            line_number,
+        ) from exc
+
+
+def parse_atom_block(block_lines: list[tuple[int, str]], source_name: str = "<latex>", atom_line: int | None = None) -> dict:
+    atom = {"preconditions": [], "arguments": [], "outcomes": []}
     current_tag = None
     current_buffer = []
 
@@ -151,44 +176,37 @@ def parse_atom_block(block_lines: list[str]) -> dict:
         elif current_tag == "ARGUMENT":
             append_unique(atom["arguments"], clean_argument_text(value))
         elif current_tag == "ARGUMENT:CALCUL":
-            prefix = ":computation" if not atom["preconditions"] else ":calculus"
-            append_unique(atom["arguments"], clean_text(f"{prefix} {value}"))
+            append_unique(atom["arguments"], "Calculation")
         elif current_tag == "OUTCOME":
             value = clean_outcome_text(value)
-            if value:
-                outcomes.append(value)
+            append_unique(atom["outcomes"], value)
         current_buffer = []
 
-    for line in block_lines:
+    for line_number, line in block_lines:
         line_stripped = line.strip()
 
-        if has_tag(line_stripped, "PRECOND"):
+        if has_tag(line_stripped, "STRENGTH"):
+            flush_current()
+            current_tag = None
+            strength_value = remove_tag_prefix(line, "STRENGTH")
+            strength_value = strength_value[1:].strip() if strength_value.startswith(":") else strength_value
+            atom["strength"] = parse_strength(clean_text(strength_value), source_name, line_number)
+
+        elif has_tag(line_stripped, "PRECOND"):
             flush_current()
             current_tag = "PRECOND"
-            content_line = remove_tag_prefix(line, "PRECOND")
-            if content_line:
-                current_buffer.append(content_line)
 
         elif has_tag(line_stripped, "ARGUMENT:CALCUL"):
             flush_current()
             current_tag = "ARGUMENT:CALCUL"
-            content_line = remove_tag_prefix(line, "ARGUMENT:CALCUL")
-            if content_line:
-                current_buffer.append(content_line)
 
         elif has_tag(line_stripped, "ARGUMENT"):
             flush_current()
             current_tag = "ARGUMENT"
-            content_line = remove_tag_prefix(line, "ARGUMENT")
-            if content_line:
-                current_buffer.append(content_line)
 
         elif has_tag(line_stripped, "OUTCOME"):
             flush_current()
             current_tag = "OUTCOME"
-            content_line = remove_tag_prefix(line, "OUTCOME")
-            if content_line:
-                current_buffer.append(content_line)
 
         elif (
             has_tag(line_stripped, "PRECOND_END")
@@ -202,6 +220,7 @@ def parse_atom_block(block_lines: list[str]) -> dict:
                     break
             else:
                 before_end = ""
+            before_end = strip_latex_comment(before_end)
             if before_end:
                 current_buffer.append(before_end)
             flush_current()
@@ -218,106 +237,179 @@ def parse_atom_block(block_lines: list[str]) -> dict:
         ):
             if current_tag:
                 before_end = re.split(r"%@(?:LIST_END|SET_END|LIST_START|SET_START)\b", line, maxsplit=1)[0].strip()
+                before_end = strip_latex_comment(before_end)
                 if before_end:
                     current_buffer.append(before_end)
             flush_current()
             current_tag = None
 
         elif current_tag and line_stripped:
-            current_buffer.append(line_stripped)
+            content_line = strip_latex_comment(line_stripped)
+            if content_line and not is_non_tag_comment(line_stripped):
+                current_buffer.append(content_line)
 
     flush_current()
 
     atom["preconditions"] = [p for p in atom["preconditions"] if p]
     atom["arguments"] = [a for a in atom["arguments"] if a]
-    atom["outcome"] = normalize_outcomes(outcomes)
+    atom["outcomes"] = [o for o in atom["outcomes"] if o]
+    if not atom["arguments"]:
+        raise AnnotationParseError(
+            "Atom has no @ARGUMENT or @ARGUMENT:CALCUL content.",
+            source_name,
+            atom_line,
+        )
     return atom
 
 
-def add_atom_to_container(container: dict, atom: dict) -> None:
-    if atom["arguments"]:
-        container[f"atom{len(container) + 1}"] = atom
+def stable_yaml_key(value) -> str:
+    return yaml.dump(
+        value,
+        Dumper=yaml.Dumper,
+        allow_unicode=True,
+        sort_keys=False,
+        default_flow_style=False,
+    )
 
 
-def parse_solution_structure(solution_text: str) -> dict:
-    lines = solution_text.split("\n")
-    root = {}
-    flat_atoms = []
-    current_list = None
-    list_count = 0
-    root_atom_count = 0
-    saw_set = False
-    saw_list = False
-    i = 0
+def dedupe_set_items(items: list):
+    seen = set()
+    unique = []
+    for item in items:
+        key = stable_yaml_key(item)
+        if key in seen:
+            continue
+        seen.add(key)
+        unique.append(item)
+    return unique
 
-    while i < len(lines):
-        line_stripped = lines[i].strip()
+
+def materialize_container(container: dict):
+    values = [materialize_node(item) for item in container["items"]]
+    if container["kind"] == "list":
+        return values
+
+    # Tuples are used by this benchmark as the YAML-serializable representation
+    # of unordered mathematical sets. We preserve input order only to keep the
+    # serialized YAML deterministic; tuple position is not semantic.
+    return tuple(dedupe_set_items(values))
+
+
+def materialize_node(node):
+    if isinstance(node, dict) and "kind" in node and "items" in node:
+        return materialize_container(node)
+    return node
+
+
+def add_child(stack: list[dict], roots: list, child) -> None:
+    if stack:
+        stack[-1]["items"].append(child)
+    else:
+        roots.append(child)
+
+
+def starts_structure_or_atom(line: str) -> bool:
+    return (
+        has_tag(line, "ATOM")
+        or has_tag(line, "LIST_START")
+        or has_tag(line, "SET_START")
+        or has_tag(line, "LIST_END")
+        or has_tag(line, "SET_END")
+    )
+
+
+def collect_atom_lines(lines: list[tuple[int, str]], start_index: int) -> tuple[list[tuple[int, str]], int]:
+    atom_line_number, atom_line = lines[start_index]
+    block_lines = []
+    initial_content = remove_tag_prefix(atom_line, "ATOM")
+    if initial_content and not atom_line.strip().startswith("%"):
+        block_lines.append((atom_line_number, initial_content))
+
+    index = start_index + 1
+    while index < len(lines):
+        line_number, line = lines[index]
+        line_stripped = line.strip()
+        if has_tag(line_stripped, "ATOM_END"):
+            block_lines.append((line_number, line))
+            return block_lines, index + 1
+        if starts_structure_or_atom(line_stripped):
+            return block_lines, index
+        block_lines.append((line_number, line))
+        index += 1
+    return block_lines, index
+
+
+def parse_solution_structure(solution_text: str, source_name: str = "<latex>") -> dict:
+    numbered_lines = list(enumerate(solution_text.split("\n"), start=1))
+    stack = []
+    roots = []
+    saw_container = False
+    index = 0
+
+    while index < len(numbered_lines):
+        line_number, line = numbered_lines[index]
+        line_stripped = line.strip()
 
         if has_tag(line_stripped, "SET_START"):
-            saw_set = True
-            i += 1
+            saw_container = True
+            container = {"kind": "set", "items": [], "line": line_number}
+            add_child(stack, roots, container)
+            stack.append(container)
+            index += 1
             continue
 
         if has_tag(line_stripped, "LIST_START"):
-            saw_list = True
-            list_count += 1
-            current_list = {}
-            root[f"list{list_count}"] = current_list
-            i += 1
+            saw_container = True
+            container = {"kind": "list", "items": [], "line": line_number}
+            add_child(stack, roots, container)
+            stack.append(container)
+            index += 1
             continue
 
         if has_tag(line_stripped, "LIST_END"):
-            current_list = None
-            i += 1
+            if not stack or stack[-1]["kind"] != "list":
+                raise AnnotationParseError("Encountered @LIST_END without matching @LIST_START.", source_name, line_number)
+            stack.pop()
+            index += 1
             continue
 
         if has_tag(line_stripped, "SET_END"):
-            current_list = None
-            i += 1
+            if not stack or stack[-1]["kind"] != "set":
+                raise AnnotationParseError("Encountered @SET_END without matching @SET_START.", source_name, line_number)
+            stack.pop()
+            index += 1
             continue
 
         if has_tag(line_stripped, "ATOM"):
-            block_lines = []
-            i += 1
-            while i < len(lines):
-                next_line = lines[i].strip()
-                if (
-                    has_tag(next_line, "ATOM")
-                    or has_tag(next_line, "LIST_END")
-                    or has_tag(next_line, "SET_END")
-                ):
-                    break
-                block_lines.append(lines[i])
-                i += 1
-
-            atom = parse_atom_block(block_lines)
-            if current_list is not None:
-                add_atom_to_container(current_list, atom)
-            elif saw_set:
-                if atom["arguments"]:
-                    root_atom_count += 1
-                    root[f"atom{root_atom_count}"] = atom
-            elif atom["arguments"]:
-                flat_atoms.append(atom)
+            block_lines, next_index = collect_atom_lines(numbered_lines, index)
+            atom = parse_atom_block(block_lines, source_name, line_number)
+            add_child(stack, roots, atom)
+            index = next_index
             continue
 
-        i += 1
+        index += 1
 
-    if saw_set:
-        return {"atoms_set": root}
-    if saw_list:
-        return {"atoms_list": root}
-    return {"atoms": flat_atoms}
+    if stack:
+        container = stack[-1]
+        raise AnnotationParseError(
+            f"Unclosed @{container['kind'].upper()}_START annotation.",
+            source_name,
+            container["line"],
+        )
+
+    materialized_roots = [materialize_node(root) for root in roots]
+    if not materialized_roots:
+        return {"atoms": []}
+    if saw_container and len(materialized_roots) == 1:
+        return {"atoms": materialized_roots[0]}
+    return {"atoms": materialized_roots}
 
 
-def parse_latex_exercise(latex_content: str) -> dict:
-    # Initialisation de l'exercice
+def parse_latex_exercise(latex_content: str, source_name: str = "<latex>") -> dict:
     exercise = {"context": "", "assumption_global": [], "subquestions": []}
 
-    # Nettoyage minimal et normalisation des espaces pour les TAGs
     content = normalize_tags(latex_content)
 
-    # 1. Extraction du CONTEXT global
     context_match = re.search(
         r"%@CONTEXT\s*(.*?)(?=\\titledquestion|\\part|%@)", content, re.DOTALL
     )
@@ -329,16 +421,13 @@ def parse_latex_exercise(latex_content: str) -> dict:
                 context_text = clean_text(title_match.group(1))
         exercise["context"] = context_text
 
-    # 2. Extraction des ASSUMPTION_GLOBAL (si présentes avant les parts)
     exercise["assumption_global"] = split_tagged_items(content.split(r"\begin{parts}", 1)[0], "ASSUMPTION_GLOBAL")
 
-    # 3. Découpage par sous-questions (\part)
     parts = re.split(r"\\part\b", content)
 
     for part_content in parts[1:]:
         subquestion = {"question": "", "assumptions": [], "atoms": []}
 
-        # Localiser la zone de l'énoncé de la question (avant xsolution)
         solution_start_idx = part_content.find(r"\begin{xsolution}")
         question_zone = (
             part_content[:solution_start_idx]
@@ -346,11 +435,8 @@ def parse_latex_exercise(latex_content: str) -> dict:
             else part_content
         )
 
-        # Extraction de la QUESTION et des ASSUMPTION locales.
-        # Les hypothèses locales sont désormais balisées à l'intérieur du bloc question.
         subquestion["question"], subquestion["assumptions"] = extract_question_block(question_zone)
 
-        # 4. Traitement de la solution et de ses ATOMs
         if solution_start_idx != -1:
             solution_zone_match = re.search(
                 r"\\begin{xsolution}(.*?)\\end{xsolution}",
@@ -359,8 +445,7 @@ def parse_latex_exercise(latex_content: str) -> dict:
             )
             if solution_zone_match:
                 solution_text = solution_zone_match.group(1)
-                subquestion.pop("atoms", None)
-                subquestion.update(parse_solution_structure(solution_text))
+                subquestion.update(parse_solution_structure(solution_text, source_name))
 
         exercise["subquestions"].append(subquestion)
 
@@ -370,6 +455,7 @@ def parse_latex_exercise(latex_content: str) -> dict:
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_INPUT_DIR = PROJECT_ROOT / "data" / "raw_tex" / "en"
 DEFAULT_OUTPUT_DIR = PROJECT_ROOT / "data" / "ground_truth" / "en"
+YAML_SUFFIXES = {".yaml", ".yml"}
 
 
 def read_latex_file(filepath: Path) -> str:
@@ -383,26 +469,50 @@ def read_latex_file(filepath: Path) -> str:
         sys.exit(1)
 
 
-def write_json_file(output_path: Path, parsed_json: dict) -> None:
+def write_yaml_file(output_path: Path, parsed_data: dict) -> None:
     try:
         output_path.parent.mkdir(parents=True, exist_ok=True)
-        output_path.write_text(
-            json.dumps(parsed_json, indent=4, ensure_ascii=False),
-            encoding="utf-8",
-        )
-        #print(f"Successfully saved parsed JSON to {output_path}")
+        with output_path.open("w", encoding="utf-8") as file:
+            yaml.dump(
+                parsed_data,
+                file,
+                Dumper=yaml.Dumper,
+                allow_unicode=True,
+                sort_keys=False,
+                default_flow_style=False,
+                indent=4,
+            )
     except Exception as e:
-        print(f"Error saving JSON to file '{output_path}': {e}", file=sys.stderr)
+        print(f"Error saving YAML to file '{output_path}': {e}", file=sys.stderr)
         sys.exit(1)
 
 
-def parse_file_to_json(input_path: Path, output_path: Path) -> None:
+def load_yaml_file(input_path: Path):
+    """Load trusted benchmark YAML, reconstructing tuples used as math sets.
+
+    This loader is appropriate only for YAML generated by this benchmark or
+    another trusted source. Do not use Python-specific YAML loaders on arbitrary
+    untrusted files.
+    """
+    try:
+        with input_path.open("r", encoding="utf-8") as file:
+            return yaml.load(file, Loader=yaml.FullLoader)
+    except Exception as e:
+        print(f"Error loading YAML file '{input_path}': {e}", file=sys.stderr)
+        sys.exit(1)
+
+
+def parse_file_to_yaml(input_path: Path, output_path: Path) -> None:
     latex_content = read_latex_file(input_path)
-    parsed_json = parse_latex_exercise(latex_content)
-    write_json_file(output_path, parsed_json)
+    try:
+        parsed_data = parse_latex_exercise(latex_content, str(input_path))
+    except AnnotationParseError as exc:
+        print(f"Error parsing '{input_path}': {exc}", file=sys.stderr)
+        sys.exit(1)
+    write_yaml_file(output_path, parsed_data)
 
 
-def parse_directory_to_json(input_dir: Path, output_dir: Path) -> None:
+def parse_directory_to_yaml(input_dir: Path, output_dir: Path) -> None:
     if not input_dir.exists():
         print(f"Error: The input directory '{input_dir}' does not exist.", file=sys.stderr)
         sys.exit(1)
@@ -420,17 +530,25 @@ def parse_directory_to_json(input_dir: Path, output_dir: Path) -> None:
 
     output_dir.mkdir(parents=True, exist_ok=True)
     for input_path in tex_files:
-        output_path = output_dir / f"{input_path.stem}.json"
-        parse_file_to_json(input_path, output_path)
+        output_path = output_dir / f"{input_path.stem}.yaml"
+        parse_file_to_yaml(input_path, output_path)
 
     print("Parsing complete.")
     print(f".tex files parsed: {len(tex_files)}")
 
 
+def normalize_output_file_path(input_path: Path, output_path: Path) -> Path:
+    if output_path.suffix in YAML_SUFFIXES:
+        return output_path
+    if output_path.suffix == ".json":
+        return output_path.with_suffix(".yaml")
+    output_path.mkdir(parents=True, exist_ok=True)
+    return output_path / f"{input_path.stem}.yaml"
+
+
 if __name__ == "__main__":
-    # Configuration d'argparse
     parser = argparse.ArgumentParser(
-        description="Parse annotated LaTeX math exercises into structural JSON."
+        description="Parse annotated LaTeX math exercises into structural YAML."
     )
     parser.add_argument(
         "-i",
@@ -449,8 +567,9 @@ if __name__ == "__main__":
         dest="output_path",
         type=Path,
         help=(
-            "Path to an output .json file when parsing one input file, or to an "
-            "output directory when parsing an input directory."
+            "Path to an output .yaml/.yml file when parsing one input file, or to an "
+            "output directory when parsing an input directory. A legacy .json suffix "
+            "is rewritten to .yaml."
         ),
         default=DEFAULT_OUTPUT_DIR,
     )
@@ -458,19 +577,15 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.input_path.is_dir():
-        if args.output_path.suffix == ".json":
+        if args.output_path.suffix in YAML_SUFFIXES or args.output_path.suffix == ".json":
             print(
                 "Error: When input is a directory, output must also be a directory.",
                 file=sys.stderr,
             )
             sys.exit(1)
-        parse_directory_to_json(args.input_path, args.output_path)
+        parse_directory_to_yaml(args.input_path, args.output_path)
     elif args.input_path.is_file():
-        output_path = args.output_path
-        if output_path.suffix != ".json":
-            output_path.mkdir(parents=True, exist_ok=True)
-            output_path = output_path / f"{args.input_path.stem}.json"
-        parse_file_to_json(args.input_path, output_path)
+        parse_file_to_yaml(args.input_path, normalize_output_file_path(args.input_path, args.output_path))
     else:
         print(f"Error: The input path '{args.input_path}' does not exist.", file=sys.stderr)
         sys.exit(1)
