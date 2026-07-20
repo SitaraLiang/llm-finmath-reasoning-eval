@@ -58,6 +58,11 @@ def get_nested(config: dict, keys: list[str], default=None):
     return current
 
 
+def progress(message: str) -> None:
+    timestamp = time.strftime("%H:%M:%S")
+    print(f"[{timestamp}] {message}", flush=True)
+
+
 def parse_exercise_filename(path: Path) -> tuple[str, str]:
     """Extract pc and exercise ids from pc{n}_q{m}.{yaml,yml,json}."""
     match = re.fullmatch(r"pc(\d+)_q(\d+)", path.stem)
@@ -437,12 +442,16 @@ def generate_complete_exercise_answers(
     timeout: int,
     max_retries: int,
     retry_delay: int,
+    progress_prefix: str,
 ) -> list[dict]:
     subquestions = exercise_data.get("subquestions", [])
     generated_answers = []
     results = []
 
     for sub_index, subquestion in enumerate(subquestions, start=1):
+        progress(
+            f"{progress_prefix} subquestion {sub_index}/{len(subquestions)}: sending prompt"
+        )
         prompt = build_prompt(
             exercise_data,
             exercise_path,
@@ -458,11 +467,20 @@ def generate_complete_exercise_answers(
         answer = ""
         for attempt in range(1, max_retries + 1):
             try:
+                if max_retries > 1:
+                    progress(
+                        f"{progress_prefix} subquestion {sub_index}/{len(subquestions)}: "
+                        f"Ollama attempt {attempt}/{max_retries}"
+                    )
                 answer = ollama_generate(model, prompt, endpoint, timeout)
                 break
             except RuntimeError:
                 if attempt == max_retries:
                     raise
+                progress(
+                    f"{progress_prefix} subquestion {sub_index}/{len(subquestions)}: "
+                    f"retrying in {retry_delay}s"
+                )
                 time.sleep(retry_delay)
 
         generated_answers.append(answer)
@@ -502,6 +520,21 @@ def run_call1(config: dict) -> None:
     written = 0
     skipped = 0
     failed = 0
+    total_jobs = (
+        len(inputs)
+        * len(variations)
+        * len(prompt_types)
+        * len(output_modes)
+        * len(models)
+    )
+    current_job = 0
+
+    progress(
+        "Call 1 starting: "
+        f"{len(inputs)} exercise(s), {len(models)} model(s), "
+        f"{len(variations)} variation(s), {len(prompt_types)} prompt type(s), "
+        f"{len(output_modes)} output mode(s), {total_jobs} complete exercise job(s)."
+    )
 
     for item in inputs:
         exercise_data = load_exercise_file(item["path"])
@@ -509,6 +542,7 @@ def run_call1(config: dict) -> None:
             for prompt_type in prompt_types:
                 for output_mode in output_modes:
                     for model in models:
+                        current_job += 1
                         out_path = output_path(
                             config,
                             output_mode,
@@ -519,11 +553,19 @@ def run_call1(config: dict) -> None:
                             item["exercise"],
                             prompt_type,
                         )
+                        job_label = (
+                            f"[{current_job}/{total_jobs}] "
+                            f"pc{item['pc']}_q{item['exercise']} | "
+                            f"model={model['id']} | variation={variation} | "
+                            f"prompt={prompt_type} | mode={output_mode}"
+                        )
                         if out_path.exists() and not overwrite:
                             skipped += 1
+                            progress(f"{job_label}: skipped existing {out_path}")
                             continue
 
                         try:
+                            progress(f"{job_label}: started")
                             answers = generate_complete_exercise_answers(
                                 exercise_data,
                                 item["path"],
@@ -535,6 +577,7 @@ def run_call1(config: dict) -> None:
                                 timeout,
                                 max_retries,
                                 retry_delay,
+                                job_label,
                             )
                             result = {
                                 "pc": item["pc"],
@@ -551,12 +594,15 @@ def run_call1(config: dict) -> None:
                                 overwrite=True,
                             ):
                                 written += 1
+                                progress(f"{job_label}: wrote {out_path}")
                         except RuntimeError as exc:
                             failed += 1
                             print(f"Error: {exc}", file=sys.stderr)
+                            progress(f"{job_label}: failed")
 
-    print("Call 1 complete.")
+    progress("Call 1 complete.")
     print(f"Input exercise files: {len(inputs)}")
+    print(f"Complete exercise jobs: {total_jobs}")
     print(f"Complete exercise files written: {written}")
     print(f"Complete exercise files skipped: {skipped}")
     print(f"Complete exercise generations failed: {failed}")
