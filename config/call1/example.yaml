@@ -1,0 +1,104 @@
+experiment:
+  name: "financial_math_call1_v1"
+  version: 1
+  seed: 42
+
+input:
+  root_directory: "data/ground_truth"
+  ground_truth_answer_keys:
+    - "solution"
+    - "ground_truth"
+    - "answer"
+    - "expected_answer"
+    - "atoms"
+
+  filters:
+    languages:
+      - "en"
+
+    variations:
+      - "baseline"
+
+    prompt_types:
+      - "strictly_sequential"
+      # - "prompt_accumulation"
+      # - "ground_truth_forcing"
+      # - "self_history"
+
+output_modes:
+  - "plain_text"
+  # Add "native_yaml" when you want Call 1 to save structured YAML.
+  # - "native_yaml"
+
+prompts:
+  common_header: |
+    You are solving a financial mathematics exercise.
+    Write a rigorous mathematical answer. Use LaTeX for formulas.
+
+    Context:
+    $context
+
+    Global assumptions:
+    $global_assumptions
+
+  strategies:
+    strictly_sequential: |
+      Local assumptions:
+      $current_assumptions
+
+      Question $current_question_number:
+      $current_question
+
+      Answer only Question $current_question_number.
+
+    prompt_accumulation: |
+      Questions provided so far:
+      $accumulated_questions
+
+      Answer only Question $current_question_number.
+
+    ground_truth_forcing: |
+      Previous questions and exact solutions:
+      $ground_truth_history
+
+      Local assumptions:
+      $current_assumptions
+
+      Current question $current_question_number:
+      $current_question
+
+      Answer only Question $current_question_number.
+
+    self_history: |
+      Previous questions and your previous answers:
+      $self_history
+
+      Local assumptions:
+      $current_assumptions
+
+      Current question $current_question_number:
+      $current_question
+
+      Answer only Question $current_question_number.
+
+output:
+  root_directory: "outputs/call1"
+  directory_template: "{mode}/{model}/{language}/{variation}"
+  filename_template: "pc{pc}_q{exercise}{suffix}"
+  overwrite_existing: false
+
+ollama:
+  endpoint: "http://localhost:11434/api/generate"
+  timeout_seconds: 600
+
+models:
+  - id: "tinyllama"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      temperature: 0.0
+      max_output_tokens: 2000
+
+execution:
+  max_retries: 3
+  retry_delay_seconds: 5
