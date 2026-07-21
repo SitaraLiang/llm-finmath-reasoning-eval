@@ -27,7 +27,7 @@ output:
   root_directory: "outputs/call2"
   directory_template: "{model1}/{language}/{variation}"
   filename_template: "pc{pc}_q{exercise}_{model2}.yaml"
-  overwrite_existing: false
+  overwrite_existing: true
   save_raw_response: true
   save_prompt: true
 
@@ -185,7 +185,7 @@ ollama:
   timeout_seconds: 600
 
 models:
-  - id: "tinyllama"
+  - id: "qwen3:0.6b"
     provider: "ollama"
     enabled: true
     parameters:
