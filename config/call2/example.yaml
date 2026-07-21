@@ -29,17 +29,27 @@ output:
   filename_template: "pc{pc}_q{exercise}_{model2}.yaml"
   overwrite_existing: false
   save_raw_response: true
+  save_prompt: true
 
 prompts:
   conversion: |
-    You are converting a model's natural-language mathematical solution into the
-    benchmark's structured YAML representation.
+    TASK: Convert the SOURCE ANSWER below into the proof-atom YAML format.
 
-    Return only valid YAML. Do not use Markdown fences. Do not add commentary.
+    CRITICAL OUTPUT RULES:
+    - Return YAML only.
+    - The first non-empty line must be exactly:
+      subquestions:
+    - Do not use Markdown fences.
+    - Do not write explanations, titles, name, description, version, parameters,
+      scenarios, or any generic benchmark configuration.
+    - Do not solve the exercise again. Only structure the SOURCE ANSWER.
+    - Do not include fields other than subquestions, atoms, preconditions,
+      arguments, outcomes, and optional strength.
 
-    Representation convention:
-    - The top-level YAML must contain:
-        subquestions: [...]
+    PROOF-ATOM YAML FORMAT:
+    - Top-level:
+        subquestions:
+        - atoms: ...
     - Each subquestion must be a mapping with:
         atoms: proof_structure
     - An atom is a mapping with:
@@ -52,46 +62,69 @@ prompts:
         arguments:
         - Calculation
       Do not copy the calculation itself into arguments.
-    - An atom always has one and only one arguments, or one arguments with multiple arguments: - Calculation, or only arguments: - Calculation.
-    - A Python list, serialized as a normal YAML sequence, represents an ordered list.
-    - A Python tuple, serialized using PyYAML's !!python/tuple tag, represents an unordered mathematical set.
+    - An atom should usually have exactly one argument string. If the argument is
+      mainly computation, use exactly Calculation.
+    - A normal YAML sequence represents an ordered proof list.
+    - PyYAML's !!python/tuple tag represents an unordered mathematical set.
     - Tuple order is only for deterministic serialization; it is not mathematical meaning.
     - Use !!python/tuple for alternative unordered proof branches or unordered groups of atoms.
     - Preserve LaTeX and mathematical symbols in strings.
     - Do not invent proof facts not present in the source answer.
 
-    Few-shot example 1, one ordered list of atoms:
-    Source answer:
-    YAML:
+    EXAMPLE 1:
+    SOURCE ANSWER:
+
+    Question 1:
+    Prove continuity.
+
+    Answer:
+    By the Brownian continuity theorem, X is continuous.
+
+    YAML OUTPUT:
     subquestions:
     - atoms:
       - preconditions:
         - Brownian continuity theorem
         arguments:
-        - use the Brownian continuity theorem
+        - By the Brownian continuity theorem
         outcomes:
         - X is continuous
 
-    Few-shot example 2, unordered alternatives represented by a tuple:
-    Source answer:
+    EXAMPLE 2:
+    SOURCE ANSWER:
+
+    Question 1:
+    Compute a variance.
+
+    Answer:
+    Either use Itô isometry, or compute the covariance directly. In both cases the variance is \(t\).
+
     YAML:
-    subquestions: 
+    subquestions:
     - atoms: !!python/tuple
       - preconditions:
         - Itô isometry applies
         arguments:
         - use Itô isometry
         outcomes:
-        - the variance is t
+        - the variance is \(t\)
       - preconditions: []
         arguments:
         - Calculation
         outcomes:
-        - the variance is t
+        - the variance is \(t\)
 
-    Few-shot example 3, a set containing an ordered list:
-    Source answer:
-    YAML:
+    EXAMPLE 3:
+    SOURCE ANSWER:
+
+    Question 1:
+    Show Brownian motion.
+
+    Answer:
+    One route is first prove Gaussianity, then prove covariance. Another route is use the characterization theorem directly.
+
+    YAML OUTPUT:
+    subquestions:
     - atoms: !!python/tuple
       - - preconditions: []
           arguments:
@@ -110,7 +143,7 @@ prompts:
         outcomes:
         - the process is Brownian motion
 
-    Metadata:
+    CURRENT METADATA:
     pc: $pc
     exercise: $exercise
     language: $language
@@ -119,25 +152,28 @@ prompts:
     call1_model: $model1
     call1_output_mode: $call1_output_mode
 
-    Source answer to convert:
+    SOURCE ANSWER:
     $source_answer
 
-  # Need to take a look later
+    YAML OUTPUT:
+
   repair: |
-    The previous response was not valid benchmark YAML or did not match the
-    required structure.
+    TASK: Repair the previous response into the proof-atom YAML format.
 
     Error:
     $error_message
 
-    Repair the response. Return only valid YAML, with no Markdown fences and no
-    commentary. Preserve the benchmark conventions:
-    - top-level subquestions: [...]
-    - atoms are mappings with preconditions, arguments, outcomes
-    - ordered proof lists are normal YAML sequences
-    - unordered mathematical sets use !!python/tuple
+    CRITICAL OUTPUT RULES:
+    - Return YAML only.
+    - The first non-empty line must be exactly:
+      subquestions:
+    - Do not use Markdown fences.
+    - Do not write explanations, titles, name, description, version, parameters,
+      scenarios, or generic benchmark configuration.
+    - Each atom must have preconditions, arguments, and outcomes.
+    - Use !!python/tuple only for unordered mathematical sets.
 
-    Previous response:
+    Previous response and original task:
     $raw_response
 
 conversion:

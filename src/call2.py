@@ -275,6 +275,14 @@ def parse_yaml_response(raw_response: str) -> tuple[dict | None, str | None]:
 
 
 def validate_converted_exercise(data: dict) -> tuple[dict | None, str | None]:
+    forbidden_keys = {"name", "description", "version", "parameters", "scenarios"}
+    present_forbidden_keys = sorted(forbidden_keys & set(data))
+    if present_forbidden_keys:
+        return (
+            None,
+            "Converted YAML looks like a generic benchmark configuration; "
+            f"forbidden top-level key(s): {', '.join(present_forbidden_keys)}.",
+        )
     if "subquestions" not in data:
         return None, "Converted YAML must contain a top-level 'subquestions' key."
     if not isinstance(data["subquestions"], list):
@@ -310,6 +318,11 @@ def raw_output_path(parsed_output_path: Path) -> Path:
     return parsed_output_path.with_suffix(".raw.txt")
 
 
+def prompt_output_path(parsed_output_path: Path) -> Path:
+    """Return sidecar path for the prompt sent to the model."""
+    return parsed_output_path.with_suffix(".prompt.txt")
+
+
 def atomic_write_text(path: Path, content: str, overwrite: bool) -> bool:
     """Atomically save content. Return True if written."""
     if path.exists() and not overwrite:
@@ -329,11 +342,12 @@ def convert_with_repairs(
     endpoint: str,
     timeout: int,
     repair_attempts: int,
-) -> tuple[dict | None, str, str | None]:
+) -> tuple[dict | None, str, str | None, str]:
     """Convert a complete Call 1 answer to YAML, with optional YAML repair."""
+    conversion_prompt = build_conversion_prompt(prompts, metadata, source_answer)
     raw_response = ollama_generate(
         model,
-        build_conversion_prompt(prompts, metadata, source_answer),
+        conversion_prompt,
         endpoint,
         timeout,
     )
@@ -346,14 +360,18 @@ def convert_with_repairs(
         attempts += 1
         raw_response = ollama_generate(
             model,
-            build_repair_prompt(prompts, raw_response, error_message or "unknown error"),
+            build_repair_prompt(
+                prompts,
+                f"Original task:\n{conversion_prompt}\n\nInvalid response:\n{raw_response}",
+                error_message or "unknown error",
+            ),
             endpoint,
             timeout,
         )
         parsed, error_message = parse_yaml_response(raw_response)
         if parsed is not None:
             parsed, error_message = validate_converted_exercise(parsed)
-    return parsed, raw_response, error_message
+    return parsed, raw_response, error_message, conversion_prompt
 
 
 def run_call2(config: dict) -> None:
@@ -362,6 +380,7 @@ def run_call2(config: dict) -> None:
     prompts = require_prompt_templates(config)
     overwrite = get_nested(config, ["output", "overwrite_existing"], False)
     save_raw = get_nested(config, ["output", "save_raw_response"], True)
+    save_prompt = get_nested(config, ["output", "save_prompt"], True)
     endpoint = get_nested(config, ["ollama", "endpoint"], "http://localhost:11434/api/generate")
     timeout = get_nested(config, ["ollama", "timeout_seconds"], 600)
     max_retries = get_nested(config, ["execution", "max_retries"], 1)
@@ -400,11 +419,12 @@ def run_call2(config: dict) -> None:
                 parsed = None
                 raw_response = ""
                 error_message = None
+                conversion_prompt = ""
                 for attempt in range(1, max_retries + 1):
                     try:
                         if max_retries > 1:
                             progress(f"{job_label}: Ollama attempt {attempt}/{max_retries}")
-                        parsed, raw_response, error_message = convert_with_repairs(
+                        parsed, raw_response, error_message, conversion_prompt = convert_with_repairs(
                             model,
                             prompts,
                             item,
@@ -422,6 +442,8 @@ def run_call2(config: dict) -> None:
 
                 if save_raw:
                     atomic_write_text(raw_output_path(out_path), raw_response, overwrite=True)
+                if save_prompt:
+                    atomic_write_text(prompt_output_path(out_path), conversion_prompt, overwrite=True)
 
                 if parsed is None:
                     failed += 1
