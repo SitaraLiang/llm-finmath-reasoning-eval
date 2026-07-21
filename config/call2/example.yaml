@@ -1,0 +1,161 @@
+experiment:
+  name: "financial_math_call2_v1"
+  version: 1
+  seed: 42
+
+input:
+  root_directory: "outputs/call1"
+
+  filters:
+    output_modes:
+      - "plain_text"
+
+    models:
+      - "tinyllama"
+
+    languages:
+      - "en"
+
+    variations:
+      - "baseline"
+
+    # Leave empty or omit to accept every prompt type found in the Call 1 file.
+    prompt_types:
+      - "strictly_sequential"
+
+output:
+  root_directory: "outputs/call2"
+  directory_template: "{model1}/{language}/{variation}"
+  filename_template: "pc{pc}_q{exercise}_{model2}.yaml"
+  overwrite_existing: false
+  save_raw_response: true
+
+prompts:
+  conversion: |
+    You are converting a model's natural-language mathematical solution into the
+    benchmark's structured YAML representation.
+
+    Return only valid YAML. Do not use Markdown fences. Do not add commentary.
+
+    Representation convention:
+    - The top-level YAML must contain:
+        subquestions: [...]
+    - Each subquestion must be a mapping with:
+        atoms: proof_structure
+    - An atom is a mapping with:
+        preconditions: ordered list of strings
+        arguments: ordered list of strings
+        outcomes: ordered list of strings
+    - Use preconditions: [] when no preconditions are stated.
+    - Use outcomes: [] only if no outcome is stated.
+    - If the source answer performs a calculation, represent that argument as:
+        arguments:
+        - Calculation
+      Do not copy the calculation itself into arguments.
+    - An atom always has one and only one arguments, or one arguments with multiple arguments: - Calculation, or only arguments: - Calculation.
+    - A Python list, serialized as a normal YAML sequence, represents an ordered list.
+    - A Python tuple, serialized using PyYAML's !!python/tuple tag, represents an unordered mathematical set.
+    - Tuple order is only for deterministic serialization; it is not mathematical meaning.
+    - Use !!python/tuple for alternative unordered proof branches or unordered groups of atoms.
+    - Preserve LaTeX and mathematical symbols in strings.
+    - Do not invent proof facts not present in the source answer.
+
+    Few-shot example 1, one ordered list of atoms:
+    Source answer:
+    YAML:
+    subquestions:
+    - atoms:
+      - preconditions:
+        - Brownian continuity theorem
+        arguments:
+        - use the Brownian continuity theorem
+        outcomes:
+        - X is continuous
+
+    Few-shot example 2, unordered alternatives represented by a tuple:
+    Source answer:
+    YAML:
+    subquestions: 
+    - atoms: !!python/tuple
+      - preconditions:
+        - Itô isometry applies
+        arguments:
+        - use Itô isometry
+        outcomes:
+        - the variance is t
+      - preconditions: []
+        arguments:
+        - Calculation
+        outcomes:
+        - the variance is t
+
+    Few-shot example 3, a set containing an ordered list:
+    Source answer:
+    YAML:
+    - atoms: !!python/tuple
+      - - preconditions: []
+          arguments:
+          - prove Gaussianity
+          outcomes:
+          - the process is Gaussian
+        - preconditions: []
+          arguments:
+          - prove covariance
+          outcomes:
+          - the covariance is correct
+      - preconditions:
+        - characterization theorem
+        arguments:
+        - use the characterization theorem directly
+        outcomes:
+        - the process is Brownian motion
+
+    Metadata:
+    pc: $pc
+    exercise: $exercise
+    language: $language
+    variation: $variation
+    prompt_type: $prompt_type
+    call1_model: $model1
+    call1_output_mode: $call1_output_mode
+
+    Source answer to convert:
+    $source_answer
+
+  # Need to take a look later
+  repair: |
+    The previous response was not valid benchmark YAML or did not match the
+    required structure.
+
+    Error:
+    $error_message
+
+    Repair the response. Return only valid YAML, with no Markdown fences and no
+    commentary. Preserve the benchmark conventions:
+    - top-level subquestions: [...]
+    - atoms are mappings with preconditions, arguments, outcomes
+    - ordered proof lists are normal YAML sequences
+    - unordered mathematical sets use !!python/tuple
+
+    Previous response:
+    $raw_response
+
+conversion:
+  repair:
+    max_attempts: 1
+
+ollama:
+  endpoint: "http://localhost:11434/api/generate"
+  timeout_seconds: 600
+
+models:
+  - id: "tinyllama"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      temperature: 0.0
+      max_output_tokens: 3000
+
+execution:
+  max_retries: 3
+  retry_delay_seconds: 5
