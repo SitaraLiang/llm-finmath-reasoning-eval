@@ -16,6 +16,12 @@ CANONICAL_PROMPT_TYPES = {
     "ground_truth_forcing",
     "self_history",
 }
+PROMPT_TYPE_ABBREVIATIONS = {
+    "strictly_sequential": "seq",
+    "prompt_accumulation": "acc",
+    "ground_truth_forcing": "gtf",
+    "self_history": "self",
+}
 
 
 def load_config(config_path: Path) -> dict:
@@ -185,11 +191,14 @@ def ensure_no_output_collisions(config: dict, prompt_types: list[str]) -> None:
     filename_template = output_config.get(
         "filename_template", "pc{pc}_q{exercise}{suffix}"
     )
-    if "{prompt_type}" not in directory_template and "{prompt_type}" not in filename_template:
+    prompt_tokens = {"{prompt_type}", "{prompt_type_abbrev}"}
+    templates = f"{directory_template}/{filename_template}"
+    if not any(token in templates for token in prompt_tokens):
         raise SystemExit(
             "Error: Multiple prompt_types are configured, but output.directory_template "
-            "and output.filename_template do not include {prompt_type}. Add {prompt_type} "
-            "to one template, or run one prompt_type at a time."
+            "and output.filename_template do not include {prompt_type} or "
+            "{prompt_type_abbrev}. Add one of them to a template, or run one "
+            "prompt_type at a time."
         )
 
 
@@ -333,10 +342,10 @@ def ollama_generate(model: dict, prompt: str, endpoint: str, timeout: int) -> st
         "model": model["id"],
         "prompt": prompt,
         "stream": False,
-        "options": {
-            "temperature": parameters.get("temperature", 0.0),
-        },
+        "options": {},
     }
+    if "temperature" in parameters:
+        payload["options"]["temperature"] = parameters["temperature"]
     if "max_output_tokens" in parameters:
         payload["options"]["num_predict"] = parameters["max_output_tokens"]
 
@@ -353,7 +362,14 @@ def ollama_generate(model: dict, prompt: str, endpoint: str, timeout: int) -> st
     except error.URLError as exc:
         raise RuntimeError(f"Ollama request failed for model '{model['id']}': {exc}") from exc
 
-    return result.get("response", "")
+    answer = result.get("response", "")
+    if not answer.strip():
+        done_reason = result.get("done_reason", "unknown")
+        raise RuntimeError(
+            f"Ollama returned an empty response for model '{model['id']}' "
+            f"(done_reason={done_reason})."
+        )
+    return answer
 
 
 def output_path(
@@ -387,6 +403,7 @@ def output_path(
         "pc": pc,
         "exercise": exercise,
         "prompt_type": prompt_type,
+        "prompt_type_abbrev": PROMPT_TYPE_ABBREVIATIONS[prompt_type],
         "suffix": suffix,
     }
     return root / directory_template.format(**values) / filename_template.format(**values)
@@ -473,6 +490,10 @@ def generate_complete_exercise_answers(
                         f"Ollama attempt {attempt}/{max_retries}"
                     )
                 answer = ollama_generate(model, prompt, endpoint, timeout)
+                progress(
+                    f"{progress_prefix} subquestion {sub_index}/{len(subquestions)}: "
+                    f"received {len(answer.strip())} character(s)"
+                )
                 break
             except RuntimeError:
                 if attempt == max_retries:

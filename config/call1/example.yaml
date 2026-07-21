@@ -21,9 +21,9 @@ input:
 
     prompt_types:
       - "strictly_sequential"
-      # - "prompt_accumulation"
-      # - "ground_truth_forcing"
-      # - "self_history"
+      - "prompt_accumulation"
+      - "ground_truth_forcing"
+      - "self_history"
 
 output_modes:
   - "plain_text"
@@ -84,7 +84,7 @@ prompts:
 output:
   root_directory: "outputs/call1"
   directory_template: "{mode}/{model}/{language}/{variation}"
-  filename_template: "pc{pc}_q{exercise}{suffix}"
+  filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}{suffix}"
   overwrite_existing: false
 
 ollama:
@@ -92,13 +92,20 @@ ollama:
   timeout_seconds: 600
 
 models:
+  # Small models
   - id: "tinyllama"
     provider: "ollama"
     enabled: true
     parameters:
-      temperature: 0.0
-      max_output_tokens: 2000
+      max_output_tokens: 3000
+
+  - id: "qwen3:0.6b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      temperature: 0.1
+      max_output_tokens: 3000
 
 execution:
-  max_retries: 3
+  max_retries: 5
   retry_delay_seconds: 5
