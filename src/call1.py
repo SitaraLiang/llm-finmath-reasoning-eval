@@ -448,6 +448,23 @@ def serialize_result(result: dict, output_mode: str) -> str:
     return serialize_plain_text_result(result)
 
 
+def write_error_report(config: dict, summary: dict, failed_jobs: list[dict]) -> None:
+    output_config = config.get("output", {})
+    root = project_path(output_config.get("root_directory", "outputs/call1"))
+    report_filename = output_config.get("error_report_filename", "error_files.yaml")
+    report_path = root / report_filename
+    if not failed_jobs:
+        if report_path.exists():
+            report_path.unlink()
+        return
+    report = {
+        "summary": summary,
+        "failed_jobs": failed_jobs,
+    }
+    atomic_write_text(report_path, dump_yaml(report), overwrite=True)
+    progress(f"Wrote error report: {report_path}")
+
+
 def generate_complete_exercise_answers(
     exercise_data: dict,
     exercise_path: Path,
@@ -541,6 +558,7 @@ def run_call1(config: dict) -> None:
     written = 0
     skipped = 0
     failed = 0
+    failed_jobs = []
     total_jobs = (
         len(inputs)
         * len(variations)
@@ -618,15 +636,44 @@ def run_call1(config: dict) -> None:
                                 progress(f"{job_label}: wrote {out_path}")
                         except RuntimeError as exc:
                             failed += 1
+                            failed_jobs.append(
+                                {
+                                    "exercise": f"pc{item['pc']}_q{item['exercise']}",
+                                    "model": model["id"],
+                                    "language": item["language"],
+                                    "variation": variation,
+                                    "prompt_type": prompt_type,
+                                    "output_mode": output_mode,
+                                    "error": str(exc),
+                                }
+                            )
                             print(f"Error: {exc}", file=sys.stderr)
                             progress(f"{job_label}: failed")
 
     progress("Call 1 complete.")
+    summary = {
+        "input_exercise_files": len(inputs),
+        "complete_exercise_jobs": total_jobs,
+        "complete_exercise_files_written": written,
+        "complete_exercise_files_skipped": skipped,
+        "complete_exercise_generations_failed": failed,
+    }
+    write_error_report(config, summary, failed_jobs)
     print(f"Input exercise files: {len(inputs)}")
     print(f"Complete exercise jobs: {total_jobs}")
     print(f"Complete exercise files written: {written}")
     print(f"Complete exercise files skipped: {skipped}")
     print(f"Complete exercise generations failed: {failed}")
+    if failed_jobs:
+        print("Failed jobs:")
+        for job in failed_jobs:
+            print(
+                "- "
+                f"{job['exercise']} | model={job['model']} | "
+                f"language={job['language']} | variation={job['variation']} | "
+                f"prompt={job['prompt_type']} | mode={job['output_mode']} | "
+                f"error={job['error']}"
+            )
 
 
 def build_parser() -> argparse.ArgumentParser:

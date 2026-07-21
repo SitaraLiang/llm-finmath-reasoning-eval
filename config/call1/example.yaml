@@ -85,6 +85,7 @@ output:
   root_directory: "outputs/call1"
   directory_template: "{mode}/{model}/{language}/{variation}"
   filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}{suffix}"
+  error_report_filename: "error_files.yaml"
   overwrite_existing: false
 
 ollama:
