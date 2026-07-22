@@ -59,7 +59,7 @@ python src/import.py --source ../overleaf/exercices_en_changed --destination dat
 Parse annotated LaTeX into ground-truth YAML:
 
 ```bash
-python src/parser.py --input data/raw_tex/en --output data/ground_truth/en
+python src/parser.py --input data/raw_tex --output data/ground_truth
 ```
 
 Run Call 1:

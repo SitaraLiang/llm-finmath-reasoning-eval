@@ -520,7 +520,7 @@ def parse_directory_to_yaml(input_dir: Path, output_dir: Path) -> None:
         print(f"Error: The input path '{input_dir}' is not a directory.", file=sys.stderr)
         sys.exit(1)
 
-    tex_files = sorted(input_dir.glob("*.tex"))
+    tex_files = sorted(input_dir.rglob("*.tex"))
     if not tex_files:
         print(
             f"Error: The input directory '{input_dir}' does not contain any .tex files.",
@@ -530,7 +530,8 @@ def parse_directory_to_yaml(input_dir: Path, output_dir: Path) -> None:
 
     output_dir.mkdir(parents=True, exist_ok=True)
     for input_path in tex_files:
-        output_path = output_dir / f"{input_path.stem}.yaml"
+        relative_input_path = input_path.relative_to(input_dir)
+        output_path = output_dir / relative_input_path.with_suffix(".yaml")
         parse_file_to_yaml(input_path, output_path)
 
     print("Parsing complete.")
@@ -556,8 +557,9 @@ if __name__ == "__main__":
         dest="input_path",
         type=Path,
         help=(
-            "Path to an input .tex file or to an input directory containing one "
-            ".tex file per exercise."
+            "Path to an input .tex file or to an input directory tree containing "
+            "one .tex file per exercise. Subdirectories are preserved under the "
+            "output directory."
         ),
         default=DEFAULT_INPUT_DIR,
     )
