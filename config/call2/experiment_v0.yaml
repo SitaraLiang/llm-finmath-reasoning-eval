@@ -34,7 +34,14 @@ output:
 
 prompts:
   conversion: |
-    TASK: Convert the SOURCE ANSWER below into the proof-atom YAML format.
+    TASK: Convert the SOURCE ANSWER below into the exact proof-atom YAML format.
+    Preserve mathematical formulas exactly as written when they appear in
+    preconditions or outcomes. Do not rewrite, simplify, or correct formulas.
+    Represent reasoning as atom mappings, ordered YAML lists, and unordered
+    mathematical sets using !!python/tuple. If a step is mainly a calculation,
+    write the argument exactly as:
+        arguments:
+        - Calculation
 
     CRITICAL OUTPUT RULES:
     - Return YAML only.
@@ -53,8 +60,9 @@ prompts:
     - Top-level:
         subquestions:
         - atoms: ...
-    - Each subquestion must be a mapping with:
-        atoms: proof_structure
+    - Each subquestion must be a mapping with an atoms field.
+    - The atoms field must contain an atom mapping, an ordered YAML list of atom
+      mappings, or a !!python/tuple containing atom mappings/lists.
     - An atom is a mapping with:
         preconditions: ordered list of strings
         arguments: ordered list of strings
@@ -189,7 +197,7 @@ prompts:
 
 conversion:
   repair:
-    max_attempts: 1
+    max_attempts: 3
 
 ollama:
   endpoint: "http://localhost:11434/api/generate"
@@ -225,5 +233,5 @@ models:
       max_output_tokens: 3000
 
 execution:
-  max_retries: 5
+  max_retries: 2
   retry_delay_seconds: 5
