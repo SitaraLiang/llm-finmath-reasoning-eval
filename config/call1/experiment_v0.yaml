@@ -128,14 +128,14 @@ models:
   # Medium models
   - id: "llama3.1:8b"
     provider: "ollama"
-    enabled: false
+    enabled: true
     parameters:
       temperature: 0.1
       max_output_tokens: 3000
 
   - id: "deepseek-r1:7b"
     provider: "ollama"
-    enabled: false
+    enabled: true
     parameters:
       temperature: 0.1
       max_output_tokens: 3000
