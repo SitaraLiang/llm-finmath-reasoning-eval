@@ -10,6 +10,16 @@ from urllib import error, request
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = PROJECT_ROOT / "config" / "call2" / "example.yaml"
+PROMPT_TYPE_ABBREVIATIONS = {
+    "strictly_sequential": "seq",
+    "prompt_accumulation": "acc",
+    "ground_truth_forcing": "gtf",
+    "self_history": "self",
+}
+ABBREVIATION_TO_PROMPT_TYPE = {
+    abbreviation: prompt_type
+    for prompt_type, abbreviation in PROMPT_TYPE_ABBREVIATIONS.items()
+}
 
 
 def load_config(config_path: Path) -> dict:
@@ -62,22 +72,49 @@ def sanitize_path_component(value: str) -> str:
     return re.sub(r"[\/\\:\s]+", "-", value).strip("-")
 
 
+def infer_call1_output_mode(input_root: Path, suffix: str) -> str:
+    if input_root.name in {"plain_text", "native_yaml"}:
+        return input_root.name
+    if suffix.lower() in {".yaml", ".yml"}:
+        return "native_yaml"
+    return "plain_text"
+
+
 def parse_call1_path(path: Path, input_root: Path) -> dict | None:
-    """Parse outputs/call1/{mode}/{model1}/{lang}/{variation}/pc{n}_q{m}.{txt,yaml}."""
+    """Parse Call 1 complete-exercise output paths.
+
+    Supported roots:
+    - outputs/call1:
+      {mode}/{model1}/{language}/{variation}/pc{n}_q{m}.{txt,yaml}
+    - outputs/call1/plain_text or outputs/call1/native_yaml:
+      {model1}/{language}/{variation}/pc{n}_q{m}.{txt,yaml}
+    """
     try:
         relative = path.relative_to(input_root)
     except ValueError:
         return None
 
-    if len(relative.parts) < 5:
+    if len(relative.parts) < 4:
         return None
 
-    output_mode, model1, language, variation = relative.parts[:4]
-    match = re.fullmatch(r"pc(\d+)_q(\d+)", path.stem)
+    if relative.parts[0] in {"plain_text", "native_yaml"}:
+        if len(relative.parts) < 5:
+            return None
+        output_mode, model1, language, variation = relative.parts[:4]
+    else:
+        output_mode = infer_call1_output_mode(input_root, path.suffix)
+        model1, language, variation = relative.parts[:3]
+
+    match = re.fullmatch(r"pc(\d+)_q(\d+)(?:_([A-Za-z0-9-]+))?", path.stem)
     if not match:
         return None
 
+    prompt_type_abbrev = match.group(3) or ""
     prompt_type = parse_prompt_type_from_call1_output(path)
+    if prompt_type == "unknown" and prompt_type_abbrev:
+        prompt_type = ABBREVIATION_TO_PROMPT_TYPE.get(prompt_type_abbrev, prompt_type_abbrev)
+    if not prompt_type_abbrev and prompt_type in PROMPT_TYPE_ABBREVIATIONS:
+        prompt_type_abbrev = PROMPT_TYPE_ABBREVIATIONS[prompt_type]
     return {
         "call1_output_mode": output_mode,
         "model1": model1,
@@ -86,6 +123,7 @@ def parse_call1_path(path: Path, input_root: Path) -> dict | None:
         "pc": match.group(1),
         "exercise": match.group(2),
         "prompt_type": prompt_type,
+        "prompt_type_abbrev": prompt_type_abbrev or "unknown",
     }
 
 
@@ -224,10 +262,10 @@ def ollama_generate(model: dict, prompt: str, endpoint: str, timeout: int) -> st
         "model": model["id"],
         "prompt": prompt,
         "stream": False,
-        "options": {
-            "temperature": parameters.get("temperature", 0.0),
-        },
+        "options": {},
     }
+    if "temperature" in parameters:
+        payload["options"]["temperature"] = parameters["temperature"]
     if "max_output_tokens" in parameters:
         payload["options"]["num_predict"] = parameters["max_output_tokens"]
 
@@ -255,8 +293,38 @@ def strip_yaml_fence(raw_response: str) -> str:
     return text
 
 
+def quote_unquoted_brace_scalars(yaml_text: str) -> str:
+    """Quote YAML list scalars that begin with math braces.
+
+    Model outputs sometimes include lines like:
+        - {X_t = t W_{1/t}, t > 0}
+    YAML treats the leading "{" as a flow mapping, then fails on LaTeX braces.
+    This fallback preserves the text as a string while leaving real mappings and
+    tagged structures alone.
+    """
+    fixed_lines = []
+    pattern = re.compile(r"^(\s*-\s+)(\{.*)$")
+    for line in yaml_text.splitlines():
+        match = pattern.match(line)
+        if not match:
+            fixed_lines.append(line)
+            continue
+        prefix, value = match.groups()
+        if re.match(r"^\{\s*['\"]?[\w-]+['\"]?\s*:", value):
+            fixed_lines.append(line)
+            continue
+        escaped = value.replace("\\", "\\\\").replace('"', '\\"')
+        fixed_lines.append(f'{prefix}"{escaped}"')
+    return "\n".join(fixed_lines)
+
+
+def normalize_python_tuple_tags(yaml_text: str) -> str:
+    """Accept the common model typo !python/tuple as !!python/tuple."""
+    return yaml_text.replace("!python/tuple", "!!python/tuple")
+
+
 def parse_yaml_response(raw_response: str) -> tuple[dict | None, str | None]:
-    yaml_text = strip_yaml_fence(raw_response)
+    yaml_text = normalize_python_tuple_tags(strip_yaml_fence(raw_response))
     try:
         import yaml
     except ImportError as exc:
@@ -266,9 +334,19 @@ def parse_yaml_response(raw_response: str) -> tuple[dict | None, str | None]:
         ) from exc
 
     try:
-        data = yaml.load(yaml_text, Loader=yaml.FullLoader)
+        documents = list(yaml.load_all(yaml_text, Loader=yaml.FullLoader))
     except yaml.YAMLError as exc:
-        return None, str(exc)
+        fixed_yaml_text = quote_unquoted_brace_scalars(yaml_text)
+        if fixed_yaml_text == yaml_text:
+            return None, str(exc)
+        try:
+            documents = list(yaml.load_all(fixed_yaml_text, Loader=yaml.FullLoader))
+        except yaml.YAMLError:
+            return None, str(exc)
+    non_empty_documents = [document for document in documents if document is not None]
+    if not non_empty_documents:
+        return None, "YAML response did not contain any non-empty document."
+    data = non_empty_documents[0]
     if not isinstance(data, dict):
         return None, "Top-level YAML value must be a mapping."
     return data, None
@@ -292,7 +370,64 @@ def validate_converted_exercise(data: dict) -> tuple[dict | None, str | None]:
             return None, f"subquestions[{index}] must be a mapping."
         if "atoms" not in subquestion:
             return None, f"subquestions[{index}] must contain an 'atoms' key."
+        error_message = validate_atom_container(
+            subquestion["atoms"],
+            f"subquestions[{index}].atoms",
+        )
+        if error_message:
+            return None, error_message
     return data, None
+
+
+def validate_string_list(value, location: str) -> str | None:
+    if not isinstance(value, list):
+        return f"{location} must be a list of strings."
+    for index, item in enumerate(value, start=1):
+        if not isinstance(item, str):
+            return f"{location}[{index}] must be a string."
+    return None
+
+
+def validate_atom(value, location: str) -> str | None:
+    if not isinstance(value, dict):
+        return f"{location} must be an atom mapping, list, or !!python/tuple."
+
+    required_keys = ("preconditions", "arguments", "outcomes")
+    missing_keys = [key for key in required_keys if key not in value]
+    if missing_keys:
+        return f"{location} is missing atom key(s): {', '.join(missing_keys)}."
+
+    allowed_keys = set(required_keys) | {"strength"}
+    unexpected_keys = sorted(set(value) - allowed_keys)
+    if unexpected_keys:
+        return f"{location} has unexpected key(s): {', '.join(unexpected_keys)}."
+
+    for key in required_keys:
+        error_message = validate_string_list(value[key], f"{location}.{key}")
+        if error_message:
+            return error_message
+    if not value["arguments"]:
+        return f"{location}.arguments must contain at least one argument."
+    if "strength" in value and not isinstance(value["strength"], (int, float)):
+        return f"{location}.strength must be numeric."
+    return None
+
+
+def validate_atom_container(value, location: str) -> str | None:
+    """Validate nested proof structures.
+
+    Lists are ordered proof lists. Tuples are serialized as !!python/tuple and
+    are interpreted by the benchmark as unordered mathematical sets.
+    """
+    if isinstance(value, dict):
+        return validate_atom(value, location)
+    if not isinstance(value, (list, tuple)):
+        return f"{location} must be an atom mapping, list, or !!python/tuple."
+    for index, item in enumerate(value, start=1):
+        error_message = validate_atom_container(item, f"{location}[{index}]")
+        if error_message:
+            return error_message
+    return None
 
 
 def output_path(config: dict, metadata: dict, model2: str) -> Path:
@@ -300,10 +435,10 @@ def output_path(config: dict, metadata: dict, model2: str) -> Path:
     output_config = config.get("output", {})
     root = project_path(output_config.get("root_directory", "outputs/call2"))
     directory_template = output_config.get(
-        "directory_template", "{model1}/{language}/{variation}"
+        "directory_template", "{model1}/{model2}/{language}/{variation}"
     )
     filename_template = output_config.get(
-        "filename_template", "pc{pc}_q{exercise}_{model2}.yaml"
+        "filename_template", "pc{pc}_q{exercise}_{prompt_type_abbrev}.yaml"
     )
     values = {
         **metadata,
@@ -332,6 +467,23 @@ def atomic_write_text(path: Path, content: str, overwrite: bool) -> bool:
     tmp_path.write_text(content, encoding="utf-8")
     tmp_path.replace(path)
     return True
+
+
+def write_error_report(config: dict, summary: dict, failed_jobs: list[dict]) -> None:
+    output_config = config.get("output", {})
+    root = project_path(output_config.get("root_directory", "outputs/call2"))
+    report_filename = output_config.get("error_report_filename", "error_files.yaml")
+    report_path = root / report_filename
+    if not failed_jobs:
+        if report_path.exists():
+            report_path.unlink()
+        return
+    report = {
+        "summary": summary,
+        "failed_jobs": failed_jobs,
+    }
+    atomic_write_text(report_path, dump_yaml(report), overwrite=True)
+    progress(f"Wrote error report: {report_path}")
 
 
 def convert_with_repairs(
@@ -390,6 +542,7 @@ def run_call2(config: dict) -> None:
     written = 0
     skipped = 0
     failed = 0
+    failed_jobs = []
     total_jobs = len(inputs) * len(models)
     current_job = 0
 
@@ -447,7 +600,25 @@ def run_call2(config: dict) -> None:
 
                 if parsed is None:
                     failed += 1
-                    print(f"Error: Could not parse YAML for {item['path']}: {error_message}", file=sys.stderr)
+                    failed_jobs.append(
+                        {
+                            "exercise": f"pc{item['pc']}_q{item['exercise']}",
+                            "call1_model": item["model1"],
+                            "call2_model": model["id"],
+                            "language": item["language"],
+                            "variation": item["variation"],
+                            "prompt_type": item["prompt_type"],
+                            "call1_output_mode": item["call1_output_mode"],
+                            "call1_path": str(item["path"]),
+                            "output_path": str(out_path),
+                            "error": error_message or "unknown YAML validation error",
+                        }
+                    )
+                    print(
+                        f"Error: Could not parse/validate Call 2 YAML generated from "
+                        f"{item['path']}: {error_message}",
+                        file=sys.stderr,
+                    )
                     progress(f"{job_label}: failed YAML validation")
                     continue
 
@@ -467,15 +638,47 @@ def run_call2(config: dict) -> None:
                     progress(f"{job_label}: wrote {out_path}")
             except RuntimeError as exc:
                 failed += 1
+                failed_jobs.append(
+                    {
+                        "exercise": f"pc{item['pc']}_q{item['exercise']}",
+                        "call1_model": item["model1"],
+                        "call2_model": model["id"],
+                        "language": item["language"],
+                        "variation": item["variation"],
+                        "prompt_type": item["prompt_type"],
+                        "call1_output_mode": item["call1_output_mode"],
+                        "call1_path": str(item["path"]),
+                        "output_path": str(out_path),
+                        "error": str(exc),
+                    }
+                )
                 print(f"Error: {exc}", file=sys.stderr)
                 progress(f"{job_label}: failed")
 
     progress("Call 2 complete.")
+    summary = {
+        "call1_input_files": len(inputs),
+        "conversion_jobs": total_jobs,
+        "yaml_files_written": written,
+        "yaml_files_skipped": skipped,
+        "conversions_failed": failed,
+    }
+    write_error_report(config, summary, failed_jobs)
     print(f"Call 1 input files: {len(inputs)}")
     print(f"Conversion jobs: {total_jobs}")
     print(f"YAML files written: {written}")
     print(f"YAML files skipped: {skipped}")
     print(f"Conversions failed: {failed}")
+    if failed_jobs:
+        print("Failed jobs:")
+        for job in failed_jobs:
+            print(
+                "- "
+                f"{job['exercise']} | call1_model={job['call1_model']} | "
+                f"call2_model={job['call2_model']} | language={job['language']} | "
+                f"variation={job['variation']} | prompt={job['prompt_type']} | "
+                f"error={job['error']}"
+            )
 
 
 def build_parser() -> argparse.ArgumentParser:

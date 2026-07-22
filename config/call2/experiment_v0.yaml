@@ -1,0 +1,229 @@
+experiment:
+  name: "financial_math_call2_v1"
+  version: 1
+  seed: 42
+
+input:
+  root_directory: "outputs/call1/plain_text"
+
+  filters:
+    # Leave empty or omit to accept every Call 1 model found under
+    # outputs/call1/plain_text/{model}/{language}/{variation}/.
+    models: []
+
+    languages:
+      - "en"
+
+    variations:
+      - "baseline"
+
+    # Leave empty or omit to accept every prompt type found in the Call 1 file.
+    prompt_types:
+      - "strictly_sequential"
+      - "prompt_accumulation"
+      - "ground_truth_forcing"
+      - "self_history"
+
+output:
+  root_directory: "outputs/call2"
+  directory_template: "{model1}/{model2}/{language}/{variation}"
+  filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}.yaml"
+  overwrite_existing: true
+  save_raw_response: false
+  save_prompt: false
+
+prompts:
+  conversion: |
+    TASK: Convert the SOURCE ANSWER below into the proof-atom YAML format.
+
+    CRITICAL OUTPUT RULES:
+    - Return YAML only.
+    - Return exactly one YAML document.
+    - Do not use YAML document separators such as --- or ...
+    - The first non-empty line must be exactly:
+      subquestions:
+    - Do not use Markdown fences.
+    - Do not write explanations, titles, name, description, version, parameters,
+      scenarios, or any generic benchmark configuration.
+    - Do not solve the exercise again. Only structure the SOURCE ANSWER.
+    - Do not include fields other than subquestions, atoms, preconditions,
+      arguments, outcomes, and optional strength.
+
+    PROOF-ATOM YAML FORMAT:
+    - Top-level:
+        subquestions:
+        - atoms: ...
+    - Each subquestion must be a mapping with:
+        atoms: proof_structure
+    - An atom is a mapping with:
+        preconditions: ordered list of strings
+        arguments: ordered list of strings
+        outcomes: ordered list of strings
+    - Use preconditions: [] when no preconditions are stated.
+    - Use outcomes: [] only if no outcome is stated.
+    - If the source answer performs a calculation, represent that argument as:
+        arguments:
+        - Calculation
+      Do not copy the calculation itself into arguments.
+    - An atom should usually have exactly one argument string. If the argument is
+      mainly computation, use exactly Calculation.
+    - A normal YAML sequence represents an ordered proof list.
+    - PyYAML's !!python/tuple tag represents an unordered mathematical set.
+    - Tuple order is only for deterministic serialization; it is not mathematical meaning.
+    - Use !!python/tuple for alternative unordered proof branches or unordered groups of atoms.
+    - Preserve LaTeX and mathematical symbols in strings.
+    - Quote any string containing braces, brackets, colons, commas, backslashes,
+      or LaTeX expressions. Example:
+        - "{X_t = t W_{1/t}, t > 0, X_0 = 0}"
+      Do not leave such strings unquoted.
+    - Do not invent proof facts not present in the source answer.
+
+    EXAMPLE 1:
+    SOURCE ANSWER:
+
+    Question 1:
+    Prove continuity.
+
+    Answer:
+    By the Brownian continuity theorem, X is continuous.
+
+    YAML OUTPUT:
+    subquestions:
+    - atoms:
+      - preconditions:
+        - Brownian continuity theorem
+        arguments:
+        - By the Brownian continuity theorem
+        outcomes:
+        - X is continuous
+
+    EXAMPLE 2:
+    SOURCE ANSWER:
+
+    Question 1:
+    Compute a variance.
+
+    Answer:
+    Either use Itô isometry, or compute the covariance directly. In both cases the variance is \(t\).
+
+    YAML:
+    subquestions:
+    - atoms: !!python/tuple
+      - preconditions:
+        - Itô isometry applies
+        arguments:
+        - use Itô isometry
+        outcomes:
+        - the variance is \(t\)
+      - preconditions: []
+        arguments:
+        - Calculation
+        outcomes:
+        - the variance is \(t\)
+
+    EXAMPLE 3:
+    SOURCE ANSWER:
+
+    Question 1:
+    Show Brownian motion.
+
+    Answer:
+    One route is first prove Gaussianity, then prove covariance. Another route is use the characterization theorem directly.
+
+    YAML OUTPUT:
+    subquestions:
+    - atoms: !!python/tuple
+      - - preconditions: []
+          arguments:
+          - prove Gaussianity
+          outcomes:
+          - the process is Gaussian
+        - preconditions: []
+          arguments:
+          - prove covariance
+          outcomes:
+          - the covariance is correct
+      - preconditions:
+        - characterization theorem
+        arguments:
+        - use the characterization theorem directly
+        outcomes:
+        - the process is Brownian motion
+
+    CURRENT METADATA:
+    pc: $pc
+    exercise: $exercise
+    language: $language
+    variation: $variation
+    prompt_type: $prompt_type
+    call1_model: $model1
+    call1_output_mode: $call1_output_mode
+
+    SOURCE ANSWER:
+    $source_answer
+
+    YAML OUTPUT:
+
+  repair: |
+    TASK: Repair the previous response into the proof-atom YAML format.
+
+    Error:
+    $error_message
+
+    CRITICAL OUTPUT RULES:
+    - Return YAML only.
+    - Return exactly one YAML document.
+    - Do not use YAML document separators such as --- or ...
+    - The first non-empty line must be exactly:
+      subquestions:
+    - Do not use Markdown fences.
+    - Do not write explanations, titles, name, description, version, parameters,
+      scenarios, or generic benchmark configuration.
+    - Each atom must have preconditions, arguments, and outcomes.
+    - Use !!python/tuple only for unordered mathematical sets.
+    - Quote strings containing braces, brackets, colons, commas, backslashes, or
+      LaTeX expressions.
+
+    Previous response and original task:
+    $raw_response
+
+conversion:
+  repair:
+    max_attempts: 1
+
+ollama:
+  endpoint: "http://localhost:11434/api/generate"
+  timeout_seconds: 600
+
+models:
+  - id: "qwen3:0.6b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      temperature: 0.0
+      max_output_tokens: 6000
+
+  - id: "deepseek-r1:1.5b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      temperature: 0.0
+      max_output_tokens: 6000
+
+  - id: "mistral:7b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      temperature: 0.0
+      max_output_tokens: 3000
+
+  - id: "llama3.1:8b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      temperature: 0.0
+      max_output_tokens: 3000
+
+execution:
+  max_retries: 5
+  retry_delay_seconds: 5
