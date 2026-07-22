@@ -28,7 +28,7 @@ output:
   root_directory: "outputs/call2"
   directory_template: "{model1}/{model2}/{language}/{variation}"
   filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}.yaml"
-  overwrite_existing: true
+  overwrite_existing: false
   save_raw_response: false
   save_prompt: false
 
