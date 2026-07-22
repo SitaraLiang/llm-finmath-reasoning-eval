@@ -23,6 +23,10 @@ A lightweight framework for evaluating how language models solve quantitative fi
    - Outputs are stored under `outputs/call2/{call1_model}/{call2_model}/{lang}/{variation}/`.
    - Failed conversions are summarized in `outputs/call2/error_files.yaml`.
 
+5. **Evaluation**
+
+To be continued.
+
 ## Setup
 
 ```bash
