@@ -302,17 +302,19 @@ def strip_yaml_fence(raw_response: str) -> str:
     return text
 
 
-def quote_unquoted_brace_scalars(yaml_text: str) -> str:
-    """Quote YAML list scalars that begin with math braces.
+def quote_problematic_list_scalars(yaml_text: str) -> str:
+    """Quote model-produced YAML list scalars that YAML may misread.
 
     Model outputs sometimes include lines like:
         - {X_t = t W_{1/t}, t > 0}
     YAML treats the leading "{" as a flow mapping, then fails on LaTeX braces.
-    This fallback preserves the text as a string while leaving real mappings and
-    tagged structures alone.
+    They may also include Markdown headings like:
+        - **Starts at Zero:**
+    YAML treats the leading "*" as an alias marker. This fallback preserves the
+    text as a string while leaving real mappings and tagged structures alone.
     """
     fixed_lines = []
-    pattern = re.compile(r"^(\s*-\s+)(\{.*)$")
+    pattern = re.compile(r"^(\s*-\s+)(\{.*|\*\*.*)$")
     for line in yaml_text.splitlines():
         match = pattern.match(line)
         if not match:
@@ -327,14 +329,37 @@ def quote_unquoted_brace_scalars(yaml_text: str) -> str:
     return "\n".join(fixed_lines)
 
 
+def single_quote_double_quoted_latex_scalars(yaml_text: str) -> str:
+    """Avoid YAML interpreting LaTeX backslashes as double-quote escapes."""
+    fixed_lines = []
+    pattern = re.compile(r'^(\s*-\s+)"(.*)"(\s*)$')
+    for line in yaml_text.splitlines():
+        match = pattern.match(line)
+        if not match:
+            fixed_lines.append(line)
+            continue
+        prefix, value, suffix = match.groups()
+        if "\\" not in value:
+            fixed_lines.append(line)
+            continue
+        escaped = value.replace("'", "''")
+        fixed_lines.append(f"{prefix}'{escaped}'{suffix}")
+    return "\n".join(fixed_lines)
+
+
 def normalize_python_tuple_tags(yaml_text: str) -> str:
     """Accept common model typos for !!python/tuple."""
-    yaml_text = yaml_text.replace("!!!python/tuple", "!!python/tuple")
-    return yaml_text.replace("!python/tuple", "!!python/tuple")
+    return re.sub(r"!+python/tuple", "!!python/tuple", yaml_text)
+
+
+def normalize_yaml_response_text(yaml_text: str) -> str:
+    yaml_text = normalize_python_tuple_tags(yaml_text)
+    yaml_text = single_quote_double_quoted_latex_scalars(yaml_text)
+    return quote_problematic_list_scalars(yaml_text)
 
 
 def parse_yaml_response(raw_response: str) -> tuple[dict | None, str | None]:
-    yaml_text = normalize_python_tuple_tags(strip_yaml_fence(raw_response))
+    yaml_text = normalize_yaml_response_text(strip_yaml_fence(raw_response))
     try:
         import yaml
     except ImportError as exc:
@@ -346,7 +371,7 @@ def parse_yaml_response(raw_response: str) -> tuple[dict | None, str | None]:
     try:
         documents = list(yaml.load_all(yaml_text, Loader=yaml.FullLoader))
     except yaml.YAMLError as exc:
-        fixed_yaml_text = quote_unquoted_brace_scalars(yaml_text)
+        fixed_yaml_text = normalize_yaml_response_text(yaml_text)
         if fixed_yaml_text == yaml_text:
             return None, str(exc)
         try:

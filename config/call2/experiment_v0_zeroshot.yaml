@@ -1,5 +1,5 @@
 experiment:
-  name: "financial_math_call2_v1"
+  name: "financial_math_call2_zeroshot_v1"
   version: 1
   seed: 42
 
@@ -25,7 +25,7 @@ input:
       - "self_history"
 
 output:
-  root_directory: "outputs/call2"
+  root_directory: "outputs/call2_zeroshot"
   directory_template: "{model1}/{model2}/{language}/{variation}"
   filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}.yaml"
   overwrite_existing: false
@@ -100,96 +100,6 @@ prompts:
         - "{X_t = t W_{1/t}, t > 0, X_0 = 0}"
       Do not leave such strings unquoted.
     - Do not invent proof facts not present in the source answer.
-
-    EXAMPLE 1:
-    SOURCE ANSWER:
-
-    Question 1:
-    Prove continuity.
-
-    Answer:
-    By the Brownian continuity theorem, X is continuous.
-
-    Question 2:
-    Compute a variance.
-
-    Answer:
-    Either use Itô isometry, or compute the covariance directly. In both cases the variance is \(t\).
-
-    YAML OUTPUT:
-    subquestions:
-    - atoms:
-      - preconditions:
-        - Brownian continuity theorem
-        arguments:
-        - By the Brownian continuity theorem
-        outcomes:
-        - X is continuous
-    - atoms: !!python/tuple
-      - preconditions:
-        - Itô isometry applies
-        arguments:
-        - use Itô isometry
-        outcomes:
-        - the variance is \(t\)
-      - preconditions: []
-        arguments:
-        - Calculation
-        outcomes:
-        - the variance is \(t\)
-
-    EXAMPLE 2:
-    SOURCE ANSWER:
-
-    Question 1:
-    Compute a variance.
-
-    Answer:
-    Either use Itô isometry, or compute the covariance directly. In both cases the variance is \(t\).
-
-    YAML:
-    subquestions:
-    - atoms: !!python/tuple
-      - preconditions:
-        - Itô isometry applies
-        arguments:
-        - use Itô isometry
-        outcomes:
-        - the variance is \(t\)
-      - preconditions: []
-        arguments:
-        - Calculation
-        outcomes:
-        - the variance is \(t\)
-
-    EXAMPLE 3:
-    SOURCE ANSWER:
-
-    Question 1:
-    Show Brownian motion.
-
-    Answer:
-    One route is first prove Gaussianity, then prove covariance. Another route is use the characterization theorem directly.
-
-    YAML OUTPUT:
-    subquestions:
-    - atoms: !!python/tuple
-      - - preconditions: []
-          arguments:
-          - prove Gaussianity
-          outcomes:
-          - the process is Gaussian
-        - preconditions: []
-          arguments:
-          - prove covariance
-          outcomes:
-          - the covariance is correct
-      - preconditions:
-        - characterization theorem
-        arguments:
-        - use the characterization theorem directly
-        outcomes:
-        - the process is Brownian motion
 
     CURRENT METADATA:
     pc: $pc
