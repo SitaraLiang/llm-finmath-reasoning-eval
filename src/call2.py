@@ -2,6 +2,7 @@ import argparse
 import json
 from pathlib import Path
 import re
+import socket
 import sys
 import time
 from string import Template
@@ -279,6 +280,14 @@ def ollama_generate(model: dict, prompt: str, endpoint: str, timeout: int) -> st
     try:
         with request.urlopen(req, timeout=timeout) as response:
             result = json.loads(response.read().decode("utf-8"))
+    except TimeoutError as exc:
+        raise RuntimeError(
+            f"Ollama request timed out for model '{model['id']}' after {timeout}s."
+        ) from exc
+    except socket.timeout as exc:
+        raise RuntimeError(
+            f"Ollama request timed out for model '{model['id']}' after {timeout}s."
+        ) from exc
     except error.URLError as exc:
         raise RuntimeError(f"Ollama request failed for model '{model['id']}': {exc}") from exc
 
@@ -319,7 +328,8 @@ def quote_unquoted_brace_scalars(yaml_text: str) -> str:
 
 
 def normalize_python_tuple_tags(yaml_text: str) -> str:
-    """Accept the common model typo !python/tuple as !!python/tuple."""
+    """Accept common model typos for !!python/tuple."""
+    yaml_text = yaml_text.replace("!!!python/tuple", "!!python/tuple")
     return yaml_text.replace("!python/tuple", "!!python/tuple")
 
 
@@ -546,6 +556,15 @@ def run_call2(config: dict) -> None:
     total_jobs = len(inputs) * len(models)
     current_job = 0
 
+    def current_summary() -> dict:
+        return {
+            "call1_input_files": len(inputs),
+            "conversion_jobs": total_jobs,
+            "yaml_files_written": written,
+            "yaml_files_skipped": skipped,
+            "conversions_failed": failed,
+        }
+
     progress(
         "Call 2 starting: "
         f"{len(inputs)} Call 1 file(s), {len(models)} model(s), "
@@ -614,6 +633,7 @@ def run_call2(config: dict) -> None:
                             "error": error_message or "unknown YAML validation error",
                         }
                     )
+                    write_error_report(config, current_summary(), failed_jobs)
                     print(
                         f"Error: Could not parse/validate Call 2 YAML generated from "
                         f"{item['path']}: {error_message}",
@@ -652,18 +672,12 @@ def run_call2(config: dict) -> None:
                         "error": str(exc),
                     }
                 )
+                write_error_report(config, current_summary(), failed_jobs)
                 print(f"Error: {exc}", file=sys.stderr)
                 progress(f"{job_label}: failed")
 
     progress("Call 2 complete.")
-    summary = {
-        "call1_input_files": len(inputs),
-        "conversion_jobs": total_jobs,
-        "yaml_files_written": written,
-        "yaml_files_skipped": skipped,
-        "conversions_failed": failed,
-    }
-    write_error_report(config, summary, failed_jobs)
+    write_error_report(config, current_summary(), failed_jobs)
     print(f"Call 1 input files: {len(inputs)}")
     print(f"Conversion jobs: {total_jobs}")
     print(f"YAML files written: {written}")
