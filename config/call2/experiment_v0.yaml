@@ -20,16 +20,16 @@ input:
     # Leave empty or omit to accept every prompt type found in the Call 1 file.
     prompt_types:
       - "strictly_sequential"
-      - "prompt_accumulation"
-      - "ground_truth_forcing"
-      - "self_history"
+      #- "prompt_accumulation"
+      #- "ground_truth_forcing"
+      #- "self_history"
 
 output:
   root_directory: "outputs/call2"
   directory_template: "{model1}/{model2}/{language}/{variation}"
   filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}.yaml"
   overwrite_existing: false
-  save_raw_response: false
+  save_raw_response: true
   save_prompt: false
 
 prompts:

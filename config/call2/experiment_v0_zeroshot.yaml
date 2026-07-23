@@ -26,7 +26,7 @@ output:
   directory_template: "{model1}/{model2}/{language}/{variation}"
   filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}.yaml"
   overwrite_existing: false
-  save_raw_response: false
+  save_raw_response: true
   save_prompt: false
 
 prompts:
@@ -146,14 +146,14 @@ ollama:
 models:
   - id: "qwen3:0.6b"
     provider: "ollama"
-    enabled: false
+    enabled: true
     parameters:
       temperature: 0.0
       max_output_tokens: 6000
 
   - id: "deepseek-r1:1.5b"
     provider: "ollama"
-    enabled: false
+    enabled: true
     parameters:
       temperature: 0.0
       max_output_tokens: 6000
