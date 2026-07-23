@@ -239,14 +239,14 @@ ollama:
 models:
   - id: "qwen3:0.6b"
     provider: "ollama"
-    enabled: false
+    enabled: true
     parameters:
       temperature: 0.0
       max_output_tokens: 6000
 
   - id: "deepseek-r1:1.5b"
     provider: "ollama"
-    enabled: false
+    enabled: true
     parameters:
       temperature: 0.0
       max_output_tokens: 6000
