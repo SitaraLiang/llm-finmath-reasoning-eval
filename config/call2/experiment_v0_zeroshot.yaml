@@ -20,9 +20,6 @@ input:
     # Leave empty or omit to accept every prompt type found in the Call 1 file.
     prompt_types:
       - "strictly_sequential"
-      - "prompt_accumulation"
-      - "ground_truth_forcing"
-      - "self_history"
 
 output:
   root_directory: "outputs/call2_zeroshot"
