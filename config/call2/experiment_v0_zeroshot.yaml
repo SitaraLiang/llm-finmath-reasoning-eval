@@ -223,7 +223,7 @@ models:
 
   - id: "mistral:7b"
     provider: "ollama"
-    enabled: true
+    enabled: false
     parameters:
       temperature: 0.0
       max_output_tokens: 800
