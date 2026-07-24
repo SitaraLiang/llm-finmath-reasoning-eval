@@ -290,7 +290,7 @@ models:
     enabled: true
     parameters:
       temperature: 0.0
-      max_output_tokens: 1200
+      max_output_tokens: 800
 
   - id: "deepseek-r1:1.5b"
     provider: "ollama"
