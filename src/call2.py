@@ -387,7 +387,22 @@ def parse_yaml_response(raw_response: str) -> tuple[dict | None, str | None]:
     return data, None
 
 
-def validate_converted_exercise(data: dict) -> tuple[dict | None, str | None]:
+def expected_subquestion_count(source_answer) -> int | None:
+    """Infer how many subquestions the converted YAML should contain."""
+    if isinstance(source_answer, str):
+        answer_labels = re.findall(r"(?m)^Answer:\s*$", source_answer)
+        return len(answer_labels) or None
+    if isinstance(source_answer, dict):
+        subquestions = source_answer.get("subquestions")
+        if isinstance(subquestions, list):
+            return len(subquestions)
+    return None
+
+
+def validate_converted_exercise(
+    data: dict,
+    expected_subquestions: int | None = None,
+) -> tuple[dict | None, str | None]:
     forbidden_keys = {"name", "description", "version", "parameters", "scenarios"}
     present_forbidden_keys = sorted(forbidden_keys & set(data))
     if present_forbidden_keys:
@@ -400,6 +415,13 @@ def validate_converted_exercise(data: dict) -> tuple[dict | None, str | None]:
         return None, "Converted YAML must contain a top-level 'subquestions' key."
     if not isinstance(data["subquestions"], list):
         return None, "Top-level 'subquestions' value must be a list."
+    if expected_subquestions is not None and len(data["subquestions"]) != expected_subquestions:
+        return (
+            None,
+            f"Expected {expected_subquestions} subquestion(s), because the Call 1 "
+            f"source has {expected_subquestions} Answer block(s), but converted "
+            f"YAML has {len(data['subquestions'])}.",
+        )
     for index, subquestion in enumerate(data["subquestions"], start=1):
         if not isinstance(subquestion, dict):
             return None, f"subquestions[{index}] must be a mapping."
@@ -532,6 +554,7 @@ def convert_with_repairs(
 ) -> tuple[dict | None, str, str | None, str]:
     """Convert a complete Call 1 answer to YAML, with optional YAML repair."""
     conversion_prompt = build_conversion_prompt(prompts, metadata, source_answer)
+    expected_subquestions = expected_subquestion_count(source_answer)
     raw_response = ollama_generate(
         model,
         conversion_prompt,
@@ -540,7 +563,7 @@ def convert_with_repairs(
     )
     parsed, error_message = parse_yaml_response(raw_response)
     if parsed is not None:
-        parsed, error_message = validate_converted_exercise(parsed)
+        parsed, error_message = validate_converted_exercise(parsed, expected_subquestions)
 
     attempts = 0
     while parsed is None and attempts < repair_attempts:
@@ -557,7 +580,7 @@ def convert_with_repairs(
         )
         parsed, error_message = parse_yaml_response(raw_response)
         if parsed is not None:
-            parsed, error_message = validate_converted_exercise(parsed)
+            parsed, error_message = validate_converted_exercise(parsed, expected_subquestions)
     return parsed, raw_response, error_message, conversion_prompt
 
 
