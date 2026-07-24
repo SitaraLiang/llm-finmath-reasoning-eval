@@ -34,6 +34,7 @@ output:
 
 prompts:
   conversion: |
+    /no_think
     TASK: Convert the SOURCE ANSWER below into the exact proof-atom YAML format.
     Preserve mathematical formulas exactly as written when they appear in
     preconditions or outcomes. Do not rewrite, simplify, or correct formulas.
@@ -45,8 +46,9 @@ prompts:
 
     CRITICAL OUTPUT RULES:
     - Do not output thinking, reasoning traces, analysis, explanations, or notes.
-    - Return exactly one Markdown code block tagged yml.
-    - The response must start with ```yml and end with ```.
+    - Do not output text inside <think> tags.
+    - Return EXACTLY ONE Markdown code block tagged yml.
+    - The response MUST START with ```yml and END with ```.
     - Do not write any text before or after the code block.
     - Inside the code block, return exactly one YAML document.
     - Do not use YAML document separators such as --- or ...
@@ -68,18 +70,8 @@ prompts:
         Answer:
         ...
     - Convert only the text after each Answer: label.
-    - Each Answer: block corresponds to exactly one item (atoms) under subquestions.
-    - Number of atoms under subquestion must match number of Answer: blocks. For example:
-        Question 1:
-        ...
-        Answer:
-        ...
-        Answer:
-        ...
-      corresponds to:
-        subquestions:
-        - atoms: ...
-        - atoms: ...
+    - Each Answer: block should normally correspond to one item under subquestions.
+    - Do not split internal proof steps into extra subquestions. Put proof steps inside atoms.
     - Preserve the order of Answer: blocks.
     - Do not convert Question: text into atoms unless the same fact is repeated
       inside the corresponding Answer: block.
@@ -94,57 +86,60 @@ prompts:
       mappings, or a !!python/tuple containing atom mappings/lists.
     - An atom is a mapping with:
         preconditions: ordered list of strings
-        arguments: string or list of strings if the argument is mainly a calculation
+        arguments: ordered list of strings
         outcomes: ordered list of strings
       For example:
       atoms:
         - preconditions:
-            - "X is a martingale"
+            - ...
           arguments:
-            - "Apply Doob's optional stopping theorem to X at τ"
+            - ...
           outcomes:
-            - "E[X_τ] = E[X_0]"
+            - ...
         - preconditions:
-            - "X is a martingale"
+            - ...
+            - ...
           arguments:
-            - "Calculation"
+            - ...
           outcomes:
-            - "E[X_τ] = E[X_0]"
+            - ...
     - An atom can also be a !!python/tuple containing alternative unordered proof branches or unordered groups of atoms. For example:
       atoms: !!python/tuple
         - preconditions:
-            - "X is a martingale"
+            - ...
           arguments:
-            - "Apply Doob's optional stopping theorem to X at τ"
+            - ...
           outcomes:
-            - "E[X_τ] = E[X_0]"
+            - ...
         - preconditions:
-            - "X is a martingale"
+            - ...
           arguments:
-            - "Calculation"
+            - ...
           outcomes:
-            - "E[X_τ] = E[X_0]"
+            - ...
     - An atom can also be a list containing tuples or tuples containing lists.  
     - Use preconditions: [] when no preconditions are stated.
     - Use outcomes: [] only if no outcome is stated.
+    - Do not use [] for preconditions or outcomes when there are multiple items; use an ordered YAML list instead.
     - If the source answer performs a calculation, represent that argument as:
         arguments:
         - Calculation
       Do not copy the calculation itself into arguments.
-    - An atom should have EXACTLY ONE argument string. If the argument is
-      mainly computation, use 
+    - An atom should usually have exactly one argument string. If the argument is
+      mainly computation, use exactly:
         arguments:
         - Calculation
-    - The arguments only can be a list of strings if it contains an argument and a calculation:
+    - If an atom needs both a theorem/idea and a calculation, arguments may contain two strings:
         arguments:
         - argument string
         - Calculation
-        - ...
+        - Calculation
     - A normal YAML sequence represents an ordered proof list.
     - PyYAML's !!python/tuple tag represents an unordered mathematical set.
     - Tuple order is only for deterministic serialization; it is not mathematical meaning.
     - Use !!python/tuple for alternative unordered proof branches or unordered groups of atoms.
     - Preserve LaTeX and mathematical symbols in strings.
+
     - Quote any string containing braces, brackets, colons, commas, backslashes,
       or LaTeX expressions. Example:
         - "{X_t = t W_{1/t}, t > 0, X_0 = 0}"

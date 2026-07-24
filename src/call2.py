@@ -303,6 +303,9 @@ def strip_yaml_fence(raw_response: str) -> str:
     fenced = re.search(r"```\s*(.*?)```", text, re.DOTALL)
     if fenced:
         return fenced.group(1).strip()
+    opening_fence = re.search(r"```(?:yaml|yml)?\s*", text, re.IGNORECASE)
+    if opening_fence:
+        return text[opening_fence.end():].strip()
     return text
 
 

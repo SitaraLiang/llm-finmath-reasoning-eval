@@ -34,6 +34,7 @@ output:
 
 prompts:
   conversion: |
+    /no_think
     TASK: Convert the SOURCE ANSWER below into the exact proof-atom YAML format.
     Preserve mathematical formulas exactly as written when they appear in
     preconditions or outcomes. Do not rewrite, simplify, or correct formulas.
@@ -68,18 +69,8 @@ prompts:
         Answer:
         ...
     - Convert only the text after each Answer: label.
-    - Each Answer: block corresponds to exactly one item (atoms) under subquestions.
-    - Number of atoms under subquestion must match number of Answer: blocks. For example:
-        Question 1:
-        ...
-        Answer:
-        ...
-        Answer:
-        ...
-      corresponds to:
-        subquestions:
-        - atoms: ...
-        - atoms: ...
+    - Each Answer: block should normally correspond to one item under subquestions.
+    - Do not split internal proof steps into extra subquestions. Put proof steps inside atoms.
     - Preserve the order of Answer: blocks.
     - Do not convert Question: text into atoms unless the same fact is repeated
       inside the corresponding Answer: block.
@@ -94,7 +85,7 @@ prompts:
       mappings, or a !!python/tuple containing atom mappings/lists.
     - An atom is a mapping with:
         preconditions: ordered list of strings
-        arguments: string or list of strings if the argument is mainly a calculation
+        arguments: ordered list of strings
         outcomes: ordered list of strings
       For example:
       atoms:
@@ -131,15 +122,14 @@ prompts:
         arguments:
         - Calculation
       Do not copy the calculation itself into arguments.
-    - An atom should have EXACTLY ONE argument string. If the argument is
-      mainly computation, use 
+    - An atom should usually have exactly one argument string. If the argument is
+      mainly computation, use exactly:
         arguments:
         - Calculation
-    - The arguments only can be a list of strings if it contains an argument and a calculation:
+    - If an atom needs both a theorem/idea and a calculation, arguments may contain two strings:
         arguments:
         - argument string
         - Calculation
-        - ...
     - A normal YAML sequence represents an ordered proof list.
     - PyYAML's !!python/tuple tag represents an unordered mathematical set.
     - Tuple order is only for deterministic serialization; it is not mathematical meaning.
