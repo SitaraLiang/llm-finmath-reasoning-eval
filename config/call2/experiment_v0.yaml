@@ -66,7 +66,18 @@ prompts:
         Answer:
         ...
     - Convert only the text after each Answer: label.
-    - Each Answer: block corresponds to exactly one item under subquestions.
+    - Each Answer: block corresponds to exactly one item (atoms) under subquestions.
+    - Number of atoms under subquestion must match number of Answer: blocks. For example:
+        Question 1:
+        ...
+        Answer:
+        ...
+        Answer:
+        ...
+      corresponds to:
+        subquestions:
+        - atoms: ...
+        - atoms: ...
     - Preserve the order of Answer: blocks.
     - Do not convert Question: text into atoms unless the same fact is repeated
       inside the corresponding Answer: block.
@@ -75,21 +86,58 @@ prompts:
     - Top-level:
         subquestions:
         - atoms: ...
+        - atoms: ...
     - Each subquestion must be a mapping with an atoms field.
     - The atoms field must contain an atom mapping, an ordered YAML list of atom
       mappings, or a !!python/tuple containing atom mappings/lists.
     - An atom is a mapping with:
         preconditions: ordered list of strings
-        arguments: ordered list of strings
+        arguments: string or list of strings if the argument is mainly a calculation
         outcomes: ordered list of strings
+      For example:
+      atoms:
+        - preconditions:
+            - "X is a martingale"
+          arguments:
+            - "Apply Doob's optional stopping theorem to X at τ"
+          outcomes:
+            - "E[X_τ] = E[X_0]"
+        - preconditions:
+            - "X is a martingale"
+          arguments:
+            - "Calculation"
+          outcomes:
+            - "E[X_τ] = E[X_0]"
+    - An atom can also be a !!python/tuple containing alternative unordered proof branches or unordered groups of atoms. For example:
+      atoms: !!python/tuple
+        - preconditions:
+            - "X is a martingale"
+          arguments:
+            - "Apply Doob's optional stopping theorem to X at τ"
+          outcomes:
+            - "E[X_τ] = E[X_0]"
+        - preconditions:
+            - "X is a martingale"
+          arguments:
+            - "Calculation"
+          outcomes:
+            - "E[X_τ] = E[X_0]"
+    - An atom can also be a list containing tuples or tuples containing lists.  
     - Use preconditions: [] when no preconditions are stated.
     - Use outcomes: [] only if no outcome is stated.
     - If the source answer performs a calculation, represent that argument as:
         arguments:
         - Calculation
       Do not copy the calculation itself into arguments.
-    - An atom should usually have exactly one argument string. If the argument is
-      mainly computation, use exactly Calculation.
+    - An atom should have EXACTLY ONE argument string. If the argument is
+      mainly computation, use 
+        arguments:
+        - Calculation
+    - The arguments only can be a list of strings if it contains an argument and a calculation:
+        arguments:
+        - argument string
+        - Calculation
+        - ...
     - A normal YAML sequence represents an ordered proof list.
     - PyYAML's !!python/tuple tag represents an unordered mathematical set.
     - Tuple order is only for deterministic serialization; it is not mathematical meaning.
@@ -230,11 +278,11 @@ prompts:
 
 conversion:
   repair:
-    max_attempts: 3
+    max_attempts: 1
 
 ollama:
   endpoint: "http://localhost:11434/api/generate"
-  timeout_seconds: 600
+  timeout_seconds: 180
 
 models:
   - id: "qwen3:0.6b"
@@ -242,29 +290,29 @@ models:
     enabled: true
     parameters:
       temperature: 0.0
-      max_output_tokens: 6000
+      max_output_tokens: 1200
 
   - id: "deepseek-r1:1.5b"
     provider: "ollama"
-    enabled: true
+    enabled: false
     parameters:
       temperature: 0.0
-      max_output_tokens: 6000
+      max_output_tokens: 1200
 
   - id: "mistral:7b"
     provider: "ollama"
-    enabled: true
+    enabled: false
     parameters:
       temperature: 0.0
-      max_output_tokens: 3000
+      max_output_tokens: 1200
 
   - id: "llama3.1:8b"
     provider: "ollama"
     enabled: true
     parameters:
       temperature: 0.0
-      max_output_tokens: 3000
+      max_output_tokens: 1200
 
 execution:
-  max_retries: 2
+  max_retries: 1
   retry_delay_seconds: 5
