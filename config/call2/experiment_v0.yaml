@@ -30,7 +30,7 @@ output:
   filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}.yaml"
   overwrite_existing: false
   save_raw_response: true
-  save_prompt: false
+  save_prompt: true
 
 prompts:
   conversion: |
@@ -282,7 +282,7 @@ conversion:
 
 ollama:
   endpoint: "http://localhost:11434/api/generate"
-  timeout_seconds: 180
+  timeout_seconds: 300
 
 models:
   - id: "qwen3:0.6b"
@@ -311,7 +311,7 @@ models:
     enabled: true
     parameters:
       temperature: 0.0
-      max_output_tokens: 1200
+      max_output_tokens: 800
 
 execution:
   max_retries: 1
