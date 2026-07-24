@@ -44,12 +44,14 @@ prompts:
         - Calculation
 
     CRITICAL OUTPUT RULES:
-    - Return YAML only.
-    - Return exactly one YAML document.
+    - Do not output thinking, reasoning traces, analysis, explanations, or notes.
+    - Return exactly one Markdown code block tagged yml.
+    - The response must start with ```yml and end with ```.
+    - Do not write any text before or after the code block.
+    - Inside the code block, return exactly one YAML document.
     - Do not use YAML document separators such as --- or ...
-    - The first non-empty line must be exactly:
+    - The first non-empty line inside the code block must be exactly:
       subquestions:
-    - Do not use Markdown fences.
     - Do not write explanations, titles, name, description, version, parameters,
       scenarios, or any generic benchmark configuration.
     - Do not solve the exercise again. Only structure the SOURCE ANSWER.
@@ -260,12 +262,14 @@ prompts:
     $error_message
 
     CRITICAL OUTPUT RULES:
-    - Return YAML only.
-    - Return exactly one YAML document.
+    - Do not output thinking, reasoning traces, analysis, explanations, or notes.
+    - Return exactly one Markdown code block tagged yml.
+    - The response must start with ```yml and end with ```.
+    - Do not write any text before or after the code block.
+    - Inside the code block, return exactly one YAML document.
     - Do not use YAML document separators such as --- or ...
-    - The first non-empty line must be exactly:
+    - The first non-empty line inside the code block must be exactly:
       subquestions:
-    - Do not use Markdown fences.
     - Do not write explanations, titles, name, description, version, parameters,
       scenarios, or generic benchmark configuration.
     - Each atom must have preconditions, arguments, and outcomes.

@@ -295,8 +295,12 @@ def ollama_generate(model: dict, prompt: str, endpoint: str, timeout: int) -> st
 
 
 def strip_yaml_fence(raw_response: str) -> str:
+    """Extract the YAML payload from a fenced model response when available."""
     text = raw_response.strip()
-    fenced = re.search(r"```(?:yaml|yml)?\s*(.*?)```", text, re.DOTALL)
+    fenced = re.search(r"```(?:yaml|yml)\s*(.*?)```", text, re.DOTALL | re.IGNORECASE)
+    if fenced:
+        return fenced.group(1).strip()
+    fenced = re.search(r"```\s*(.*?)```", text, re.DOTALL)
     if fenced:
         return fenced.group(1).strip()
     return text
