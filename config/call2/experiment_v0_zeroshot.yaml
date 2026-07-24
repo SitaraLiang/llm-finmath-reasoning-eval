@@ -80,11 +80,10 @@ prompts:
     - Top-level:
         subquestions:
         - atoms: ...
-        - atoms: ...
-    - Each subquestion must be a mapping with an atoms field.
+    - Each subquestion inside the subquestions list must be a mapping with an atoms field.
     - The atoms field must contain an atom mapping, an ordered YAML list of atom
       mappings, or a !!python/tuple containing atom mappings/lists.
-    - An atom is a mapping with:
+    - An atom MUST HAVE three fields:
         preconditions: ordered list of strings
         arguments: ordered list of strings
         outcomes: ordered list of strings
@@ -103,6 +102,17 @@ prompts:
             - ...
           outcomes:
             - ...
+      Examples of invalid atoms:
+      atoms:
+        - preconditions: []
+      or
+      atoms:
+        - preconditions:
+          - ...
+        - arguments:
+          - ...
+        - outcomes:
+          - ...
     - An atom can also be a !!python/tuple containing alternative unordered proof branches or unordered groups of atoms. For example:
       atoms: !!python/tuple
         - preconditions:
@@ -145,6 +155,9 @@ prompts:
         - "{X_t = t W_{1/t}, t > 0, X_0 = 0}"
       Do not leave such strings unquoted.
     - Do not invent proof facts not present in the source answer.
+    - Do not repeat identical atoms. 
+    - If an atom has already appeared, do not output it again.
+    - Prefer fewer atoms over repeated atoms.
 
     CURRENT METADATA:
     pc: $pc
@@ -213,14 +226,14 @@ models:
     enabled: true
     parameters:
       temperature: 0.0
-      max_output_tokens: 1200
+      max_output_tokens: 800
 
   - id: "llama3.1:8b"
     provider: "ollama"
     enabled: true
     parameters:
       temperature: 0.0
-      max_output_tokens: 1200
+      max_output_tokens: 800
 
 execution:
   max_retries: 1
