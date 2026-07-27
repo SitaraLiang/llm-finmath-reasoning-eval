@@ -28,7 +28,7 @@ output:
   root_directory: "outputs/call2_zeroshot"
   directory_template: "{model1}/{model2}/{language}/{variation}"
   filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}.yaml"
-  overwrite_existing: false
+  overwrite_existing: true
   save_raw_response: true
   save_prompt: false
 
@@ -255,7 +255,7 @@ models:
 
   - id: "mistral:7b"
     provider: "ollama"
-    enabled: false
+    enabled: true
     parameters:
       temperature: 0.0
       max_output_tokens: 800
@@ -268,7 +268,7 @@ models:
       max_output_tokens: 800
 
   - id: "gemma3:12b"
-    enabled: false
+    enabled: true
     parameters:
       temperature: 0.0
       max_output_tokens: 800
