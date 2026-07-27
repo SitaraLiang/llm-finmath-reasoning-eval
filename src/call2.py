@@ -504,52 +504,6 @@ def validate_atom_container(value, location: str) -> str | None:
     return None
 
 
-def count_atom_mappings(value) -> int:
-    """Count atom mappings inside a nested proof structure."""
-    if isinstance(value, dict):
-        return 1
-    if isinstance(value, (list, tuple)):
-        return sum(count_atom_mappings(item) for item in value)
-    return 0
-
-
-def count_nonempty_strings(value) -> int:
-    """Count non-empty strings inside a nested conversion result."""
-    if isinstance(value, str):
-        return int(bool(value.strip()))
-    if isinstance(value, dict):
-        return sum(count_nonempty_strings(item) for item in value.values())
-    if isinstance(value, (list, tuple)):
-        return sum(count_nonempty_strings(item) for item in value)
-    return 0
-
-
-def total_string_length(value) -> int:
-    """Count characters in string leaves for deterministic candidate ranking."""
-    if isinstance(value, str):
-        return len(value.strip())
-    if isinstance(value, dict):
-        return sum(total_string_length(item) for item in value.values())
-    if isinstance(value, (list, tuple)):
-        return sum(total_string_length(item) for item in value)
-    return 0
-
-
-def score_converted_exercise(data: dict) -> tuple[int, int, int]:
-    """Rank valid candidates.
-
-    This is only a structural heuristic. Formal proof quality still belongs to
-    the later quality-control/evaluation step. We prefer compact valid
-    conversions, then more populated text fields, then more retained text.
-    """
-    subquestions = data.get("subquestions", [])
-    return (
-        -sum(count_atom_mappings(item.get("atoms")) for item in subquestions),
-        count_nonempty_strings(subquestions),
-        total_string_length(subquestions),
-    )
-
-
 def output_path(config: dict, metadata: dict, model2: str) -> Path:
     """Build output YAML path for a converted complete exercise."""
     output_config = config.get("output", {})
@@ -571,11 +525,6 @@ def output_path(config: dict, metadata: dict, model2: str) -> Path:
 def raw_output_path(parsed_output_path: Path) -> Path:
     """Return sidecar path for the raw model response."""
     return parsed_output_path.with_suffix(".raw.txt")
-
-
-def candidate_raw_output_path(parsed_output_path: Path, candidate_index: int) -> Path:
-    """Return sidecar path for one raw sampled candidate response."""
-    return parsed_output_path.with_suffix(f".candidate{candidate_index}.raw.txt")
 
 
 def prompt_output_path(parsed_output_path: Path) -> Path:
@@ -652,15 +601,6 @@ def convert_with_repairs(
     return parsed, raw_response, error_message, conversion_prompt
 
 
-def summarize_candidate_errors(candidate_errors: list[dict]) -> str:
-    """Format all failed sampled candidates for the error report."""
-    if not candidate_errors:
-        return "No valid conversion candidates were produced."
-    return " | ".join(
-        f"candidate {item['candidate']}: {item['error']}" for item in candidate_errors
-    )
-
-
 def run_call2(config: dict) -> None:
     inputs = discover_call1_inputs(config)
     models = enabled_models(config)
@@ -673,12 +613,6 @@ def run_call2(config: dict) -> None:
     max_retries = get_nested(config, ["execution", "max_retries"], 1)
     retry_delay = get_nested(config, ["execution", "retry_delay_seconds"], 2)
     repair_attempts = get_nested(config, ["conversion", "repair", "max_attempts"], 1)
-    candidates_per_job = max(1, int(get_nested(config, ["conversion", "candidates_per_job"], 1)))
-    save_candidate_raw = get_nested(
-        config,
-        ["output", "save_candidate_raw_responses"],
-        save_raw and candidates_per_job > 1,
-    )
 
     written = 0
     skipped = 0
@@ -691,7 +625,6 @@ def run_call2(config: dict) -> None:
         return {
             "call1_input_files": len(inputs),
             "conversion_jobs": total_jobs,
-            "candidates_per_job": candidates_per_job,
             "yaml_files_written": written,
             "yaml_files_skipped": skipped,
             "conversions_failed": failed,
@@ -700,8 +633,7 @@ def run_call2(config: dict) -> None:
     progress(
         "Call 2 starting: "
         f"{len(inputs)} Call 1 file(s), {len(models)} model(s), "
-        f"{total_jobs} conversion job(s), "
-        f"{candidates_per_job} candidate(s) per job."
+        f"{total_jobs} conversion job(s)."
     )
 
     for item in inputs:
@@ -725,113 +657,26 @@ def run_call2(config: dict) -> None:
                 raw_response = ""
                 error_message = None
                 conversion_prompt = ""
-                valid_candidates = []
-                candidate_errors = []
 
-                for candidate_index in range(1, candidates_per_job + 1):
-                    if candidates_per_job > 1:
-                        progress(
-                            f"{job_label}: candidate "
-                            f"{candidate_index}/{candidates_per_job}"
-                        )
-
-                    candidate_parsed = None
-                    candidate_raw_response = ""
-                    candidate_error = None
-                    candidate_prompt = ""
-
+                for attempt in range(1, max_retries + 1):
                     try:
-                        for attempt in range(1, max_retries + 1):
-                            try:
-                                if max_retries > 1:
-                                    progress(
-                                        f"{job_label}: candidate "
-                                        f"{candidate_index}/{candidates_per_job}, "
-                                        f"Ollama attempt {attempt}/{max_retries}"
-                                    )
-                                (
-                                    candidate_parsed,
-                                    candidate_raw_response,
-                                    candidate_error,
-                                    candidate_prompt,
-                                ) = convert_with_repairs(
-                                    model,
-                                    prompts,
-                                    item,
-                                    source_answer,
-                                    endpoint,
-                                    timeout,
-                                    repair_attempts,
-                                )
-                                break
-                            except RuntimeError:
-                                if attempt == max_retries:
-                                    raise
-                                progress(
-                                    f"{job_label}: candidate "
-                                    f"{candidate_index}/{candidates_per_job}, "
-                                    f"retrying in {retry_delay}s"
-                                )
-                                time.sleep(retry_delay)
-                    except RuntimeError as exc:
-                        candidate_error = str(exc)
-
-                    if save_candidate_raw and candidate_raw_response:
-                        atomic_write_text(
-                            candidate_raw_output_path(out_path, candidate_index),
-                            candidate_raw_response,
-                            overwrite=True,
+                        if max_retries > 1:
+                            progress(f"{job_label}: Ollama attempt {attempt}/{max_retries}")
+                        parsed, raw_response, error_message, conversion_prompt = convert_with_repairs(
+                            model,
+                            prompts,
+                            item,
+                            source_answer,
+                            endpoint,
+                            timeout,
+                            repair_attempts,
                         )
-
-                    if candidate_prompt:
-                        conversion_prompt = candidate_prompt
-
-                    if candidate_parsed is None:
-                        candidate_errors.append(
-                            {
-                                "candidate": candidate_index,
-                                "error": candidate_error or "unknown YAML validation error",
-                            }
-                        )
-                        progress(
-                            f"{job_label}: candidate "
-                            f"{candidate_index}/{candidates_per_job} invalid"
-                        )
-                        continue
-
-                    valid_candidates.append(
-                        {
-                            "candidate": candidate_index,
-                            "parsed": candidate_parsed,
-                            "raw_response": candidate_raw_response,
-                            "prompt": candidate_prompt,
-                            "score": score_converted_exercise(candidate_parsed),
-                        }
-                    )
-                    progress(
-                        f"{job_label}: candidate "
-                        f"{candidate_index}/{candidates_per_job} valid"
-                    )
-
-                if valid_candidates:
-                    best_candidate = max(
-                        valid_candidates,
-                        key=lambda candidate: (
-                            candidate["score"],
-                            -candidate["candidate"],
-                        ),
-                    )
-                    parsed = best_candidate["parsed"]
-                    raw_response = best_candidate["raw_response"]
-                    conversion_prompt = best_candidate["prompt"]
-                    if candidates_per_job > 1:
-                        progress(
-                            f"{job_label}: selected candidate "
-                            f"{best_candidate['candidate']}/{candidates_per_job} "
-                            f"with score={best_candidate['score']}"
-                        )
-                else:
-                    error_message = summarize_candidate_errors(candidate_errors)
+                        break
+                    except RuntimeError:
+                        if attempt == max_retries:
+                            raise
+                        progress(f"{job_label}: retrying in {retry_delay}s")
+                        time.sleep(retry_delay)
 
                 if save_raw:
                     atomic_write_text(raw_output_path(out_path), raw_response, overwrite=True)
@@ -901,7 +746,6 @@ def run_call2(config: dict) -> None:
     write_error_report(config, current_summary(), failed_jobs)
     print(f"Call 1 input files: {len(inputs)}")
     print(f"Conversion jobs: {total_jobs}")
-    print(f"Candidates per job: {candidates_per_job}")
     print(f"YAML files written: {written}")
     print(f"YAML files skipped: {skipped}")
     print(f"Conversions failed: {failed}")

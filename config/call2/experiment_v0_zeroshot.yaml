@@ -28,9 +28,8 @@ output:
   root_directory: "outputs/call2_zeroshot"
   directory_template: "{model1}/{model2}/{language}/{variation}"
   filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}.yaml"
-  overwrite_existing: false 
+  overwrite_existing: false
   save_raw_response: true
-  save_candidate_raw_responses: false
   save_prompt: false
 
 prompts:
@@ -232,7 +231,6 @@ prompts:
     $raw_response
 
 conversion:
-  candidates_per_job: 3
   repair:
     max_attempts: 1
 
