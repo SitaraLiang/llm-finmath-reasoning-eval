@@ -395,8 +395,16 @@ def parse_yaml_response(raw_response: str) -> tuple[dict | None, str | None]:
 
 
 def expected_subquestion_count(source_answer) -> int | None:
-    """Infer how many top-level subquestions the conversion should return."""
+    """Infer how many top-level subquestions the conversion should return.
+
+    Call 1 files are organized by script-generated "Question N:" blocks. Those
+    are more reliable than model-generated "Answer:" labels, because a model can
+    accidentally produce extra "Answer:" text inside one subquestion.
+    """
     if isinstance(source_answer, str):
+        question_labels = re.findall(r"(?m)^Question\s+\d+:\s*$", source_answer)
+        if question_labels:
+            return len(question_labels)
         answer_labels = re.findall(r"(?m)^Answer:\s*$", source_answer)
         return len(answer_labels) or None
     if isinstance(source_answer, dict):
@@ -426,10 +434,10 @@ def validate_converted_exercise(
         return (
             None,
             f"Expected exactly {expected_subquestions} top-level subquestion item(s), "
-            f"because the Call 1 source contains {expected_subquestions} Answer: "
+            f"because the Call 1 source contains {expected_subquestions} Question "
             f"block(s), but converted YAML contains {len(data['subquestions'])}. "
             "Do not split proof steps into extra top-level subquestions; keep them "
-            "inside the atoms structure for the corresponding Answer block.",
+            "inside the atoms structure for the corresponding Question block.",
         )
     for index, subquestion in enumerate(data["subquestions"], start=1):
         if not isinstance(subquestion, dict):

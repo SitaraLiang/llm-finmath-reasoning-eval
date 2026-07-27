@@ -70,27 +70,29 @@ prompts:
         ...
         Answer:
         ...
-    - Convert only the text after each Answer: label.
-    - The number of top-level items (- atoms) under subquestions MUST equal the number
-      of Answer: blocks in SOURCE ANSWER.
-    - Each top-level subquestions item represents one Answer: block and must
+    - Group the SOURCE ANSWER by Question blocks, not by Answer labels.
+    - The number of top-level items under subquestions MUST equal the number
+      of Question blocks in SOURCE ANSWER.
+    - Each top-level subquestions item represents one Question block and must
       have exactly one atoms field.
+    - If a single Question block contains more than one Answer: label, treat all
+      of that text as belonging to the same Question block.
     - Do not create one top-level subquestion per proof step.
-    - Put all proof steps from the same Answer: block inside that item's atoms
+    - Put all proof steps from the same Question block inside that item's atoms
       structure.
-    - Preserve the order of Answer: blocks.
+    - Preserve the order of Question blocks.
     - Do not convert Question: text into atoms unless the same fact is repeated
-      inside the corresponding Answer: block.
+      inside the corresponding answer text.
 
     PROOF-ATOM YAML FORMAT:
     - Top-level:
         subquestions:
         - atoms: ...
-    - Each Answer: block in SOURCE ANSWER becomes exactly one item in subquestions.
-    - If SOURCE ANSWER has 2 Answer: blocks, output exactly 2 top-level
+    - Each Question block in SOURCE ANSWER becomes exactly one item in subquestions.
+    - If SOURCE ANSWER has 2 Question blocks, output exactly 2 top-level
       subquestions items.
     - Each subquestions item must have exactly one key: atoms.
-    - The atoms value represents the full proof structure for that Answer: block.
+    - The atoms value represents the full proof structure for that Question block.
     - Do not create one subquestions item per proof step.
     - The atoms field may contain one atom mapping, an ordered YAML list of atom
       mappings, a !!python/tuple for an unordered mathematical set, or nested
