@@ -256,6 +256,28 @@ def build_repair_prompt(prompts: dict, raw_response: str, error_message: str) ->
     return Template(prompts["repair"]).safe_substitute(values).strip()
 
 
+def append_candidate_feedback(prompt: str, candidate_errors: list[dict]) -> str:
+    """Append previous candidate validation errors to a new candidate prompt."""
+    if not candidate_errors:
+        return prompt
+
+    feedback_lines = [
+        "",
+        "PREVIOUS INVALID CANDIDATES:",
+        "The previous candidate response(s) for this same source failed validation.",
+        "Use these error messages to avoid repeating the same mistake.",
+    ]
+    for item in candidate_errors:
+        feedback_lines.append(f"- Candidate {item['candidate']} failed: {item['error']}")
+    feedback_lines.extend(
+        [
+            "",
+            "Return a fresh corrected YAML conversion for the original SOURCE ANSWER.",
+        ]
+    )
+    return f"{prompt.rstrip()}\n" + "\n".join(feedback_lines)
+
+
 def ollama_generate(model: dict, prompt: str, endpoint: str, timeout: int) -> str:
     """Call Ollama's /api/generate endpoint."""
     parameters = model.get("parameters", {})
@@ -619,9 +641,11 @@ def convert_with_repairs(
     endpoint: str,
     timeout: int,
     repair_attempts: int,
+    candidate_feedback: list[dict] | None = None,
 ) -> tuple[dict | None, str, str | None, str]:
     """Convert a complete Call 1 answer to YAML, with optional YAML repair."""
     conversion_prompt = build_conversion_prompt(prompts, metadata, source_answer)
+    conversion_prompt = append_candidate_feedback(conversion_prompt, candidate_feedback or [])
     expected_subquestions = expected_subquestion_count(source_answer)
     raw_response = ollama_generate(
         model,
@@ -762,6 +786,7 @@ def run_call2(config: dict) -> None:
                                     endpoint,
                                     timeout,
                                     repair_attempts,
+                                    candidate_errors,
                                 )
                                 break
                             except RuntimeError:
