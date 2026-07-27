@@ -30,6 +30,7 @@ output:
   filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}.yaml"
   overwrite_existing: false
   save_raw_response: true
+  save_candidate_raw_responses: true
   save_prompt: false
 
 prompts:
@@ -70,7 +71,7 @@ prompts:
         Answer:
         ...
     - Convert only the text after each Answer: label.
-    - The number of top-level items under subquestions MUST equal the number
+    - The number of top-level items (- atoms) under subquestions MUST equal the number
       of Answer: blocks in SOURCE ANSWER.
     - Each top-level subquestions item represents one Answer: block and must
       have exactly one atoms field.
@@ -85,10 +86,15 @@ prompts:
     - Top-level:
         subquestions:
         - atoms: ...
-    - Each subquestion inside the subquestions list must be a mapping with an atoms field. 
-    - Number of "Answer" corresponds to number of "atoms", each subquestion only have one atoms, either a list, a tuple, a list contains list, a list contains tuple, a tupe contains list, or so on. 
-    - The atoms field must contain an atom mapping, an ordered YAML list of atom
-      mappings, or a !!python/tuple containing atom mappings/lists.
+    - Each Answer: block in SOURCE ANSWER becomes exactly one item in subquestions.
+    - If SOURCE ANSWER has 2 Answer: blocks, output exactly 2 top-level
+      subquestions items.
+    - Each subquestions item must have exactly one key: atoms.
+    - The atoms value represents the full proof structure for that Answer: block.
+    - Do not create one subquestions item per proof step.
+    - The atoms field may contain one atom mapping, an ordered YAML list of atom
+      mappings, a !!python/tuple for an unordered mathematical set, or nested
+      lists and tuples.
     - Every atom MUST be one mapping with at least these required fields:
         preconditions: ordered list of strings
         arguments: ordered list of strings
@@ -115,7 +121,8 @@ prompts:
         - outcomes:
             - ...
       The invalid example above is three separate list items, not one atom.
-    - An atom can also be a !!python/tuple containing alternative unordered proof branches or unordered groups of atoms. For example:
+    - The atoms field can be a !!python/tuple containing alternative unordered
+      proof branches or unordered groups of atoms. For example:
       atoms: !!python/tuple
         - preconditions:
             - ...
@@ -129,7 +136,8 @@ prompts:
             - ...
           outcomes:
             - ...
-    - An atom can also be a list containing tuples or tuples containing lists.  
+    - The atoms field can contain nested lists and tuples.
+    - Individual atom mappings themselves must never be tuples or lists.
     - Use preconditions: [] when no preconditions are stated.
     - Use outcomes: [] only if no outcome is stated.
     - The [] notation is allowed only for empty preconditions or empty outcomes.
@@ -222,6 +230,7 @@ prompts:
     $raw_response
 
 conversion:
+  candidates_per_job: 3
   repair:
     max_attempts: 1
 
