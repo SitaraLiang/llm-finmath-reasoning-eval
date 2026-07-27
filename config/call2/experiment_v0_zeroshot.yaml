@@ -85,7 +85,8 @@ prompts:
     - Top-level:
         subquestions:
         - atoms: ...
-    - Each subquestion inside the subquestions list must be a mapping with an atoms field.
+    - Each subquestion inside the subquestions list must be a mapping with an atoms field. 
+    - Number of "Answer" corresponds to number of "atoms", each subquestion only have one atoms, either a list, a tuple, a list contains list, a list contains tuple, a tupe contains list, or so on. 
     - The atoms field must contain an atom mapping, an ordered YAML list of atom
       mappings, or a !!python/tuple containing atom mappings/lists.
     - Every atom MUST be one mapping with at least these required fields:
@@ -258,7 +259,7 @@ models:
       max_output_tokens: 800
 
   - id: "gemma3:12b"
-    enabled: true
+    enabled: false
     parameters:
       temperature: 0.0
       max_output_tokens: 800
