@@ -83,11 +83,13 @@ prompts:
     - Each subquestion inside the subquestions list must be a mapping with an atoms field.
     - The atoms field must contain an atom mapping, an ordered YAML list of atom
       mappings, or a !!python/tuple containing atom mappings/lists.
-    - An atom MUST HAVE three fields:
+    - Every atom MUST be one mapping with at least these required fields:
         preconditions: ordered list of strings
         arguments: ordered list of strings
         outcomes: ordered list of strings
-      For example:
+      Always write these lists in block style, with one item per line starting
+      with "-". Do NOT use inline lists such as ["..."].
+      Valid atom shape:
       atoms:
         - preconditions:
             - ...
@@ -95,24 +97,18 @@ prompts:
             - ...
           outcomes:
             - ...
+      The keys preconditions, arguments, and outcomes must be at the same indentation level.
+      They must not be split into separate list items.
+      Invalid atom examples:
+      atoms:
+        - preconditions: []  # INVALID: missing arguments and outcomes.
         - preconditions:
             - ...
-            - ...
-          arguments:
-            - ...
-          outcomes:
-            - ...
-      Examples of invalid atoms:
-      atoms:
-        - preconditions: []
-      or
-      atoms:
-        - preconditions:
-          - ...
         - arguments:
-          - ...
+            - ...
         - outcomes:
-          - ...
+            - ...
+      The invalid example above is three separate list items, not one atom.
     - An atom can also be a !!python/tuple containing alternative unordered proof branches or unordered groups of atoms. For example:
       atoms: !!python/tuple
         - preconditions:
@@ -130,20 +126,42 @@ prompts:
     - An atom can also be a list containing tuples or tuples containing lists.  
     - Use preconditions: [] when no preconditions are stated.
     - Use outcomes: [] only if no outcome is stated.
+    - The [] notation is allowed only for empty preconditions or empty outcomes.
+    - Never use [] for arguments; arguments must always contain at least one item.
+    - Never put strings inside square brackets. This is invalid:
+        preconditions: ["..."]
+        arguments: ["Calculation"]
+        outcomes: ["..."]
+      Use block-style lists instead:
+        preconditions:
+        - ...
+        arguments:
+        - Calculation
+        outcomes:
+        - ...
     - Do not use [] for preconditions or outcomes when there are multiple items; use an ordered YAML list instead.
     - If the source answer performs a calculation, represent that argument as:
         arguments:
         - Calculation
       Do not copy the calculation itself into arguments.
-    - An atom should usually have exactly one argument string. If the argument is
-      mainly computation, use exactly:
+    - If the argument is mainly computation, use exactly:
         arguments:
         - Calculation
-    - If an atom needs both a theorem/idea and a calculation, arguments may contain two strings:
+    - The arguments field must NEVER be empty. This is invalid:
+      arguments: []
+    - The arguments field must be a non-empty YAML list of strings.
+    - Usually use exactly one argument string:
+        arguments:
+        - argument string
+    - If the atom is purely computational, use exactly:
+        arguments:
+        - Calculation
+    - If the atom needs both a theorem/idea and a calculation, use exactly two strings:
         arguments:
         - argument string
         - Calculation
-        - Calculation
+    - Do not repeat Calculation multiple times inside the same arguments list.
+
     - A normal YAML sequence represents an ordered proof list.
     - PyYAML's !!python/tuple tag represents an unordered mathematical set.
     - Tuple order is only for deterministic serialization; it is not mathematical meaning.
