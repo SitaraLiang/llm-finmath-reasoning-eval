@@ -34,7 +34,6 @@ prompts:
   common_header: |
     You are solving a financial mathematics exercise.
     Write a concise rigorous mathematical answer. Do not include hidden reasoning or long explanations. Use LaTeX for formulas.
-    Do not write section headings such as "Question:", "Answer:", or "Solution:" inside your answer. Start directly with the mathematical solution text.
 
     Context:
     $context
