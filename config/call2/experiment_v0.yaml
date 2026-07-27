@@ -69,8 +69,13 @@ prompts:
         Answer:
         ...
     - Convert only the text after each Answer: label.
-    - Each Answer: block should normally correspond to one item under subquestions.
-    - Do not split internal proof steps into extra subquestions. Put proof steps inside atoms.
+    - The number of top-level items under subquestions MUST equal the number
+      of Answer: blocks in SOURCE ANSWER.
+    - Each top-level subquestions item represents one Answer: block and must
+      have exactly one atoms field.
+    - Do not create one top-level subquestion per proof step.
+    - Put all proof steps from the same Answer: block inside that item's atoms
+      structure.
     - Preserve the order of Answer: blocks.
     - Do not convert Question: text into atoms unless the same fact is repeated
       inside the corresponding Answer: block.

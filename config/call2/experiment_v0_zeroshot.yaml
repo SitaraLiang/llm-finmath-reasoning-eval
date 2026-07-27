@@ -70,8 +70,13 @@ prompts:
         Answer:
         ...
     - Convert only the text after each Answer: label.
-    - Each Answer: block should normally correspond to one item under subquestions.
-    - Do not split internal proof steps into extra subquestions. Put proof steps inside atoms.
+    - The number of top-level items under subquestions MUST equal the number
+      of Answer: blocks in SOURCE ANSWER.
+    - Each top-level subquestions item represents one Answer: block and must
+      have exactly one atoms field.
+    - Do not create one top-level subquestion per proof step.
+    - Put all proof steps from the same Answer: block inside that item's atoms
+      structure.
     - Preserve the order of Answer: blocks.
     - Do not convert Question: text into atoms unless the same fact is repeated
       inside the corresponding Answer: block.
@@ -173,9 +178,8 @@ prompts:
         - "{X_t = t W_{1/t}, t > 0, X_0 = 0}"
       Do not leave such strings unquoted.
     - Do not invent proof facts not present in the source answer.
-    - Do not repeat identical atoms. 
-    - If an atom has already appeared, do not output it again.
-    - Prefer fewer atoms over repeated atoms.
+    - DO NOT REPEAT IDENTICAL ATOMS. If an atom has already appeared, do not output it again.
+    - Prefer fewer atoms over more atoms.
 
     CURRENT METADATA:
     pc: $pc
@@ -249,6 +253,18 @@ models:
   - id: "llama3.1:8b"
     provider: "ollama"
     enabled: true
+    parameters:
+      temperature: 0.0
+      max_output_tokens: 800
+
+  - id: "gemma3:12b"
+    enabled: true
+    parameters:
+      temperature: 0.0
+      max_output_tokens: 800
+
+  - id: "mistral-nemo:12b"
+    enabled: false
     parameters:
       temperature: 0.0
       max_output_tokens: 800
