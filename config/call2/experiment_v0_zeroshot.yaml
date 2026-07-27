@@ -236,7 +236,7 @@ conversion:
 
 ollama:
   endpoint: "http://localhost:11434/api/generate"
-  timeout_seconds: 180
+  timeout_seconds: 600
 
 models:
   - id: "qwen3:0.6b"
