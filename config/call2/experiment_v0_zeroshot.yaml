@@ -71,7 +71,7 @@ prompts:
         ...
     - The top-level subquestions list should follow the Question blocks in
       SOURCE ANSWER.
-    - Usually, one Question block becomes one top-level subquestions item.
+    - One Question block becomes one top-level subquestions item.
     - Nested atom mappings, ordered lists, and !!python/tuple structures inside
       an atoms field do NOT count as top-level subquestions.
     - Each top-level subquestions item should represent one Question block and
@@ -98,6 +98,7 @@ prompts:
     - Each subquestions item must have exactly one key: atoms.
     - The atoms value represents the full proof structure for that Question block.
     - Do not create one subquestions item per proof step.
+    - Do not split proof steps into extra top-level subquestions; keep them inside the atoms structure for the corresponding Question block.
     - The atoms field may contain one atom mapping, an ordered YAML list of atom
       mappings, a !!python/tuple for an unordered mathematical set, or nested
       lists and tuples.
@@ -278,7 +279,25 @@ models:
 
   - id: "mistral:7b"
     provider: "ollama"
-    enabled: false
+    enabled: true
+    parameters:
+      temperature: 0.0
+      max_output_tokens: 800
+  
+  - id: "qwen2.5:7b"
+    enabled: true
+    parameters:
+      temperature: 0.0
+      max_output_tokens: 800
+
+  - id: "qwen2.5-coder:7b"
+    enabled: true
+    parameters:
+      temperature: 0.0
+      max_output_tokens: 800
+
+  - id: "gemma2:9b"
+    enabled: true
     parameters:
       temperature: 0.0
       max_output_tokens: 800
@@ -291,7 +310,7 @@ models:
       max_output_tokens: 800
 
   - id: "gemma3:12b"
-    enabled: true
+    enabled: false
     parameters:
       temperature: 0.0
       max_output_tokens: 800
