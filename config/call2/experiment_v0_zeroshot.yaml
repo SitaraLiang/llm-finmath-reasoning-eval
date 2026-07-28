@@ -69,9 +69,11 @@ prompts:
         ...
         Answer:
         ...
-    - Prefer grouping the SOURCE ANSWER by Question blocks, not by Answer labels.
-    - Usually, each Question block should become one top-level item under
-      subquestions.
+    - The top-level subquestions list should follow the Question blocks in
+      SOURCE ANSWER.
+    - Usually, one Question block becomes one top-level subquestions item.
+    - Nested atom mappings, ordered lists, and !!python/tuple structures inside
+      an atoms field do NOT count as top-level subquestions.
     - Each top-level subquestions item should represent one Question block and
       must have exactly one atoms field.
     - If a single Question block contains more than one Answer: label, treat all
@@ -90,6 +92,8 @@ prompts:
     - Usually, each Question block in SOURCE ANSWER becomes one item in
       subquestions.
     - If SOURCE ANSWER has 2 clear Question blocks, normally output 2 top-level
+      subquestions items.
+    - Nested structures inside atoms do not change the number of top-level
       subquestions items.
     - Each subquestions item must have exactly one key: atoms.
     - The atoms value represents the full proof structure for that Question block.
@@ -113,6 +117,30 @@ prompts:
             - ...
       The keys preconditions, arguments, and outcomes must be at the same indentation level.
       They must not be split into separate list items.
+      Under atoms, each "-" begins one complete atom. Do NOT write
+      "- arguments:" or "- outcomes:" under atoms. The fields arguments and
+      outcomes belong inside the same atom item as preconditions.
+      There are only two structural YAML list levels before the
+      preconditions/arguments/outcomes string lists:
+      1. top-level items under subquestions;
+      2. atom items under atoms.
+      The lists under preconditions, arguments, and outcomes contain strings.
+      Correct:
+      atoms:
+        - preconditions:
+            - "P"
+          arguments:
+            - "Calculation"
+          outcomes:
+            - "O"
+      Incorrect:
+      atoms:
+        - preconditions:
+            - "P"
+        - arguments:
+            - "Calculation"
+        - outcomes:
+            - "O"
       Invalid atom examples:
       atoms:
         - preconditions: []  # INVALID: missing arguments and outcomes.
@@ -156,10 +184,6 @@ prompts:
         outcomes:
         - ...
     - Do not use [] for preconditions or outcomes when there are multiple items; use an ordered YAML list instead.
-    - If the source answer performs a calculation, represent that argument as:
-        arguments:
-        - Calculation
-      Do not copy the calculation itself into arguments.
     - If the argument is mainly computation, use exactly:
         arguments:
         - Calculation
@@ -169,9 +193,6 @@ prompts:
     - Usually use exactly one argument string:
         arguments:
         - argument string
-    - If the atom is purely computational, use exactly:
-        arguments:
-        - Calculation
     - If the atom needs both a theorem/idea and a calculation, use exactly two strings:
         arguments:
         - argument string
@@ -189,8 +210,9 @@ prompts:
         - "{X_t = t W_{1/t}, t > 0, X_0 = 0}"
       Do not leave such strings unquoted.
     - Do not invent proof facts not present in the source answer.
-    - DO NOT REPEAT IDENTICAL ATOMS. If an atom has already appeared, do not output it again.
-    - Prefer fewer atoms over more atoms.
+    - Do not repeat identical atoms.
+    - If an atom has already appeared, do not output it again.
+    - Prefer fewer atoms over repeated atoms.
 
     CURRENT METADATA:
     pc: $pc
