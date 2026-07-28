@@ -1,0 +1,45 @@
+Exercise: pc4_q4
+Model: deepseek-r1:7b
+Variation: baseline
+Prompt type: strictly_sequential
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+The expected value of \( W_\tau \) when \( \tau \) is a bounded stopping time is computed using the Optional Stopping Theorem. Since Brownian motion \( W_t \) is a martingale, and under the given assumptions (bounded stopping time), the theorem ensures that:
+
+\[
+\E[W_\tau] = \E[W_0]
+\]
+
+Given that \( W_0 = 0 \), it follows that:
+
+\[
+\E[W_\tau] = 0
+\]
+
+**Answer:**  
+The expected value is \boxed{0}.
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+To compute \( \mathbb{E}[W_{\tau}^2] \) where \( \tau \) is a bounded stopping time, we can use the fact that \( W_t^2 - t \) is a martingale. By the Optional Stopping Theorem (OST), since \( \tau \) is bounded, we have:
+
+\[
+\mathbb{E}[W_{\tau}^2 - \tau] = \mathbb{E}[W_0^2 - 0] = 0
+\]
+
+Thus,
+
+\[
+\mathbb{E}[W_{\tau}^2] = \mathbb{E}[\tau]
+\]
+
+Therefore, the expected value is:
+
+\[
+\boxed{\mathbb{E}[W_{\tau}^2] = \mathbb{E}[\tau]}
+\]

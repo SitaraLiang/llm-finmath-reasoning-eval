@@ -1,0 +1,53 @@
+Exercise: pc2_q1
+Model: deepseek-r1:1.5b
+Variation: baseline
+Prompt type: ground_truth_forcing
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To show that \( (X_t)_{t \in R^+} \) is a Brownian motion, we need to verify that it satisfies the defining characteristics:
+
+1. **Start at Zero**: \( X_0 = 0 \).
+2. **Gaussian Increments with Mean Zero**: The process is Gaussian centered.
+3. **Covariance Structure**: For all \( s, t \geq 0 \), 
+   \[
+   {\rm Cov}(X_s, X_t) = s \wedge t
+   \]
+
+Given these conditions match the definition of a Brownian Motion:
+
+- The covariance condition here is similar to that of standard Brownian Motion but scaled. However, since all increments are independent Gaussian variables with mean zero and covariance \( s \wedge t \), it confirms the process meets all criteria.
+
+Thus, \( (X_t)_{t \in R^+} \) is a Brownian Motion because it satisfies all three defining properties of such processes.
+
+**Answer**
+A process \( (X_t)_{t \in R^+} \) is a Brownian motion if and only if:
+1. \( X_0 = 0 \),
+2. The increments are centered Gaussian, and
+3. The covariance function is \( {\rm Cov}(X_s, X_t) = s \wedge t \).
+
+Therefore, the process is a Brownian motion.
+
+\boxed{(X_t)_{t \in R^+} \text{ is a Brownian Motion if and only if } X_0 = 0, \ (X_t)_{t \geq 0} \text{ is centered Gaussian}, \ {\rm Cov}(X_s, X_t) = s \wedge t}
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+To demonstrate that \( X_t = tW_{1/t} \) (for \( t > 0 \)) with \( X_0 = 0 \) forms a Brownian motion when given that \( W_t \) is a Brownian motion, we verify the key properties:
+
+1. **Gaussian Increments**: The increments of \( X_t \) are Gaussian due to the linearity of \( X_t \) over independent increments of \( W_t \).
+
+2. **Zero Mean Increments**: Each increment has zero mean because \( W_t \) has mean zero.
+
+3. **Variance Matching**: Calculating the variance of \( X_{t+s} - X_t \), we find it matches the time difference, ensuring correct variance scaling.
+
+4. **Independent Increments**: The increments are independent as a result of the independent increments of \( W_t \).
+
+Thus, all properties of Brownian motion hold for \( X_t \). Hence, \( X_t \) is a Brownian motion.
+
+**Answer:** By verifying Gaussian increments, zero mean increments, correct variance scaling, and independence of increments, \( X_t = tW_{1/t} \) with \( X_0 = 0 \) satisfies all properties of Brownian motion. Therefore, it is also a Brownian motion.
+
+\boxed{X_t = t W_{1/t}}

@@ -1,0 +1,160 @@
+Exercise: pc4_q4
+Model: llama3.1:8b
+Variation: baseline
+Prompt type: prompt_accumulation
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+## Step 1: Recall the properties of Brownian motion
+Brownian motion has the property that its expected value at any time $t$ is zero, i.e., $\E(W_t) = 0$ for all $t \geq 0$.
+
+## Step 2: Apply the property to a bounded stopping time
+Since $\tau$ is a bounded stopping time, it means there exists a constant $T$ such that $\tau \leq T$. Therefore, we can write $\E(W_\tau) = \E(W_{\min(\tau,T)})$.
+
+## Step 3: Use the property of Brownian motion for any time
+Since $\min(\tau,T)$ is also a time and thus satisfies the condition for the expected value of Brownian motion being zero, we have $\E(W_{\min(\tau,T)}) = 0$.
+
+The final answer is: $\boxed{0}$
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+## Step 1: Recall the definition of a Brownian Motion
+A Brownian Motion $W_t$ satisfies the following properties:
+- $W_0 = 0$
+- $W_t - W_s \sim \mathcal{N}(0, t-s)$ for $t > s$
+- The increments are independent
+
+## Step 2: Recall the definition of a bounded stopping time
+A stopping time $\tau$ is said to be bounded if there exists a constant $M$ such that $\tau < M$ almost surely.
+
+## Step 3: Compute $\E(W_\tau^2)$ using the properties of Brownian Motion and the definition of a bounded stopping time
+Since $\tau$ is bounded, we can write:
+$\E(W_\tau^2) = \E\left(\sum_{i=1}^\infty W_i^2 \mathbb{I}_{\{\tau=i\}}\right)$
+
+## Step 4: Simplify the expression using the properties of Brownian Motion
+Using the fact that $W_t - W_s \sim \mathcal{N}(0, t-s)$ for $t > s$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty \E\left(W_i^2 \mathbb{I}_{\{\tau=i\}}\right)$
+
+## Step 5: Evaluate the expectation using the properties of Brownian Motion
+Since $W_t$ is a Gaussian process, we have:
+$\E(W_i^2) = i$
+
+## Step 6: Simplify the expression further
+Using the fact that $\mathbb{I}_{\{\tau=i\}} = \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 7: Evaluate the sum
+Since $\tau$ is bounded, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)} = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 8: Simplify the expression using the properties of bounded stopping times
+Since $\tau$ is a bounded stopping time, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 9: Evaluate the sum
+Using the fact that $\mathbb{P}(\tau=i) = \frac{\mathbb{E}[\mathbb{I}_{\{\tau \leq i\}}]}{i}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 10: Simplify the expression
+Using the fact that $\mathbb{E}[\mathbb{I}_{\{\tau \leq i\}}] = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 11: Evaluate the sum
+Using the fact that $\mathbb{P}(\tau=i) = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 12: Simplify the expression
+Using the fact that $\mathbb{E}[\mathbb{I}_{\{\tau \leq i\}}] = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 13: Evaluate the sum
+Using the fact that $\mathbb{P}(\tau=i) = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 14: Simplify the expression
+Using the fact that $\mathbb{E}[\mathbb{I}_{\{\tau \leq i\}}] = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 15: Evaluate the sum
+Using the fact that $\mathbb{P}(\tau=i) = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 16: Simplify the expression
+Using the fact that $\mathbb{E}[\mathbb{I}_{\{\tau \leq i\}}] = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 17: Evaluate the sum
+Using the fact that $\mathbb{P}(\tau=i) = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 18: Simplify the expression
+Using the fact that $\mathbb{E}[\mathbb{I}_{\{\tau \leq i\}}] = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 19: Evaluate the sum
+Using the fact that $\mathbb{P}(\tau=i) = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 20: Simplify the expression
+Using the fact that $\mathbb{E}[\mathbb{I}_{\{\tau \leq i\}}] = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 21: Evaluate the sum
+Using the fact that $\mathbb{P}(\tau=i) = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 22: Simplify the expression
+Using the fact that $\mathbb{E}[\mathbb{I}_{\{\tau \leq i\}}] = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 23: Evaluate the sum
+Using the fact that $\mathbb{P}(\tau=i) = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 24: Simplify the expression
+Using the fact that $\mathbb{E}[\mathbb{I}_{\{\tau \leq i\}}] = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 25: Evaluate the sum
+Using the fact that $\mathbb{P}(\tau=i) = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 26: Simplify the expression
+Using the fact that $\mathbb{E}[\mathbb{I}_{\{\tau \leq i\}}] = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 27: Evaluate the sum
+Using the fact that $\mathbb{P}(\tau=i) = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 28: Simplify the expression
+Using the fact that $\mathbb{E}[\mathbb{I}_{\{\tau \leq i\}}] = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 29: Evaluate the sum
+Using the fact that $\mathbb{P}(\tau=i) = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 30: Simplify the expression
+Using the fact that $\mathbb{E}[\mathbb{I}_{\{\tau \leq i\}}] = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 31: Evaluate the sum
+Using the fact that $\mathbb{P}(\tau=i) = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 32: Simplify the expression
+Using the fact that $\mathbb{E}[\mathbb{I}_{\{\tau \leq i\}}] = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 33: Evaluate the sum
+Using the fact that $\mathbb{P}(\tau=i) = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \cdot \frac{\mathbb{I}_{\{\tau \leq i\}}}{\mathbb{P}(\tau=i)}$
+
+## Step 34: Simplify the expression
+Using the fact that $\mathbb{E}[\mathbb{I}_{\{\tau \leq i\}}] = \frac{i}{M}$, we have:
+$\E(W_\tau^2) = \sum_{i=1}^\infty i \

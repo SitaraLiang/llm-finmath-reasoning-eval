@@ -1,0 +1,164 @@
+Exercise: pc2_q1
+Model: llama3.2:1b
+Variation: baseline
+Prompt type: prompt_accumulation
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To solve this problem, we need to show that the conditions given are sufficient and necessary for a process $(X_t)_{t\in \R^+}$ to be a Brownian motion.
+
+First, let's recall the definition of a Brownian motion:
+
+$$
+B_t = B_0 + \sum_{k=1}^{n-1} (W_k - W_{k-1}) I_{\{t \in [0,n]\}}.
+$$
+
+where $B_0 = 0$, $W_k$ is a standard Brownian motion, and $I_A$ denotes the indicator function of set $A$. The increments $(W_k)_{k\geq 1}$ satisfy:
+
+$$
+\begin{aligned}
+& (W_{k+1} - W_k)^2 = \min(k,W_k^2)
+\end{aligned}
+$$
+
+Now, let's consider the condition that $(X_t)_{t\in \R^+}$ is a centered Gaussian process. This means that for any $s<t$, we have:
+
+$$
+\begin{aligned}
+{\rm Cov}(X_s,X_t)&=\int_0^1 s(t-x)^2x(dx) \\
+&=s(t-2s+t-s^2).
+\end{aligned}
+$$
+
+We can rewrite this as:
+
+$$
+\begin{aligned}
+{\rm Cov}(X_s,X_t)&=\min(s,t)-s-t.
+\end{aligned}
+$$
+
+This expression is equal to $\inf(s,t)$. Hence, we have shown that if $(X_t)_{t\in \R^+}$ is a centered Gaussian process, then it satisfies the condition $X_0=0$ and ${\rm Cov}(X_s,X_t)=\inf(s,t)$.
+
+Conversely, let's assume that $(X_t)_{t\in \R^+}$ is a Brownian motion. We need to show that it satisfies the conditions mentioned above.
+
+Since $(X_t)_{t\in \R^+}$ is a Gaussian process, we can write:
+
+$$
+\begin{aligned}
+(X_s,X_t)&=X_s + (X_t-X_s)-2{\rm Cov}(X_s,X_t)
+\end{aligned}
+$$
+
+Using the fact that $(X_t)_{t\in \R^+}$ is a Brownian motion, we can write:
+
+$$
+\begin{aligned}
+(X_s-X_t)&=W_s-W_t.
+\end{aligned}
+$$
+
+Therefore,
+
+$$
+\begin{aligned}
+(X_s,X_t)&=X_s + (W_s-W_t) - 2{\rm Cov}(X_s,W_t)
+\end{aligned}
+$$
+
+This expression is equal to:
+
+$$
+\begin{aligned}
+X_s-X_t&=(X_s-\min(s,t))+(X_t-\max(s,t))
+\end{aligned}
+$$
+
+We can rewrite this as:
+
+$$
+\begin{aligned}
+X_s-X_t&=X_s - s + X_t - t.
+\end{aligned}
+$$
+
+This expression is equal to $\inf(s,t)$, since the minimum of $(s,t)-s$ and $t-s$ is zero. Hence, we have shown that if $(X_t)_{t\in \R^+}$ is a Brownian motion, then it satisfies the conditions mentioned above.
+
+Therefore, we have shown that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t)$.
+
+LaTeX code for the proof:
+
+```latex
+\documentclass{article}
+\begin{document}
+
+\section*{Proof of Theorem 1}
+
+\subsection*{Supplemental assumption: $X_0 = 0$}
+
+If $(X_t)_{t\in \R^+}$ is a centered Gaussian process, then for any $s<t$, we have:
+
+$$
+{\rm Cov}(X_s,X_t)=\int_0^1 s(t-x)^2x(dx) \\
+= s(t-2s+t-s^2).
+$$
+
+This expression is equal to $\inf(s,t)$.
+
+If $(X_t)_{t\in \R^+}$ is a Brownian motion, then for any $s<t$, we have:
+
+$$
+(X_s,X_t)=X_s + (W_s-W_t)- 2{\rm Cov}(X_s,W_t).
+$$
+
+This expression is equal to $\inf(s,t)$.
+
+Therefore, we have shown that if $(X_t)_{t\in \R^+}$ is a centered Gaussian process, then it satisfies the condition $X_0=0$ and ${\rm Cov}(X_s,X_t)=\inf(s,t)$. This completes the proof of Theorem 1.
+
+\end{document}
+```
+
+This LaTeX code can be used to write the proof as a formal mathematical statement.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+To show that $\{X_t = t W_{\frac 1t}, t > 0, X_0 = 0\}$ is a Brownian motion, we need to verify the following conditions:
+
+(i) $X_t$ is adapted to the filtration $\mathcal{F}_t$
+
+(ii) $X_t$ has continuous paths
+
+(iii) $X_t$ is a martingale for each $t$
+
+(iv) $X_0 = 0$
+
+First, we show that (i) holds. Since $W_t$ is adapted to the filtration $\mathcal{F}_s$ for any $s \leq t$, it follows that $W_{\frac 1s}$ is also adapted to the filtration $\mathcal{F}_{\frac 1s}$. Therefore, $X_{t/2} = t W_{\frac 1t}$ and $X_t = t^2 W_{t}$ are well-defined processes. Moreover, since $W$ has continuous paths with finite expectation, it follows that $\mathbb{E}[X_t] = \mathbb{E}[t^2 W_{t}] < \infty$, which implies (i).
+
+Next, we show that (ii) holds. Since $|w| \leq 1$ for any $w \geq 0$, it follows that $\left|\frac{w}{t}\right| \leq 1$ and $\frac{\partial w}{\partial t} = -\lambda w$. Therefore, we have
+
+$$X_t = t W_{\frac{1}{t}} = t \cdot \inf(s,t)W_s.$$
+
+Moreover, since $W$ is centered Gaussian process, it follows that $(\ln X_t - \ln X_0)^2 = (\ln t + \lambda(t-\tau))^2 (W_\tau - W_0)^2$. This implies $\log X_t - \log X_0 = \log t + \lambda (t-0)^\frac{1}{2} \cdot dW$, which satisfies the mild property.
+
+To show that (iii) and (iv) hold, we need to verify:
+
+(iii) Since $X_t$ is a stochastic process, it follows that $\mathbb{E}[X_t| \mathcal{F}_s] = X_s$ for any $s \leq t$. Moreover,
+
+$$\begin{split}
+\mathbb{E}[(X_{t/2}-X_0)^2 | \mathcal{F}_{1/2}] & = \mathbb{E}[\frac{1}{4}(X_t-X_0)^2] \\
+& = \int_{-\infty}^\infty dW_s^2
+\end{split}$$
+
+Therefore, $\mathbb{E}[X_{t/2}-X_0 | \mathcal{F}_{1/2}] = 0$ and $X_t - X_0$ is a martingale.
+
+(iv) Since (iii) holds, we have that $(\log X_t - \log X_0)^2 = (\ln t + \lambda(t-0)^\frac{1}{2} \cdot dW)^2$. Therefore,
+
+$$X_0 = \mathbb{E}[X_0] = 0.$$
+
+Therefore, we have shown that $\{X_t = t W_{\frac 1t}, t > 0, X_0 = 0\}$ is a Brownian motion.
+
+Note: This solution follows from the properties of Ito processes and centered Gaussian processes.

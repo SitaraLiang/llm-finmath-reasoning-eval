@@ -1,0 +1,93 @@
+Exercise: pc2_q1
+Model: qwen2.5-coder:0.5b
+Variation: baseline
+Prompt type: strictly_sequential
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To solve the problem of showing that a process \((X_t)_{t \in \mathbb{R}^+}\) is a Brownian motion if and only if \(X_0 = 0\) and \((X_t)_{t \in \mathbb{R}^+\)\) is a centered Gaussian process, we need to analyze the properties of both processes.
+
+### Step-by-Step Solution:
+
+1. **Definition of Brownian Motion:**
+   A process \((X_t)_{t \in \mathbb{R}^+}\) is said to be a Brownian motion if and only if there exists an \(T > 0\) such that:
+   \[
+   X_t - X_0 = N_T(X_s)
+   \]
+   where \(N_T\) is the standard normal random variable. Here, \(X_0 = 0\).
+
+2. **Definition of Centered Gaussian Process:**
+   A centered Gaussian process \((X_t)_{t \in \mathbb{R}^+}\) is a sequence of independent and identically distributed random variables where each \(X_i\) follows a normal distribution with mean zero and variance 1.
+
+3. **Properties of Brownian Motion:**
+   The property that \(X_t - X_0 = N_T(X_s)\) for all \(t \in \mathbb{R}^+\) holds if and only if the process is a Wiener process (a continuous-time process with independent increments). This means that the process can be written in the form:
+   \[
+   X_t = W_t + E[W_{t-1}]
+   \]
+   where \(W_t\) is a Brownian motion and \(E[W_{t-1}]\) is the expected value of the Wiener process starting at time \(t\).
+
+4. **Properties of Centered Gaussian Process:**
+   The process can be written in the form:
+   \[
+   X_t = N_T(X_s) + E[N_T(X_{t-1})]
+   \]
+   where \(N_T\) is a centered Gaussian process and \(E[N_T(X_{t-1})]\) is the expected value of the centered Gaussian process starting at time \(t\).
+
+5. **Combining Properties:**
+   Since both processes are Wiener processes, their increments (which are the difference between consecutive increments in each random variable) must be independent and identically distributed. Additionally, since \(N_T\) and \(E[N_T(X_{t-1})]\) are centered Gaussian processes, we can use the property of these random variables to show that the increments can independently and identically distribute.
+
+6. **Conclusion:**
+   For a Brownian motion \((X_t)_{t \in \mathbb{R}^+}\) to be a centered Gaussian process, there exists an \(T > 0\) such that:
+   \[
+   X_t - X_0 = N_T(X_s)
+   \]
+   This means that the increments (which are independent and identically distributed) can independently and identically distribute. Therefore, \((X_t)\) is a centered Gaussian process.
+
+### Answer to Question 1:
+\[
+\boxed{(X_t)_{t \in \mathbb{R}^+}\text{ is a centered Gaussian process if and only if } X_0 = 0 \text{ and } (X_t)_{t \in \mathbb{R}^+\)\text{ is a Wiener process.}}
+\]
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+Let's start by defining the Brownian motion process \( W_t \). We know that this process follows a Markov chain where each transition involves either moving to a new position or staying in place, and it starts at position 0. Let's define \( X_t = t \) for all \( t > 0 \).
+
+### Step-by-Step Solution
+
+1. **Define the Transition Process:**
+   Since \( W_t \) is a Markov chain, we can express its transition probabilities as:
+   \[
+   P(X_t = t) = P(X_t = t - d) + P(X_t = t + d)
+   \]
+   where \( d \) is an increment.
+
+2. **Determine the Distribution of Transition Probabilities:**
+   The possible increments are \( 0, d, -d \). For each increment, the probabilities can be either:
+   - Stay in place for a unit time: \( P(X_t = t) = P(X_t = t + d) = P(X_t = t - d) \)
+   - Move to one of the two new positions (either \( t + d \) or \( t - d \)) with equal probability: \( P(X_t = t) = \frac{1}{2} P(X_t = t + d) + \frac{1}{2} P(X_t = t - d) = 0 \)
+
+3. **Combine the Probabilities:**
+   Since the process is a Markov chain, we can use the law of total probability to combine the probabilities:
+   \[
+   P(X_0 = x) = P(X_0 = 0)
+   \]
+   This implies that \( P(X_t = t) = P(X_0 + t \cdot d = t) \).
+
+4. **Determine the Distribution of \( X_0 \):**
+   From the above, we know:
+   - \( P(X_0 = 0) = P(X_0 + t \cdot 0 = 0) = P(X_0 = 0) = 1 \)
+
+5. **Conclusion:**
+   Since \( W_t \) is a Markov chain with the same transition probabilities and starting position, it must follow a Brownian motion of the same probability distribution as \( X_0 \). Therefore, if \( W_t \) is a Brownian motion, \( \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \} \) is also a Brownian motion.
+
+### Final Answer
+
+The given answer to the question "Show that if \( W_t \) is a Brownian motion, \( \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \} is a Brownian motion too. " is:
+
+\[
+\boxed{\text{If } W_t \text{ is a Brownian motion, then } \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \} \text{ is a Brownian motion.}}
+\]

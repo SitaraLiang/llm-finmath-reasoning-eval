@@ -1,0 +1,83 @@
+Exercise: pc4_q4
+Model: tinyllama
+Variation: baseline
+Prompt type: prompt_accumulation
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+In this context of financial mathematics exercise, let us consider the given problem statement:
+
+Question 1: When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$ and show how it follows from the stochastic differential equation (SDE) for $W$.
+
+Let us set up our problem in the context of SDEs, as described by the SDE (standard deviation):
+$$dW_t = \sigma dB_t$$
+where $B_t$ is a Brownian Motion and $\sigma$ is a parameter. We can solve for $\E(W_\tau)$ based on this equation:
+
+Assuming that $W_0=0$ (initial condition), we have:
+
+$$\E(W_\tau) = \int_0^\tau \E[(\E[\sigma^2|B_s])^\frac{1}{2}]\,ds$$
+
+The first step is to use the SDE for $W$:
+
+$$dW_t = \sigma dB_t$$
+
+Integrating from zero:
+
+$$\E(W_\tau) = \int_0^\tau \sigma^2\,d\tau$$
+
+Now, let us solve for $\E[(\E[\sigma^2|B_s])^\frac{1}{2}]$:
+
+$$\E[(\E[\sigma^2|B_s])^\frac{1}{2}] = \frac{\E[\sigma^2(s)]}{\int_0^s \sigma^2\,d\tau}$$
+
+Using the SDE for $W$, we get:
+
+$$\E[(\E[\sigma^2|B_s])^\frac{1}{2}] = \E[(\int_0^s \sigma^2\,d\tau)] = \E[\int_0^s \sigma^2(u)\,du] = \E[(s-\tau)^2\sigma^2],$$
+
+where we used the fact that $\E[\sigma^4]=1$. Finally, multiplying both sides by $2$ and using the definition of the expectation, we have:
+
+$$\E[W_\tau] = 2\int_0^\tau \sigma^2\,d\tau.$$
+
+We can integrate with respect to $\tau$:
+
+$$\E[W_\tau] = 2\int_0^{\tau}\sigma^2\,d\tau = 2\int_0^{\infty} u^2\sigma^2\,du$$
+
+Therefore, the expectation of $W$ at time $\tau$ is equal to:
+
+$$E[W_\tau] = \frac{\E[\E(W_\tau)]}{\E(\tau)}=2\int_0^{\infty}u^2\,\sigma^2\,du.$$
+
+This expression follows from the SDE for $W$.
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+In this mathematical answer, we will address Question 2 of the given context, i.e., when $\tau$ is a bounded stopping time and compute its expectation.
+
+To solve Question 2, we first need to define the following two concepts:
+
+1. Bounded stopping time: A stopping time $\tau$ is said to be "bounded" if $0 \leq \tau \leq \infty$.
+
+In our context, we have defined a bounded stopping time as $\tau = T_n$, where $T_n$ is an arbitrary stopping time with $0\leq T_n\leq n$ for all $n$.
+
+2. Expectation: The expectation operator in mathematics is defined as follows:
+
+$\E(X)=\lim_{\epsilon\downarrow 0}\frac{1}{\epsilon^2}\int^1_0 x^2d(\frac{1}{x^2-\epsilon})^2$
+
+Let us evaluate the expectation of $W_\tau^2$ under the assumption that $\tau$ is a bounded stopping time.
+
+To do so, we first take the square root of both sides:
+
+$\E(W_\tau^2)=\sqrt{\frac{1}{\tau^2}\int_0^\infty x^4\mathrm{d}x}=\sqrt{\frac{\E(\tau^2)}{\tau^2}}=\sqrt{\frac{\E(T_n^2)}{\tau^2}}=\sqrt{\frac{\E(T_n)^2}{n\tau^2}}$
+
+Since $\tau$ is a bounded stopping time, we can take the limit:
+
+$\lim_{\epsilon\downarrow 0}\frac{1}{\epsilon^2}\int^1_0 x^4d(\frac{x^4-\epsilon^2}{\epsilon})^2=\lim_{\epsilon\downarrow 0}\frac{\epsilon^2}{-6\epsilon^4}T_n^6+\mathcal{O}(\epsilon^4)$
+
+Hence, we obtain:
+
+$\E(W_\tau^2)=\sqrt{\frac{\E(T_n)^2}{n\tau^2}}=\sqrt{\frac{1}{\tau^2}\int^1_0 x^4d(\frac{x^2-\tau^2}{-6\tau^4})}\sqrt{1+\frac{1}{2\tau^2}}=
+\sqrt{\frac{1}{2\tau^2}\left(1+\frac{1}{\tau^2}\right)}>0$
+
+Therefore, the expected value of $W_\tau^2$ under the assumption that $\tau$ is a bounded stopping time is positive.

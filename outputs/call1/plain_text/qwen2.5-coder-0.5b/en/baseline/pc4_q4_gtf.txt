@@ -1,0 +1,83 @@
+Exercise: pc4_q4
+Model: qwen2.5-coder:0.5b
+Variation: baseline
+Prompt type: ground_truth_forcing
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+To solve the problem of computing \(\E(W_\tau)\) when \(\tau\) is a bounded stopping time in the context of Brownian Motion with an unknown mean \(\mu\), we need to understand that \(W_t\) is a random walk on a finite state space, and its expected value can be expressed using properties of Brownian motion.
+
+The key insight is that the expected value of a Brownian motion starting at 0 is the same as the initial expected value, which in this case is \(\mu\). This result is derived from the definition of expectation, where the expected value of a random variable \(X\) over an infinite period of time is equal to the sum of its possible values multiplied by their probabilities.
+
+For Brownian Motion starting at 0, the state space has only one element, which corresponds to the zeroth state. Therefore, we have:
+\[
+W_0 = \mu
+\]
+
+Substituting this into the formula for expected value, we get:
+\[
+E(W_\tau) = E(\mu)
+\]
+
+Thus, the expected value of \(W_\tau\) when \(\tau\) is a bounded stopping time is \(\boxed{\mu}\).
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+The Brownian Motion $W_t$ has the property that it is a martingale. When $\tau$ is a bounded stopping time, we can use Doob's optional stopping theorem to compute $\E[W_\tau]$. Here's the complete solution:
+
+### Question 1: Compute \(\E(W_\tau)\)
+
+Given:
+- $W_t$ is a Brownian Motion.
+- $\tau$ is a bounded stopping time.
+
+**Objective**: We need to find \(\E(W_\tau)\), the expected value of $W_t$ at time $\tau$.
+
+### Arguments
+
+1. **Martingale Property**: Since \(W_t\) is a Brownian Motion, it satisfies the property that \(W_t \geq 0\) for all $t \in \mathbb{R}$. This means that the expected value of \(W_t^2\) (where \(W_t = X_t - X_{t-1}\)) must be non-negative.
+
+2. **Doob's Optional Stopping Theorem**: According to Doob's optional stopping theorem, if we have a stopping time $\tau$ such that $W_\tau \geq 0$ at $\tau$, then:
+   \[
+   E(W_t^2) = E(X_t^2 - X_{t-1}^2)
+   \]
+   This is because the expected value of a function of a random variable can be expressed in terms of the expected values of its components.
+
+3. **Applying the Theorem**: Using the properties of Brownian Motion, we can use the fact that:
+   \[
+   X_t = W_t - X_{t-1} = (W_t^2 + W_{t-1}) / 2
+   \]
+   Therefore,
+   \[
+   E(W_t^2) = E\left(\frac{(W_t^2 + W_{t-1})}{2}\right)
+   \]
+   Using the property of Brownian Motion again, we get:
+   \[
+   E\left(\frac{(W_t^2 + W_{t-1})}{2}\right) = E(W_t^2) - E(W_{t-1})
+   \]
+
+4. **Substituting \(E(W_\tau)\)**: Since \(\E(W_\tau) > 0\) and \(\tau\) is bounded, we have:
+   \[
+   E\left(\frac{(W_t^2 + W_{t-1})}{2}\right) = \frac{1}{2} E(W_t^2)
+   \]
+
+5. **Conclusion**: Therefore,
+   \[
+   \E(W_\tau^2) = \frac{1}{2} E(W_t^2)
+   \]
+   Since \(E(W_t^2) > 0\), it follows that:
+   \[
+   E(W_\tau^2) = \frac{1}{2}
+   \]
+
+### Answer to Question 1
+
+The expected value of $W_t$ at time $\tau$ is \(\boxed{\frac{1}{2}}\).
+
+---
+
+This solution addresses the problem by using Doob's optional stopping theorem, which is a well-known result in Brownian Motion theory.

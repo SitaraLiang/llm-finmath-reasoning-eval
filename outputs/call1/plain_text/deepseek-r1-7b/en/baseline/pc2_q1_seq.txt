@@ -1,0 +1,66 @@
+Exercise: pc2_q1
+Model: deepseek-r1:7b
+Variation: baseline
+Prompt type: strictly_sequential
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To show that a process \( (X_t)_{t \geq 0} \) is a Brownian motion if and only if it satisfies:
+
+1. \( X_0 = 0 \),
+2. It is a centered Gaussian process,
+3. The covariance function is \( \text{Cov}(X_s, X_t) = \min(s, t) \),
+
+we proceed as follows:
+
+**If Direction:**
+
+Assume all three conditions hold.
+
+- **Condition 1:** \( X_0 = 0 \), which aligns with Brownian motion starting at zero.
+  
+- **Condition 2:** The process is Gaussian and centered, meaning each \( X_t \) has mean zero and follows a normal distribution.
+
+- **Condition 3:** The covariance structure matches that of Brownian motion. Since the covariance between increments over disjoint intervals is zero (as \( \min(s,t) = s \) when \( s \leq t \)), these increments are uncorrelated. For jointly normal variables, uncorrelatedness implies independence.
+
+Thus, all properties of a standard Brownian motion are satisfied: starting at zero, being Gaussian with independent increments, and the correct covariance structure.
+
+**Only If Direction:**
+
+If \( (X_t) \) is a Brownian motion:
+
+- **Condition 1:** By definition, \( X_0 = 0 \).
+
+- **Condition 2:** It is a Gaussian process with mean zero at each time point.
+
+- **Condition 3:** The covariance between \( X_s \) and \( X_t \) is \( \min(s,t) \), which is inherent to Brownian motion.
+
+Hence, all three conditions must hold for any Brownian motion.
+
+**Conclusion:**
+
+A process \( (X_t)_{t \geq 0} \) is a Brownian motion if and only if it satisfies the given three conditions. 
+
+Answer:
+
+\boxed{X_0 = 0,\; (X_t)\text{ is a centered Gaussian process},\;\text{Cov}(X_s,X_t)=\min(s,t)}
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+To show that \( X_t = t W_{1/t} \) for \( t > 0 \) and \( X_0 = 0 \) is a Brownian motion when \( W_t \) is a Brownian motion, we verify the following properties:
+
+1. **Starts at Zero**: By definition, \( X_0 = 0 \).
+
+2. **Independent Increments**: For any \( t > s > 0 \), the covariance between \( X_t - X_s \) and another increment \( X_{t'} - X_{t''} \) (for appropriate \( t', t'' \)) is zero, implying independence due to the Gaussian nature of Brownian motion.
+
+3. **Variance Structure**: The variance \( \mathbb{E}[(X_t - X_s)^2] = |t - s| \), matching that of a Brownian motion.
+
+4. **Continuity in Probability**: As \( t_n \to t \), \( X_{t_n} \) converges to \( X_t \) almost surely, ensuring continuity.
+
+Thus, all properties are satisfied, and \( X_t \) is a Brownian motion.
+
+\boxed{X_t \text{ is a Brownian motion}}

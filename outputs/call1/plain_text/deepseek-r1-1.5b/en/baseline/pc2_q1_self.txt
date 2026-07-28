@@ -1,0 +1,155 @@
+Exercise: pc2_q1
+Model: deepseek-r1:1.5b
+Variation: baseline
+Prompt type: self_history
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To show that a process \( (X_t)_{t \in \mathbb{R}^+} \) is a Brownian motion if and only if it satisfies the following conditions:
+
+1. \( X_0 = 0 \),
+2. The process \( (X_t)_{t \in \mathbb{R}^+} \) is a centered Gaussian process,
+3. The covariance function \( {\rm Cov}(X_s, X_t) = s \wedge t \).
+
+**Proof:**
+
+**(⇒ If direction)**
+
+Assume that \( (X_t)_{t \in \mathbb{R}^+} \) satisfies all three conditions.
+
+1. **\( X_0 = 0 \):** This ensures the process starts at zero.
+2. **Centered Gaussian Process:** Each finite-dimensional distribution is multivariate normal with mean zero, fulfilling the centering requirement.
+3. **Covariance Function:** The covariance \( {\rm Cov}(X_s, X_t) = s \wedge t \) implies that increments are independent and have variances proportional to their time separation.
+
+These conditions align exactly with the defining properties of a Brownian motion:
+- It is continuous in probability (pathwise).
+- The increments are independent and stationary.
+- The covariance structure is linear, specifically \( {\rm Cov}(X_s, X_t) = s \wedge t \).
+
+Thus, \( (X_t)_{t \in \mathbb{R}^+} \) must be a Brownian motion.
+
+**(⇐ Only if direction)**
+
+Suppose \( (X_t)_{t \in \mathbb{R}^+} \) is a Brownian motion. Then it satisfies all the standard properties:
+
+1. **\( X_0 = 0 \):** By definition.
+2. **Centered Gaussian Process:** Each finite-dimensional distribution is multivariate normal with mean zero.
+3. **Covariance Function:** For any \( s < t \), the covariance \( {\rm Cov}(X_s, X_t) = s \); otherwise, it's zero. This corresponds to \( s \wedge t \).
+
+Since all these properties are satisfied by Brownian motion, we conclude that if a process satisfies these conditions, it must be a Brownian motion.
+
+**Conclusion:**
+
+A process \( (X_t)_{t \in \mathbb{R}^+} \) is a Brownian motion if and only if it is centered Gaussian with \( X_0 = 0 \) and covariance function \( {\rm Cov}(X_s, X_t) = s \wedge t \).
+
+```lean4
+theorem brownian_motion_iff (processes : 
+    ℝ → ℝ → 𝓝 ↦ 𝔽) :
+(∀ t ∈ ℝ^+, processes t ∈ 𝔽 ∧ Gaussian measurable)
+⇒ (fun t ↦ processes t ∈ ℝ^+ → (fun s ↦ processes s ∈ ℝ^+
+          → (fun t ↦ processes t ∈ ℝ^+
+          → (fun t ↦ processes t ∈ ℝ^+
+          → (fun s ↦ processes s ∈ ℝ^+
+          → (fun t ↦ processes t ∈ ℝ^+
+          → BrownianMotion processes))) :=
+    -- Assume the process satisfies all three conditions of a Brownian motion.
+    filter_upwards fun s ↦ fun t ↦ Filter.has_nonempty_range (fun f ↦ (f 0 = 0 ∧ Gaussian measurable) f (by simp [f])) at
+      ⟨fun t ↦ by aesop, fun s ↦ fun t ↦ by aesop⟩
+```
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+To demonstrate that \( \{X_t = tW_{1/t},\ t > 0,\ X_0 = 0\} \) is a Brownian motion when \( W_t \) is, we proceed as follows:
+
+**Proof:**
+
+We need to verify that the process \( X_t = tW_{1/t} \) for \( t > 0 \), with \( X_0 = 0 \), satisfies the defining properties of a Brownian motion. These properties are:
+
+1. **Initial Condition**: \( X_0 = 0 \).
+2. **Independent Increments**: The increments \( X_t - X_s \) are independent for any \( s < t \).
+3. **Stationary Increments**: The increments \( X_t - X_s \) have a distribution that depends only on \( t - s \).
+4. **Continuity in Probability**: For any \( \epsilon > 0 \) and \( t_0 > 0 \), \( P(|X_t - X_{t_0}| > \epsilon) \to 0 \) as \( t \to t_0^+ \).
+
+**1. Initial Condition:**
+
+For \( t = 0 \):
+\[
+X_0 = 0 \cdot W_{1/0} = 0
+\]
+Hence, the initial condition holds.
+
+**2. Independent Increments:**
+
+Consider two time points \( s < t \). The increment:
+\[
+X_t - X_s = tW_{1/t} - sW_{1/s}
+\]
+Since \( W_t \) is a Brownian motion with independent increments, for any \( u \neq v \), \( W_u - W_v \) is independent of all increments before \( v \). 
+
+To see the independence between \( X_t - X_s \) and \( X_u - X_v \) for disjoint intervals or non-overlapping time segments, consider that when \( s < t < u < v \):
+\[
+X_t - X_s = tW_{1/t} - sW_{1/s}
+\]
+and
+\[
+X_u - X_v = uW_{1/u} - vW_{1/v}
+\]
+The increments span different time intervals and are independent due to the properties of Brownian motion. Therefore, \( X_t - X_s \) is independent of all previous increments.
+
+**3. Stationary Increments:**
+
+For fixed interval length \( h = t - s > 0 \), we examine:
+\[
+X_{s+h} - X_s = (s + h)W_{1/(s + h)} - s W_{1/s}
+\]
+Simplify:
+\[
+= sW_{1/(s + h)} + h W_{1/(s + h)} - s W_{1/s}
+\]
+Factor out \( s \):
+\[
+= s (W_{1/(s + h)} - W_{1/s}) + h W_{1/(s + h)}
+\]
+The term \( W_{1/(s + h)} - W_{1/s} \) is independent of \( s \), and its variance scales with \( h \). However, when divided by the time interval \( h \), we have:
+\[
+\frac{X_{s+h} - X_s}{h} = \frac{s}{h} (W_{1/(s + h)} - W_{1/s}) + W_{1/(s + h)}
+\]
+The term involving \( s/h \) tends to zero as \( s \to 0 \), and the variance of this expression is proportional to \( h \). This shows that the distribution of increments depends only on \( h \), satisfying stationarity.
+
+**4. Continuity in Probability:**
+
+For any \( \epsilon > 0 \) and \( t_0 > 0 \), consider a sequence \( t_n \to t_0^+ \):
+\[
+P(|X_{t_n} - X_{t_0}| > \epsilon) = P\left(\left| (t_n + t_0)(W_{1/(t_n)} - W_{1/(t_0)}) \right| > \epsilon\right)
+\]
+Divide both sides by \( t_n + t_0 \):
+\[
+P\left(|W_{1/(t_n)} - W_{1/(t_0)}| > \frac{\epsilon}{t_n + t_0}\right)
+\]
+As \( t_n \to t_0^+ \), the time interval between \( 1/t_n \) and \( 1/t_0 \) becomes smaller, approaching zero. By the continuity of Brownian motion in probability:
+\[
+P(|W_{t} - W_{t_0}| > \epsilon') \to 0 \text{ as } t \to t_0^+
+\]
+for any \( t_0, \epsilon' > 0 \). Hence, \( X_t \) is continuous in probability.
+
+**Conclusion:**
+
+Since all the defining properties of a Brownian motion are satisfied by \( \{X_t = tW_{1/t},\ t > 0,\ X_0 = 0\} \), we conclude that this process is indeed a Brownian motion. Therefore, if \( W_t \) is a Brownian motion, then the process \( X_t \) defined as above is also a Brownian motion.
+
+```lean4
+theorem brownian_motion_iff (processes : 
+    ℝ → ℝ → 𝓝 ↦ 𝔽) :
+(∀ t ∈ ℝ^+ , processes t ∈ 𝔽 ∧ Gaussian measurable)
+⇒ (fun t ↦ processes t ∈ ℝ^+ → (fun s ↦ processes s ∈ ℝ^+
+          → (fun t ↦ processes t ∈ ℝ^+
+          → (fun s ↦ processes s ∈ ℝ^+
+          → (fun t ↦ processes t ∈ ℝ^+
+          → (fun s ↦ processes s ∈ ℝ^+
+          → BrownianMotion processes))) :=
+    -- Assume the process satisfies all three conditions of a Brownian motion.
+    filter_upwards fun s ↦ fun t ↦ Filter.has_nonempty_range (fun f ↦ (f 0 = 0 ∧ Gaussian measurable) f (by aesop [s, t]))
+```
