@@ -21,8 +21,8 @@ input:
     prompt_types:
       - "strictly_sequential"
       - "prompt_accumulation"
-      #- "ground_truth_forcing"
-      #- "self_history"
+      - "ground_truth_forcing"
+      - "self_history"
 
 output:
   directory_template: "{model1}/{model2}/{language}/{variation}"
