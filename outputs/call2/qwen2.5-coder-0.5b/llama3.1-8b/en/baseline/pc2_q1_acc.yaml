@@ -1,0 +1,24 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: baseline
+prompt_type: prompt_accumulation
+call1_output_mode: plain_text
+call1_model: qwen2.5-coder-0.5b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - A process $(X_t)_{t\in \R^+}$ is a centered Gaussian process.
+        - $X_0 = 0$
+        arguments:
+        - Definition of Brownian Motion
+        outcomes:
+        - The process $(X_t)_{t\in \R^+}$ is a Brownian motion.
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Brownian motion properties and vector spaces
+        outcomes:
+        - X_t = t W_{1/t} is a Brownian motion too

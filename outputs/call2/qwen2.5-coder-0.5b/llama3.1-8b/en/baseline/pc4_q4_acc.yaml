@@ -1,0 +1,24 @@
+pc: '4'
+exercise: '4'
+language: en
+variation: baseline
+prompt_type: prompt_accumulation
+call1_output_mode: plain_text
+call1_model: qwen2.5-coder-0.5b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - The stopping time $\tau$ is bounded.
+        arguments:
+        - Properties of Brownian Motion and stochastic differential equations (SDEs)
+        outcomes:
+        - Expected value of $W_\tau$
+-   atoms:
+    -   preconditions:
+        - Brownian Motion Definition
+        - Conditional Expectation
+        arguments:
+        - Properties of Brownian Motion and Conditional Expectation
+        outcomes:
+        - E(W_tau^2)

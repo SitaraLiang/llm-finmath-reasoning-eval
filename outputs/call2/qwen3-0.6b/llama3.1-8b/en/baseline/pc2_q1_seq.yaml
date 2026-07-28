@@ -1,0 +1,30 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: baseline
+prompt_type: strictly_sequential
+call1_output_mode: plain_text
+call1_model: qwen3-0.6b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - A process (X_t)_{t\in \R^+} is a Brownian motion
+        arguments:
+        - Definition of Brownian motion
+        outcomes:
+        - Cov(X_s, X_t) = inf(s,t)
+    -   preconditions:
+        - Cov(X_s, X_t) = inf(s,t)
+        arguments:
+        - Gaussian process with zero mean and covariance matrix Cov(X_s, X_t) = inf(s,t)
+        outcomes:
+        - Process (X_t)_{t\in \R^+} is a Brownian motion
+-   atoms:
+    -   preconditions:
+        - W_t is a standard Brownian motion
+        arguments:
+        - Properties of X_t as a normal process with mean 0 and variance t, martingale
+            properties
+        outcomes:
+        - X_t = t * W_1t is a Brownian motion

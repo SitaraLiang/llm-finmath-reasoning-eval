@@ -1,0 +1,19 @@
+summary:
+    call1_input_files: 56
+    conversion_jobs: 56
+    conversion_mode: per_question
+    yaml_files_written: 27
+    yaml_files_skipped: 28
+    conversions_failed: 1
+failed_jobs:
+-   exercise: pc4_q4
+    call1_model: deepseek-r1-1.5b
+    call2_model: llama3.1:8b
+    language: en
+    variation: baseline
+    prompt_type: self_history
+    call1_output_mode: plain_text
+    call1_path: /home/xinyi.liang/dev_python/llmaths/project/outputs/call1/plain_text/deepseek-r1-1.5b/en/baseline/pc4_q4_self.txt
+    output_path: /home/xinyi.liang/dev_python/llmaths/project/outputs/call2_zeroshot_per_question/deepseek-r1-1.5b/llama3.1-8b/en/baseline/pc4_q4_self.yaml
+    error: 'Question block 1/2 failed: atoms[3].arguments must contain at least one
+        argument.'

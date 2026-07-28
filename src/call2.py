@@ -643,12 +643,14 @@ def run_call2(config: dict) -> None:
                         progress(f"{job_label}: retrying in {retry_delay}s")
                         time.sleep(retry_delay)
 
-                if save_raw:
-                    atomic_write_text(raw_output_path(out_path), raw_response, overwrite=True)
                 if save_prompt:
                     atomic_write_text(prompt_output_path(out_path), conversion_prompt, overwrite=True)
 
                 if parsed is None:
+                    # Keep raw model text only when validation fails; successful
+                    # conversions are represented by the final YAML file.
+                    if save_raw:
+                        atomic_write_text(raw_output_path(out_path), raw_response, overwrite=True)
                     failed += 1
                     failed_jobs.append(
                         {

@@ -1,0 +1,21 @@
+### Question block 1
+```yml
+subquestions:
+atoms:
+- preconditions:
+  - τ is a bounded stopping time
+  arguments:
+  - Calculation
+  outcomes:
+  - \E(W_τ) = \E(W_0)
+- preconditions:
+  - W_t is a Brownian motion and τ is a bounded stopping time
+  arguments:
+  - martingale property of W_t
+  outcomes:
+  - \E[W_τ] = \E[W_0]
+- preconditions:
+  - τ is a bounded stopping time and W_0 = 0
+  arguments: []
+  outcomes:
+  - \E(W_τ) = 0
