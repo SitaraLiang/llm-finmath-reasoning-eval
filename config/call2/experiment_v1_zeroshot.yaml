@@ -20,9 +20,9 @@ input:
     # Leave empty or omit to accept every prompt type found in the Call 1 file.
     prompt_types:
       - "strictly_sequential"
-      - "prompt_accumulation"
-      - "ground_truth_forcing"
-      - "self_history"
+      #- "prompt_accumulation"
+      #- "ground_truth_forcing"
+      #- "self_history"
 
 output:
   directory_template: "{model1}/{model2}/{language}/{variation}"
@@ -347,21 +347,21 @@ ollama:
 models:
   - id: "qwen3:0.6b"
     provider: "ollama"
-    enabled: true
+    enabled: false
     parameters:
       temperature: 0.0
       max_output_tokens: 1200
 
   - id: "deepseek-r1:1.5b"
     provider: "ollama"
-    enabled: true
+    enabled: false
     parameters:
       temperature: 0.0
       max_output_tokens: 1200
 
   - id: "mistral:7b"
     provider: "ollama"
-    enabled: true
+    enabled: false
     parameters:
       temperature: 0.0
       max_output_tokens: 800
