@@ -372,7 +372,7 @@ models:
 
   - id: "mistral:7b"
     provider: "ollama"
-    enabled: false
+    enabled: ture
     parameters:
       temperature: 0.0
       max_output_tokens: 800
@@ -389,15 +389,15 @@ models:
       temperature: 0.0
       max_output_tokens: 800
 
-  - id: "gemma2:9b"
+  - id: "llama3.1:8b"
+    provider: "ollama"
     enabled: false
     parameters:
       temperature: 0.0
       max_output_tokens: 800
 
-  - id: "llama3.1:8b"
-    provider: "ollama"
-    enabled: true
+  - id: "gemma2:9b"
+    enabled: false
     parameters:
       temperature: 0.0
       max_output_tokens: 800
