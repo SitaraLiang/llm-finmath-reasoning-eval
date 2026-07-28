@@ -69,16 +69,16 @@ prompts:
         ...
         Answer:
         ...
-    - Group the SOURCE ANSWER by Question blocks, not by Answer labels.
-    - The number of top-level items under subquestions MUST equal the number
-      of Question blocks in SOURCE ANSWER.
-    - Each top-level subquestions item represents one Question block and must
-      have exactly one atoms field.
+    - Prefer grouping the SOURCE ANSWER by Question blocks, not by Answer labels.
+    - Usually, each Question block should become one top-level item under
+      subquestions.
+    - Each top-level subquestions item should represent one Question block and
+      must have exactly one atoms field.
     - If a single Question block contains more than one Answer: label, treat all
       of that text as belonging to the same Question block.
     - Do not create one top-level subquestion per proof step.
-    - Put all proof steps from the same Question block inside that item's atoms
-      structure.
+    - When possible, put all proof steps from the same Question block inside
+      that item's atoms structure.
     - Preserve the order of Question blocks.
     - Do not convert Question: text into atoms unless the same fact is repeated
       inside the corresponding answer text.
@@ -87,8 +87,9 @@ prompts:
     - Top-level:
         subquestions:
         - atoms: ...
-    - Each Question block in SOURCE ANSWER becomes exactly one item in subquestions.
-    - If SOURCE ANSWER has 2 Question blocks, output exactly 2 top-level
+    - Usually, each Question block in SOURCE ANSWER becomes one item in
+      subquestions.
+    - If SOURCE ANSWER has 2 clear Question blocks, normally output 2 top-level
       subquestions items.
     - Each subquestions item must have exactly one key: atoms.
     - The atoms value represents the full proof structure for that Question block.
