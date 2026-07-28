@@ -209,6 +209,48 @@ def validate_converted_exercise(
     return data, None
 
 
+def validate_single_question_conversion(data: dict) -> tuple[object | None, str | None]:
+    """Validate a single-question conversion and return its atoms structure.
+
+    Per-question Call 2 can ask the model for a smaller payload:
+
+        atoms: ...
+
+    For compatibility with existing prompts/models, this also accepts:
+
+        subquestions:
+        - atoms: ...
+    """
+    if "atoms" in data:
+        atoms = data["atoms"]
+        error_message = validate_atom_container(atoms, "atoms")
+        if error_message:
+            return None, error_message
+        return atoms, None
+
+    if "subquestions" in data:
+        if not isinstance(data["subquestions"], list):
+            return None, "Top-level 'subquestions' value must be a list."
+        if len(data["subquestions"]) != 1:
+            return (
+                None,
+                "Single-question conversion must contain exactly one "
+                "subquestions item when using the subquestions wrapper.",
+            )
+        subquestion = data["subquestions"][0]
+        if not isinstance(subquestion, dict):
+            return None, "subquestions[1] must be a mapping."
+        if "atoms" not in subquestion:
+            return None, "subquestions[1] must contain an 'atoms' key."
+        atoms = subquestion["atoms"]
+        error_message = validate_atom_container(atoms, "subquestions[1].atoms")
+        if error_message:
+            return None, error_message
+        return atoms, None
+
+    return None, "Single-question conversion must contain an 'atoms' key."
+
+
 def validate_string_list(value, location: str) -> str | None:
     if not isinstance(value, list):
         return f"{location} must be a list of strings."

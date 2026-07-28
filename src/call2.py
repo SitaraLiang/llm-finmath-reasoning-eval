@@ -13,6 +13,7 @@ from conversion_validator import (
     parse_yaml_response,
     repair_converted_exercise,
     validate_converted_exercise,
+    validate_single_question_conversion,
 )
 
 
@@ -247,12 +248,17 @@ def render_source_answer(source_answer) -> str:
     return dump_yaml(source_answer)
 
 
-def build_conversion_prompt(prompts: dict, metadata: dict, source_answer) -> str:
+def build_conversion_prompt(
+    prompts: dict,
+    metadata: dict,
+    source_answer,
+    prompt_key: str = "conversion",
+) -> str:
     values = {
         **metadata,
         "source_answer": render_source_answer(source_answer),
     }
-    return Template(prompts["conversion"]).safe_substitute(values).strip()
+    return Template(prompts[prompt_key]).safe_substitute(values).strip()
 
 
 def build_repair_prompt(prompts: dict, raw_response: str, error_message: str) -> str:
@@ -301,10 +307,24 @@ def ollama_generate(model: dict, prompt: str, endpoint: str, timeout: int) -> st
     return result.get("response", "")
 
 
+def split_question_blocks(source_answer) -> list:
+    """Split a Call 1 complete-exercise answer into script-labeled questions."""
+    if isinstance(source_answer, str):
+        pattern = re.compile(r"(?ms)^Question\s+\d+:\s*.*?(?=^Question\s+\d+:|\Z)")
+        blocks = [match.group(0).strip() for match in pattern.finditer(source_answer)]
+        return blocks or [source_answer]
+
+    if isinstance(source_answer, dict):
+        subquestions = source_answer.get("subquestions")
+        if isinstance(subquestions, list) and subquestions:
+            return [{"subquestions": [subquestion]} for subquestion in subquestions]
+    return [source_answer]
+
+
 def output_path(config: dict, metadata: dict, model2: str) -> Path:
     """Build output YAML path for a converted complete exercise."""
     output_config = config.get("output", {})
-    root = project_path(output_config.get("root_directory", "outputs/call2"))
+    root = output_root(config)
     directory_template = output_config.get(
         "directory_template", "{model1}/{model2}/{language}/{variation}"
     )
@@ -317,6 +337,25 @@ def output_path(config: dict, metadata: dict, model2: str) -> Path:
         "model2_raw": model2,
     }
     return root / directory_template.format(**values) / filename_template.format(**values)
+
+
+def output_root(config: dict) -> Path:
+    """Resolve output root, defaulting by experiment family and conversion mode."""
+    output_config = config.get("output", {})
+    if "root_directory" in output_config:
+        return project_path(output_config["root_directory"])
+
+    conversion_mode = get_nested(config, ["conversion", "mode"], "complete_exercise")
+    experiment_name = str(get_nested(config, ["experiment", "name"], "")).lower()
+    is_zeroshot = "zeroshot" in experiment_name or "zero_shot" in experiment_name
+
+    if conversion_mode == "per_question":
+        if is_zeroshot:
+            return project_path("outputs/call2_zeroshot_per_question")
+        return project_path("outputs/call2_per_question")
+    if is_zeroshot:
+        return project_path("outputs/call2_zeroshot")
+    return project_path("outputs/call2")
 
 
 def raw_output_path(parsed_output_path: Path) -> Path:
@@ -342,7 +381,7 @@ def atomic_write_text(path: Path, content: str, overwrite: bool) -> bool:
 
 def write_error_report(config: dict, summary: dict, failed_jobs: list[dict]) -> None:
     output_config = config.get("output", {})
-    root = project_path(output_config.get("root_directory", "outputs/call2"))
+    root = output_root(config)
     report_filename = output_config.get("error_report_filename", "error_files.yaml")
     report_path = root / report_filename
     if not failed_jobs:
@@ -400,6 +439,106 @@ def convert_with_repairs(
     return parsed, raw_response, error_message, conversion_prompt
 
 
+def convert_question_block_with_repairs(
+    model: dict,
+    prompts: dict,
+    metadata: dict,
+    question_block,
+    endpoint: str,
+    timeout: int,
+    repair_attempts: int,
+) -> tuple[object | None, str, str | None, str]:
+    """Convert one question block to an atoms structure."""
+    prompt_key = "per_question_conversion"
+    if prompt_key not in prompts:
+        prompt_key = "conversion"
+    conversion_prompt = build_conversion_prompt(
+        prompts,
+        metadata,
+        question_block,
+        prompt_key=prompt_key,
+    )
+    raw_response = ollama_generate(
+        model,
+        conversion_prompt,
+        endpoint,
+        timeout,
+    )
+    parsed, error_message = parse_yaml_response(raw_response)
+    atoms = None
+    if parsed is not None:
+        parsed = repair_converted_exercise(parsed)
+        atoms, error_message = validate_single_question_conversion(parsed)
+
+    attempts = 0
+    while atoms is None and attempts < repair_attempts:
+        attempts += 1
+        raw_response = ollama_generate(
+            model,
+            build_repair_prompt(
+                prompts,
+                f"Original task:\n{conversion_prompt}\n\nInvalid response:\n{raw_response}",
+                error_message or "unknown error",
+            ),
+            endpoint,
+            timeout,
+        )
+        parsed, error_message = parse_yaml_response(raw_response)
+        if parsed is not None:
+            parsed = repair_converted_exercise(parsed)
+            atoms, error_message = validate_single_question_conversion(parsed)
+    return atoms, raw_response, error_message, conversion_prompt
+
+
+def convert_per_question_with_repairs(
+    model: dict,
+    prompts: dict,
+    metadata: dict,
+    source_answer,
+    endpoint: str,
+    timeout: int,
+    repair_attempts: int,
+) -> tuple[dict | None, str, str | None, str]:
+    """Convert each question block separately, then assemble subquestions."""
+    question_blocks = split_question_blocks(source_answer)
+    subquestions = []
+    raw_sections = []
+    prompt_sections = []
+
+    for index, question_block in enumerate(question_blocks, start=1):
+        block_metadata = {
+            **metadata,
+            "question_block_index": index,
+            "question_block_count": len(question_blocks),
+        }
+        atoms, raw_response, error_message, conversion_prompt = convert_question_block_with_repairs(
+            model,
+            prompts,
+            block_metadata,
+            question_block,
+            endpoint,
+            timeout,
+            repair_attempts,
+        )
+        raw_sections.append(f"### Question block {index}\n{raw_response}")
+        prompt_sections.append(f"### Question block {index}\n{conversion_prompt}")
+        if atoms is None:
+            return (
+                None,
+                "\n\n".join(raw_sections),
+                f"Question block {index}/{len(question_blocks)} failed: {error_message}",
+                "\n\n".join(prompt_sections),
+            )
+        subquestions.append({"atoms": atoms})
+
+    return (
+        {"subquestions": subquestions},
+        "\n\n".join(raw_sections),
+        None,
+        "\n\n".join(prompt_sections),
+    )
+
+
 def run_call2(config: dict) -> None:
     inputs = discover_call1_inputs(config)
     models = enabled_models(config)
@@ -412,6 +551,11 @@ def run_call2(config: dict) -> None:
     max_retries = get_nested(config, ["execution", "max_retries"], 1)
     retry_delay = get_nested(config, ["execution", "retry_delay_seconds"], 2)
     repair_attempts = get_nested(config, ["conversion", "repair", "max_attempts"], 1)
+    conversion_mode = get_nested(config, ["conversion", "mode"], "complete_exercise")
+    if conversion_mode not in {"complete_exercise", "per_question"}:
+        raise SystemExit(
+            "Error: conversion.mode must be 'complete_exercise' or 'per_question'."
+        )
 
     written = 0
     skipped = 0
@@ -424,6 +568,7 @@ def run_call2(config: dict) -> None:
         return {
             "call1_input_files": len(inputs),
             "conversion_jobs": total_jobs,
+            "conversion_mode": conversion_mode,
             "yaml_files_written": written,
             "yaml_files_skipped": skipped,
             "conversions_failed": failed,
@@ -432,7 +577,7 @@ def run_call2(config: dict) -> None:
     progress(
         "Call 2 starting: "
         f"{len(inputs)} Call 1 file(s), {len(models)} model(s), "
-        f"{total_jobs} conversion job(s)."
+        f"{total_jobs} conversion job(s), mode={conversion_mode}."
     )
 
     for item in inputs:
@@ -461,15 +606,36 @@ def run_call2(config: dict) -> None:
                     try:
                         if max_retries > 1:
                             progress(f"{job_label}: Ollama attempt {attempt}/{max_retries}")
-                        parsed, raw_response, error_message, conversion_prompt = convert_with_repairs(
-                            model,
-                            prompts,
-                            item,
-                            source_answer,
-                            endpoint,
-                            timeout,
-                            repair_attempts,
-                        )
+                        if conversion_mode == "per_question":
+                            (
+                                parsed,
+                                raw_response,
+                                error_message,
+                                conversion_prompt,
+                            ) = convert_per_question_with_repairs(
+                                model,
+                                prompts,
+                                item,
+                                source_answer,
+                                endpoint,
+                                timeout,
+                                repair_attempts,
+                            )
+                        else:
+                            (
+                                parsed,
+                                raw_response,
+                                error_message,
+                                conversion_prompt,
+                            ) = convert_with_repairs(
+                                model,
+                                prompts,
+                                item,
+                                source_answer,
+                                endpoint,
+                                timeout,
+                                repair_attempts,
+                            )
                         break
                     except RuntimeError:
                         if attempt == max_retries:
@@ -545,6 +711,7 @@ def run_call2(config: dict) -> None:
     write_error_report(config, current_summary(), failed_jobs)
     print(f"Call 1 input files: {len(inputs)}")
     print(f"Conversion jobs: {total_jobs}")
+    print(f"Conversion mode: {conversion_mode}")
     print(f"YAML files written: {written}")
     print(f"YAML files skipped: {skipped}")
     print(f"Conversions failed: {failed}")

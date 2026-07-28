@@ -6,7 +6,11 @@ from pathlib import Path
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
-from conversion_validator import repair_converted_exercise, validate_converted_exercise  # noqa: E402
+from conversion_validator import (  # noqa: E402
+    repair_converted_exercise,
+    validate_converted_exercise,
+    validate_single_question_conversion,
+)
 
 
 class ConversionValidatorRepairTest(unittest.TestCase):
@@ -52,6 +56,42 @@ class ConversionValidatorRepairTest(unittest.TestCase):
         self.assertEqual(repaired, data)
         _, error = validate_converted_exercise(repaired, expected_subquestions=1)
         self.assertIsNone(error)
+
+    def test_accepts_single_question_atoms_payload(self):
+        data = {
+            "atoms": [
+                {
+                    "preconditions": ["P"],
+                    "arguments": ["A"],
+                    "outcomes": ["O"],
+                }
+            ]
+        }
+
+        atoms, error = validate_single_question_conversion(data)
+
+        self.assertIsNone(error)
+        self.assertEqual(atoms, data["atoms"])
+
+    def test_accepts_single_question_subquestions_wrapper(self):
+        data = {
+            "subquestions": [
+                {
+                    "atoms": [
+                        {
+                            "preconditions": ["P"],
+                            "arguments": ["A"],
+                            "outcomes": ["O"],
+                        }
+                    ]
+                }
+            ]
+        }
+
+        atoms, error = validate_single_question_conversion(data)
+
+        self.assertIsNone(error)
+        self.assertEqual(atoms, data["subquestions"][0]["atoms"])
 
 
 if __name__ == "__main__":

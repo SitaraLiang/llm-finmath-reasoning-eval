@@ -25,7 +25,6 @@ input:
       - "self_history"
 
 output:
-  root_directory: "outputs/call2_zeroshot"
   directory_template: "{model1}/{model2}/{language}/{variation}"
   filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}.yaml"
   overwrite_existing: false
@@ -229,6 +228,88 @@ prompts:
 
     YAML OUTPUT:
 
+  per_question_conversion: |
+    /no_think
+    TASK: Convert this SINGLE Question block into the proof-atom YAML format.
+    Return only the atoms structure for this one Question block.
+
+    CRITICAL OUTPUT RULES:
+    - Do not output thinking, reasoning traces, analysis, explanations, or notes.
+    - Do not output text inside <think> tags.
+    - Return EXACTLY ONE Markdown code block tagged yml.
+    - The response MUST START with ```yml and END with ```.
+    - Do not write any text before or after the code block.
+    - Inside the code block, return exactly one YAML document.
+    - Do not use YAML document separators such as --- or ...
+    - The first non-empty line inside the code block must be exactly:
+      atoms:
+    - Do not output subquestions. Python will assemble subquestions after each
+      Question block is converted.
+    - Do not solve the exercise again. Only structure the answer text in the
+      SOURCE ANSWER.
+    - Do not include fields other than atoms, preconditions, arguments,
+      outcomes, and optional strength.
+
+    PROOF-ATOM YAML FORMAT:
+    - Top-level:
+        atoms: ...
+    - The atoms field may contain one atom mapping, an ordered YAML list of atom
+      mappings, a !!python/tuple for an unordered mathematical set, or nested
+      lists and tuples.
+    - Every atom MUST be one mapping with at least these required fields:
+        preconditions: ordered list of strings
+        arguments: ordered list of strings
+        outcomes: ordered list of strings
+    - Under atoms, each "-" begins one complete atom. Do NOT write
+      "- arguments:" or "- outcomes:" under atoms.
+    - Correct:
+        atoms:
+        - preconditions:
+          - "P"
+          arguments:
+          - "Calculation"
+          outcomes:
+          - "O"
+    - Incorrect:
+        atoms:
+        - preconditions:
+          - "P"
+        - arguments:
+          - "Calculation"
+        - outcomes:
+          - "O"
+    - Use preconditions: [] when no preconditions are stated.
+    - Use outcomes: [] only if no outcome is stated.
+    - Never use [] for arguments; arguments must always contain at least one item.
+    - Never put strings inside square brackets. Use block-style lists.
+    - If the argument is mainly computation, use exactly:
+        arguments:
+        - Calculation
+    - Do not repeat Calculation multiple times inside the same arguments list.
+    - Use !!python/tuple for alternative unordered proof branches or unordered
+      groups of atoms.
+    - Preserve LaTeX and mathematical symbols in strings.
+    - Quote any string containing braces, brackets, colons, commas, backslashes,
+      or LaTeX expressions.
+    - Do not invent proof facts not present in the source answer.
+    - Do not repeat identical atoms.
+
+    CURRENT METADATA:
+    pc: $pc
+    exercise: $exercise
+    language: $language
+    variation: $variation
+    prompt_type: $prompt_type
+    call1_model: $model1
+    call1_output_mode: $call1_output_mode
+    question_block_index: $question_block_index
+    question_block_count: $question_block_count
+
+    SOURCE ANSWER:
+    $source_answer
+
+    YAML OUTPUT:
+
   repair: |
     TASK: Repair the previous response into the proof-atom YAML format.
 
@@ -255,6 +336,7 @@ prompts:
     $raw_response
 
 conversion:
+  mode: "per_question"
   repair:
     max_attempts: 1
 
