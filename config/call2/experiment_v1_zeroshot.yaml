@@ -27,7 +27,7 @@ input:
 output:
   directory_template: "{model1}/{model2}/{language}/{variation}"
   filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}.yaml"
-  overwrite_existing: false
+  overwrite_existing: true
   save_raw_response: true
   save_prompt: false
 
@@ -38,8 +38,11 @@ prompts:
     Preserve mathematical formulas exactly as written when they appear in
     preconditions or outcomes. Do not rewrite, simplify, or correct formulas.
     Represent reasoning as atom mappings, ordered YAML lists, and unordered
-    mathematical sets using !!python/tuple. If a step is mainly a calculation,
-    write the argument exactly as:
+    mathematical sets using !!python/tuple. Use the special argument string
+    "Calculation" only when the reasoning step is mainly a calculation or
+    computation. If the reasoning step is not mainly computational, write the
+    theorem, idea, definition, or method as an ordinary argument string instead.
+    For a mainly computational step, write:
         arguments:
         - Calculation
 
@@ -184,9 +187,13 @@ prompts:
         outcomes:
         - ...
     - Do not use [] for preconditions or outcomes when there are multiple items; use an ordered YAML list instead.
+    - Use "Calculation" only when the argument is mainly computation or
+      algebraic/probabilistic calculation.
     - If the argument is mainly computation, use exactly:
         arguments:
         - Calculation
+    - If the argument is not mainly computation, do NOT use "Calculation"; write
+      the actual theorem, idea, definition, or method as a string.
     - The arguments field must NEVER be empty. This is invalid:
       arguments: []
     - The arguments field must be a non-empty YAML list of strings.
@@ -282,9 +289,13 @@ prompts:
     - Use outcomes: [] only if no outcome is stated.
     - Never use [] for arguments; arguments must always contain at least one item.
     - Never put strings inside square brackets. Use block-style lists.
+    - Use "Calculation" only when the argument is mainly computation or
+      algebraic/probabilistic calculation.
     - If the argument is mainly computation, use exactly:
         arguments:
         - Calculation
+    - If the argument is not mainly computation, do NOT use "Calculation"; write
+      the actual theorem, idea, definition, or method as a string.
     - Do not repeat Calculation multiple times inside the same arguments list.
     - Use !!python/tuple for alternative unordered proof branches or unordered
       groups of atoms.
