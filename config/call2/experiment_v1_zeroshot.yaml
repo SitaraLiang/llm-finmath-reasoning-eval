@@ -365,7 +365,7 @@ models:
 
   - id: "deepseek-r1:1.5b"
     provider: "ollama"
-    enabled: false
+    enabled: true
     parameters:
       temperature: 0.0
       max_output_tokens: 800
@@ -373,13 +373,6 @@ models:
   - id: "mistral:7b"
     provider: "ollama"
     enabled: false
-    parameters:
-      temperature: 0.0
-      max_output_tokens: 800
-
-  - id: "deepseek-r1:7b"
-    provider: "ollama"
-    enabled: true
     parameters:
       temperature: 0.0
       max_output_tokens: 800
