@@ -1,0 +1,426 @@
+experiment:
+  name: "financial_math_call2_zeroshot_v2"
+  version: 2
+  seed: 42
+
+input:
+  root_directory: "outputs/call1/plain_text"
+
+  filters:
+    # Leave empty to accept every Call 1 model found under
+    # outputs/call1/plain_text/{model}/{language}/{variation}/.
+    models: []
+
+    languages:
+      - "en"
+
+    variations:
+      - "baseline"
+
+    # For a first fast test, uncomment only one strategy if needed.
+    prompt_types:
+      - "strictly_sequential"
+      - "prompt_accumulation"
+      - "ground_truth_forcing"
+      - "self_history"
+
+output:
+  # No explicit root_directory: call2.py will infer
+  # outputs/call2_zeroshot_per_question because this is zeroshot + per_question.
+  directory_template: "{model1}/{model2}/{language}/{variation}"
+  filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}.yaml"
+  overwrite_existing: false
+  save_raw_response: true
+  save_prompt: false
+
+prompts:
+  conversion: |
+    /no_think
+    TASK: Convert the SOURCE ANSWER below into the exact proof-atom YAML format.
+
+    Return only YAML. Do not solve the exercise again. Do not add facts that are
+    not present in the SOURCE ANSWER. Preserve formulas and mathematical symbols
+    exactly when they appear in preconditions or outcomes.
+
+    CRITICAL OUTPUT RULES:
+    - Do not output thinking, reasoning traces, explanations, notes, or text
+      inside <think> tags.
+    - Return EXACTLY ONE Markdown code block tagged yml.
+    - The response MUST START with ```yml and END with ```.
+    - Do not write any text before or after the code block.
+    - Inside the code block, return exactly one YAML document.
+    - Do not use YAML document separators such as --- or ...
+    - The first non-empty line inside the code block must be exactly:
+      subquestions:
+
+    TOP-LEVEL STRUCTURE:
+    - The SOURCE ANSWER is organized by Question blocks.
+    - Usually, each Question block becomes one top-level item under subquestions.
+    - Do not create one top-level subquestion per proof step.
+    - Each top-level subquestion item must have exactly one key: atoms.
+    - Nested lists and !!python/tuple structures inside atoms do NOT count as
+      top-level subquestions.
+
+    PROOF STRUCTURE CONVENTION:
+    - An atom is a mapping with exactly these required fields:
+        preconditions: ordered list of strings
+        arguments: ordered list of strings
+        outcomes: ordered list of strings
+      Optional field:
+        strength: number
+    - A YAML list means an ordered proof sequence.
+    - A !!python/tuple means an unordered mathematical set.
+    - The atoms value may be:
+      - one atom mapping;
+      - a YAML list of atoms or proof blocks;
+      - a !!python/tuple of atoms or proof blocks;
+      - any nesting of YAML lists and !!python/tuple values.
+    - Lists and tuples are containers. They may contain atom mappings, lists, or
+      other tuples.
+    - Individual atom mappings themselves must never be tuples or lists.
+
+    WHEN TO USE LISTS AND TUPLES:
+    - Use a YAML list when the source answer presents steps that must happen in
+      order: first this, then that.
+    - Use !!python/tuple when the source answer presents unordered facts,
+      equivalent alternatives, independent branches, or multiple possible routes.
+    - Use a list inside a tuple for an unordered set of alternative ordered
+      proof sequences.
+    - Use a tuple inside a list when one ordered proof step has unordered
+      alternatives or independent sub-arguments.
+    - If the source answer does not clearly indicate alternatives or unordered
+      branches, use a simple ordered YAML list of atoms.
+
+    ATOM FIELD RULES:
+    - Always write preconditions, arguments, and outcomes as block-style lists.
+    - Never put strings inside square brackets.
+    - Use preconditions: [] only when no preconditions are stated.
+    - Use outcomes: [] only when no outcome is stated.
+    - Never use arguments: []; arguments must contain at least one string.
+    - Use "Calculation" only when the argument is mainly a calculation or
+      computation. Otherwise write the theorem, idea, definition, or method as a
+      normal string.
+    - Quote strings containing braces, brackets, colons, commas, backslashes, or
+      LaTeX expressions.
+
+    SIMPLE ATOM EXAMPLE:
+    subquestions:
+    - atoms:
+      - preconditions:
+        - "P"
+        arguments:
+        - "Apply theorem T"
+        outcomes:
+        - "O"
+
+    NESTED EXAMPLE 1: unordered set of two ordered proof sequences.
+    Meaning: either branch 1 proves the result by two ordered atoms, or branch 2
+    proves it by one atom.
+    subquestions:
+    - atoms: !!python/tuple
+      - - preconditions:
+          - "P1"
+          arguments:
+          - "First step of branch 1"
+          outcomes:
+          - "O1"
+        - preconditions:
+          - "O1"
+          arguments:
+          - "Second step of branch 1"
+          outcomes:
+          - "O2"
+      - - preconditions:
+          - "P2"
+          arguments:
+          - "Direct alternative branch"
+          outcomes:
+          - "O2"
+
+    NESTED EXAMPLE 2: ordered proof sequence containing unordered alternatives.
+    Meaning: first prove O1, then either of two unordered alternatives can justify O2.
+    subquestions:
+    - atoms:
+      - preconditions:
+        - "P1"
+        arguments:
+        - "First ordered step"
+        outcomes:
+        - "O1"
+      - !!python/tuple
+        - preconditions:
+          - "O1"
+          arguments:
+          - "Alternative A"
+          outcomes:
+          - "O2"
+        - preconditions:
+          - "O1"
+          arguments:
+          - "Alternative B"
+          outcomes:
+          - "O2"
+
+    NESTED EXAMPLE 3: ground-truth style structure.
+    Meaning: an unordered set containing two ordered lists; the second ordered
+    list contains an unordered set at its final step.
+    subquestions:
+    - atoms: !!python/tuple
+      - - preconditions:
+          - "P1"
+          arguments:
+          - "A1"
+          outcomes:
+          - "O1"
+        - preconditions:
+          - "O1"
+          arguments:
+          - "A2"
+          outcomes:
+          - "O2"
+      - - preconditions:
+          - "P3"
+          arguments:
+          - "A3"
+          outcomes:
+          - "O3"
+        - !!python/tuple
+          - preconditions:
+            - "O3"
+            arguments:
+            - "Alternative A4"
+            outcomes:
+            - "O4"
+          - preconditions:
+            - "O3"
+            arguments:
+            - "Alternative A5"
+            outcomes:
+            - "O4"
+
+    CURRENT METADATA:
+    pc: $pc
+    exercise: $exercise
+    language: $language
+    variation: $variation
+    prompt_type: $prompt_type
+    call1_model: $model1
+    call1_output_mode: $call1_output_mode
+
+    SOURCE ANSWER:
+    $source_answer
+
+    YAML OUTPUT:
+
+  per_question_conversion: |
+    /no_think
+    TASK: Convert this SINGLE Question block into the proof-atom YAML format.
+    Return only the atoms structure for this one Question block.
+
+    Return only YAML. Do not solve the exercise again. Do not add facts that are
+    not present in the SOURCE ANSWER. Preserve formulas and mathematical symbols
+    exactly when they appear in preconditions or outcomes.
+
+    CRITICAL OUTPUT RULES:
+    - Do not output thinking, reasoning traces, explanations, notes, or text
+      inside <think> tags.
+    - Return EXACTLY ONE Markdown code block tagged yml.
+    - The response MUST START with ```yml and END with ```.
+    - Do not write any text before or after the code block.
+    - Inside the code block, return exactly one YAML document.
+    - Do not use YAML document separators such as --- or ...
+    - The first non-empty line inside the code block must be exactly:
+      atoms:
+    - Do not output subquestions. Python will assemble subquestions after each
+      Question block is converted.
+
+    PROOF STRUCTURE CONVENTION:
+    - An atom is a mapping with exactly these required fields:
+        preconditions: ordered list of strings
+        arguments: ordered list of strings
+        outcomes: ordered list of strings
+      Optional field:
+        strength: number
+    - A YAML list means an ordered proof sequence.
+    - A !!python/tuple means an unordered mathematical set.
+    - The atoms value may be:
+      - one atom mapping;
+      - a YAML list of atoms or proof blocks;
+      - a !!python/tuple of atoms or proof blocks;
+      - any nesting of YAML lists and !!python/tuple values.
+    - Lists and tuples are containers. They may contain atom mappings, lists, or
+      other tuples.
+    - Individual atom mappings themselves must never be tuples or lists.
+
+    WHEN TO USE LISTS AND TUPLES:
+    - Use a YAML list when the source answer presents steps that must happen in
+      order: first this, then that.
+    - Use !!python/tuple when the source answer presents unordered facts,
+      equivalent alternatives, independent branches, or multiple possible routes.
+    - Use a list inside a tuple for an unordered set of alternative ordered
+      proof sequences.
+    - Use a tuple inside a list when one ordered proof step has unordered
+      alternatives or independent sub-arguments.
+    - If the source answer does not clearly indicate alternatives or unordered
+      branches, use a simple ordered YAML list of atoms.
+
+    ATOM FIELD RULES:
+    - Always write preconditions, arguments, and outcomes as block-style lists.
+    - Never put strings inside square brackets.
+    - Use preconditions: [] only when no preconditions are stated.
+    - Use outcomes: [] only when no outcome is stated.
+    - Never use arguments: []; arguments must contain at least one string.
+    - Use "Calculation" only when the argument is mainly a calculation or
+      computation. Otherwise write the theorem, idea, definition, or method as a
+      normal string.
+    - Quote strings containing braces, brackets, colons, commas, backslashes, or
+      LaTeX expressions.
+
+    SIMPLE ATOM EXAMPLE:
+    atoms:
+    - preconditions:
+      - "P"
+      arguments:
+      - "Apply theorem T"
+      outcomes:
+      - "O"
+
+    NESTED EXAMPLE 1: unordered set of two ordered proof sequences.
+    atoms: !!python/tuple
+    - - preconditions:
+        - "P1"
+        arguments:
+        - "First step of branch 1"
+        outcomes:
+        - "O1"
+      - preconditions:
+        - "O1"
+        arguments:
+        - "Second step of branch 1"
+        outcomes:
+        - "O2"
+    - - preconditions:
+        - "P2"
+        arguments:
+        - "Direct alternative branch"
+        outcomes:
+        - "O2"
+
+    NESTED EXAMPLE 2: ordered proof sequence containing unordered alternatives.
+    atoms:
+    - preconditions:
+      - "P1"
+      arguments:
+      - "First ordered step"
+      outcomes:
+      - "O1"
+    - !!python/tuple
+      - preconditions:
+        - "O1"
+        arguments:
+        - "Alternative A"
+        outcomes:
+        - "O2"
+      - preconditions:
+        - "O1"
+        arguments:
+        - "Alternative B"
+        outcomes:
+        - "O2"
+
+    NESTED EXAMPLE 3: unordered set containing ordered lists, one with nested alternatives.
+    atoms: !!python/tuple
+    - - preconditions:
+        - "P1"
+        arguments:
+        - "A1"
+        outcomes:
+        - "O1"
+      - preconditions:
+        - "O1"
+        arguments:
+        - "A2"
+        outcomes:
+        - "O2"
+    - - preconditions:
+        - "P3"
+        arguments:
+        - "A3"
+        outcomes:
+        - "O3"
+      - !!python/tuple
+        - preconditions:
+          - "O3"
+          arguments:
+          - "Alternative A4"
+          outcomes:
+          - "O4"
+        - preconditions:
+          - "O3"
+          arguments:
+          - "Alternative A5"
+          outcomes:
+          - "O4"
+
+    CURRENT METADATA:
+    pc: $pc
+    exercise: $exercise
+    language: $language
+    variation: $variation
+    prompt_type: $prompt_type
+    call1_model: $model1
+    call1_output_mode: $call1_output_mode
+    question_block_index: $question_block_index
+    question_block_count: $question_block_count
+
+    SOURCE ANSWER:
+    $source_answer
+
+    YAML OUTPUT:
+
+  repair: |
+    TASK: Repair the previous response into the proof-atom YAML format.
+
+    Error:
+    $error_message
+
+    CRITICAL OUTPUT RULES:
+    - Do not output thinking, reasoning traces, analysis, explanations, or notes.
+    - Return exactly one Markdown code block tagged yml.
+    - The response must start with ```yml and end with ```.
+    - Do not write any text before or after the code block.
+    - Inside the code block, return exactly one YAML document.
+    - Do not use YAML document separators such as --- or ...
+    - Preserve the same top-level format as the previous task: either
+      subquestions: for complete-exercise conversion, or atoms: for per-question
+      conversion.
+    - Each atom must have preconditions, arguments, and outcomes.
+    - Lists are ordered proof sequences.
+    - !!python/tuple values are unordered mathematical sets.
+    - Nested lists and !!python/tuple values are allowed inside atoms.
+    - Quote strings containing braces, brackets, colons, commas, backslashes, or
+      LaTeX expressions.
+
+    Previous response and original task:
+    $raw_response
+
+conversion:
+  mode: "per_question"
+  repair:
+    max_attempts: 1
+
+ollama:
+  endpoint: "http://localhost:11434/api/generate"
+  timeout_seconds: 600
+
+models:
+  - id: "llama3.1:8b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      temperature: 0.0
+      max_output_tokens: 1200
+
+execution:
+  max_retries: 1
+  retry_delay_seconds: 5
