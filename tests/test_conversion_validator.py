@@ -8,6 +8,7 @@ sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from conversion_validator import (  # noqa: E402
     repair_converted_exercise,
+    strip_yaml_fence,
     validate_converted_exercise,
     validate_single_question_conversion,
 )
@@ -92,6 +93,28 @@ class ConversionValidatorRepairTest(unittest.TestCase):
 
         self.assertIsNone(error)
         self.assertEqual(atoms, data["subquestions"][0]["atoms"])
+
+    def test_strips_thinking_block_before_yaml(self):
+        raw_response = """<think>
+I should reason here, but this is not part of the YAML answer.
+</think>
+```yml
+subquestions:
+- atoms:
+  - preconditions:
+    - P
+    arguments:
+    - Calculation
+    outcomes:
+    - O
+```
+"""
+
+        yaml_text = strip_yaml_fence(raw_response)
+
+        self.assertTrue(yaml_text.startswith("subquestions:"))
+        self.assertNotIn("<think>", yaml_text)
+        self.assertNotIn("I should reason here", yaml_text)
 
 
 if __name__ == "__main__":

@@ -7,7 +7,7 @@ ATOM_ALLOWED_KEYS = set(ATOM_REQUIRED_KEYS) | {"strength"}
 
 def strip_yaml_fence(raw_response: str) -> str:
     """Extract the YAML payload from a fenced model response when available."""
-    text = raw_response.strip()
+    text = strip_thinking_blocks(raw_response).strip()
     fenced = re.search(r"```(?:yaml|yml)\s*(.*?)```", text, re.DOTALL | re.IGNORECASE)
     if fenced:
         return fenced.group(1).strip()
@@ -18,6 +18,16 @@ def strip_yaml_fence(raw_response: str) -> str:
     if opening_fence:
         return text[opening_fence.end():].strip()
     return text
+
+
+def strip_thinking_blocks(raw_response: str) -> str:
+    """Remove model reasoning side-channels such as Qwen <think> blocks."""
+    return re.sub(
+        r"<think\b[^>]*>.*?</think>",
+        "",
+        raw_response,
+        flags=re.DOTALL | re.IGNORECASE,
+    )
 
 
 def quote_problematic_list_scalars(yaml_text: str) -> str:

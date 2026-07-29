@@ -361,18 +361,18 @@ models:
     enabled: false
     parameters:
       temperature: 0.0
-      max_output_tokens: 1200
+      max_output_tokens: 800
 
   - id: "deepseek-r1:1.5b"
     provider: "ollama"
     enabled: false
     parameters:
       temperature: 0.0
-      max_output_tokens: 1200
+      max_output_tokens: 800
 
   - id: "mistral:7b"
     provider: "ollama"
-    enabled: ture
+    enabled: false
     parameters:
       temperature: 0.0
       max_output_tokens: 800
@@ -395,6 +395,13 @@ models:
     parameters:
       temperature: 0.0
       max_output_tokens: 800
+
+  - id: "qwen3:8b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      temperature: 0.0
+      max_output_tokens: 1200
 
   - id: "gemma2:9b"
     enabled: false
