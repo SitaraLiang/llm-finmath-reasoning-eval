@@ -2,9 +2,7 @@
 
 A lightweight framework for evaluating how language models solve quantitative finance and financial mathematics exercises. The project turns human-annotated LaTeX solutions into structured ground-truth YAML, asks local Ollama models to solve the same exercises, then converts model answers into the same proof-atom representation for later evaluation.
 
-## Current Pipeline
-
-![Overall project pipeline](docs/images/overall_pipeline.png)
+## Pipeline
 
 1. **Import LaTeX exercises**
    - Overleaf is treated as the single source of truth.
