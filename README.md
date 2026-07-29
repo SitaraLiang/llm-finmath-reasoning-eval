@@ -4,6 +4,8 @@ A lightweight framework for evaluating how language models solve quantitative fi
 
 ## Current Pipeline
 
+![Overall project pipeline](docs/images/overall_pipeline.png)
+
 1. **Import LaTeX exercises**
    - Overleaf is treated as the single source of truth.
    - `src/import.py` copies downloaded `.tex` files into `data/raw_tex/{lang}/`.
