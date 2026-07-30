@@ -1,0 +1,51 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "When $\tau$ is a bounded stopping time"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "Compute $\E(W_\tau)$"
+- preconditions:
+  - "Let $T_n = \inf\{t>0\mid W_t\in B_n\}$, where $B_n$ denotes the $n$-th Boltzmann's particle, be a Brownian motion with the initial condition $B_0 = 0$"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "We have $W_\tau^2 = E[W_\tau|\mathcal{F}_\tau] + \int_{\tau}^T W_t\, dW_t$"
+- preconditions:
+  - "We have $W_\tau^2 = E[W_\tau|\mathcal{F}_\tau] + \int_{\tau}^T W_t\, dW_t$"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$\E(W_\tau^2) = E[W_\tau^2 | \mathcal{F}_\tau] + \int_{\tau}^T \left(V(\tau,X_t|W_t)\right)^2\, dt$"
+- preconditions:
+  - "$\E(W_\tau^2) = E[W_\tau^2 | \mathcal{F}_\tau] + \int_{\tau}^T \left(V(\tau,X_t|W_t)\right)^2\, dt$"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "We can use the Fokker-Planck equation to derive $E[W_\tau^2|\mathcal{F}_\tau]$"
+- preconditions:
+  - "We can use the Fokker-Planck equation to derive $E[W_\tau^2|\mathcal{F}_\tau]$"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$\frac{\partial V}{\partial t} + \dot{\xi} + \sigma\left(\dot{\xi}-\xi-\dot{X}_t+Z_t\right) = 0$"
+- preconditions:
+  - "$\frac{\partial V}{\partial t} + \dot{\xi} + \sigma\left(\dot{\xi}-\xi-\dot{X}_t+Z_t\right) = 0$"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$\frac{\partial V}{\partial t} + \dot{\xi} + \sigma\left(\dot{\xi}-\dot{X}_t+Z_t\right) = -E[W(T,X_0)]^2$"
+- preconditions:
+  - "$\frac{\partial V}{\partial t} + \dot{\xi} + \sigma\left(\dot{\xi}-\dot{X}_t+Z_t\right) = -E[W(T,X_0)]^2$"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$\E[V(W_\tau)^2 | \mathcal{F}_\tau] = E[(W_\tau)^2 | \mathcal{F}_{\tau}] + E[\sigma^2(W_\tau)|\mathcal{F}_{\tau}]^2 + \int_{\tau}^T \left(V(\tau,X_t|W_t)\right)^2\, dt$"
+- preconditions:
+  - "$\E[V(W_\tau)^2 | \mathcal{F}_\tau] = E[(W_\tau)^2 | \math

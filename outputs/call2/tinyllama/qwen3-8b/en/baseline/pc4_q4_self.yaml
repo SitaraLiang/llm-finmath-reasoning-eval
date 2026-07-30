@@ -1,0 +1,25 @@
+pc: '4'
+exercise: '4'
+language: en
+variation: baseline
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: tinyllama
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - When $\tau$ is a bounded stopping time
+        arguments:
+        - Calculation
+        outcomes:
+        - $\E(W_\tau) = \int_0^\tau \mathbb{P}(X_{t+1} < x) dt + \int_0^\tau 1_{x
+            > \tau} d(\mathbb{P}(\tau<x))$
+-   atoms:
+    -   preconditions:
+        - When τ is a bounded stopping time
+        arguments:
+        - Calculation
+        outcomes:
+        - E(W_τ²) = 2∫₀^τ P(X_{t+1} > x) d(P(τ < x)) + ∫₀^τ ∫_{-1}^1 P(X_1 < -x, X_s
+            > x) ds dt

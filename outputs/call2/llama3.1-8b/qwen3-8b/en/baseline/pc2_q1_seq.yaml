@@ -1,0 +1,109 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: baseline
+prompt_type: strictly_sequential
+call1_output_mode: plain_text
+call1_model: llama3.1-8b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0 = 0
+        - For any s, t ≥ 0, E[X_t] = 0 and Var(X_t) = t
+        - 'The increments are independent: for any 0 ≤ s < t < u, X_u - X_t is independent
+            of X_s'
+        arguments:
+        - Recall the definition of Brownian motion
+        outcomes:
+        - X_0 = 0
+        - For any s, t ≥ 0, E[X_t] = 0 and Var(X_t) = t
+        - 'The increments are independent: for any 0 ≤ s < t < u, X_u - X_t is independent
+            of X_s'
+    -   preconditions:
+        - X_0 = 0
+        - For any s, t ≥ 0, E[X_t] = 0 and Var(X_t) = t
+        - 'The increments are independent: for any 0 ≤ s < t < u, X_u - X_t is independent
+            of X_s'
+        arguments:
+        - Show that if (X_t)_{t∈ℝ^+} is a Brownian motion, then it satisfies the given
+            conditions
+        outcomes:
+        - X_0 = 0
+        - For any s, t ≥ 0, E[X_t] = 0 and Var(X_t) = t
+        - 'The increments are independent: for any 0 ≤ s < t < u, X_u - X_t is independent
+            of X_s'
+    -   preconditions:
+        - X_0 = 0
+        - For any s, t ≥ 0, E[X_t] = 0 and Var(X_t) = t
+        - 'The increments are independent: for any 0 ≤ s < t < u, X_u - X_t is independent
+            of X_s'
+        arguments:
+        - Show that if (X_t)_{t∈ℝ^+} satisfies the given conditions, then it is a
+            Brownian motion
+        outcomes:
+        - X_0 = 0
+        - For any s, t ≥ 0, E[X_t] = 0 and Var(X_t) = t
+        - 'The increments are independent: for any 0 ≤ s < t < u, X_u - X_t is independent
+            of X_s'
+    -   preconditions:
+        - X_0 = 0
+        - For any s, t ≥ 0, E[X_t] = 0 and Var(X_t) = t
+        - 'The increments are independent: for any 0 ≤ s < t < u, X_u - X_t is independent
+            of X_s'
+        arguments:
+        - Show that the covariance function satisfies the given condition
+        outcomes:
+        - Cov(X_s,X_t)=inf(s,t)
+    -   preconditions:
+        - X_0 = 0
+        - For any s, t ≥ 0, E[X_t] = 0 and Var(X_t) = t
+        - 'The increments are independent: for any 0 ≤ s < t < u, X_u - X_t is independent
+            of X_s'
+        arguments:
+        - Show that the process is a centered Gaussian process
+        outcomes:
+        - The process is a centered Gaussian process
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        - X_t = t W_{1/t}, t > 0, X_0 = 0
+        arguments:
+        - Definition of Brownian motion
+        outcomes:
+        - X_t is a Brownian motion
+    -   preconditions:
+        - W_t is a Brownian motion
+        - X_t = t W_{1/t}, t > 0, X_0 = 0
+        arguments:
+        - X_0 = 0
+        outcomes:
+        - X_0 = 0
+    -   preconditions:
+        - W_t is a Brownian motion
+        - X_t = t W_{1/t}, t > 0, X_0 = 0
+        arguments:
+        - Continuous paths of W_t
+        outcomes:
+        - X_t has continuous paths
+    -   preconditions:
+        - W_t is a Brownian motion
+        - X_t = t W_{1/t}, t > 0, X_0 = 0
+        arguments:
+        - Expectation of W_t
+        outcomes:
+        - E[X_t] = 0
+    -   preconditions:
+        - W_t is a Brownian motion
+        - X_t = t W_{1/t}, t > 0, X_0 = 0
+        arguments:
+        - Variance of W_t
+        outcomes:
+        - Var(X_t) = t
+    -   preconditions:
+        - W_t is a Brownian motion
+        - X_t = t W_{1/t}, t > 0, X_0 = 0
+        arguments:
+        - Independence of increments of W_t
+        outcomes:
+        - X_s and X_t - X_s are independent

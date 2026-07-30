@@ -1,0 +1,27 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: baseline
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: qwen2.5-coder-0.5b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0 = 0
+        - (X_t)_{t\in \mathbb{R}^+} is a centered Gaussian process
+        - '{\rm Cov}(X_s, X_t) = \inf(s, t)'
+        arguments:
+        - Calculation
+        outcomes:
+        - A Brownian motion if and only if X_0 = 0, (X_t)_{t\in \mathbb{R}^+} is a
+            centered Gaussian process, and {\rm Cov}(X_s, X_t) = \frac{3}{4}\sigma_x^2
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        - X_0 = 0
+        arguments:
+        - Show X_t = t W_{1/t} is a Brownian motion
+        outcomes:
+        - X_t = t W_{1/t} is a Brownian motion

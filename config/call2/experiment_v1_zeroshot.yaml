@@ -401,7 +401,7 @@ models:
     enabled: false
     parameters:
       temperature: 0.0
-      max_output_tokens: 1200
+      max_output_tokens: 800
 
   - id: "gemma2:9b"
     enabled: false

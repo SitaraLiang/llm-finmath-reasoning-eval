@@ -1,0 +1,49 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "When $\tau$ is a bounded stopping time"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$\E(W_\tau)$"
+- preconditions:
+  - "Let us consider the process $X_t=(W_{t+1}-W_t)/S_t$, where $S_t$ is an arbitrary Brownian motion and $X_0=0$"
+  arguments:
+  - "Application of Prokhorov's Theorem (Theorem 2.3, Chapter 11 in \"Elements of Probability Theory\" by Boris Sinai)"
+  outcomes:
+  - "There exists a probability space $(\Omega,\mathcal{F}, \mathbb{P})$ and an explicit continuous mapping $\Phi: \mathbb{R}^+ \rightarrow \mathbb{R}$ such that $X_t$ is a Markov chain with state space $\mathbb{R}$, transition matrix $(p_{st})_{s,t\in\mathbb{R}}$ with respect to the Lebesque measure on $\mathbb{R}$, and stationary distribution $\pi$"
+- preconditions:
+  - "It follows that for every $T>0$"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$X_t=\Phi(W_1) + \int_0^t (P(X_s=x) - P(\Phi(W_1)=x))d\mathcal{L}_x,$ where $\mathcal{L}_x$ is the law of $W_1$ under the Lebesque measure on $[0,T]$"
+- preconditions:
+  - "Using Itô's formula, we have"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$\E(X_t)=\Phi(W_1) + \int_0^t P(\Delta W_{t-s})ds+\int_0^t E[P(\Delta W_{t-s}|\mathcal{F}_s)]dP(W_s),$ where $\Delta W_t:=W_t-W_{t-1}$, $P$ denotes the probability of the event $(W_1=\eta)$, and $E$ stands for expectation with respect to the Lebesque measure on $[0,T]$"
+- preconditions:
+  - "Since $\tau$ is a bounded stopping time, we have that"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$\E(\Delta W_\tau) = \E(W_\tau-W_{\tau-1})+\int_0^\tau P(W_{t+1}-W_t>0)dt=\E[W_\tau|W_{-\tau}]+\int_0^\tau E[P(W_{t+1}|\mathcal{F}_t)]dt$ and $\E(\Delta W_{\tau}) = \E[W_{\tau}|W_{-\tau}]$"
+- preconditions:
+  - "Using the Itô formula, we obtain"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$\frac{\Delta W_s}{S_s}=\int_0^s P(W_t-W_r>0)d\eta_t$ which, using Jensen's inequality, yields that $\E(\Delta W_\tau|W_{-\tau})=P(W_{-\tau}<\tau)\tau+P(\tau> \tau|W_{-\tau})\int_0^\tau P(W_{t+1}-W_t>0)dt$"
+- preconditions:
+  - "Therefore,"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$\E(W_\tau)=\frac{\E(\Delta W_\tau)}{\E[W_{\
