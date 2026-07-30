@@ -20,7 +20,7 @@ subquestions:
             outcomes:
             - The process is therefore centered Gaussian
     -   -   preconditions:
-            - Using property ($iii'$)
+            - Using property ${\rm Cov}(X_s,X_t)=\inf(s,t).$
             - Compute $\text{Cov}(X_t - X_s, X_v - X_u)$ for \(s < t \leq u < v\).
             arguments:
             - Calculation
