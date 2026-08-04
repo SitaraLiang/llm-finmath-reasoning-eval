@@ -8,6 +8,7 @@ import yaml
 
 
 DEFAULT_MODEL = "answerdotai/ModernBERT-base"
+DEFAULT_SANITY_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 DEFAULT_PAIRS = Path("data/evaluation/formulation_pairs.yaml")
 DEFAULT_OUTPUT_DIR = Path("outputs/evaluation")
 DEFAULT_MATRIX_THRESHOLD = 0.75
@@ -52,6 +53,16 @@ def resolve_path(path: Path, root: Path) -> Path:
     return path if path.is_absolute() else root / path
 
 
+def model_slug(model_name: str) -> str:
+    return (
+        model_name.lower()
+        .replace("/", "-")
+        .replace(":", "-")
+        .replace(".", "-")
+        .replace("_", "-")
+    )
+
+
 def load_yaml(path: Path):
     with path.open("r", encoding="utf-8") as file:
         return yaml.load(file, Loader=yaml.FullLoader)
@@ -65,12 +76,31 @@ def write_csv(path: Path, rows: list[dict], fieldnames: list[str]) -> None:
         writer.writerows(rows)
 
 
-def threshold_accuracy(rows: list[dict], threshold: float) -> float:
+def threshold_metrics(rows: list[dict], threshold: float) -> dict[str, float]:
     correct = 0
+    equivalent_rows = [row for row in rows if row["expected_match"]]
+    unrelated_rows = [row for row in rows if not row["expected_match"]]
     for row in rows:
         predicted_match = row["cosine_value"] >= threshold
         correct += predicted_match == row["expected_match"]
-    return correct / len(rows)
+    equivalent_recall = (
+        sum(row["cosine_value"] >= threshold for row in equivalent_rows)
+        / len(equivalent_rows)
+        if equivalent_rows
+        else 0.0
+    )
+    unrelated_recall = (
+        sum(row["cosine_value"] < threshold for row in unrelated_rows)
+        / len(unrelated_rows)
+        if unrelated_rows
+        else 0.0
+    )
+    return {
+        "accuracy": correct / len(rows),
+        "equivalent_recall": equivalent_recall,
+        "unrelated_recall": unrelated_recall,
+        "balanced_accuracy": (equivalent_recall + unrelated_recall) / 2,
+    }
 
 
 def sweep_thresholds(rows: list[dict], step: float) -> tuple[float, list[dict]]:
@@ -87,36 +117,23 @@ def sweep_thresholds(rows: list[dict], step: float) -> tuple[float, list[dict]]:
         current += step
 
     sweep_rows = []
-    best_accuracy = -1.0
+    best_balanced_accuracy = -1.0
     best_thresholds = []
     for threshold in thresholds:
-        accuracy = threshold_accuracy(rows, threshold)
-        equivalent_rows = [row for row in rows if row["expected_match"]]
-        unrelated_rows = [row for row in rows if not row["expected_match"]]
-        equivalent_recall = (
-            sum(row["cosine_value"] >= threshold for row in equivalent_rows)
-            / len(equivalent_rows)
-            if equivalent_rows
-            else 0.0
-        )
-        unrelated_recall = (
-            sum(row["cosine_value"] < threshold for row in unrelated_rows)
-            / len(unrelated_rows)
-            if unrelated_rows
-            else 0.0
-        )
+        metrics = threshold_metrics(rows, threshold)
         sweep_rows.append(
             {
                 "threshold": f"{threshold:.6f}",
-                "accuracy": f"{accuracy:.6f}",
-                "equivalent_recall": f"{equivalent_recall:.6f}",
-                "unrelated_recall": f"{unrelated_recall:.6f}",
+                "accuracy": f"{metrics['accuracy']:.6f}",
+                "balanced_accuracy": f"{metrics['balanced_accuracy']:.6f}",
+                "equivalent_recall": f"{metrics['equivalent_recall']:.6f}",
+                "unrelated_recall": f"{metrics['unrelated_recall']:.6f}",
             }
         )
-        if accuracy > best_accuracy:
-            best_accuracy = accuracy
+        if metrics["balanced_accuracy"] > best_balanced_accuracy:
+            best_balanced_accuracy = metrics["balanced_accuracy"]
             best_thresholds = [threshold]
-        elif accuracy == best_accuracy:
+        elif metrics["balanced_accuracy"] == best_balanced_accuracy:
             best_thresholds.append(threshold)
 
     # If a whole interval performs equally well, choose its midpoint rather than
@@ -161,6 +178,7 @@ def score_statement_pairs(
 
     recommended_threshold, sweep_rows = sweep_thresholds(rows, threshold_step)
     selected_threshold = recommended_threshold if threshold is None else threshold
+    selected_metrics = threshold_metrics(rows, selected_threshold)
 
     output_rows = []
     for row in rows:
@@ -218,6 +236,7 @@ def score_statement_pairs(
                 "max": f"{max(label_scores):.6f}",
                 "selected_threshold": f"{selected_threshold:.6f}",
                 "recommended_threshold": f"{recommended_threshold:.6f}",
+                "selected_balanced_accuracy": f"{selected_metrics['balanced_accuracy']:.6f}",
                 "accuracy_at_threshold": f"{sum(label_correct) / len(label_correct):.6f}",
             }
         )
@@ -231,6 +250,7 @@ def score_statement_pairs(
             "max": "",
             "selected_threshold": f"{selected_threshold:.6f}",
             "recommended_threshold": f"{recommended_threshold:.6f}",
+            "selected_balanced_accuracy": f"{selected_metrics['balanced_accuracy']:.6f}",
             "accuracy_at_threshold": f"{sum(row['correct_at_threshold'] for row in output_rows) / len(output_rows):.6f}",
         }
     )
@@ -248,6 +268,7 @@ def score_statement_pairs(
             "max",
             "selected_threshold",
             "recommended_threshold",
+            "selected_balanced_accuracy",
             "accuracy_at_threshold",
         ],
     )
@@ -256,7 +277,13 @@ def score_statement_pairs(
     write_csv(
         sweep_path,
         sweep_rows,
-        ["threshold", "accuracy", "equivalent_recall", "unrelated_recall"],
+        [
+            "threshold",
+            "accuracy",
+            "balanced_accuracy",
+            "equivalent_recall",
+            "unrelated_recall",
+        ],
     )
 
     print(f"Wrote pair scores: {scores_path}")
@@ -449,6 +476,14 @@ def build_parser() -> argparse.ArgumentParser:
         help=f"SentenceTransformer model name. Default: {DEFAULT_MODEL}",
     )
     parser.add_argument(
+        "--sanity-model",
+        default=None,
+        help=(
+            "Optional second embedding model to run in pairs mode for a sanity "
+            f"check, for example {DEFAULT_SANITY_MODEL}."
+        ),
+    )
+    parser.add_argument(
         "--threshold",
         type=float,
         default=None,
@@ -510,6 +545,16 @@ def main() -> None:
             args.threshold,
             args.threshold_step,
         )
+        if args.sanity_model:
+            sanity_output_dir = output_dir / f"sanity_{model_slug(args.sanity_model)}"
+            print(f"Running sanity-check model: {args.sanity_model}")
+            score_statement_pairs(
+                pairs_path,
+                sanity_output_dir,
+                args.sanity_model,
+                args.threshold,
+                args.threshold_step,
+            )
         return
 
     if args.command == "matrix":
