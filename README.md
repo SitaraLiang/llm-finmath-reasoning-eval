@@ -39,7 +39,11 @@ A lightweight framework for evaluating how language models solve quantitative fi
    - Failed conversions are summarized in `{output_root}/error_files.yaml`.
 
 5. **Evaluation**
-   - In progress: select or validate the best Call 2 conversion for each Call 1 answer and store parsed responses under `outputs/parsed_responses/`.
+   - Selected Call 2 conversions are stored under `outputs/parsed_results/`.
+   - `src/extract_statements.py` extracts candidate ground-truth statements to `data/evaluation/ground_truth_statements.csv`.
+   - `src/seed_pairs.py` creates a starter `data/evaluation/formulation_pairs.yaml` for embedding-threshold calibration.
+   - `src/eval_embeddings.py` scores formulation pairs and writes calibration outputs under `outputs/evaluation/`.
+   - `src/evaluate.py` builds D1/D3/D4 alignment tables, an experimental D2 order report, and aggregate summaries under `outputs/evaluation/`.
 
 ## Setup
 
@@ -98,14 +102,53 @@ Run Call 2 zero-shot per-question conversion:
 python src/call2.py --config config/call2/experiment_v1_zeroshot.yaml
 ```
 
+Extract statements for embedding calibration:
+
+```bash
+python src/extract_statements.py
+```
+
+Create or refresh the starter formulation-pair file:
+
+```bash
+python src/seed_pairs.py
+```
+
+Calibrate embedding similarity thresholds:
+
+```bash
+python src/eval_embeddings.py pairs \
+  --input data/evaluation/formulation_pairs.yaml \
+  --output-dir outputs/evaluation/threshold \
+  --sanity-model sentence-transformers/all-MiniLM-L6-v2
+```
+
+This writes one folder per embedding model, for example:
+
+```text
+outputs/evaluation/threshold/modernBert/
+outputs/evaluation/threshold/all-minilm-l6-v2/
+```
+
+Evaluate selected parsed responses:
+
+```bash
+python src/evaluate.py \
+  --predictions outputs/parsed_results \
+  --ground-truth data/ground_truth \
+  --output outputs/evaluation
+```
+
 ## Main Directories
 
 - `data/raw_tex/{lang}/`: imported annotated LaTeX exercises.
 - `data/ground_truth/{lang}/`: parsed ground-truth YAML.
+- `data/evaluation/`: curated evaluation inputs, including `ground_truth_statements.csv` and `formulation_pairs.yaml`.
 - `outputs/call1/`: model-generated exercise answers.
 - `outputs/call2/`: few-shot Call 2 conversions.
 - `outputs/call2_zeroshot_per_question/`: zero-shot per-question Call 2 conversions.
-- `outputs/parsed_responses/`: planned curated/selected parsed model responses.
+- `outputs/parsed_results/`: curated/selected parsed model responses used by evaluation.
+- `outputs/evaluation/`: generated evaluation results, including matrices, summaries, and embedding calibration CSVs.
 - `config/call1/`: Call 1 experiment configurations.
 - `config/call2/`: Call 2 conversion configurations.
 - `tests/`: parser and conversion validation tests.

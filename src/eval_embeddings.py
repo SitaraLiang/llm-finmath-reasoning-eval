@@ -11,6 +11,7 @@ DEFAULT_MODEL = "answerdotai/ModernBERT-base"
 DEFAULT_SANITY_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 DEFAULT_PAIRS = Path("data/evaluation/formulation_pairs.yaml")
 DEFAULT_OUTPUT_DIR = Path("outputs/evaluation")
+DEFAULT_THRESHOLD_OUTPUT_DIR = DEFAULT_OUTPUT_DIR / "threshold"
 DEFAULT_MATRIX_THRESHOLD = 0.75
 DIMENSIONS = {
     "D1": "outcomes",
@@ -61,6 +62,16 @@ def model_slug(model_name: str) -> str:
         .replace(".", "-")
         .replace("_", "-")
     )
+
+
+def threshold_model_slug(model_name: str) -> str:
+    """Short folder name for threshold-calibration outputs."""
+    normalized = model_name.lower()
+    if normalized == DEFAULT_MODEL.lower():
+        return "modernBert"
+    if normalized == DEFAULT_SANITY_MODEL.lower():
+        return "all-minilm-l6-v2"
+    return model_slug(model_name.split("/")[-1])
 
 
 def load_yaml(path: Path):
@@ -513,7 +524,15 @@ def build_parser() -> argparse.ArgumentParser:
         help="Score formulation_pairs.yaml for threshold calibration.",
     )
     pairs.add_argument("--input", type=Path, default=DEFAULT_PAIRS)
-    pairs.add_argument("--output-dir", type=Path, default=DEFAULT_OUTPUT_DIR)
+    pairs.add_argument(
+        "--output-dir",
+        type=Path,
+        default=DEFAULT_THRESHOLD_OUTPUT_DIR,
+        help=(
+            "Root directory for threshold-calibration outputs. Each embedding "
+            "model is written to a subdirectory. Default: outputs/evaluation/threshold."
+        ),
+    )
 
     matrix = subparsers.add_parser(
         "matrix",
@@ -534,9 +553,9 @@ def main() -> None:
         sys.exit(1)
 
     project_root = args.project_root.resolve()
-    output_dir = resolve_path(args.output_dir, project_root)
-
     if args.command == "pairs":
+        output_root = resolve_path(args.output_dir, project_root)
+        output_dir = output_root / threshold_model_slug(args.model)
         pairs_path = resolve_path(args.input, project_root)
         score_statement_pairs(
             pairs_path,
@@ -546,7 +565,7 @@ def main() -> None:
             args.threshold_step,
         )
         if args.sanity_model:
-            sanity_output_dir = output_dir / f"sanity_{model_slug(args.sanity_model)}"
+            sanity_output_dir = output_root / threshold_model_slug(args.sanity_model)
             print(f"Running sanity-check model: {args.sanity_model}")
             score_statement_pairs(
                 pairs_path,
@@ -558,6 +577,7 @@ def main() -> None:
         return
 
     if args.command == "matrix":
+        output_dir = resolve_path(args.output_dir, project_root)
         ground_truth_path = resolve_path(args.ground_truth, project_root)
         prediction_path = resolve_path(args.prediction, project_root)
         threshold = args.threshold

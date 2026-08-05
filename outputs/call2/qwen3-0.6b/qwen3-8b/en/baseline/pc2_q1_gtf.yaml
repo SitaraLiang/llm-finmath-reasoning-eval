@@ -1,0 +1,53 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: baseline
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: qwen3-0.6b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0 = 0
+        - (X_t) is a centered Gaussian process
+        - Cov(X_s, X_t) = inf(s, t)
+        arguments:
+        - Verification of Brownian motion properties
+        outcomes:
+        - X_0 = 0 and Cov(X_s, X_t) = inf(s, t)
+-   atoms:
+    -   preconditions:
+        - W_t is a standard Brownian motion
+        - W_{1/t} is a Brownian motion as it is a scaled version of W_t
+        arguments:
+        - Increment Analysis
+        outcomes:
+        - Y_t - Y_{t-1} is a process with independent and identically distributed
+            increments
+    -   preconditions:
+        - Y_t = t \cdot W_{1/t}
+        arguments:
+        - Calculation
+        outcomes:
+        - Y_t - Y_{t-1} = t \cdot W_{1/t} - (t-1) \cdot W_{1/(t-1)}
+    -   preconditions:
+        - W_{1/t} is a Brownian motion
+        arguments:
+        - Calculation
+        outcomes:
+        - W_{1/t} - W_{1/(t-1)} are i.i.d. with mean zero and variance 1/t
+    -   preconditions:
+        - W_{1/t} - W_{1/(t-1)} are i.i.d. with mean zero and variance 1/t
+        arguments:
+        - Calculation
+        outcomes:
+        - Y_t - Y_{t-1} is a process with independent and identically distributed
+            increments
+    -   preconditions:
+        - Y_t - Y_{t-1} is a process with independent and identically distributed
+            increments
+        arguments:
+        - Conclusion
+        outcomes:
+        - X_t = t \cdot W_{1/t} satisfies the properties of a Brownian motion

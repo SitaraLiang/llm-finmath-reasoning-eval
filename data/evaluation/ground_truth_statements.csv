@@ -6,7 +6,7 @@ data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tu
 data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[1]/list[2],"\(X_0 = 0\),"
 data/ground_truth/en/pc2_q1.yaml,en,2,1,1,arguments,subquestions[1].atoms/tuple[1]/list[2],a linear combination of independent Gaussian increments thus it is Gaussian
 data/ground_truth/en/pc2_q1.yaml,en,2,1,1,outcomes,subquestions[1].atoms/tuple[1]/list[2],The process is therefore centered Gaussian
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[1],Using property ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[1],"Using property ${\rm Cov}(X_s,X_t)=\inf(s,t).$"
 data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[1],"Compute $\text{Cov}(X_t - X_s, X_v - X_u)$ for \(s < t \leq u < v\)."
 data/ground_truth/en/pc2_q1.yaml,en,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[1],Calculation
 data/ground_truth/en/pc2_q1.yaml,en,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[1],"disjoint increments are uncorrelated, hence independent"

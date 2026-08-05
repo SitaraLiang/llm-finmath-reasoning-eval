@@ -18,7 +18,7 @@ from eval_embeddings import (
 )
 
 
-DEFAULT_PREDICTIONS = Path("outputs/parsed_responses")
+DEFAULT_PREDICTIONS = Path("outputs/parsed_results")
 DEFAULT_GROUND_TRUTH = Path("data/ground_truth")
 DEFAULT_OUTPUT = Path("outputs/evaluation")
 ATOM_DIMENSIONS = {
@@ -49,7 +49,7 @@ def resolve_path(path: Path, root: Path) -> Path:
 
 
 def parse_prediction_path(path: Path, prediction_root: Path) -> dict:
-    """Parse outputs/parsed_responses/{model}/{lang}/{variation}/pcN_qM_type.yaml."""
+    """Parse outputs/parsed_results/{model}/{lang}/{variation}/pcN_qM_type.yaml."""
     relative = path.relative_to(prediction_root)
     if len(relative.parts) < 4:
         raise ValueError(
@@ -801,28 +801,6 @@ def aggregate_by(rows: list[dict], keys: list[str]) -> list[dict]:
     return aggregate_rows
 
 
-def aggregate_by_d4_source(rows: list[dict], keys: list[str]) -> list[dict]:
-    groups = {}
-    for row in rows:
-        key = tuple(row[item] for item in keys)
-        groups.setdefault(key, []).append(row)
-
-    aggregate_rows = []
-    metrics = [
-        "D4_source_mean_best_score",
-        "D4_source_recall",
-        "D4_source_precision",
-        "D4_source_f1",
-    ]
-    for key, group_rows in sorted(groups.items()):
-        row = {name: value for name, value in zip(keys, key)}
-        row["cases"] = len(group_rows)
-        for metric in metrics:
-            row[metric] = f"{statistics.fmean(float(item[metric]) for item in group_rows):.6f}"
-        aggregate_rows.append(row)
-    return aggregate_rows
-
-
 def d4_source_column(source: str, metric: str) -> str:
     return f"D4_{source}_{metric}"
 
@@ -1015,71 +993,12 @@ def main() -> None:
         ],
     )
 
-    d4_source_fields = [
-        "exercise",
-        "strategy",
-        "call1_model",
-        "language",
-        "variation",
-        "gt_source",
-        "threshold",
-        "D4_source_mean_best_score",
-        "D4_source_recall",
-        "D4_source_precision",
-        "D4_source_f1",
-        "D4_source_gt_items",
-        "D4_source_matched_gt_items",
-        "D4_source_prediction_items",
-        "D4_source_matched_prediction_items",
-        "prediction_path",
-        "ground_truth_path",
-    ]
-    for row in d4_source_rows:
-        for field in d4_source_fields:
-            row.setdefault(field, "")
-    write_csv(output_root / "evaluation_d4_by_source.csv", d4_source_rows, d4_source_fields)
-
-    d4_by_model_source = aggregate_by_d4_source(d4_source_rows, ["call1_model", "gt_source"])
-    write_csv(
-        output_root / "evaluation_d4_by_model_source.csv",
-        d4_by_model_source,
-        [
-            "call1_model",
-            "gt_source",
-            "cases",
-            "D4_source_mean_best_score",
-            "D4_source_recall",
-            "D4_source_precision",
-            "D4_source_f1",
-        ],
-    )
-
-    d4_by_model_strategy_source = aggregate_by_d4_source(
-        d4_source_rows,
-        ["call1_model", "strategy", "gt_source"],
-    )
-    write_csv(
-        output_root / "evaluation_d4_by_model_strategy_source.csv",
-        d4_by_model_strategy_source,
-        [
-            "call1_model",
-            "strategy",
-            "gt_source",
-            "cases",
-            "D4_source_mean_best_score",
-            "D4_source_recall",
-            "D4_source_precision",
-            "D4_source_f1",
-        ],
-    )
-
     ok_count = sum(row["status"] == "ok" for row in summary_rows)
     failed_count = len(summary_rows) - ok_count
     progress(f"Evaluation complete: {ok_count} ok, {failed_count} failed.")
     print(f"Wrote summary: {output_root / 'evaluation_summary.csv'}")
     print(f"Wrote model aggregate: {output_root / 'evaluation_by_model.csv'}")
     print(f"Wrote model/strategy aggregate: {output_root / 'evaluation_by_model_strategy.csv'}")
-    print(f"Wrote D4 source breakdown: {output_root / 'evaluation_d4_by_source.csv'}")
 
     if failed_count:
         sys.exit(1)

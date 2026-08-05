@@ -1,0 +1,14 @@
+subquestion_index,dimension,field,gt_atom_index,gt_source,best_model_atom_index,best_score,matched
+1,D1,outcomes,1,,1,0.865240,True
+1,D3,arguments,1,,1,0.687826,True
+1,D4,required_precondition_coverage,1,global_assumption,1,0.345944,False
+1,D4,required_precondition_coverage,2,local_assumption,1,0.933150,True
+1,D4,required_precondition_coverage,3,gt_precondition,1,0.363890,False
+1,D4,required_precondition_coverage,4,gt_precondition,1,0.927608,True
+2,D1,outcomes,1,,1,0.950274,True
+2,D3,arguments,1,,1,0.597609,True
+2,D4,required_precondition_coverage,1,global_assumption,1,0.945031,True
+2,D4,required_precondition_coverage,2,local_assumption,1,0.355061,False
+2,D4,required_precondition_coverage,3,previous_outcome,1,0.608204,True
+2,D4,required_precondition_coverage,4,gt_precondition,1,0.663746,True
+2,D4,required_precondition_coverage,5,gt_precondition,1,0.369435,False

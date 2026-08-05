@@ -1,0 +1,23 @@
+pc: '4'
+exercise: '4'
+language: en
+variation: baseline
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: deepseek-r1-7b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        arguments:
+        - Optional Stopping Theorem
+        outcomes:
+        - \E[W_τ] = \E[W_0]
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        arguments:
+        - optional stopping theorem
+        outcomes:
+        - \mathbb{E}[W_{\tau}^2] = \mathbb{E}[\tau]

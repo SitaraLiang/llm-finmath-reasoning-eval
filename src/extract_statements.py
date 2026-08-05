@@ -204,10 +204,10 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output",
-        default="outputs/evaluation/ground_truth_statements.csv",
+        default="data/evaluation/ground_truth_statements.csv",
         help=(
             "CSV output path. Defaults to "
-            "outputs/evaluation/ground_truth_statements.csv."
+            "data/evaluation/ground_truth_statements.csv."
         ),
     )
     return parser.parse_args()

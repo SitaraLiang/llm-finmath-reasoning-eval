@@ -1,0 +1,41 @@
+subquestion_index,dimension,field,gt_atom_index,model_atom_index,gt_atom_path,model_atom_path,gt_source,score,matched,gt_text,model_text
+1,D1,outcomes,1,1,subquestions[1].atoms/set[1]/list[1],subquestions[1].atoms/list[1],gt_atom,0.804829,True,"\(\mathrm{Cov}(X_s, X_t) = \min(s,t)\)","Cov(X_s, X_t) = inf(s, t)"
+1,D1,outcomes,2,1,subquestions[1].atoms/set[1]/list[2],subquestions[1].atoms/list[1],gt_atom,0.341719,False,The process is therefore centered Gaussian,"Cov(X_s, X_t) = inf(s, t)"
+1,D1,outcomes,3,1,subquestions[1].atoms/set[2]/list[1],subquestions[1].atoms/list[1],gt_atom,0.223376,False,"disjoint increments are uncorrelated, hence independent","Cov(X_s, X_t) = inf(s, t)"
+1,D1,outcomes,4,1,subquestions[1].atoms/set[2]/list[2],subquestions[1].atoms/list[1],gt_atom,0.308627,False,"This shows that the increments are stationary | and have law \(\mathcal{N}(0, t-s)\).","Cov(X_s, X_t) = inf(s, t)"
+1,D1,outcomes,5,1,subquestions[1].atoms/set[2]/list[3]/set[1],subquestions[1].atoms/list[1],gt_atom,0.237503,False,the classical definition of Brownian motion.,"Cov(X_s, X_t) = inf(s, t)"
+1,D1,outcomes,6,1,subquestions[1].atoms/set[2]/list[3]/set[2],subquestions[1].atoms/list[1],gt_atom,0.237503,False,the classical definition of Brownian motion.,"Cov(X_s, X_t) = inf(s, t)"
+1,D3,arguments,1,1,subquestions[1].atoms/set[1]/list[1],subquestions[1].atoms/list[1],gt_atom,0.252868,False,Independence of \(X_s\) and \(X_t - X_s\),It is a centered Gaussian process
+1,D3,arguments,2,1,subquestions[1].atoms/set[1]/list[2],subquestions[1].atoms/list[1],gt_atom,0.504486,True,a linear combination of independent Gaussian increments thus it is Gaussian,It is a centered Gaussian process
+1,D3,arguments,3,1,subquestions[1].atoms/set[2]/list[1],subquestions[1].atoms/list[1],gt_atom,0.083572,False,Calculation,It is a centered Gaussian process
+1,D3,arguments,4,1,subquestions[1].atoms/set[2]/list[2],subquestions[1].atoms/list[1],gt_atom,0.101630,False,thus the law depends only on \(t-s\),It is a centered Gaussian process
+1,D3,arguments,5,1,subquestions[1].atoms/set[2]/list[3]/set[1],subquestions[1].atoms/list[1],gt_atom,0.106434,False,plus the assumption of continuity of paths,It is a centered Gaussian process
+1,D3,arguments,6,1,subquestions[1].atoms/set[2]/list[3]/set[2],subquestions[1].atoms/list[1],gt_atom,0.334302,False,by taking the continuous version via Kolmogorov's theorem,It is a centered Gaussian process
+1,D4,required_precondition_coverage,1,1,subquestions[1].atoms/set[1]/list[1].preconditions[1],subquestions[1].atoms/list[1],gt_precondition,0.303384,False,"For \(s \leq t\), we decompose \(X_t = X_s + (X_t - X_s)\).",X_0 = 0
+1,D4,required_precondition_coverage,2,1,subquestions[1].atoms/set[1]/list[2].preconditions[1],subquestions[1].atoms/list[1],gt_precondition,0.111381,False,Standard Brownian motion has Gaussian increments,X_0 = 0
+1,D4,required_precondition_coverage,3,1,subquestions[1].atoms/set[1]/list[2].preconditions[2],subquestions[1].atoms/list[1],gt_precondition,0.917187,True,"\(X_0 = 0\),",X_0 = 0
+1,D4,required_precondition_coverage,4,1,subquestions[1].atoms/set[2]/list[1].preconditions[1],subquestions[1].atoms/list[1],gt_precondition,0.309776,False,"Using property ${\rm Cov}(X_s,X_t)=\inf(s,t).$",X_0 = 0
+1,D4,required_precondition_coverage,5,1,subquestions[1].atoms/set[2]/list[1].preconditions[2],subquestions[1].atoms/list[1],gt_precondition,0.220837,False,"Compute $\text{Cov}(X_t - X_s, X_v - X_u)$ for \(s < t \leq u < v\).",X_0 = 0
+1,D4,required_precondition_coverage,6,1,subquestions[1].atoms/set[2]/list[2].preconditions[1],subquestions[1].atoms/list[1],gt_precondition,0.200690,False,Compute the variance of an increment of $X$,X_0 = 0
+1,D4,required_precondition_coverage,7,1,subquestions[1].atoms/set[2]/list[3]/set[1].preconditions[1],subquestions[1].atoms/list[1],gt_precondition,0.148157,False,disjoint increments are independent,X_0 = 0
+1,D4,required_precondition_coverage,8,1,subquestions[1].atoms/set[2]/list[3]/set[1].preconditions[2],subquestions[1].atoms/list[1],gt_precondition,0.154685,False,"the law of increments is Gaussian centered of variance $t-s$, i.e. \(\mathcal{N}(0, t-s)\),",X_0 = 0
+2,D1,outcomes,1,1,subquestions[2].atoms/set[1],subquestions[2].atoms/list[1],gt_atom,0.309588,False,$\lim_{t \to 0^+} t W_{1/t} = 0$ a.s.,X_t is a Brownian motion too
+2,D1,outcomes,2,1,subquestions[2].atoms/set[2],subquestions[2].atoms/list[1],gt_atom,0.245313,False,thus it is centered Gaussian. \\,X_t is a Brownian motion too
+2,D1,outcomes,3,1,subquestions[2].atoms/set[3],subquestions[2].atoms/list[1],gt_atom,0.615328,True,"i.e. $\mathbb{E}[X_t X_s] = \min(t,s)$. \\",X_t is a Brownian motion too
+2,D1,outcomes,4,1,subquestions[2].atoms/set[4],subquestions[2].atoms/list[1],gt_atom,0.720203,True,that \(X\) is a Brownian motion.,X_t is a Brownian motion too
+2,D3,arguments,1,1,subquestions[2].atoms/set[1],subquestions[2].atoms/list[1],gt_atom,0.580654,True,Hence by the law of large numbers for Brownian motion,Properties of Brownian motion are satisfied for X_t
+2,D3,arguments,2,1,subquestions[2].atoms/set[2],subquestions[2].atoms/list[1],gt_atom,0.223189,False,is a linear combination of the \(W_{1/t_i}\),Properties of Brownian motion are satisfied for X_t
+2,D3,arguments,3,1,subquestions[2].atoms/set[3],subquestions[2].atoms/list[1],gt_atom,0.000004,False,Calculation,Properties of Brownian motion are satisfied for X_t
+2,D3,arguments,4,1,subquestions[2].atoms/set[4],subquestions[2].atoms/list[1],gt_atom,0.608750,True,we get by definition of a Brownian motion,Properties of Brownian motion are satisfied for X_t
+2,D4,required_precondition_coverage,1,1,subquestions[1].atoms/set[1]/list[1].outcomes[1],subquestions[2].atoms/list[1],previous_outcome,0.400795,False,"\(\mathrm{Cov}(X_s, X_t) = \min(s,t)\)",W_t is a Brownian motion
+2,D4,required_precondition_coverage,2,1,subquestions[1].atoms/set[1]/list[2].outcomes[1],subquestions[2].atoms/list[1],previous_outcome,0.393774,False,The process is therefore centered Gaussian,W_t is a Brownian motion
+2,D4,required_precondition_coverage,3,1,subquestions[1].atoms/set[2]/list[1].outcomes[1],subquestions[2].atoms/list[1],previous_outcome,0.205889,False,"disjoint increments are uncorrelated, hence independent",W_t is a Brownian motion
+2,D4,required_precondition_coverage,4,1,subquestions[1].atoms/set[2]/list[2].outcomes[1],subquestions[2].atoms/list[1],previous_outcome,0.184568,False,This shows that the increments are stationary,W_t is a Brownian motion
+2,D4,required_precondition_coverage,5,1,subquestions[1].atoms/set[2]/list[2].outcomes[2],subquestions[2].atoms/list[1],previous_outcome,0.260001,False,"and have law \(\mathcal{N}(0, t-s)\).",W_t is a Brownian motion
+2,D4,required_precondition_coverage,6,1,subquestions[1].atoms/set[2]/list[3]/set[1].outcomes[1],subquestions[2].atoms/list[1],previous_outcome,0.661359,True,the classical definition of Brownian motion.,W_t is a Brownian motion
+2,D4,required_precondition_coverage,7,1,subquestions[2].atoms/set[1].preconditions[1],subquestions[2].atoms/list[1],gt_precondition,0.541197,True,compute $\lim_{t \to 0^+} t W_{1/t}$,W_t is a Brownian motion
+2,D4,required_precondition_coverage,8,1,subquestions[2].atoms/set[2].preconditions[1],subquestions[2].atoms/list[1],gt_precondition,0.293874,False,"For any arbitrary \(t_1, \dots, t_n\), the vector \((X_{t_1}, \dots, X_{t_n})\)",W_t is a Brownian motion
+2,D4,required_precondition_coverage,9,1,subquestions[2].atoms/set[4].preconditions[1],subquestions[2].atoms/list[1],gt_precondition,0.298405,False,"continuity: $\lim_{t \to 0^+} X_t = 0$ a.s.,",W_t is a Brownian motion
+2,D4,required_precondition_coverage,10,1,subquestions[2].atoms/set[4].preconditions[2],subquestions[2].atoms/list[1],gt_precondition,0.371362,False,"Gaussianity: the vector \((X_{t_1}, \dots, X_{t_n})\) is centered Gaussian for any set of times",W_t is a Brownian motion
+2,D4,required_precondition_coverage,11,1,subquestions[2].atoms/set[4].preconditions[3],subquestions[2].atoms/list[1],gt_precondition,0.411884,False,"covariance: $\mathbb{E}[X_t X_s] = \min(t,s)$,",W_t is a Brownian motion
+2,D4,required_precondition_coverage,12,1,subquestions[2].atoms/set[4].preconditions[4],subquestions[2].atoms/list[1],gt_precondition,0.117828,False,adding \(X_0 = 0\),W_t is a Brownian motion

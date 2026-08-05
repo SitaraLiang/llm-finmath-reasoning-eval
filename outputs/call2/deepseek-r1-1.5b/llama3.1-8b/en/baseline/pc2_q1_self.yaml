@@ -1,0 +1,26 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: baseline
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: deepseek-r1-1.5b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0 = 0
+        - (X_t)_{t \in \R^+} is a centered Gaussian process
+        - '{\rm Cov}(X_s,X_t)=s \wedge t'
+        arguments:
+        - Brownian motion properties
+        outcomes:
+        - 'A process (X_t)_{t \in \R^+} is a Brownian motion if and only if it satisfies
+            the following conditions:'
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Brownian motion properties
+        outcomes:
+        - X_t = tW_{1/t} is a Brownian motion too

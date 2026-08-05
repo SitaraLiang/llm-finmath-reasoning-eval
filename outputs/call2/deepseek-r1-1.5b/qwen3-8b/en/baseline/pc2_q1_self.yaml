@@ -1,0 +1,64 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: baseline
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: deepseek-r1-1.5b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0 = 0
+        - The process (X_t)_{t \in \mathbb{R}^+} is a centered Gaussian process
+        - Cov(X_s, X_t) = s \wedge t
+        arguments:
+        - Show that a process is a Brownian motion if and only if it satisfies these
+            conditions
+        outcomes:
+        - The process is a Brownian motion
+    -   preconditions:
+        - X_0 = 0
+        - The process (X_t)_{t \in \mathbb{R}^+} is a centered Gaussian process
+        - Cov(X_s, X_t) = s \wedge t
+        arguments:
+        - Show that a process is a Brownian motion if and only if it satisfies these
+            conditions
+        outcomes:
+        - The process is a Brownian motion
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        - t > 0
+        - X_0 = 0
+        arguments:
+        - Verification of Brownian motion properties
+        outcomes:
+        - X_t = tW_{1/t} is a Brownian motion
+    -   preconditions:
+        - X_0 = 0
+        arguments:
+        - Initial condition
+        outcomes:
+        - X_0 = 0
+    -   preconditions:
+        - s < t
+        - W_t is a Brownian motion
+        arguments:
+        - Independent increments
+        outcomes:
+        - X_t - X_s is independent of previous increments
+    -   preconditions:
+        - h = t - s > 0
+        - W_t is a Brownian motion
+        arguments:
+        - Stationary increments
+        outcomes:
+        - X_{s+h} - X_s has distribution depending only on h
+    -   preconditions:
+        - t_n → t_0^+
+        - W_t is a Brownian motion
+        arguments:
+        - Continuity in probability
+        outcomes:
+        - X_t is continuous in probability

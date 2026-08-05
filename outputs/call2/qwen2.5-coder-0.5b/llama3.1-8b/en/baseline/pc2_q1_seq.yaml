@@ -1,0 +1,24 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: baseline
+prompt_type: strictly_sequential
+call1_output_mode: plain_text
+call1_model: qwen2.5-coder-0.5b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - A process $(X_t)_{t\in \R^+}$ is given.
+        arguments:
+        - Calculation
+        outcomes:
+        - The process is a Brownian motion if and only if $X_0=0$, $(X_t)_{t\in \R^+}$
+            is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Brownian motion process
+        outcomes:
+        - X_t=t W_{1/t} is a Brownian motion
