@@ -1,0 +1,4 @@
+label,count,mean,median,min,max,selected_threshold,recommended_threshold,selected_balanced_accuracy,accuracy_at_threshold
+equivalent,24,0.638830,0.655784,0.211906,0.878210,0.415000,0.415000,0.916667,0.916667
+unrelated,24,0.261621,0.241316,0.067995,0.547504,0.415000,0.415000,0.916667,0.916667
+overall,48,,,,,0.415000,0.415000,0.916667,0.916667
