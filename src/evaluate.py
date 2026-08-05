@@ -260,29 +260,86 @@ def build_d4_rows(
 
 def summarize_dimension(rows: list[dict]) -> dict:
     if not rows:
-        return {"mean_best_score": 0.0, "coverage": 0.0, "gt_atoms": 0, "matched_gt_atoms": 0}
+        return {
+            "mean_best_score": 0.0,
+            "coverage": 0.0,
+            "precision": 0.0,
+            "f1": 0.0,
+            "gt_items": 0,
+            "matched_gt_items": 0,
+            "prediction_items": 0,
+            "matched_prediction_items": 0,
+        }
 
     by_gt_atom = {}
+    by_prediction_atom = {}
     for row in rows:
-        key = (row["subquestion_index"], row["gt_atom_index"])
-        by_gt_atom.setdefault(key, []).append(row)
+        gt_key = (row["subquestion_index"], row["gt_atom_index"])
+        by_gt_atom.setdefault(gt_key, []).append(row)
+        if row.get("model_atom_index"):
+            prediction_key = (row["subquestion_index"], row["model_atom_index"])
+            by_prediction_atom.setdefault(prediction_key, []).append(row)
 
     best_scores = []
-    matched = 0
+    matched_gt_items = 0
     for candidates in by_gt_atom.values():
         best = max(candidates, key=lambda item: float(item["score"]))
         score = float(best["score"])
         best_scores.append(score)
         if best["matched"]:
-            matched += 1
+            matched_gt_items += 1
 
-    gt_atoms = len(best_scores)
+    matched_prediction_items = 0
+    for candidates in by_prediction_atom.values():
+        if any(row["matched"] for row in candidates):
+            matched_prediction_items += 1
+
+    gt_items = len(best_scores)
+    prediction_items = len(by_prediction_atom)
+    recall = matched_gt_items / gt_items if gt_items else 0.0
+    precision = matched_prediction_items / prediction_items if prediction_items else 0.0
+    f1 = 2 * precision * recall / (precision + recall) if precision + recall else 0.0
     return {
         "mean_best_score": statistics.fmean(best_scores) if best_scores else 0.0,
-        "coverage": matched / gt_atoms if gt_atoms else 0.0,
-        "gt_atoms": gt_atoms,
-        "matched_gt_atoms": matched,
+        "coverage": recall,
+        "precision": precision,
+        "f1": f1,
+        "gt_items": gt_items,
+        "matched_gt_items": matched_gt_items,
+        "prediction_items": prediction_items,
+        "matched_prediction_items": matched_prediction_items,
     }
+
+
+def summarize_d4_sources(rows: list[dict]) -> dict[str, dict]:
+    summaries = {}
+    for row in rows:
+        source = row.get("gt_source") or "unknown"
+        summaries.setdefault(source, []).append(row)
+    return {
+        source: summarize_dimension(source_rows)
+        for source, source_rows in sorted(summaries.items())
+    }
+
+
+def d4_source_summary_rows(base_metadata: dict, d4_source_summaries: dict[str, dict]) -> list[dict]:
+    rows = []
+    for source, summary in d4_source_summaries.items():
+        rows.append(
+            {
+                **base_metadata,
+                "gt_source": source,
+                "D4_source_mean_best_score": f"{summary['mean_best_score']:.6f}",
+                "D4_source_recall": f"{summary['coverage']:.6f}",
+                "D4_source_precision": f"{summary['precision']:.6f}",
+                "D4_source_f1": f"{summary['f1']:.6f}",
+                "D4_source_gt_items": summary["gt_items"],
+                "D4_source_matched_gt_items": summary["matched_gt_items"],
+                "D4_source_prediction_items": summary["prediction_items"],
+                "D4_source_matched_prediction_items": summary["matched_prediction_items"],
+            }
+        )
+    return rows
 
 
 def evaluate_one(
@@ -318,6 +375,7 @@ def evaluate_one(
 
     all_rows = []
     best_rows = []
+    d4_source_rows = []
     subquestion_count = max(len(gt_subquestions), len(pred_subquestions))
 
     for sub_index in range(1, subquestion_count + 1):
@@ -433,6 +491,18 @@ def evaluate_one(
         dimension: summarize_dimension([row for row in all_rows if row["dimension"] == dimension])
         for dimension in ("D1", "D3", "D4")
     }
+    d4_source_summaries = summarize_d4_sources([row for row in all_rows if row["dimension"] == "D4"])
+    d4_source_rows.extend(
+        d4_source_summary_rows(
+            {
+                **metadata,
+                "prediction_path": str(prediction_path),
+                "ground_truth_path": str(gt_path),
+                "threshold": f"{threshold:.6f}",
+            },
+            d4_source_summaries,
+        )
+    )
     d1 = dimension_summaries["D1"]["mean_best_score"]
     d3 = dimension_summaries["D3"]["mean_best_score"]
     d4 = dimension_summaries["D4"]["mean_best_score"]
@@ -446,11 +516,18 @@ def evaluate_one(
         "prediction_subquestions": len(pred_subquestions),
         "D1_mean_best_score": f"{d1:.6f}",
         "D1_coverage": f"{dimension_summaries['D1']['coverage']:.6f}",
+        "D1_precision": f"{dimension_summaries['D1']['precision']:.6f}",
+        "D1_f1": f"{dimension_summaries['D1']['f1']:.6f}",
         "D3_mean_best_score": f"{d3:.6f}",
         "D3_coverage": f"{dimension_summaries['D3']['coverage']:.6f}",
+        "D3_precision": f"{dimension_summaries['D3']['precision']:.6f}",
+        "D3_f1": f"{dimension_summaries['D3']['f1']:.6f}",
         "D4_mean_best_score": f"{d4:.6f}",
         "D4_coverage": f"{dimension_summaries['D4']['coverage']:.6f}",
+        "D4_precision": f"{dimension_summaries['D4']['precision']:.6f}",
+        "D4_f1": f"{dimension_summaries['D4']['f1']:.6f}",
         "overall_mean_score": f"{overall:.6f}",
+        "_d4_source_rows": d4_source_rows,
     }
 
 
@@ -466,11 +543,39 @@ def aggregate_by(rows: list[dict], keys: list[str]) -> list[dict]:
     metrics = [
         "D1_mean_best_score",
         "D1_coverage",
+        "D1_precision",
+        "D1_f1",
         "D3_mean_best_score",
         "D3_coverage",
+        "D3_precision",
+        "D3_f1",
         "D4_mean_best_score",
         "D4_coverage",
+        "D4_precision",
+        "D4_f1",
         "overall_mean_score",
+    ]
+    for key, group_rows in sorted(groups.items()):
+        row = {name: value for name, value in zip(keys, key)}
+        row["cases"] = len(group_rows)
+        for metric in metrics:
+            row[metric] = f"{statistics.fmean(float(item[metric]) for item in group_rows):.6f}"
+        aggregate_rows.append(row)
+    return aggregate_rows
+
+
+def aggregate_by_d4_source(rows: list[dict], keys: list[str]) -> list[dict]:
+    groups = {}
+    for row in rows:
+        key = tuple(row[item] for item in keys)
+        groups.setdefault(key, []).append(row)
+
+    aggregate_rows = []
+    metrics = [
+        "D4_source_mean_best_score",
+        "D4_source_recall",
+        "D4_source_precision",
+        "D4_source_f1",
     ]
     for key, group_rows in sorted(groups.items()):
         row = {name: value for name, value in zip(keys, key)}
@@ -511,6 +616,7 @@ def main() -> None:
 
     embedder = EmbeddingModel(args.model)
     summary_rows = []
+    d4_source_rows = []
     for index, prediction_path in enumerate(prediction_files, start=1):
         try:
             metadata = parse_prediction_path(prediction_path, prediction_root)
@@ -530,6 +636,7 @@ def main() -> None:
             embedder,
             args.threshold,
         )
+        d4_source_rows.extend(row.pop("_d4_source_rows", []))
         summary_rows.append(row)
         progress(f"[{index}/{len(prediction_files)}] {label}: {row['status']}")
 
@@ -546,10 +653,16 @@ def main() -> None:
         "prediction_subquestions",
         "D1_mean_best_score",
         "D1_coverage",
+        "D1_precision",
+        "D1_f1",
         "D3_mean_best_score",
         "D3_coverage",
+        "D3_precision",
+        "D3_f1",
         "D4_mean_best_score",
         "D4_coverage",
+        "D4_precision",
+        "D4_f1",
         "overall_mean_score",
         "prediction_path",
         "ground_truth_path",
@@ -569,10 +682,16 @@ def main() -> None:
             "cases",
             "D1_mean_best_score",
             "D1_coverage",
+            "D1_precision",
+            "D1_f1",
             "D3_mean_best_score",
             "D3_coverage",
+            "D3_precision",
+            "D3_f1",
             "D4_mean_best_score",
             "D4_coverage",
+            "D4_precision",
+            "D4_f1",
             "overall_mean_score",
         ],
     )
@@ -587,11 +706,75 @@ def main() -> None:
             "cases",
             "D1_mean_best_score",
             "D1_coverage",
+            "D1_precision",
+            "D1_f1",
             "D3_mean_best_score",
             "D3_coverage",
+            "D3_precision",
+            "D3_f1",
             "D4_mean_best_score",
             "D4_coverage",
+            "D4_precision",
+            "D4_f1",
             "overall_mean_score",
+        ],
+    )
+
+    d4_source_fields = [
+        "exercise",
+        "strategy",
+        "call1_model",
+        "language",
+        "variation",
+        "gt_source",
+        "threshold",
+        "D4_source_mean_best_score",
+        "D4_source_recall",
+        "D4_source_precision",
+        "D4_source_f1",
+        "D4_source_gt_items",
+        "D4_source_matched_gt_items",
+        "D4_source_prediction_items",
+        "D4_source_matched_prediction_items",
+        "prediction_path",
+        "ground_truth_path",
+    ]
+    for row in d4_source_rows:
+        for field in d4_source_fields:
+            row.setdefault(field, "")
+    write_csv(output_root / "evaluation_d4_by_source.csv", d4_source_rows, d4_source_fields)
+
+    d4_by_model_source = aggregate_by_d4_source(d4_source_rows, ["call1_model", "gt_source"])
+    write_csv(
+        output_root / "evaluation_d4_by_model_source.csv",
+        d4_by_model_source,
+        [
+            "call1_model",
+            "gt_source",
+            "cases",
+            "D4_source_mean_best_score",
+            "D4_source_recall",
+            "D4_source_precision",
+            "D4_source_f1",
+        ],
+    )
+
+    d4_by_model_strategy_source = aggregate_by_d4_source(
+        d4_source_rows,
+        ["call1_model", "strategy", "gt_source"],
+    )
+    write_csv(
+        output_root / "evaluation_d4_by_model_strategy_source.csv",
+        d4_by_model_strategy_source,
+        [
+            "call1_model",
+            "strategy",
+            "gt_source",
+            "cases",
+            "D4_source_mean_best_score",
+            "D4_source_recall",
+            "D4_source_precision",
+            "D4_source_f1",
         ],
     )
 
@@ -601,6 +784,7 @@ def main() -> None:
     print(f"Wrote summary: {output_root / 'evaluation_summary.csv'}")
     print(f"Wrote model aggregate: {output_root / 'evaluation_by_model.csv'}")
     print(f"Wrote model/strategy aggregate: {output_root / 'evaluation_by_model_strategy.csv'}")
+    print(f"Wrote D4 source breakdown: {output_root / 'evaluation_d4_by_source.csv'}")
 
     if failed_count:
         sys.exit(1)
