@@ -25,6 +25,18 @@ ATOM_DIMENSIONS = {
     "D1": "outcomes",
     "D3": "arguments",
 }
+D4_SOURCES = (
+    "global_assumption",
+    "local_assumption",
+    "gt_precondition",
+    "previous_outcome",
+)
+D4_SOURCE_METRICS = (
+    "mean_best_score",
+    "recall",
+    "precision",
+    "f1",
+)
 
 
 def progress(message: str) -> None:
@@ -106,6 +118,71 @@ def subquestion_atom_records(data: dict, subquestion_index: int) -> list[dict]:
     return flatten_atoms(
         subquestion.get("atoms", []),
         f"subquestions[{subquestion_index}].atoms",
+    )
+
+
+def is_proof_atom(value) -> bool:
+    return (
+        isinstance(value, dict)
+        and all(key in value for key in ("preconditions", "arguments", "outcomes"))
+    )
+
+
+def collect_ordered_atom_records(value, path: str, next_index: list[int]) -> tuple[list[dict], list[dict]]:
+    """Collect atoms and order constraints induced by LIST/SET structure.
+
+    YAML lists are ordered: every atom in an earlier child must appear before
+    every atom in a later child. YAML tuples represent unordered mathematical
+    sets, so no cross-child order constraints are added inside tuples.
+    """
+    if is_proof_atom(value):
+        atom_index = next_index[0]
+        next_index[0] += 1
+        return [{"gt_atom_index": atom_index, "path": path, "atom": value}], []
+
+    if not isinstance(value, (list, tuple)):
+        return [], []
+
+    kind = "set" if isinstance(value, tuple) else "list"
+    records = []
+    constraints = []
+    child_groups = []
+    for child_index, child in enumerate(value, start=1):
+        child_records, child_constraints = collect_ordered_atom_records(
+            child,
+            f"{path}/{kind}[{child_index}]",
+            next_index,
+        )
+        records.extend(child_records)
+        constraints.extend(child_constraints)
+        child_groups.append([record["gt_atom_index"] for record in child_records])
+
+    if isinstance(value, list):
+        for left_index, left_group in enumerate(child_groups):
+            for right_group in child_groups[left_index + 1:]:
+                for before_atom in left_group:
+                    for after_atom in right_group:
+                        constraints.append(
+                            {
+                                "before_gt_atom_index": before_atom,
+                                "after_gt_atom_index": after_atom,
+                            }
+                        )
+
+    return records, constraints
+
+
+def subquestion_order_constraints(data: dict, subquestion_index: int) -> tuple[list[dict], list[dict]]:
+    subquestions = get_subquestions(data)
+    if subquestion_index > len(subquestions):
+        return [], []
+    subquestion = subquestions[subquestion_index - 1]
+    if not isinstance(subquestion, dict):
+        return [], []
+    return collect_ordered_atom_records(
+        subquestion.get("atoms", []),
+        f"subquestions[{subquestion_index}].atoms",
+        [1],
     )
 
 
@@ -342,6 +419,134 @@ def d4_source_summary_rows(base_metadata: dict, d4_source_summaries: dict[str, d
     return rows
 
 
+def atom_pair_scores(rows: list[dict], subquestion_index: int) -> dict[tuple[int, int], dict[str, float]]:
+    pair_scores = {}
+    for row in rows:
+        if row["dimension"] not in {"D1", "D3"}:
+            continue
+        if row["subquestion_index"] != subquestion_index:
+            continue
+        if not row.get("model_atom_index"):
+            continue
+        key = (int(row["gt_atom_index"]), int(row["model_atom_index"]))
+        pair_scores.setdefault(key, {})[row["dimension"]] = float(row["score"])
+    return pair_scores
+
+
+def best_atom_matches_for_d2(
+    rows: list[dict],
+    subquestion_index: int,
+    threshold: float,
+) -> dict[int, dict]:
+    pair_scores = atom_pair_scores(rows, subquestion_index)
+    by_gt_atom = {}
+    for (gt_atom_index, model_atom_index), scores in pair_scores.items():
+        score_values = [scores[dimension] for dimension in ("D1", "D3") if dimension in scores]
+        if not score_values:
+            continue
+        combined_score = statistics.fmean(score_values)
+        candidate = {
+            "gt_atom_index": gt_atom_index,
+            "model_atom_index": model_atom_index,
+            "combined_score": combined_score,
+            "matched": combined_score >= threshold,
+        }
+        current = by_gt_atom.get(gt_atom_index)
+        if current is None or candidate["combined_score"] > current["combined_score"]:
+            by_gt_atom[gt_atom_index] = candidate
+    return by_gt_atom
+
+
+def build_d2_rows(
+    gt_data: dict,
+    all_rows: list[dict],
+    subquestion_count: int,
+    threshold: float,
+) -> tuple[list[dict], dict]:
+    d2_rows = []
+    for sub_index in range(1, subquestion_count + 1):
+        gt_atoms, constraints = subquestion_order_constraints(gt_data, sub_index)
+        if not gt_atoms:
+            continue
+        best_matches = best_atom_matches_for_d2(all_rows, sub_index, threshold)
+        path_by_atom = {
+            record["gt_atom_index"]: record["path"]
+            for record in gt_atoms
+        }
+        for constraint_index, constraint in enumerate(constraints, start=1):
+            before_index = constraint["before_gt_atom_index"]
+            after_index = constraint["after_gt_atom_index"]
+            before_match = best_matches.get(before_index)
+            after_match = best_matches.get(after_index)
+            before_model_index = (
+                before_match["model_atom_index"]
+                if before_match and before_match["matched"]
+                else ""
+            )
+            after_model_index = (
+                after_match["model_atom_index"]
+                if after_match and after_match["matched"]
+                else ""
+            )
+            if before_model_index == "" or after_model_index == "":
+                status = "unmatched"
+                respected = False
+            elif before_model_index <= after_model_index:
+                status = "respected"
+                respected = True
+            else:
+                status = "violated"
+                respected = False
+            d2_rows.append(
+                {
+                    "subquestion_index": sub_index,
+                    "constraint_index": constraint_index,
+                    "before_gt_atom_index": before_index,
+                    "after_gt_atom_index": after_index,
+                    "before_gt_atom_path": path_by_atom.get(before_index, ""),
+                    "after_gt_atom_path": path_by_atom.get(after_index, ""),
+                    "before_model_atom_index": before_model_index,
+                    "after_model_atom_index": after_model_index,
+                    "before_match_score": (
+                        f"{before_match['combined_score']:.6f}" if before_match else ""
+                    ),
+                    "after_match_score": (
+                        f"{after_match['combined_score']:.6f}" if after_match else ""
+                    ),
+                    "status": status,
+                    "respected": respected,
+                }
+            )
+
+    total_constraints = len(d2_rows)
+    respected_constraints = sum(row["status"] == "respected" for row in d2_rows)
+    violated_constraints = sum(row["status"] == "violated" for row in d2_rows)
+    unmatched_constraints = sum(row["status"] == "unmatched" for row in d2_rows)
+    matched_constraints = respected_constraints + violated_constraints
+    if total_constraints:
+        order_score = (
+            respected_constraints / matched_constraints
+            if matched_constraints
+            else 0.0
+        )
+        coverage = matched_constraints / total_constraints
+        strict_score = respected_constraints / total_constraints
+    else:
+        order_score = 1.0
+        coverage = 1.0
+        strict_score = 1.0
+    summary = {
+        "D2_order_score": order_score,
+        "D2_order_coverage": coverage,
+        "D2_strict_order_score": strict_score,
+        "D2_total_constraints": total_constraints,
+        "D2_respected_constraints": respected_constraints,
+        "D2_violated_constraints": violated_constraints,
+        "D2_unmatched_constraints": unmatched_constraints,
+    }
+    return d2_rows, summary
+
+
 def evaluate_one(
     prediction_path: Path,
     prediction_root: Path,
@@ -486,6 +691,25 @@ def evaluate_one(
             "matched",
         ],
     )
+    d2_rows, d2_summary = build_d2_rows(gt_data, all_rows, subquestion_count, threshold)
+    write_csv(
+        out_dir / "d2_order_constraints.csv",
+        d2_rows,
+        [
+            "subquestion_index",
+            "constraint_index",
+            "before_gt_atom_index",
+            "after_gt_atom_index",
+            "before_gt_atom_path",
+            "after_gt_atom_path",
+            "before_model_atom_index",
+            "after_model_atom_index",
+            "before_match_score",
+            "after_match_score",
+            "status",
+            "respected",
+        ],
+    )
 
     dimension_summaries = {
         dimension: summarize_dimension([row for row in all_rows if row["dimension"] == dimension])
@@ -507,6 +731,7 @@ def evaluate_one(
     d3 = dimension_summaries["D3"]["mean_best_score"]
     d4 = dimension_summaries["D4"]["mean_best_score"]
     overall = statistics.fmean([d1, d3, d4])
+    overall_with_d2 = statistics.fmean([d1, d3, d4, d2_summary["D2_strict_order_score"]])
 
     return {
         **base_row,
@@ -526,7 +751,15 @@ def evaluate_one(
         "D4_coverage": f"{dimension_summaries['D4']['coverage']:.6f}",
         "D4_precision": f"{dimension_summaries['D4']['precision']:.6f}",
         "D4_f1": f"{dimension_summaries['D4']['f1']:.6f}",
+        "D2_order_score": f"{d2_summary['D2_order_score']:.6f}",
+        "D2_order_coverage": f"{d2_summary['D2_order_coverage']:.6f}",
+        "D2_strict_order_score": f"{d2_summary['D2_strict_order_score']:.6f}",
+        "D2_total_constraints": d2_summary["D2_total_constraints"],
+        "D2_respected_constraints": d2_summary["D2_respected_constraints"],
+        "D2_violated_constraints": d2_summary["D2_violated_constraints"],
+        "D2_unmatched_constraints": d2_summary["D2_unmatched_constraints"],
         "overall_mean_score": f"{overall:.6f}",
+        "overall_with_D2_score": f"{overall_with_d2:.6f}",
         "_d4_source_rows": d4_source_rows,
     }
 
@@ -553,7 +786,11 @@ def aggregate_by(rows: list[dict], keys: list[str]) -> list[dict]:
         "D4_coverage",
         "D4_precision",
         "D4_f1",
+        "D2_order_score",
+        "D2_order_coverage",
+        "D2_strict_order_score",
         "overall_mean_score",
+        "overall_with_D2_score",
     ]
     for key, group_rows in sorted(groups.items()):
         row = {name: value for name, value in zip(keys, key)}
@@ -584,6 +821,44 @@ def aggregate_by_d4_source(rows: list[dict], keys: list[str]) -> list[dict]:
             row[metric] = f"{statistics.fmean(float(item[metric]) for item in group_rows):.6f}"
         aggregate_rows.append(row)
     return aggregate_rows
+
+
+def d4_source_column(source: str, metric: str) -> str:
+    return f"D4_{source}_{metric}"
+
+
+def add_d4_source_columns(
+    aggregate_rows: list[dict],
+    d4_source_rows: list[dict],
+    keys: list[str],
+) -> None:
+    grouped = {}
+    for row in d4_source_rows:
+        key = tuple(row[item] for item in keys)
+        source = row["gt_source"]
+        grouped.setdefault((key, source), []).append(row)
+
+    for aggregate_row in aggregate_rows:
+        key = tuple(aggregate_row[item] for item in keys)
+        for source in D4_SOURCES:
+            source_rows = grouped.get((key, source), [])
+            for metric in D4_SOURCE_METRICS:
+                column = d4_source_column(source, metric)
+                source_metric = f"D4_source_{metric}"
+                if source_rows:
+                    aggregate_row[column] = (
+                        f"{statistics.fmean(float(row[source_metric]) for row in source_rows):.6f}"
+                    )
+                else:
+                    aggregate_row[column] = ""
+
+
+def d4_source_columns() -> list[str]:
+    return [
+        d4_source_column(source, metric)
+        for source in D4_SOURCES
+        for metric in D4_SOURCE_METRICS
+    ]
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -663,7 +938,15 @@ def main() -> None:
         "D4_coverage",
         "D4_precision",
         "D4_f1",
+        "D2_order_score",
+        "D2_order_coverage",
+        "D2_strict_order_score",
+        "D2_total_constraints",
+        "D2_respected_constraints",
+        "D2_violated_constraints",
+        "D2_unmatched_constraints",
         "overall_mean_score",
+        "overall_with_D2_score",
         "prediction_path",
         "ground_truth_path",
         "output_dir",
@@ -674,6 +957,7 @@ def main() -> None:
     write_csv(output_root / "evaluation_summary.csv", summary_rows, summary_fields)
 
     by_model = aggregate_by(summary_rows, ["call1_model"])
+    add_d4_source_columns(by_model, d4_source_rows, ["call1_model"])
     write_csv(
         output_root / "evaluation_by_model.csv",
         by_model,
@@ -692,11 +976,17 @@ def main() -> None:
             "D4_coverage",
             "D4_precision",
             "D4_f1",
+            "D2_order_score",
+            "D2_order_coverage",
+            "D2_strict_order_score",
             "overall_mean_score",
+            "overall_with_D2_score",
+            *d4_source_columns(),
         ],
     )
 
     by_model_strategy = aggregate_by(summary_rows, ["call1_model", "strategy"])
+    add_d4_source_columns(by_model_strategy, d4_source_rows, ["call1_model", "strategy"])
     write_csv(
         output_root / "evaluation_by_model_strategy.csv",
         by_model_strategy,
@@ -716,7 +1006,12 @@ def main() -> None:
             "D4_coverage",
             "D4_precision",
             "D4_f1",
+            "D2_order_score",
+            "D2_order_coverage",
+            "D2_strict_order_score",
             "overall_mean_score",
+            "overall_with_D2_score",
+            *d4_source_columns(),
         ],
     )
 
