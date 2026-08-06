@@ -108,19 +108,14 @@ Extract statements for embedding calibration:
 python src/extract_statements.py
 ```
 
-Create or refresh the starter formulation-pair file:
-
-```bash
-python src/seed_pairs.py
-```
+Create the starter formulation-pair file (Manually)
 
 Calibrate embedding similarity thresholds:
 
 ```bash
 python src/eval_embeddings.py pairs \
   --input data/evaluation/formulation_pairs.yaml \
-  --output-dir outputs/evaluation/threshold \
-  --sanity-model sentence-transformers/all-MiniLM-L6-v2
+  --output-dir outputs/evaluation/threshold 
 ```
 
 This writes one folder per embedding model, for example:

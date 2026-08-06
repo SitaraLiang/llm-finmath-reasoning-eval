@@ -7,8 +7,8 @@ from pathlib import Path
 import yaml
 
 
-DEFAULT_MODEL = "answerdotai/ModernBERT-base"
-DEFAULT_SANITY_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+DEFAULT_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
+DEFAULT_SANITY_MODEL = "answerdotai/ModernBERT-base"
 DEFAULT_PAIRS = Path("data/evaluation/formulation_pairs.yaml")
 DEFAULT_OUTPUT_DIR = Path("outputs/evaluation")
 DEFAULT_THRESHOLD_OUTPUT_DIR = DEFAULT_OUTPUT_DIR / "threshold"
