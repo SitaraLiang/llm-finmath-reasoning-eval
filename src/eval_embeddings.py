@@ -67,10 +67,10 @@ def model_slug(model_name: str) -> str:
 def threshold_model_slug(model_name: str) -> str:
     """Short folder name for threshold-calibration outputs."""
     normalized = model_name.lower()
-    if normalized == DEFAULT_MODEL.lower():
-        return "modernBert"
-    if normalized == DEFAULT_SANITY_MODEL.lower():
+    if normalized == "sentence-transformers/all-minilm-l6-v2":
         return "all-minilm-l6-v2"
+    if normalized == "answerdotai/modernbert-base":
+        return "modernBert"
     return model_slug(model_name.split("/")[-1])
 
 
