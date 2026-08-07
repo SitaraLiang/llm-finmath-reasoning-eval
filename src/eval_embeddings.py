@@ -74,6 +74,18 @@ def threshold_model_slug(model_name: str) -> str:
     return model_slug(model_name.split("/")[-1])
 
 
+def unique_model_names(model_names: list[str]) -> list[str]:
+    seen = set()
+    unique = []
+    for model_name in model_names:
+        normalized = model_name.strip()
+        if not normalized or normalized in seen:
+            continue
+        seen.add(normalized)
+        unique.append(normalized)
+    return unique
+
+
 def load_yaml(path: Path):
     with path.open("r", encoding="utf-8") as file:
         return yaml.load(file, Loader=yaml.FullLoader)
@@ -490,8 +502,8 @@ def build_parser() -> argparse.ArgumentParser:
         "--sanity-model",
         default=None,
         help=(
-            "Optional second embedding model to run in pairs mode for a sanity "
-            f"check, for example {DEFAULT_SANITY_MODEL}."
+            "Optional extra embedding model to run in pairs mode. Kept for "
+            "backward compatibility; prefer pairs --models for several models."
         ),
     )
     parser.add_argument(
@@ -525,6 +537,15 @@ def build_parser() -> argparse.ArgumentParser:
     )
     pairs.add_argument("--input", type=Path, default=DEFAULT_PAIRS)
     pairs.add_argument(
+        "--models",
+        action="append",
+        default=[],
+        help=(
+            "Additional SentenceTransformer model to test in pairs mode. "
+            "Can be repeated. Each model writes to its own output subfolder."
+        ),
+    )
+    pairs.add_argument(
         "--output-dir",
         type=Path,
         default=DEFAULT_THRESHOLD_OUTPUT_DIR,
@@ -555,22 +576,18 @@ def main() -> None:
     project_root = args.project_root.resolve()
     if args.command == "pairs":
         output_root = resolve_path(args.output_dir, project_root)
-        output_dir = output_root / threshold_model_slug(args.model)
         pairs_path = resolve_path(args.input, project_root)
-        score_statement_pairs(
-            pairs_path,
-            output_dir,
-            args.model,
-            args.threshold,
-            args.threshold_step,
-        )
+        model_names = unique_model_names([args.model, *args.models])
         if args.sanity_model:
-            sanity_output_dir = output_root / threshold_model_slug(args.sanity_model)
-            print(f"Running sanity-check model: {args.sanity_model}")
+            model_names = unique_model_names([*model_names, args.sanity_model])
+
+        for model_name in model_names:
+            output_dir = output_root / threshold_model_slug(model_name)
+            print(f"Running embedding model: {model_name}")
             score_statement_pairs(
                 pairs_path,
-                sanity_output_dir,
-                args.sanity_model,
+                output_dir,
+                model_name,
                 args.threshold,
                 args.threshold_step,
             )
