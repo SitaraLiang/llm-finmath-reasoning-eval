@@ -1,363 +1,795 @@
 metadata:
-  description: First-pass ModernBERT calibration set for equivalent vs unrelated concept formulations.
-  generated_from: outputs/evaluation/ground_truth_statements.csv
+  description: Starter file for semantic embedding cosine-similarity calibration.
+  generated_from: data/evaluation/ground_truth_statements.csv
   labels:
   - equivalent
   - unrelated
   types:
-    semantic: concept formulations compared with ModernBERT embeddings
-  note: 'First pass uses 12 semantic concepts and only two labels: equivalent and unrelated. For each
-    concept, equivalent templates contain two text_b variants to capture different formulations that may
-    appear in LLM outputs. Unrelated templates contain one variant. Partial and incorrect labels can be
-    added after inspecting the first cosine distributions.'
+    semantic_text: theorem/property/assumption/outcome statements compared with sentence embeddings
+  note: This file calibrates semantic-text thresholds only. Formula/result statements and generic arguments
+    such as Calculation are handled by rule-based comparisons in eval_embeddings.py/evaluate.py, so they
+    are intentionally omitted here.
 selected_statements:
 - id: sem_0001
-  type: semantic
-  concept: brownian_motion
-  search_hint: Brownian motion definition stochastic process
-  field: assumption_global
-  source_file: data/ground_truth/en/pc4_q4.yaml
-  subquestion_index: ''
-  atom_path: global
-  text: $W_t$ is a Brownian Motion.
-- id: sem_0002
-  type: semantic
-  concept: centered_gaussian_process
-  search_hint: centered Gaussian process definition finite dimensional distributions
-  field: outcomes
-  source_file: data/ground_truth/en/pc2_q1.yaml
-  subquestion_index: '1'
-  atom_path: subquestions[1].atoms/tuple[1]/list[2]
-  text: The process is therefore centered Gaussian
-- id: sem_0003
-  type: semantic
-  concept: gaussian_increments
-  search_hint: Brownian motion Gaussian increments normally distributed increments
-  field: preconditions
-  source_file: data/ground_truth/en/pc2_q1.yaml
-  subquestion_index: '1'
-  atom_path: subquestions[1].atoms/tuple[1]/list[2]
-  text: Standard Brownian motion has Gaussian increments
-- id: sem_0004
-  type: semantic
-  concept: independent_increments
-  search_hint: Brownian motion independent increments disjoint intervals
+  type: semantic_text
+  concept: gaussian_increment_law
+  search_hint: Brownian increments normal distribution variance t-s
   field: preconditions
   source_file: data/ground_truth/en/pc2_q1.yaml
   subquestion_index: '1'
   atom_path: subquestions[1].atoms/tuple[2]/list[3]/tuple[1]
-  text: disjoint increments are independent
-- id: sem_0005
-  type: semantic
-  concept: stationary_increments
-  search_hint: Brownian motion stationary increments law depends only on time difference
-  field: outcomes
-  source_file: data/ground_truth/en/pc2_q1.yaml
-  subquestion_index: '1'
-  atom_path: subquestions[1].atoms/tuple[2]/list[2]
-  text: This shows that the increments are stationary
-- id: sem_0006
-  type: semantic
-  concept: continuity_of_paths
-  search_hint: stochastic process continuity of paths continuous sample paths
+  selection_score: 23
+  text: the law of increments is Gaussian centered of variance $t-s$, i.e. \(\mathcal{N}(0, t-s)\),
+- id: sem_0002
+  type: semantic_text
+  concept: gaussian_linear_combination
+  search_hint: linear combination of independent Gaussian random variables is Gaussian
   field: arguments
   source_file: data/ground_truth/en/pc2_q1.yaml
   subquestion_index: '1'
-  atom_path: subquestions[1].atoms/tuple[2]/list[3]/tuple[1]
-  text: plus the assumption of continuity of paths
-- id: sem_0007
-  type: semantic
+  atom_path: subquestions[1].atoms/tuple[1]/list[2]
+  selection_score: 17
+  text: a linear combination of independent Gaussian increments thus it is Gaussian
+- id: sem_0003
+  type: semantic_text
+  concept: optional_stopping_theorem
+  search_hint: Doob optional stopping theorem bounded stopping time martingale
+  field: arguments
+  source_file: data/ground_truth/en/pc4_q4.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/list[1]
+  selection_score: 17
+  text: Apply Doob's optional stopping theorem to $(W_t)_{t\geq 0}$ at $\tau$
+- id: sem_0004
+  type: semantic_text
   concept: kolmogorov_continuity_theorem
   search_hint: Kolmogorov continuity theorem continuous modification stochastic process
   field: arguments
   source_file: data/ground_truth/en/pc2_q1.yaml
   subquestion_index: '1'
   atom_path: subquestions[1].atoms/tuple[2]/list[3]/tuple[2]
+  selection_score: 17
   text: by taking the continuous version via Kolmogorov's theorem
+- id: sem_0005
+  type: semantic_text
+  concept: independent_increments
+  search_hint: Brownian motion independent increments disjoint intervals
+  field: outcomes
+  source_file: data/ground_truth/en/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[2]/list[1]
+  selection_score: 16
+  text: disjoint increments are uncorrelated, hence independent
+- id: sem_0006
+  type: semantic_text
+  concept: brownian_motion
+  search_hint: Brownian motion definition stochastic process
+  field: outcomes
+  source_file: data/ground_truth/en/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[2]/list[3]/tuple[1]
+  selection_score: 16
+  text: the classical definition of Brownian motion.
+- id: sem_0007
+  type: semantic_text
+  concept: centered_gaussian_process
+  search_hint: centered Gaussian process definition
+  field: outcomes
+  source_file: data/ground_truth/en/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[1]/list[2]
+  selection_score: 16
+  text: The process is therefore centered Gaussian
 - id: sem_0008
-  type: semantic
+  type: semantic_text
+  concept: stationary_increments
+  search_hint: Brownian motion stationary increments
+  field: outcomes
+  source_file: data/ground_truth/en/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[2]/list[2]
+  selection_score: 16
+  text: This shows that the increments are stationary
+- id: sem_0009
+  type: semantic_text
+  concept: gaussian_increments
+  search_hint: Brownian motion Gaussian increments
+  field: preconditions
+  source_file: data/ground_truth/en/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[1]/list[2]
+  selection_score: 15
+  text: Standard Brownian motion has Gaussian increments
+- id: sem_0010
+  type: semantic_text
   concept: brownian_law_of_large_numbers
   search_hint: law of large numbers for Brownian motion W_t over t
   field: arguments
   source_file: data/ground_truth/en/pc2_q1.yaml
   subquestion_index: '2'
   atom_path: subquestions[2].atoms/tuple[1]
+  selection_score: 13
   text: Hence by the law of large numbers for Brownian motion
-- id: sem_0009
-  type: semantic
-  concept: brownian_time_inversion
-  search_hint: Brownian motion time inversion t W 1 over t
-  field: preconditions
+- id: sem_0011
+  type: semantic_text
+  concept: brownian_motion_definition
+  search_hint: classical definition of Brownian motion
+  field: arguments
   source_file: data/ground_truth/en/pc2_q1.yaml
   subquestion_index: '2'
-  atom_path: subquestions[2].atoms/tuple[1]
-  text: compute $\lim_{t \to 0^+} t W_{1/t}$
-- id: sem_0010
-  type: semantic
+  atom_path: subquestions[2].atoms/tuple[4]
+  selection_score: 13
+  text: we get by definition of a Brownian motion
+- id: sem_0012
+  type: semantic_text
+  concept: increment_variance
+  search_hint: Brownian motion increment variance
+  field: preconditions
+  source_file: data/ground_truth/en/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[2]/list[2]
+  selection_score: 11
+  text: Compute the variance of an increment of $X$
+- id: sem_0013
+  type: semantic_text
+  concept: continuity_of_paths
+  search_hint: stochastic process continuous sample paths
+  field: arguments
+  source_file: data/ground_truth/en/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[2]/list[3]/tuple[1]
+  selection_score: 9
+  text: plus the assumption of continuity of paths
+- id: sem_0014
+  type: semantic_text
+  concept: martingale_property
+  search_hint: Brownian motion martingale property
+  field: preconditions
+  source_file: data/ground_truth/en/pc4_q4.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/list[1]
+  selection_score: 7
+  text: $(W_t)_{t\geq 0}$ is a martingale.
+- id: sem_0015
+  type: semantic_text
   concept: bounded_stopping_time
   search_hint: bounded stopping time definition probability
   field: assumptions
   source_file: data/ground_truth/en/pc4_q4.yaml
   subquestion_index: '1'
   atom_path: subquestions[1].assumptions
+  selection_score: 3
   text: $\tau$ is a bounded stopping time
-- id: sem_0011
-  type: semantic
-  concept: martingale_property
-  search_hint: Brownian motion martingale property natural filtration
+- id: sem_0016
+  type: semantic_text
+  concept: finite_dimensional_gaussian_vector
+  search_hint: Gaussian process finite-dimensional distributions Gaussian vector
   field: preconditions
-  source_file: data/ground_truth/en/pc4_q4.yaml
-  subquestion_index: '1'
-  atom_path: subquestions[1].atoms/list[1]
-  text: $(W_t)_{t\geq 0}$ is a martingale.
-- id: sem_0012
-  type: semantic
-  concept: doob_optional_stopping_theorem
+  source_file: data/ground_truth/en/pc2_q1.yaml
+  subquestion_index: '2'
+  atom_path: subquestions[2].atoms/tuple[2]
+  selection_score: 3
+  text: For any arbitrary \(t_1, \dots, t_n\), the vector \((X_{t_1}, \dots, X_{t_n})\)
+- id: sem_0017
+  type: semantic_text
+  concept: optional_stopping_theorem
   search_hint: Doob optional stopping theorem bounded stopping time martingale
   field: arguments
   source_file: data/ground_truth/en/pc4_q4.yaml
+  subquestion_index: '2'
+  atom_path: subquestions[2].atoms/list[1]
+  selection_score: 17
+  text: Apply Doob's optional stopping theorem to $(W_t^2-t)_{t\geq 0}$ at $\tau$
+- id: sem_0018
+  type: semantic_text
+  concept: independent_increments
+  search_hint: Brownian motion independent increments disjoint intervals
+  field: preconditions
+  source_file: data/ground_truth/en/pc2_q1.yaml
   subquestion_index: '1'
-  atom_path: subquestions[1].atoms/list[1]
-  text: Apply Doob's optional stopping theorem to $(W_t)_{t\geq 0}$ at $\tau$
+  atom_path: subquestions[1].atoms/tuple[2]/list[3]/tuple[1]
+  selection_score: 11
+  text: disjoint increments are independent
+- id: sem_0019
+  type: semantic_text
+  concept: centered_gaussian_process
+  search_hint: centered Gaussian process definition
+  field: preconditions
+  source_file: data/ground_truth/en/pc2_q1.yaml
+  subquestion_index: '2'
+  atom_path: subquestions[2].atoms/tuple[4]
+  selection_score: 11
+  text: 'Gaussianity: the vector \((X_{t_1}, \dots, X_{t_n})\) is centered Gaussian for any set of times'
+- id: sem_0020
+  type: semantic_text
+  concept: independent_increments
+  search_hint: Brownian motion independent increments disjoint intervals
+  field: arguments
+  source_file: data/ground_truth/en/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[1]/list[1]
+  selection_score: 9
+  text: Independence of \(X_s\) and \(X_t - X_s\)
+- id: sem_0021
+  type: semantic_text
+  concept: stationary_increments
+  search_hint: Brownian motion stationary increments
+  field: arguments
+  source_file: data/ground_truth/en/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[2]/list[2]
+  selection_score: 9
+  text: thus the law depends only on \(t-s\)
+- id: sem_0022
+  type: semantic_text
+  concept: centered_gaussian_process
+  search_hint: centered Gaussian process definition
+  field: outcomes
+  source_file: data/ground_truth/en/pc2_q1.yaml
+  subquestion_index: '2'
+  atom_path: subquestions[2].atoms/tuple[2]
+  selection_score: 9
+  text: thus it is centered Gaussian. \\
+- id: sem_0023
+  type: semantic_text
+  concept: brownian_motion
+  search_hint: Brownian motion definition stochastic process
+  field: assumption_global
+  source_file: data/ground_truth/en/pc4_q4.yaml
+  subquestion_index: ''
+  atom_path: global
+  selection_score: 7
+  text: $W_t$ is a Brownian Motion.
+- id: sem_0024
+  type: semantic_text
+  concept: martingale_property
+  search_hint: Brownian motion martingale property
+  field: preconditions
+  source_file: data/ground_truth/en/pc4_q4.yaml
+  subquestion_index: '2'
+  atom_path: subquestions[2].atoms/list[1]
+  selection_score: 7
+  text: $(W_t^2-t)_{t\geq 0}$ is a martingale.
+- id: sem_0025
+  type: semantic_text
+  concept: gaussian_linear_combination
+  search_hint: linear combination of independent Gaussian random variables is Gaussian
+  field: arguments
+  source_file: data/ground_truth/en/pc2_q1.yaml
+  subquestion_index: '2'
+  atom_path: subquestions[2].atoms/tuple[2]
+  selection_score: 5
+  text: is a linear combination of the \(W_{1/t_i}\)
+- id: sem_0026
+  type: semantic_text
+  concept: brownian_motion
+  search_hint: Brownian motion definition stochastic process
+  field: outcomes
+  source_file: data/ground_truth/en/pc2_q1.yaml
+  subquestion_index: '2'
+  atom_path: subquestions[2].atoms/tuple[4]
+  selection_score: 5
+  text: that \(X\) is a Brownian motion.
 pair_templates:
 - id: sem_0001_equivalent
-  type: semantic
+  type: semantic_text
   label: equivalent
-  concept: brownian_motion
-  search_hint: Brownian motion definition stochastic process
+  concept: gaussian_increment_law
+  search_hint: Brownian increments normal distribution variance t-s
   source_statement_id: sem_0001
-  text_a: '$W_t$ is a Brownian Motion.'
+  text_a: the law of increments is Gaussian centered of variance $t-s$, i.e. \(\mathcal{N}(0, t-s)\),
   text_b_variants:
-  - 'W is a standard Brownian motion.'
-  - 'W_t is a Wiener process indexed by time.'
+  - Brownian increments are centered normal random variables with variance equal to the time elapsed.
+  - The law of W_t - W_s is Gaussian with mean zero and variance t minus s.
 - id: sem_0001_unrelated
-  type: semantic
+  type: semantic_text
+  label: unrelated
+  concept: gaussian_increment_law
+  search_hint: Brownian increments normal distribution variance t-s
+  source_statement_id: sem_0001
+  text_a: the law of increments is Gaussian centered of variance $t-s$, i.e. \(\mathcal{N}(0, t-s)\),
+  text_b_variants:
+  - The random time tau is bounded.
+  - The process is a martingale with respect to its filtration.
+- id: sem_0002_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: gaussian_linear_combination
+  search_hint: linear combination of independent Gaussian random variables is Gaussian
+  source_statement_id: sem_0002
+  text_a: a linear combination of independent Gaussian increments thus it is Gaussian
+  text_b_variants:
+  - A linear combination of independent Gaussian random variables is Gaussian.
+  - A finite linear combination of Gaussian variables is again normally distributed.
+- id: sem_0002_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: gaussian_linear_combination
+  search_hint: linear combination of independent Gaussian random variables is Gaussian
+  source_statement_id: sem_0002
+  text_a: a linear combination of independent Gaussian increments thus it is Gaussian
+  text_b_variants:
+  - A bounded stopping time is dominated by a deterministic constant.
+  - Kolmogorov's theorem gives conditions for continuous sample paths.
+- id: sem_0003_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: optional_stopping_theorem
+  search_hint: Doob optional stopping theorem bounded stopping time martingale
+  source_statement_id: sem_0003
+  text_a: Apply Doob's optional stopping theorem to $(W_t)_{t\geq 0}$ at $\tau$
+  text_b_variants:
+  - Use optional stopping for the martingale at the bounded stopping time tau.
+  - Doob's optional stopping theorem applies to the stopped martingale at tau.
+- id: sem_0003_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: optional_stopping_theorem
+  search_hint: Doob optional stopping theorem bounded stopping time martingale
+  source_statement_id: sem_0003
+  text_a: Apply Doob's optional stopping theorem to $(W_t)_{t\geq 0}$ at $\tau$
+  text_b_variants:
+  - The increments of Brownian motion are normally distributed.
+  - The process has continuous sample paths.
+- id: sem_0004_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: kolmogorov_continuity_theorem
+  search_hint: Kolmogorov continuity theorem continuous modification stochastic process
+  source_statement_id: sem_0004
+  text_a: by taking the continuous version via Kolmogorov's theorem
+  text_b_variants:
+  - Kolmogorov's continuity theorem gives a continuous modification of the process.
+  - The Kolmogorov-Chentsov theorem provides conditions under which a stochastic process has a continuous
+    version.
+- id: sem_0004_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: kolmogorov_continuity_theorem
+  search_hint: Kolmogorov continuity theorem continuous modification stochastic process
+  source_statement_id: sem_0004
+  text_a: by taking the continuous version via Kolmogorov's theorem
+  text_b_variants:
+  - Brownian motion has independent increments.
+  - A bounded stopping time is almost surely smaller than a deterministic constant.
+- id: sem_0005_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: independent_increments
+  search_hint: Brownian motion independent increments disjoint intervals
+  source_statement_id: sem_0005
+  text_a: disjoint increments are uncorrelated, hence independent
+  text_b_variants:
+  - Increments over non-overlapping intervals are independent.
+  - Disjoint Brownian increments are independent random variables.
+- id: sem_0005_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: independent_increments
+  search_hint: Brownian motion independent increments disjoint intervals
+  source_statement_id: sem_0005
+  text_a: disjoint increments are uncorrelated, hence independent
+  text_b_variants:
+  - The process is Gaussian with mean zero.
+  - The variance of an increment is computed from its covariance.
+- id: sem_0006_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: brownian_motion
+  search_hint: Brownian motion definition stochastic process
+  source_statement_id: sem_0006
+  text_a: the classical definition of Brownian motion.
+  text_b_variants:
+  - W is a standard Brownian motion.
+  - The process is a Wiener process.
+- id: sem_0006_unrelated
+  type: semantic_text
   label: unrelated
   concept: brownian_motion
   search_hint: Brownian motion definition stochastic process
-  source_statement_id: sem_0001
-  text_a: '$W_t$ is a Brownian Motion.'
-  text_b_variants:
-  - 'A bounded stopping time is almost surely smaller than a deterministic constant.'
-  - 'Kolmogorov''s continuity theorem gives conditions for a continuous modification.'
-- id: sem_0002_equivalent
-  type: semantic
-  label: equivalent
-  concept: centered_gaussian_process
-  search_hint: centered Gaussian process definition finite dimensional distributions
-  source_statement_id: sem_0002
-  text_a: 'The process is therefore centered Gaussian'
-  text_b_variants:
-  - 'The process is Gaussian and has mean zero.'
-  - 'All finite-dimensional distributions are Gaussian, and the expectation is zero.'
-- id: sem_0002_unrelated
-  type: semantic
-  label: unrelated
-  concept: centered_gaussian_process
-  search_hint: centered Gaussian process definition finite dimensional distributions
-  source_statement_id: sem_0002
-  text_a: 'The process is therefore centered Gaussian'
-  text_b_variants:
-  - 'The increments over disjoint time intervals are independent.'
-  - 'The stopping theorem applies to a bounded stopping time.'
-- id: sem_0003_equivalent
-  type: semantic
-  label: equivalent
-  concept: gaussian_increments
-  search_hint: Brownian motion Gaussian increments normally distributed increments
-  source_statement_id: sem_0003
-  text_a: 'Standard Brownian motion has Gaussian increments'
-  text_b_variants:
-  - 'For Brownian motion, W_t - W_s is normally distributed.'
-  - 'The increments of a Wiener process follow Gaussian laws.'
-- id: sem_0003_unrelated
-  type: semantic
-  label: unrelated
-  concept: gaussian_increments
-  search_hint: Brownian motion Gaussian increments normally distributed increments
-  source_statement_id: sem_0003
-  text_a: 'Standard Brownian motion has Gaussian increments'
-  text_b_variants:
-  - 'The process has continuous sample paths.'
-  - 'A martingale has conditional expectation equal to its present value.'
-- id: sem_0004_equivalent
-  type: semantic
-  label: equivalent
-  concept: independent_increments
-  search_hint: Brownian motion independent increments disjoint intervals
-  source_statement_id: sem_0004
-  text_a: 'disjoint increments are independent'
-  text_b_variants:
-  - 'Increments over non-overlapping intervals are independent.'
-  - 'Changes on disjoint time intervals do not depend on one another.'
-- id: sem_0004_unrelated
-  type: semantic
-  label: unrelated
-  concept: independent_increments
-  search_hint: Brownian motion independent increments disjoint intervals
-  source_statement_id: sem_0004
-  text_a: 'disjoint increments are independent'
-  text_b_variants:
-  - 'The increments have a normal distribution.'
-  - 'The sample paths are continuous functions of time.'
-- id: sem_0005_equivalent
-  type: semantic
-  label: equivalent
-  concept: stationary_increments
-  search_hint: Brownian motion stationary increments law depends only on time difference
-  source_statement_id: sem_0005
-  text_a: 'This shows that the increments are stationary'
-  text_b_variants:
-  - 'The law of X_t - X_s depends only on t - s.'
-  - 'The distribution of an increment depends on the interval length, not on its starting time.'
-- id: sem_0005_unrelated
-  type: semantic
-  label: unrelated
-  concept: stationary_increments
-  search_hint: Brownian motion stationary increments law depends only on time difference
-  source_statement_id: sem_0005
-  text_a: 'This shows that the increments are stationary'
-  text_b_variants:
-  - 'The process is Gaussian with zero mean.'
-  - 'Optional stopping compares the expected value of a martingale at a stopping time with its initial value.'
-- id: sem_0006_equivalent
-  type: semantic
-  label: equivalent
-  concept: continuity_of_paths
-  search_hint: stochastic process continuity of paths continuous sample paths
   source_statement_id: sem_0006
-  text_a: 'plus the assumption of continuity of paths'
+  text_a: the classical definition of Brownian motion.
   text_b_variants:
-  - 'The process has continuous sample paths.'
-  - 'Almost surely, t maps to X_t continuously.'
-- id: sem_0006_unrelated
-  type: semantic
-  label: unrelated
-  concept: continuity_of_paths
-  search_hint: stochastic process continuity of paths continuous sample paths
-  source_statement_id: sem_0006
-  text_a: 'plus the assumption of continuity of paths'
-  text_b_variants:
-  - 'The increments are stationary.'
-  - 'The random time tau is bounded.'
+  - A bounded stopping time is almost surely smaller than a deterministic constant.
+  - The law of an increment depends only on the length of the interval.
 - id: sem_0007_equivalent
-  type: semantic
+  type: semantic_text
   label: equivalent
-  concept: kolmogorov_continuity_theorem
-  search_hint: Kolmogorov continuity theorem continuous modification stochastic process
+  concept: centered_gaussian_process
+  search_hint: centered Gaussian process definition
   source_statement_id: sem_0007
-  text_a: 'by taking the continuous version via Kolmogorov''s theorem'
+  text_a: The process is therefore centered Gaussian
   text_b_variants:
-  - 'Kolmogorov''s continuity theorem gives a continuous modification of the process.'
-  - 'The Kolmogorov-Chentsov theorem provides conditions under which a stochastic process has a continuous version.'
+  - The process is Gaussian and has mean zero.
+  - All finite-dimensional distributions are Gaussian, and the expectation is zero.
 - id: sem_0007_unrelated
-  type: semantic
+  type: semantic_text
   label: unrelated
-  concept: kolmogorov_continuity_theorem
-  search_hint: Kolmogorov continuity theorem continuous modification stochastic process
+  concept: centered_gaussian_process
+  search_hint: centered Gaussian process definition
   source_statement_id: sem_0007
-  text_a: 'by taking the continuous version via Kolmogorov''s theorem'
+  text_a: The process is therefore centered Gaussian
   text_b_variants:
-  - 'Brownian motion has independent increments.'
-  - 'A bounded stopping time is dominated by a finite deterministic bound.'
+  - The increments over disjoint time intervals are independent.
+  - Optional stopping applies to a martingale at a bounded stopping time.
 - id: sem_0008_equivalent
-  type: semantic
+  type: semantic_text
   label: equivalent
-  concept: brownian_law_of_large_numbers
-  search_hint: law of large numbers for Brownian motion W_t over t
+  concept: stationary_increments
+  search_hint: Brownian motion stationary increments
   source_statement_id: sem_0008
-  text_a: 'Hence by the law of large numbers for Brownian motion'
+  text_a: This shows that the increments are stationary
   text_b_variants:
-  - 'For Brownian motion, W_t divided by t converges to zero almost surely as t goes to infinity.'
-  - 'The long-time average growth rate of Brownian motion vanishes almost surely.'
+  - The law of X_t - X_s depends only on t - s.
+  - The distribution of an increment depends on the interval length, not on its starting time.
 - id: sem_0008_unrelated
-  type: semantic
+  type: semantic_text
+  label: unrelated
+  concept: stationary_increments
+  search_hint: Brownian motion stationary increments
+  source_statement_id: sem_0008
+  text_a: This shows that the increments are stationary
+  text_b_variants:
+  - Optional stopping compares a martingale at a stopping time with its initial value.
+  - Kolmogorov's theorem gives conditions for a continuous modification.
+- id: sem_0009_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: gaussian_increments
+  search_hint: Brownian motion Gaussian increments
+  source_statement_id: sem_0009
+  text_a: Standard Brownian motion has Gaussian increments
+  text_b_variants:
+  - For Brownian motion, W_t - W_s is normally distributed.
+  - The increments of a Wiener process follow Gaussian laws.
+- id: sem_0009_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: gaussian_increments
+  search_hint: Brownian motion Gaussian increments
+  source_statement_id: sem_0009
+  text_a: Standard Brownian motion has Gaussian increments
+  text_b_variants:
+  - The process has continuous sample paths.
+  - Tau is a bounded stopping time.
+- id: sem_0010_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: brownian_law_of_large_numbers
+  search_hint: law of large numbers for Brownian motion W_t over t
+  source_statement_id: sem_0010
+  text_a: Hence by the law of large numbers for Brownian motion
+  text_b_variants:
+  - For Brownian motion, W_t divided by t converges to zero almost surely as t goes to infinity.
+  - The long-time average growth rate of Brownian motion vanishes almost surely.
+- id: sem_0010_unrelated
+  type: semantic_text
   label: unrelated
   concept: brownian_law_of_large_numbers
   search_hint: law of large numbers for Brownian motion W_t over t
-  source_statement_id: sem_0008
-  text_a: 'Hence by the law of large numbers for Brownian motion'
-  text_b_variants:
-  - 'For Brownian motion, increments over disjoint intervals are independent.'
-  - 'Kolmogorov''s theorem can be used to obtain continuous sample paths.'
-- id: sem_0009_equivalent
-  type: semantic
-  label: equivalent
-  concept: brownian_time_inversion
-  search_hint: Brownian motion time inversion t W 1 over t
-  source_statement_id: sem_0009
-  text_a: 'compute $\lim_{t \to 0^+} t W_{1/t}$'
-  text_b_variants:
-  - 'Study the limit at zero of the time-inverted Brownian motion t W_{1/t}.'
-  - 'Use Brownian time inversion to analyze t W(1/t) as t tends to zero.'
-- id: sem_0009_unrelated
-  type: semantic
-  label: unrelated
-  concept: brownian_time_inversion
-  search_hint: Brownian motion time inversion t W 1 over t
-  source_statement_id: sem_0009
-  text_a: 'compute $\lim_{t \to 0^+} t W_{1/t}$'
-  text_b_variants:
-  - 'A centered Gaussian process has mean zero.'
-  - 'The optional stopping theorem applies to martingales at stopping times.'
-- id: sem_0010_equivalent
-  type: semantic
-  label: equivalent
-  concept: bounded_stopping_time
-  search_hint: bounded stopping time definition probability
   source_statement_id: sem_0010
-  text_a: '$\tau$ is a bounded stopping time'
+  text_a: Hence by the law of large numbers for Brownian motion
   text_b_variants:
-  - 'Tau is a stopping time bounded by a deterministic finite constant.'
-  - 'There exists M such that tau is less than or equal to M almost surely.'
-- id: sem_0010_unrelated
-  type: semantic
-  label: unrelated
-  concept: bounded_stopping_time
-  search_hint: bounded stopping time definition probability
-  source_statement_id: sem_0010
-  text_a: '$\tau$ is a bounded stopping time'
-  text_b_variants:
-  - 'Brownian motion has Gaussian increments.'
-  - 'The distribution of increments depends only on elapsed time.'
+  - The optional stopping theorem applies to bounded stopping times.
+  - The increments over disjoint intervals are independent.
 - id: sem_0011_equivalent
-  type: semantic
+  type: semantic_text
   label: equivalent
-  concept: martingale_property
-  search_hint: Brownian motion martingale property natural filtration
+  concept: brownian_motion_definition
+  search_hint: classical definition of Brownian motion
   source_statement_id: sem_0011
-  text_a: '$(W_t)_{t\geq 0}$ is a martingale.'
+  text_a: we get by definition of a Brownian motion
   text_b_variants:
-  - 'Brownian motion is a martingale with respect to its natural filtration.'
-  - 'For s <= t, the conditional expectation E[W_t | F_s] equals W_s.'
+  - These properties are exactly the standard definition of Brownian motion.
+  - By the standard characterization, the process is Brownian motion.
 - id: sem_0011_unrelated
-  type: semantic
+  type: semantic_text
+  label: unrelated
+  concept: brownian_motion_definition
+  search_hint: classical definition of Brownian motion
+  source_statement_id: sem_0011
+  text_a: we get by definition of a Brownian motion
+  text_b_variants:
+  - A bounded stopping time is dominated by a deterministic constant.
+  - A finite-dimensional vector of process values is Gaussian.
+- id: sem_0012_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: increment_variance
+  search_hint: Brownian motion increment variance
+  source_statement_id: sem_0012
+  text_a: Compute the variance of an increment of $X$
+  text_b_variants:
+  - Compute Var(X_t - X_s) for the increment of the process.
+  - Find the variance of the process increment.
+- id: sem_0012_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: increment_variance
+  search_hint: Brownian motion increment variance
+  source_statement_id: sem_0012
+  text_a: Compute the variance of an increment of $X$
+  text_b_variants:
+  - Kolmogorov's theorem gives conditions for a continuous modification.
+  - The process has independent increments.
+- id: sem_0013_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: continuity_of_paths
+  search_hint: stochastic process continuous sample paths
+  source_statement_id: sem_0013
+  text_a: plus the assumption of continuity of paths
+  text_b_variants:
+  - The process has continuous sample paths.
+  - Almost surely, t maps to X_t continuously.
+- id: sem_0013_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: continuity_of_paths
+  search_hint: stochastic process continuous sample paths
+  source_statement_id: sem_0013
+  text_a: plus the assumption of continuity of paths
+  text_b_variants:
+  - The random time tau is bounded.
+  - The increments are normally distributed.
+- id: sem_0014_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: martingale_property
+  search_hint: Brownian motion martingale property
+  source_statement_id: sem_0014
+  text_a: $(W_t)_{t\geq 0}$ is a martingale.
+  text_b_variants:
+  - The process is a martingale with respect to its natural filtration.
+  - For s <= t, the conditional expectation of the future value given F_s equals the present value.
+- id: sem_0014_unrelated
+  type: semantic_text
   label: unrelated
   concept: martingale_property
-  search_hint: Brownian motion martingale property natural filtration
-  source_statement_id: sem_0011
-  text_a: '$(W_t)_{t\geq 0}$ is a martingale.'
+  search_hint: Brownian motion martingale property
+  source_statement_id: sem_0014
+  text_a: $(W_t)_{t\geq 0}$ is a martingale.
   text_b_variants:
-  - 'Kolmogorov''s theorem gives a continuous modification.'
-  - 'Brownian time inversion studies t W_{1/t} near zero.'
-- id: sem_0012_equivalent
-  type: semantic
+  - Kolmogorov's theorem gives conditions for a continuous modification.
+  - The increments of Brownian motion are normally distributed.
+- id: sem_0015_equivalent
+  type: semantic_text
   label: equivalent
-  concept: doob_optional_stopping_theorem
-  search_hint: Doob optional stopping theorem bounded stopping time martingale
-  source_statement_id: sem_0012
-  text_a: 'Apply Doob''s optional stopping theorem to $(W_t)_{t\geq 0}$ at $\tau$'
+  concept: bounded_stopping_time
+  search_hint: bounded stopping time definition probability
+  source_statement_id: sem_0015
+  text_a: $\tau$ is a bounded stopping time
   text_b_variants:
-  - 'Use optional stopping for the martingale W_t at the bounded stopping time tau.'
-  - 'By Doob''s optional stopping theorem, E[W_tau] equals E[W_0] under the bounded stopping time condition.'
-- id: sem_0012_unrelated
-  type: semantic
+  - Tau is a stopping time bounded by a deterministic finite constant.
+  - There exists M such that tau is less than or equal to M almost surely.
+- id: sem_0015_unrelated
+  type: semantic_text
   label: unrelated
-  concept: doob_optional_stopping_theorem
-  search_hint: Doob optional stopping theorem bounded stopping time martingale
-  source_statement_id: sem_0012
-  text_a: 'Apply Doob''s optional stopping theorem to $(W_t)_{t\geq 0}$ at $\tau$'
+  concept: bounded_stopping_time
+  search_hint: bounded stopping time definition probability
+  source_statement_id: sem_0015
+  text_a: $\tau$ is a bounded stopping time
   text_b_variants:
-  - 'The increments of Brownian motion are normally distributed.'
-  - 'The process is centered Gaussian.'
+  - Brownian motion has Gaussian increments.
+  - The process has continuous sample paths.
+- id: sem_0016_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: finite_dimensional_gaussian_vector
+  search_hint: Gaussian process finite-dimensional distributions Gaussian vector
+  source_statement_id: sem_0016
+  text_a: For any arbitrary \(t_1, \dots, t_n\), the vector \((X_{t_1}, \dots, X_{t_n})\)
+  text_b_variants:
+  - For any finite set of times, the random vector of process values is considered.
+  - Take the finite-dimensional vector formed by X at times t_1 through t_n.
+- id: sem_0016_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: finite_dimensional_gaussian_vector
+  search_hint: Gaussian process finite-dimensional distributions Gaussian vector
+  source_statement_id: sem_0016
+  text_a: For any arbitrary \(t_1, \dots, t_n\), the vector \((X_{t_1}, \dots, X_{t_n})\)
+  text_b_variants:
+  - The increments are stationary.
+  - The optional stopping theorem applies to martingales.
+- id: sem_0017_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: optional_stopping_theorem
+  search_hint: Doob optional stopping theorem bounded stopping time martingale
+  source_statement_id: sem_0017
+  text_a: Apply Doob's optional stopping theorem to $(W_t^2-t)_{t\geq 0}$ at $\tau$
+  text_b_variants:
+  - Use optional stopping for the martingale at the bounded stopping time tau.
+  - Doob's optional stopping theorem applies to the stopped martingale at tau.
+- id: sem_0017_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: optional_stopping_theorem
+  search_hint: Doob optional stopping theorem bounded stopping time martingale
+  source_statement_id: sem_0017
+  text_a: Apply Doob's optional stopping theorem to $(W_t^2-t)_{t\geq 0}$ at $\tau$
+  text_b_variants:
+  - The increments of Brownian motion are normally distributed.
+  - The process has continuous sample paths.
+- id: sem_0018_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: independent_increments
+  search_hint: Brownian motion independent increments disjoint intervals
+  source_statement_id: sem_0018
+  text_a: disjoint increments are independent
+  text_b_variants:
+  - Increments over non-overlapping intervals are independent.
+  - Disjoint Brownian increments are independent random variables.
+- id: sem_0018_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: independent_increments
+  search_hint: Brownian motion independent increments disjoint intervals
+  source_statement_id: sem_0018
+  text_a: disjoint increments are independent
+  text_b_variants:
+  - The process is Gaussian with mean zero.
+  - The variance of an increment is computed from its covariance.
+- id: sem_0019_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: centered_gaussian_process
+  search_hint: centered Gaussian process definition
+  source_statement_id: sem_0019
+  text_a: 'Gaussianity: the vector \((X_{t_1}, \dots, X_{t_n})\) is centered Gaussian for any set of times'
+  text_b_variants:
+  - The process is Gaussian and has mean zero.
+  - All finite-dimensional distributions are Gaussian, and the expectation is zero.
+- id: sem_0019_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: centered_gaussian_process
+  search_hint: centered Gaussian process definition
+  source_statement_id: sem_0019
+  text_a: 'Gaussianity: the vector \((X_{t_1}, \dots, X_{t_n})\) is centered Gaussian for any set of times'
+  text_b_variants:
+  - The increments over disjoint time intervals are independent.
+  - Optional stopping applies to a martingale at a bounded stopping time.
+- id: sem_0020_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: independent_increments
+  search_hint: Brownian motion independent increments disjoint intervals
+  source_statement_id: sem_0020
+  text_a: Independence of \(X_s\) and \(X_t - X_s\)
+  text_b_variants:
+  - Increments over non-overlapping intervals are independent.
+  - Disjoint Brownian increments are independent random variables.
+- id: sem_0020_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: independent_increments
+  search_hint: Brownian motion independent increments disjoint intervals
+  source_statement_id: sem_0020
+  text_a: Independence of \(X_s\) and \(X_t - X_s\)
+  text_b_variants:
+  - The process is Gaussian with mean zero.
+  - The variance of an increment is computed from its covariance.
+- id: sem_0021_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: stationary_increments
+  search_hint: Brownian motion stationary increments
+  source_statement_id: sem_0021
+  text_a: thus the law depends only on \(t-s\)
+  text_b_variants:
+  - The law of X_t - X_s depends only on t - s.
+  - The distribution of an increment depends on the interval length, not on its starting time.
+- id: sem_0021_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: stationary_increments
+  search_hint: Brownian motion stationary increments
+  source_statement_id: sem_0021
+  text_a: thus the law depends only on \(t-s\)
+  text_b_variants:
+  - Optional stopping compares a martingale at a stopping time with its initial value.
+  - Kolmogorov's theorem gives conditions for a continuous modification.
+- id: sem_0022_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: centered_gaussian_process
+  search_hint: centered Gaussian process definition
+  source_statement_id: sem_0022
+  text_a: thus it is centered Gaussian. \\
+  text_b_variants:
+  - The process is Gaussian and has mean zero.
+  - All finite-dimensional distributions are Gaussian, and the expectation is zero.
+- id: sem_0022_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: centered_gaussian_process
+  search_hint: centered Gaussian process definition
+  source_statement_id: sem_0022
+  text_a: thus it is centered Gaussian. \\
+  text_b_variants:
+  - The increments over disjoint time intervals are independent.
+  - Optional stopping applies to a martingale at a bounded stopping time.
+- id: sem_0023_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: brownian_motion
+  search_hint: Brownian motion definition stochastic process
+  source_statement_id: sem_0023
+  text_a: $W_t$ is a Brownian Motion.
+  text_b_variants:
+  - W is a standard Brownian motion.
+  - The process is a Wiener process.
+- id: sem_0023_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: brownian_motion
+  search_hint: Brownian motion definition stochastic process
+  source_statement_id: sem_0023
+  text_a: $W_t$ is a Brownian Motion.
+  text_b_variants:
+  - A bounded stopping time is almost surely smaller than a deterministic constant.
+  - The law of an increment depends only on the length of the interval.
+- id: sem_0024_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: martingale_property
+  search_hint: Brownian motion martingale property
+  source_statement_id: sem_0024
+  text_a: $(W_t^2-t)_{t\geq 0}$ is a martingale.
+  text_b_variants:
+  - The process is a martingale with respect to its natural filtration.
+  - For s <= t, the conditional expectation of the future value given F_s equals the present value.
+- id: sem_0024_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: martingale_property
+  search_hint: Brownian motion martingale property
+  source_statement_id: sem_0024
+  text_a: $(W_t^2-t)_{t\geq 0}$ is a martingale.
+  text_b_variants:
+  - Kolmogorov's theorem gives conditions for a continuous modification.
+  - The increments of Brownian motion are normally distributed.
+- id: sem_0025_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: gaussian_linear_combination
+  search_hint: linear combination of independent Gaussian random variables is Gaussian
+  source_statement_id: sem_0025
+  text_a: is a linear combination of the \(W_{1/t_i}\)
+  text_b_variants:
+  - A linear combination of independent Gaussian random variables is Gaussian.
+  - A finite linear combination of Gaussian variables is again normally distributed.
+- id: sem_0025_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: gaussian_linear_combination
+  search_hint: linear combination of independent Gaussian random variables is Gaussian
+  source_statement_id: sem_0025
+  text_a: is a linear combination of the \(W_{1/t_i}\)
+  text_b_variants:
+  - A bounded stopping time is dominated by a deterministic constant.
+  - Kolmogorov's theorem gives conditions for continuous sample paths.
+- id: sem_0026_equivalent
+  type: semantic_text
+  label: equivalent
+  concept: brownian_motion
+  search_hint: Brownian motion definition stochastic process
+  source_statement_id: sem_0026
+  text_a: that \(X\) is a Brownian motion.
+  text_b_variants:
+  - W is a standard Brownian motion.
+  - The process is a Wiener process.
+- id: sem_0026_unrelated
+  type: semantic_text
+  label: unrelated
+  concept: brownian_motion
+  search_hint: Brownian motion definition stochastic process
+  source_statement_id: sem_0026
+  text_a: that \(X\) is a Brownian motion.
+  text_b_variants:
+  - A bounded stopping time is almost surely smaller than a deterministic constant.
+  - The law of an increment depends only on the length of the interval.
 pairs: []

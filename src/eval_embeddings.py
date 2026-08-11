@@ -109,11 +109,57 @@ def canonical_generic_argument(text: str) -> str | None:
     calculation_aliases = {
         "calculation",
         "calcul",
-        "computation"
+        "computation",
+        "direct calculation",
+        "direct computation",
+        "algebra",
+        "algebraic calculation",
+        "straightforward calculation",
+        "simple calculation",
     }
     if normalized in calculation_aliases:
         return "calculation"
     return None
+
+
+def has_semantic_math_signal(text: str) -> bool:
+    lowered = normalize_plain_text(text).lower()
+    semantic_keywords = (
+        "theorem",
+        "lemma",
+        "definition",
+        "property",
+        "martingale",
+        "brownian",
+        "stopping time",
+        "gaussian",
+        "increment",
+        "independent",
+        "stationary",
+        "continuous",
+        "continuity",
+        "kolmogorov",
+        "centered",
+    )
+    return any(keyword in lowered for keyword in semantic_keywords)
+
+
+def has_strong_formula_signal(text: str) -> bool:
+    normalized = normalize_plain_text(text)
+    strong_patterns = (
+        r"=",
+        r"\\int",
+        r"\\sum",
+        r"\\lim",
+        r"\\mathbb\{E\}",
+        r"\\E\b",
+        r"\bE\s*\[",
+        r"\bCov\s*\(",
+        r"\bVar\s*\(",
+        r"\\mathrm\{Cov\}",
+        r"\\operatorname",
+    )
+    return any(re.search(pattern, normalized) for pattern in strong_patterns)
 
 
 def looks_like_formula(text: str) -> bool:
@@ -159,6 +205,8 @@ def looks_like_formula(text: str) -> bool:
 def classify_statement(text: str) -> str:
     if canonical_generic_argument(text):
         return GENERIC_ARGUMENT
+    if has_semantic_math_signal(text) and not has_strong_formula_signal(text):
+        return SEMANTIC_TEXT
     if looks_like_formula(text):
         return FORMULA
     return SEMANTIC_TEXT
