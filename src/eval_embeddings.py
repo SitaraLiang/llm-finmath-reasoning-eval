@@ -1,7 +1,5 @@
 import argparse
 import csv
-import difflib
-import re
 import statistics
 import sys
 from pathlib import Path
@@ -15,11 +13,6 @@ DEFAULT_PAIRS = Path("data/evaluation/formulation_pairs.yaml")
 DEFAULT_OUTPUT_DIR = Path("outputs/evaluation")
 DEFAULT_THRESHOLD_OUTPUT_DIR = DEFAULT_OUTPUT_DIR / "threshold"
 DEFAULT_MATRIX_THRESHOLD = 0.75
-DEFAULT_FORMULA_THRESHOLD = 0.78
-DEFAULT_GENERIC_THRESHOLD = 1.0
-SEMANTIC_TEXT = "semantic_text"
-FORMULA = "formula"
-GENERIC_ARGUMENT = "generic_argument"
 DIMENSIONS = {
     "D1": "outcomes",
     "D3": "arguments",
@@ -91,206 +84,6 @@ def unique_model_names(model_names: list[str]) -> list[str]:
         seen.add(normalized)
         unique.append(normalized)
     return unique
-
-
-def normalize_plain_text(text: str) -> str:
-    return " ".join(str(text).strip().split())
-
-
-def normalize_for_generic(text: str) -> str:
-    normalized = normalize_plain_text(text).lower()
-    normalized = re.sub(r"[`'\"{}()[\].,;:]", " ", normalized)
-    normalized = re.sub(r"\s+", " ", normalized).strip()
-    return normalized
-
-
-def canonical_generic_argument(text: str) -> str | None:
-    normalized = normalize_for_generic(text)
-    calculation_aliases = {
-        "calculation",
-        "calcul",
-        "computation",
-        "direct calculation",
-        "direct computation",
-        "algebra",
-        "algebraic calculation",
-        "straightforward calculation",
-        "simple calculation",
-    }
-    if normalized in calculation_aliases:
-        return "calculation"
-    return None
-
-
-def has_semantic_math_signal(text: str) -> bool:
-    lowered = normalize_plain_text(text).lower()
-    semantic_keywords = (
-        "theorem",
-        "lemma",
-        "definition",
-        "property",
-        "martingale",
-        "brownian",
-        "stopping time",
-        "gaussian",
-        "increment",
-        "independent",
-        "stationary",
-        "continuous",
-        "continuity",
-        "kolmogorov",
-        "centered",
-    )
-    return any(keyword in lowered for keyword in semantic_keywords)
-
-
-def has_strong_formula_signal(text: str) -> bool:
-    normalized = normalize_plain_text(text)
-    strong_patterns = (
-        r"=",
-        r"\\int",
-        r"\\sum",
-        r"\\lim",
-        r"\\mathbb\{E\}",
-        r"\\E\b",
-        r"\bE\s*\[",
-        r"\bCov\s*\(",
-        r"\bVar\s*\(",
-        r"\\mathrm\{Cov\}",
-        r"\\operatorname",
-    )
-    return any(re.search(pattern, normalized) for pattern in strong_patterns)
-
-
-def looks_like_formula(text: str) -> bool:
-    normalized = normalize_plain_text(text)
-    if not normalized:
-        return False
-
-    math_signal_patterns = [
-        r"\\\(",
-        r"\\\[",
-        r"\$",
-        r"\\frac",
-        r"\\int",
-        r"\\sum",
-        r"\\lim",
-        r"\\mathbb",
-        r"\\mathrm",
-        r"\\operatorname",
-        r"\\E\b",
-        r"\\mathcal",
-        r"\bCov\s*\(",
-        r"\bVar\s*\(",
-        r"\bE\s*\[",
-    ]
-    has_math_signal = any(re.search(pattern, normalized) for pattern in math_signal_patterns)
-    has_relation = bool(
-        re.search(
-            r"(=|≤|≥|<|>|\\leq|\\geq|\\le|\\ge|\\sim|\\to|\\infty|\\mathcal\{N\}|\\mathrm\{Cov\})",
-            normalized,
-        )
-    )
-    if has_math_signal and has_relation:
-        return True
-
-    compact = normalized.replace(" ", "")
-    if re.search(r"[A-Za-z0-9_{}\\)\]]=[A-Za-z0-9_{}\\(\[]", compact):
-        return True
-    if re.search(r"\b(dX|dW|X_t|W_t|Cov|Var)\b", normalized) and has_relation:
-        return True
-    return False
-
-
-def classify_statement(text: str) -> str:
-    if canonical_generic_argument(text):
-        return GENERIC_ARGUMENT
-    if has_semantic_math_signal(text) and not has_strong_formula_signal(text):
-        return SEMANTIC_TEXT
-    if looks_like_formula(text):
-        return FORMULA
-    return SEMANTIC_TEXT
-
-
-def normalize_formula(text: str) -> str:
-    normalized = normalize_plain_text(text).lower()
-    replacements = {
-        r"\(": "",
-        r"\)": "",
-        r"\[": "",
-        r"\]": "",
-        "$": "",
-        r"\left": "",
-        r"\right": "",
-        r"\!": "",
-        r"\,": "",
-        r"\;": "",
-        r"\ ": "",
-        r"\mathrm": "",
-        r"\operatorname": "",
-        r"\mathbb": "",
-        r"\mathcal": "",
-        r"\text": "",
-        r"\rm": "",
-        r"\leq": "<=",
-        r"\le": "<=",
-        r"\geq": ">=",
-        r"\ge": ">=",
-        r"\inf": "inf",
-        r"\min": "min",
-        r"\cov": "cov",
-        r"\var": "var",
-    }
-    for old, new in replacements.items():
-        normalized = normalized.replace(old, new)
-    normalized = normalized.replace("≤", "<=").replace("≥", ">=")
-    normalized = re.sub(r"\\frac\s*\{([^{}]+)\}\s*\{([^{}]+)\}", r"(\1)/(\2)", normalized)
-    normalized = re.sub(r"\\([a-zA-Z]+)", r"\1", normalized)
-    normalized = re.sub(r"[\s{}]", "", normalized)
-    return normalized
-
-
-def formula_similarity(text_a: str, text_b: str) -> float:
-    normalized_a = normalize_formula(text_a)
-    normalized_b = normalize_formula(text_b)
-    if not normalized_a or not normalized_b:
-        return 0.0
-    if normalized_a == normalized_b:
-        return 1.0
-    return difflib.SequenceMatcher(None, normalized_a, normalized_b).ratio()
-
-
-def generic_argument_score(text_a: str, text_b: str) -> float:
-    canonical_a = canonical_generic_argument(text_a)
-    canonical_b = canonical_generic_argument(text_b)
-    if canonical_a and canonical_b:
-        return 1.0 if canonical_a == canonical_b else 0.0
-    return 1.0 if normalize_for_generic(text_a) == normalize_for_generic(text_b) else 0.0
-
-
-def compare_statements(text_a: str, text_b: str, embedder: EmbeddingModel) -> dict:
-    type_a = classify_statement(text_a)
-    type_b = classify_statement(text_b)
-
-    if type_a == GENERIC_ARGUMENT or type_b == GENERIC_ARGUMENT:
-        return {
-            "score": generic_argument_score(text_a, text_b),
-            "comparison_type": GENERIC_ARGUMENT,
-            "comparison_threshold": DEFAULT_GENERIC_THRESHOLD,
-        }
-
-    if type_a == FORMULA or type_b == FORMULA:
-        return {
-            "score": formula_similarity(text_a, text_b),
-            "comparison_type": FORMULA,
-            "comparison_threshold": DEFAULT_FORMULA_THRESHOLD,
-        }
-
-    return {
-        "score": embedder.cosine(text_a, text_b),
-        "comparison_type": SEMANTIC_TEXT,
-        "comparison_threshold": None,
-    }
 
 
 def load_yaml(path: Path):
@@ -389,8 +182,6 @@ def score_statement_pairs(
             text_a = template["text_a"]
             cosine = embedder.cosine(text_a, text_b)
             expected_match = template["label"] == "equivalent"
-            statement_type_a = classify_statement(text_a)
-            statement_type_b = classify_statement(text_b)
             rows.append(
                 {
                     "pair_id": template["id"],
@@ -400,8 +191,6 @@ def score_statement_pairs(
                     "variant_index": variant_index,
                     "cosine_value": cosine,
                     "expected_match": expected_match,
-                    "statement_type_a": statement_type_a,
-                    "statement_type_b": statement_type_b,
                     "text_a": text_a,
                     "text_b": text_b,
                 }
@@ -430,8 +219,6 @@ def score_statement_pairs(
                     "predicted_match": predicted_match,
                     "expected_match": row["expected_match"],
                     "correct_at_threshold": predicted_match == row["expected_match"],
-                    "statement_type_a": row["statement_type_a"],
-                    "statement_type_b": row["statement_type_b"],
                     "text_a": row["text_a"],
                     "text_b": row["text_b"],
                 }
@@ -453,8 +240,6 @@ def score_statement_pairs(
             "predicted_match",
             "expected_match",
             "correct_at_threshold",
-            "statement_type_a",
-            "statement_type_b",
             "text_a",
             "text_b",
         ],
@@ -570,52 +355,16 @@ def normalize_strings(values) -> list[str]:
     return [str(value) for value in values if str(value).strip()]
 
 
-def field_coverage_details(
-    gt_values: list[str],
-    pred_values: list[str],
-    embedder: EmbeddingModel,
-    semantic_threshold: float,
-) -> dict:
+def field_coverage_score(gt_values: list[str], pred_values: list[str], embedder: EmbeddingModel) -> float:
     """Score how well model-side statements cover GT-side statements."""
     if not gt_values:
-        return {
-            "score": 1.0,
-            "comparison_type": "empty_ground_truth",
-            "comparison_threshold": 0.0,
-        }
+        return 1.0
     if not pred_values:
-        return {
-            "score": 0.0,
-            "comparison_type": "missing_prediction",
-            "comparison_threshold": semantic_threshold,
-        }
-    best_comparisons = []
+        return 0.0
+    best_scores = []
     for gt_value in gt_values:
-        comparisons = [
-            compare_statements(gt_value, pred_value, embedder)
-            for pred_value in pred_values
-        ]
-        best_comparisons.append(max(comparisons, key=lambda item: item["score"]))
-    score = statistics.fmean(item["score"] for item in best_comparisons)
-    comparison_types = sorted({item["comparison_type"] for item in best_comparisons})
-    thresholds = [
-        semantic_threshold if item["comparison_threshold"] is None else item["comparison_threshold"]
-        for item in best_comparisons
-    ]
-    return {
-        "score": score,
-        "comparison_type": "+".join(comparison_types),
-        "comparison_threshold": statistics.fmean(thresholds) if thresholds else semantic_threshold,
-    }
-
-
-def field_coverage_score(gt_values: list[str], pred_values: list[str], embedder: EmbeddingModel) -> float:
-    return field_coverage_details(
-        gt_values,
-        pred_values,
-        embedder,
-        DEFAULT_MATRIX_THRESHOLD,
-    )["score"]
+        best_scores.append(max(embedder.cosine(gt_value, pred_value) for pred_value in pred_values))
+    return statistics.fmean(best_scores)
 
 
 def build_matrix_rows(
@@ -631,9 +380,7 @@ def build_matrix_rows(
         gt_values = normalize_strings(gt_record["atom"].get(field, []))
         for pred_index, pred_record in enumerate(pred_atoms, start=1):
             pred_values = normalize_strings(pred_record["atom"].get(field, []))
-            details = field_coverage_details(gt_values, pred_values, embedder, threshold)
-            score = details["score"]
-            comparison_threshold = details["comparison_threshold"]
+            score = field_coverage_score(gt_values, pred_values, embedder)
             rows.append(
                 {
                     "dimension": dimension,
@@ -643,9 +390,7 @@ def build_matrix_rows(
                     "gt_atom_path": gt_record["path"],
                     "model_atom_path": pred_record["path"],
                     "score": f"{score:.6f}",
-                    "matched": score >= comparison_threshold,
-                    "comparison_type": details["comparison_type"],
-                    "comparison_threshold": f"{comparison_threshold:.6f}",
+                    "matched": score >= threshold,
                     "gt_text": " | ".join(gt_values),
                     "model_text": " | ".join(pred_values),
                 }
@@ -720,8 +465,6 @@ def build_atom_matrices(
             "model_atom_path",
             "score",
             "matched",
-            "comparison_type",
-            "comparison_threshold",
             "gt_text",
             "model_text",
         ],

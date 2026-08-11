@@ -1,49 +1,49 @@
-source_file,language,pc,exercise,subquestion_index,field,atom_path,statement_type,text
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[1]/list[1],formula,"For \(s \leq t\), we decompose \(X_t = X_s + (X_t - X_s)\)."
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,arguments,subquestions[1].atoms/tuple[1]/list[1],semantic_text,Independence of \(X_s\) and \(X_t - X_s\)
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,outcomes,subquestions[1].atoms/tuple[1]/list[1],formula,"\(\mathrm{Cov}(X_s, X_t) = \min(s,t)\)"
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[1]/list[2],semantic_text,Standard Brownian motion has Gaussian increments
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[1]/list[2],formula,"\(X_0 = 0\),"
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,arguments,subquestions[1].atoms/tuple[1]/list[2],semantic_text,a linear combination of independent Gaussian increments thus it is Gaussian
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,outcomes,subquestions[1].atoms/tuple[1]/list[2],semantic_text,The process is therefore centered Gaussian
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[1],formula,"Using property ${\rm Cov}(X_s,X_t)=\inf(s,t).$"
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[1],formula,"Compute $\text{Cov}(X_t - X_s, X_v - X_u)$ for \(s < t \leq u < v\)."
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[1],generic_argument,Calculation
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[1],semantic_text,"disjoint increments are uncorrelated, hence independent"
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[2],semantic_text,Compute the variance of an increment of $X$
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[2],semantic_text,thus the law depends only on \(t-s\)
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[2],semantic_text,This shows that the increments are stationary
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[2],formula,"and have law \(\mathcal{N}(0, t-s)\)."
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[3]/tuple[1],semantic_text,disjoint increments are independent
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[3]/tuple[1],semantic_text,"the law of increments is Gaussian centered of variance $t-s$, i.e. \(\mathcal{N}(0, t-s)\),"
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[3]/tuple[1],semantic_text,plus the assumption of continuity of paths
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[3]/tuple[1],semantic_text,the classical definition of Brownian motion.
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[3]/tuple[2],semantic_text,disjoint increments are independent
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[3]/tuple[2],semantic_text,"the law of increments is Gaussian centered of variance $t-s$, i.e. \(\mathcal{N}(0, t-s)\),"
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[3]/tuple[2],semantic_text,by taking the continuous version via Kolmogorov's theorem
-data/ground_truth/en/pc2_q1.yaml,en,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[3]/tuple[2],semantic_text,the classical definition of Brownian motion.
-data/ground_truth/en/pc2_q1.yaml,en,2,1,2,preconditions,subquestions[2].atoms/tuple[1],formula,compute $\lim_{t \to 0^+} t W_{1/t}$
-data/ground_truth/en/pc2_q1.yaml,en,2,1,2,arguments,subquestions[2].atoms/tuple[1],semantic_text,Hence by the law of large numbers for Brownian motion
-data/ground_truth/en/pc2_q1.yaml,en,2,1,2,outcomes,subquestions[2].atoms/tuple[1],formula,$\lim_{t \to 0^+} t W_{1/t} = 0$ a.s.
-data/ground_truth/en/pc2_q1.yaml,en,2,1,2,preconditions,subquestions[2].atoms/tuple[2],semantic_text,"For any arbitrary \(t_1, \dots, t_n\), the vector \((X_{t_1}, \dots, X_{t_n})\)"
-data/ground_truth/en/pc2_q1.yaml,en,2,1,2,arguments,subquestions[2].atoms/tuple[2],semantic_text,is a linear combination of the \(W_{1/t_i}\)
-data/ground_truth/en/pc2_q1.yaml,en,2,1,2,outcomes,subquestions[2].atoms/tuple[2],semantic_text,thus it is centered Gaussian. \\
-data/ground_truth/en/pc2_q1.yaml,en,2,1,2,arguments,subquestions[2].atoms/tuple[3],generic_argument,Calculation
-data/ground_truth/en/pc2_q1.yaml,en,2,1,2,outcomes,subquestions[2].atoms/tuple[3],formula,"i.e. $\mathbb{E}[X_t X_s] = \min(t,s)$. \\"
-data/ground_truth/en/pc2_q1.yaml,en,2,1,2,preconditions,subquestions[2].atoms/tuple[4],formula,"continuity: $\lim_{t \to 0^+} X_t = 0$ a.s.,"
-data/ground_truth/en/pc2_q1.yaml,en,2,1,2,preconditions,subquestions[2].atoms/tuple[4],semantic_text,"Gaussianity: the vector \((X_{t_1}, \dots, X_{t_n})\) is centered Gaussian for any set of times"
-data/ground_truth/en/pc2_q1.yaml,en,2,1,2,preconditions,subquestions[2].atoms/tuple[4],formula,"covariance: $\mathbb{E}[X_t X_s] = \min(t,s)$,"
-data/ground_truth/en/pc2_q1.yaml,en,2,1,2,preconditions,subquestions[2].atoms/tuple[4],formula,adding \(X_0 = 0\)
-data/ground_truth/en/pc2_q1.yaml,en,2,1,2,arguments,subquestions[2].atoms/tuple[4],semantic_text,we get by definition of a Brownian motion
-data/ground_truth/en/pc2_q1.yaml,en,2,1,2,outcomes,subquestions[2].atoms/tuple[4],semantic_text,that \(X\) is a Brownian motion.
-data/ground_truth/en/pc4_q4.yaml,en,4,4,,assumption_global,global,semantic_text,$W_t$ is a Brownian Motion.
-data/ground_truth/en/pc4_q4.yaml,en,4,4,1,assumptions,subquestions[1].assumptions,semantic_text,$\tau$ is a bounded stopping time
-data/ground_truth/en/pc4_q4.yaml,en,4,4,1,preconditions,subquestions[1].atoms/list[1],semantic_text,$(W_t)_{t\geq 0}$ is a martingale.
-data/ground_truth/en/pc4_q4.yaml,en,4,4,1,preconditions,subquestions[1].atoms/list[1],semantic_text,$\tau$ is a bounded stopping time.
-data/ground_truth/en/pc4_q4.yaml,en,4,4,1,arguments,subquestions[1].atoms/list[1],semantic_text,Apply Doob's optional stopping theorem to $(W_t)_{t\geq 0}$ at $\tau$
-data/ground_truth/en/pc4_q4.yaml,en,4,4,1,outcomes,subquestions[1].atoms/list[1],formula,"\[ \mathbb{E}[W_\tau] = 0, \]"
-data/ground_truth/en/pc4_q4.yaml,en,4,4,2,assumptions,subquestions[2].assumptions,semantic_text,$\tau$ is a bounded stopping time
-data/ground_truth/en/pc4_q4.yaml,en,4,4,2,preconditions,subquestions[2].atoms/list[1],semantic_text,$(W_t^2-t)_{t\geq 0}$ is a martingale.
-data/ground_truth/en/pc4_q4.yaml,en,4,4,2,preconditions,subquestions[2].atoms/list[1],semantic_text,$\tau$ is a bounded stopping time.
-data/ground_truth/en/pc4_q4.yaml,en,4,4,2,arguments,subquestions[2].atoms/list[1],semantic_text,Apply Doob's optional stopping theorem to $(W_t^2-t)_{t\geq 0}$ at $\tau$
-data/ground_truth/en/pc4_q4.yaml,en,4,4,2,outcomes,subquestions[2].atoms/list[1],formula,\[ \mathbb{E}[W_\tau^2] = \mathbb{E}[\tau]. \]
+source_file,language,pc,exercise,subquestion_index,field,atom_path,text
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[1]/list[1],"For \(s \leq t\), we decompose \(X_t = X_s + (X_t - X_s)\)."
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,arguments,subquestions[1].atoms/tuple[1]/list[1],Independence of \(X_s\) and \(X_t - X_s\)
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,outcomes,subquestions[1].atoms/tuple[1]/list[1],"\(\mathrm{Cov}(X_s, X_t) = \min(s,t)\)"
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[1]/list[2],Standard Brownian motion has Gaussian increments
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[1]/list[2],"\(X_0 = 0\),"
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,arguments,subquestions[1].atoms/tuple[1]/list[2],a linear combination of independent Gaussian increments thus it is Gaussian
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,outcomes,subquestions[1].atoms/tuple[1]/list[2],The process is therefore centered Gaussian
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[1],"Using property ${\rm Cov}(X_s,X_t)=\inf(s,t).$"
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[1],"Compute $\text{Cov}(X_t - X_s, X_v - X_u)$ for \(s < t \leq u < v\)."
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[1],Calculation
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[1],"disjoint increments are uncorrelated, hence independent"
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[2],Compute the variance of an increment of $X$
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[2],thus the law depends only on \(t-s\)
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[2],This shows that the increments are stationary
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[2],"and have law \(\mathcal{N}(0, t-s)\)."
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[3]/tuple[1],disjoint increments are independent
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[3]/tuple[1],"the law of increments is Gaussian centered of variance $t-s$, i.e. \(\mathcal{N}(0, t-s)\),"
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[3]/tuple[1],plus the assumption of continuity of paths
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[3]/tuple[1],the classical definition of Brownian motion.
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[3]/tuple[2],disjoint increments are independent
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[3]/tuple[2],"the law of increments is Gaussian centered of variance $t-s$, i.e. \(\mathcal{N}(0, t-s)\),"
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[3]/tuple[2],by taking the continuous version via Kolmogorov's theorem
+data/ground_truth/en/pc2_q1.yaml,en,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[3]/tuple[2],the classical definition of Brownian motion.
+data/ground_truth/en/pc2_q1.yaml,en,2,1,2,preconditions,subquestions[2].atoms/tuple[1],compute $\lim_{t \to 0^+} t W_{1/t}$
+data/ground_truth/en/pc2_q1.yaml,en,2,1,2,arguments,subquestions[2].atoms/tuple[1],Hence by the law of large numbers for Brownian motion
+data/ground_truth/en/pc2_q1.yaml,en,2,1,2,outcomes,subquestions[2].atoms/tuple[1],$\lim_{t \to 0^+} t W_{1/t} = 0$ a.s.
+data/ground_truth/en/pc2_q1.yaml,en,2,1,2,preconditions,subquestions[2].atoms/tuple[2],"For any arbitrary \(t_1, \dots, t_n\), the vector \((X_{t_1}, \dots, X_{t_n})\)"
+data/ground_truth/en/pc2_q1.yaml,en,2,1,2,arguments,subquestions[2].atoms/tuple[2],is a linear combination of the \(W_{1/t_i}\)
+data/ground_truth/en/pc2_q1.yaml,en,2,1,2,outcomes,subquestions[2].atoms/tuple[2],thus it is centered Gaussian. \\
+data/ground_truth/en/pc2_q1.yaml,en,2,1,2,arguments,subquestions[2].atoms/tuple[3],Calculation
+data/ground_truth/en/pc2_q1.yaml,en,2,1,2,outcomes,subquestions[2].atoms/tuple[3],"i.e. $\mathbb{E}[X_t X_s] = \min(t,s)$. \\"
+data/ground_truth/en/pc2_q1.yaml,en,2,1,2,preconditions,subquestions[2].atoms/tuple[4],"continuity: $\lim_{t \to 0^+} X_t = 0$ a.s.,"
+data/ground_truth/en/pc2_q1.yaml,en,2,1,2,preconditions,subquestions[2].atoms/tuple[4],"Gaussianity: the vector \((X_{t_1}, \dots, X_{t_n})\) is centered Gaussian for any set of times"
+data/ground_truth/en/pc2_q1.yaml,en,2,1,2,preconditions,subquestions[2].atoms/tuple[4],"covariance: $\mathbb{E}[X_t X_s] = \min(t,s)$,"
+data/ground_truth/en/pc2_q1.yaml,en,2,1,2,preconditions,subquestions[2].atoms/tuple[4],adding \(X_0 = 0\)
+data/ground_truth/en/pc2_q1.yaml,en,2,1,2,arguments,subquestions[2].atoms/tuple[4],we get by definition of a Brownian motion
+data/ground_truth/en/pc2_q1.yaml,en,2,1,2,outcomes,subquestions[2].atoms/tuple[4],that \(X\) is a Brownian motion.
+data/ground_truth/en/pc4_q4.yaml,en,4,4,,assumption_global,global,$W_t$ is a Brownian Motion.
+data/ground_truth/en/pc4_q4.yaml,en,4,4,1,assumptions,subquestions[1].assumptions,$\tau$ is a bounded stopping time
+data/ground_truth/en/pc4_q4.yaml,en,4,4,1,preconditions,subquestions[1].atoms/list[1],$(W_t)_{t\geq 0}$ is a martingale.
+data/ground_truth/en/pc4_q4.yaml,en,4,4,1,preconditions,subquestions[1].atoms/list[1],$\tau$ is a bounded stopping time.
+data/ground_truth/en/pc4_q4.yaml,en,4,4,1,arguments,subquestions[1].atoms/list[1],Apply Doob's optional stopping theorem to $(W_t)_{t\geq 0}$ at $\tau$
+data/ground_truth/en/pc4_q4.yaml,en,4,4,1,outcomes,subquestions[1].atoms/list[1],"\[ \mathbb{E}[W_\tau] = 0, \]"
+data/ground_truth/en/pc4_q4.yaml,en,4,4,2,assumptions,subquestions[2].assumptions,$\tau$ is a bounded stopping time
+data/ground_truth/en/pc4_q4.yaml,en,4,4,2,preconditions,subquestions[2].atoms/list[1],$(W_t^2-t)_{t\geq 0}$ is a martingale.
+data/ground_truth/en/pc4_q4.yaml,en,4,4,2,preconditions,subquestions[2].atoms/list[1],$\tau$ is a bounded stopping time.
+data/ground_truth/en/pc4_q4.yaml,en,4,4,2,arguments,subquestions[2].atoms/list[1],Apply Doob's optional stopping theorem to $(W_t^2-t)_{t\geq 0}$ at $\tau$
+data/ground_truth/en/pc4_q4.yaml,en,4,4,2,outcomes,subquestions[2].atoms/list[1],\[ \mathbb{E}[W_\tau^2] = \mathbb{E}[\tau]. \]

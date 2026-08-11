@@ -7,11 +7,11 @@ from pathlib import Path
 
 from eval_embeddings import (
     DEFAULT_MATRIX_THRESHOLD,
-    DEFAULT_MODEL,
+    DEFAULT_SANITY_MODEL,
     EmbeddingModel,
     build_matrix_rows,
     flatten_atoms,
-    field_coverage_details,
+    field_coverage_score,
     get_subquestions,
     load_yaml,
     write_csv,
@@ -309,8 +309,6 @@ def build_d4_rows(
                     "gt_source": target["source"],
                     "score": "0.000000",
                     "matched": False,
-                    "comparison_type": "missing_prediction",
-                    "comparison_threshold": f"{threshold:.6f}",
                     "gt_text": target["text"],
                     "model_text": "",
                 }
@@ -318,9 +316,7 @@ def build_d4_rows(
             continue
         for pred_index, pred_record in enumerate(pred_atoms, start=1):
             pred_values = normalize_statement_list(pred_record["atom"].get("preconditions", []))
-            details = field_coverage_details([target["text"]], pred_values, embedder, threshold)
-            score = details["score"]
-            comparison_threshold = details["comparison_threshold"]
+            score = field_coverage_score([target["text"]], pred_values, embedder)
             rows.append(
                 {
                     "dimension": "D4",
@@ -331,9 +327,7 @@ def build_d4_rows(
                     "model_atom_path": pred_record["path"],
                     "gt_source": target["source"],
                     "score": f"{score:.6f}",
-                    "matched": score >= comparison_threshold,
-                    "comparison_type": details["comparison_type"],
-                    "comparison_threshold": f"{comparison_threshold:.6f}",
+                    "matched": score >= threshold,
                     "gt_text": target["text"],
                     "model_text": " | ".join(pred_values),
                 }
@@ -679,8 +673,6 @@ def evaluate_one(
             "gt_source",
             "score",
             "matched",
-            "comparison_type",
-            "comparison_threshold",
             "gt_text",
             "model_text",
         ],
@@ -854,7 +846,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--predictions", type=Path, default=DEFAULT_PREDICTIONS)
     parser.add_argument("--ground-truth", type=Path, default=DEFAULT_GROUND_TRUTH)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument("--model", default=DEFAULT_MODEL)
+    parser.add_argument("--model", default=DEFAULT_SANITY_MODEL)
     parser.add_argument("--threshold", type=float, default=0.415)
     parser.add_argument("--project-root", type=Path, default=Path.cwd())
     return parser

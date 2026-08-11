@@ -4,8 +4,6 @@ from pathlib import Path
 import re
 import sys
 
-from eval_embeddings import classify_statement
-
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 def project_path(path_value: str | Path) -> Path:
@@ -87,7 +85,6 @@ def walk_atoms(value, atom_path: str, rows: list[dict], metadata: dict) -> None:
                         **metadata,
                         "field": field,
                         "atom_path": atom_path,
-                        "statement_type": classify_statement(statement),
                         "text": statement,
                     }
                 )
@@ -115,7 +112,6 @@ def collect_from_file(path: Path, input_root: Path) -> list[dict]:
         "subquestion_index": "",
         "field": "",
         "atom_path": "",
-        "statement_type": "",
         "text": "",
     }
     rows = []
@@ -127,7 +123,6 @@ def collect_from_file(path: Path, input_root: Path) -> list[dict]:
                     **base_metadata,
                     "field": "assumption_global",
                     "atom_path": "global",
-                    "statement_type": classify_statement(statement),
                     "text": statement,
                 }
             )
@@ -147,7 +142,6 @@ def collect_from_file(path: Path, input_root: Path) -> list[dict]:
                         **metadata,
                         "field": "assumptions",
                         "atom_path": f"subquestions[{sub_index}].assumptions",
-                        "statement_type": classify_statement(statement),
                         "text": statement,
                     }
                 )
@@ -188,7 +182,6 @@ def write_csv(output_path: Path, rows: list[dict]) -> None:
         "subquestion_index",
         "field",
         "atom_path",
-        "statement_type",
         "text",
     ]
     with output_path.open("w", encoding="utf-8", newline="") as file:
