@@ -27,7 +27,7 @@ subquestion_index,dimension,field,gt_atom_index,gt_source,best_model_atom_index,
 2,D3,arguments,2,,1,0.257234,False
 2,D3,arguments,3,,1,0.037047,False
 2,D3,arguments,4,,1,0.688622,True
-2,D4,required_precondition_coverage,1,previous_outcome,1,0.400795,False
+2,D4,required_precondition_coverage,1,previous_outcome,1,0.400795,True
 2,D4,required_precondition_coverage,2,previous_outcome,1,0.393774,False
 2,D4,required_precondition_coverage,3,previous_outcome,1,0.205889,False
 2,D4,required_precondition_coverage,4,previous_outcome,1,0.184568,False
@@ -37,5 +37,5 @@ subquestion_index,dimension,field,gt_atom_index,gt_source,best_model_atom_index,
 2,D4,required_precondition_coverage,8,gt_precondition,1,0.293874,False
 2,D4,required_precondition_coverage,9,gt_precondition,1,0.298405,False
 2,D4,required_precondition_coverage,10,gt_precondition,1,0.371362,False
-2,D4,required_precondition_coverage,11,gt_precondition,1,0.411884,False
+2,D4,required_precondition_coverage,11,gt_precondition,1,0.411884,True
 2,D4,required_precondition_coverage,12,gt_precondition,1,0.117828,False

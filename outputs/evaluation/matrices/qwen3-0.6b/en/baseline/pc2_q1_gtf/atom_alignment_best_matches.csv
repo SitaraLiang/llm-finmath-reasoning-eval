@@ -37,5 +37,5 @@ subquestion_index,dimension,field,gt_atom_index,gt_source,best_model_atom_index,
 2,D4,required_precondition_coverage,8,gt_precondition,1,0.287758,False
 2,D4,required_precondition_coverage,9,gt_precondition,1,0.280655,False
 2,D4,required_precondition_coverage,10,gt_precondition,1,0.378229,False
-2,D4,required_precondition_coverage,11,gt_precondition,1,0.401946,False
+2,D4,required_precondition_coverage,11,gt_precondition,1,0.401946,True
 2,D4,required_precondition_coverage,12,gt_precondition,1,0.082545,False

@@ -12,10 +12,10 @@ subquestion_index,dimension,field,gt_atom_index,model_atom_index,gt_atom_path,mo
 1,D1,outcomes,4,2,subquestions[1].atoms/set[2]/list[2],subquestions[1].atoms/list[2],gt_atom,0.185147,False,"This shows that the increments are stationary | and have law \(\mathcal{N}(0, t-s)\).",(X_t)_{t\in \R^+} is a centered Gaussian process
 1,D1,outcomes,4,3,subquestions[1].atoms/set[2]/list[2],subquestions[1].atoms/list[3],gt_atom,0.308627,False,"This shows that the increments are stationary | and have law \(\mathcal{N}(0, t-s)\).","Cov(X_s, X_t) = inf(s, t)"
 1,D1,outcomes,5,1,subquestions[1].atoms/set[2]/list[3]/set[1],subquestions[1].atoms/list[1],gt_atom,0.011831,False,the classical definition of Brownian motion.,X_0 = 0
-1,D1,outcomes,5,2,subquestions[1].atoms/set[2]/list[3]/set[1],subquestions[1].atoms/list[2],gt_atom,0.406688,False,the classical definition of Brownian motion.,(X_t)_{t\in \R^+} is a centered Gaussian process
+1,D1,outcomes,5,2,subquestions[1].atoms/set[2]/list[3]/set[1],subquestions[1].atoms/list[2],gt_atom,0.406688,True,the classical definition of Brownian motion.,(X_t)_{t\in \R^+} is a centered Gaussian process
 1,D1,outcomes,5,3,subquestions[1].atoms/set[2]/list[3]/set[1],subquestions[1].atoms/list[3],gt_atom,0.237503,False,the classical definition of Brownian motion.,"Cov(X_s, X_t) = inf(s, t)"
 1,D1,outcomes,6,1,subquestions[1].atoms/set[2]/list[3]/set[2],subquestions[1].atoms/list[1],gt_atom,0.011831,False,the classical definition of Brownian motion.,X_0 = 0
-1,D1,outcomes,6,2,subquestions[1].atoms/set[2]/list[3]/set[2],subquestions[1].atoms/list[2],gt_atom,0.406688,False,the classical definition of Brownian motion.,(X_t)_{t\in \R^+} is a centered Gaussian process
+1,D1,outcomes,6,2,subquestions[1].atoms/set[2]/list[3]/set[2],subquestions[1].atoms/list[2],gt_atom,0.406688,True,the classical definition of Brownian motion.,(X_t)_{t\in \R^+} is a centered Gaussian process
 1,D1,outcomes,6,3,subquestions[1].atoms/set[2]/list[3]/set[2],subquestions[1].atoms/list[3],gt_atom,0.237503,False,the classical definition of Brownian motion.,"Cov(X_s, X_t) = inf(s, t)"
 1,D3,arguments,1,1,subquestions[1].atoms/set[1]/list[1],subquestions[1].atoms/list[1],gt_atom,0.579962,True,Independence of \(X_s\) and \(X_t - X_s\),The process (X_t)_{t\in \R^+} is a Brownian motion
 1,D3,arguments,1,2,subquestions[1].atoms/set[1]/list[1],subquestions[1].atoms/list[2],gt_atom,0.579962,True,Independence of \(X_s\) and \(X_t - X_s\),The process (X_t)_{t\in \R^+} is a Brownian motion

@@ -47,7 +47,7 @@ subquestion_index,dimension,field,gt_atom_index,model_atom_index,gt_atom_path,mo
 2,D3,arguments,2,1,subquestions[2].atoms/set[2],subquestions[2].atoms/list[1],gt_atom,0.117893,False,is a linear combination of the \(W_{1/t_i}\),Calculation
 2,D3,arguments,3,1,subquestions[2].atoms/set[3],subquestions[2].atoms/list[1],gt_atom,1.000000,True,Calculation,Calculation
 2,D3,arguments,4,1,subquestions[2].atoms/set[4],subquestions[2].atoms/list[1],gt_atom,-0.054745,False,we get by definition of a Brownian motion,Calculation
-2,D4,required_precondition_coverage,1,1,subquestions[1].atoms/set[1]/list[1].outcomes[1],subquestions[2].atoms/list[1],previous_outcome,0.400795,False,"\(\mathrm{Cov}(X_s, X_t) = \min(s,t)\)",W_t is a Brownian motion
+2,D4,required_precondition_coverage,1,1,subquestions[1].atoms/set[1]/list[1].outcomes[1],subquestions[2].atoms/list[1],previous_outcome,0.400795,True,"\(\mathrm{Cov}(X_s, X_t) = \min(s,t)\)",W_t is a Brownian motion
 2,D4,required_precondition_coverage,2,1,subquestions[1].atoms/set[1]/list[2].outcomes[1],subquestions[2].atoms/list[1],previous_outcome,0.393774,False,The process is therefore centered Gaussian,W_t is a Brownian motion
 2,D4,required_precondition_coverage,3,1,subquestions[1].atoms/set[2]/list[1].outcomes[1],subquestions[2].atoms/list[1],previous_outcome,0.205889,False,"disjoint increments are uncorrelated, hence independent",W_t is a Brownian motion
 2,D4,required_precondition_coverage,4,1,subquestions[1].atoms/set[2]/list[2].outcomes[1],subquestions[2].atoms/list[1],previous_outcome,0.184568,False,This shows that the increments are stationary,W_t is a Brownian motion
@@ -57,5 +57,5 @@ subquestion_index,dimension,field,gt_atom_index,model_atom_index,gt_atom_path,mo
 2,D4,required_precondition_coverage,8,1,subquestions[2].atoms/set[2].preconditions[1],subquestions[2].atoms/list[1],gt_precondition,0.293874,False,"For any arbitrary \(t_1, \dots, t_n\), the vector \((X_{t_1}, \dots, X_{t_n})\)",W_t is a Brownian motion
 2,D4,required_precondition_coverage,9,1,subquestions[2].atoms/set[4].preconditions[1],subquestions[2].atoms/list[1],gt_precondition,0.298405,False,"continuity: $\lim_{t \to 0^+} X_t = 0$ a.s.,",W_t is a Brownian motion
 2,D4,required_precondition_coverage,10,1,subquestions[2].atoms/set[4].preconditions[2],subquestions[2].atoms/list[1],gt_precondition,0.371362,False,"Gaussianity: the vector \((X_{t_1}, \dots, X_{t_n})\) is centered Gaussian for any set of times",W_t is a Brownian motion
-2,D4,required_precondition_coverage,11,1,subquestions[2].atoms/set[4].preconditions[3],subquestions[2].atoms/list[1],gt_precondition,0.411884,False,"covariance: $\mathbb{E}[X_t X_s] = \min(t,s)$,",W_t is a Brownian motion
+2,D4,required_precondition_coverage,11,1,subquestions[2].atoms/set[4].preconditions[3],subquestions[2].atoms/list[1],gt_precondition,0.411884,True,"covariance: $\mathbb{E}[X_t X_s] = \min(t,s)$,",W_t is a Brownian motion
 2,D4,required_precondition_coverage,12,1,subquestions[2].atoms/set[4].preconditions[4],subquestions[2].atoms/list[1],gt_precondition,0.117828,False,adding \(X_0 = 0\),W_t is a Brownian motion

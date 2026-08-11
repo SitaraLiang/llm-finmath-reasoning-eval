@@ -3,8 +3,8 @@ subquestion_index,dimension,field,gt_atom_index,gt_source,best_model_atom_index,
 1,D1,outcomes,2,,2,0.787809,True
 1,D1,outcomes,3,,3,0.223376,False
 1,D1,outcomes,4,,3,0.308627,False
-1,D1,outcomes,5,,2,0.406688,False
-1,D1,outcomes,6,,2,0.406688,False
+1,D1,outcomes,5,,2,0.406688,True
+1,D1,outcomes,6,,2,0.406688,True
 1,D3,arguments,1,,1,0.579962,True
 1,D3,arguments,2,,1,0.249835,False
 1,D3,arguments,3,,1,-0.061027,False
