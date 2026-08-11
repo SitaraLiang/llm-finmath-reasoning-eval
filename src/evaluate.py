@@ -7,7 +7,7 @@ from pathlib import Path
 
 from eval_embeddings import (
     DEFAULT_MATRIX_THRESHOLD,
-    DEFAULT_SANITY_MODEL,
+    DEFAULT_MODEL,
     EmbeddingModel,
     build_matrix_rows,
     flatten_atoms,
@@ -846,7 +846,7 @@ def build_parser() -> argparse.ArgumentParser:
     parser.add_argument("--predictions", type=Path, default=DEFAULT_PREDICTIONS)
     parser.add_argument("--ground-truth", type=Path, default=DEFAULT_GROUND_TRUTH)
     parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument("--model", default=DEFAULT_SANITY_MODEL)
+    parser.add_argument("--model", default=DEFAULT_MODEL)
     parser.add_argument("--threshold", type=float, default=0.415)
     parser.add_argument("--project-root", type=Path, default=Path.cwd())
     return parser
