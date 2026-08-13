@@ -1,9 +1,16 @@
 import argparse
+import hashlib
+import json
 import re
+import socket
 import statistics
 import sys
 import time
 from pathlib import Path
+from string import Template
+from urllib import error, request
+
+import yaml
 
 from eval_embeddings import (
     DEFAULT_MATRIX_THRESHOLD,
@@ -21,6 +28,7 @@ from eval_embeddings import (
 DEFAULT_PREDICTIONS = Path("outputs/parsed_results")
 DEFAULT_GROUND_TRUTH = Path("data/ground_truth")
 DEFAULT_OUTPUT = Path("outputs/evaluation")
+DEFAULT_CONFIG = Path("config/evaluation/example.yaml")
 ATOM_DIMENSIONS = {
     "D1": "outcomes",
     "D3": "arguments",
@@ -37,6 +45,38 @@ D4_SOURCE_METRICS = (
     "precision",
     "f1",
 )
+JUDGE_LABEL_SCORES = {
+    "equivalent": 1.0,
+    "partially_correct": 0.5,
+    "incorrect": 0.0,
+    "unrelated": 0.0,
+}
+DEFAULT_JUDGE_ENDPOINT = "http://localhost:11434/api/generate"
+DEFAULT_JUDGE_PROMPT = """You are judging whether a model answer covers a ground-truth mathematical statement.
+
+Dimension:
+{dimension}
+
+Field:
+{field}
+
+Ground-truth statement:
+{gt_text}
+
+Model statement:
+{model_text}
+
+Choose exactly one label:
+- equivalent: the model statement fully expresses the same mathematical content.
+- partially_correct: the model statement captures part of the content but misses or weakens something important.
+- incorrect: the model statement is mathematically wrong or contradicts the ground truth.
+- unrelated: the model statement is about a different mathematical fact.
+
+Return only YAML, with exactly these keys:
+label: equivalent|partially_correct|incorrect|unrelated
+confidence: 0.0-1.0
+reason: one short sentence
+"""
 
 
 def progress(message: str) -> None:
@@ -44,8 +84,44 @@ def progress(message: str) -> None:
     print(f"[{timestamp}] {message}", flush=True)
 
 
+def dump_yaml(data) -> str:
+    return yaml.dump(
+        data,
+        Dumper=yaml.Dumper,
+        allow_unicode=True,
+        sort_keys=False,
+        default_flow_style=False,
+        indent=4,
+    )
+
+
 def resolve_path(path: Path, root: Path) -> Path:
     return path if path.is_absolute() else root / path
+
+
+def load_config(config_path: Path) -> dict:
+    """Load an optional YAML/JSON evaluation configuration."""
+    if not config_path.exists():
+        raise SystemExit(f"Error: Config file '{config_path}' does not exist.")
+    text = config_path.read_text(encoding="utf-8")
+    if config_path.suffix.lower() == ".json":
+        loaded = json.loads(text)
+    else:
+        loaded = yaml.safe_load(text)
+    if loaded is None:
+        return {}
+    if not isinstance(loaded, dict):
+        raise SystemExit(f"Error: Config file '{config_path}' must contain a mapping.")
+    return loaded
+
+
+def get_nested(config: dict, keys: list[str], default=None):
+    current = config
+    for key in keys:
+        if not isinstance(current, dict) or key not in current:
+            return default
+        current = current[key]
+    return current
 
 
 def parse_prediction_path(path: Path, prediction_root: Path) -> dict:
@@ -206,6 +282,192 @@ def append_unique_statement(targets: list[dict], seen: set[str], source: str, pa
             "text": normalized,
         }
     )
+
+
+class LLMJudge:
+    """Optional second-stage verifier for ambiguous embedding matches.
+
+    The judge is intended for trusted local Ollama models. It is only called
+    when an embedding score falls between low/high thresholds, and all decisions
+    are cached so repeated evaluations remain cheap and reproducible.
+    """
+
+    def __init__(
+        self,
+        model: str,
+        endpoint: str,
+        timeout: int,
+        cache_path: Path,
+        temperature: float,
+        prompt_template: str,
+    ) -> None:
+        self.model = model
+        self.endpoint = endpoint
+        self.timeout = timeout
+        self.cache_path = cache_path
+        self.temperature = temperature
+        self.prompt_template = prompt_template
+        self.cache = self._load_cache(cache_path)
+        self.calls = 0
+        self.cache_hits = 0
+        self.failures = 0
+
+    @staticmethod
+    def _load_cache(path: Path) -> dict:
+        if not path.exists():
+            return {}
+        loaded = load_yaml(path)
+        if isinstance(loaded, dict):
+            return loaded
+        return {}
+
+    def save(self) -> None:
+        self.cache_path.parent.mkdir(parents=True, exist_ok=True)
+        self.cache_path.write_text(dump_yaml(self.cache), encoding="utf-8")
+
+    def key(self, dimension: str, field: str, gt_text: str, model_text: str) -> str:
+        payload = {
+            "judge_model": self.model,
+            "dimension": dimension,
+            "field": field,
+            "gt_text": gt_text,
+            "model_text": model_text,
+        }
+        encoded = json.dumps(payload, sort_keys=True, ensure_ascii=False)
+        return hashlib.sha256(encoded.encode("utf-8")).hexdigest()
+
+    def prompt(self, dimension: str, field: str, gt_text: str, model_text: str) -> str:
+        values = {
+            "dimension": dimension,
+            "field": field,
+            "gt_text": gt_text,
+            "model_text": model_text,
+        }
+        return Template(self.prompt_template).safe_substitute(values).strip()
+
+    def generate(self, prompt: str) -> str:
+        payload = {
+            "model": self.model,
+            "prompt": prompt,
+            "stream": False,
+            "options": {
+                "temperature": self.temperature,
+                "num_predict": 180,
+            },
+        }
+        data = json.dumps(payload).encode("utf-8")
+        req = request.Request(
+            self.endpoint,
+            data=data,
+            headers={"Content-Type": "application/json"},
+            method="POST",
+        )
+        try:
+            with request.urlopen(req, timeout=self.timeout) as response:
+                result = json.loads(response.read().decode("utf-8"))
+        except TimeoutError as exc:
+            raise RuntimeError(
+                f"Ollama judge timed out for model '{self.model}' after {self.timeout}s."
+            ) from exc
+        except socket.timeout as exc:
+            raise RuntimeError(
+                f"Ollama judge timed out for model '{self.model}' after {self.timeout}s."
+            ) from exc
+        except error.URLError as exc:
+            raise RuntimeError(f"Ollama judge request failed for model '{self.model}': {exc}") from exc
+        return result.get("response", "")
+
+    @staticmethod
+    def parse_response(raw_response: str) -> dict:
+        text = raw_response.strip()
+        fenced = re.search(r"(?ms)```(?:yaml|yml)?\s*(.*?)\s*```", text)
+        if fenced:
+            text = fenced.group(1).strip()
+        parsed = yaml.safe_load(text)
+        if not isinstance(parsed, dict):
+            raise ValueError("judge response is not a YAML mapping")
+        label = str(parsed.get("label", "")).strip()
+        if label not in JUDGE_LABEL_SCORES:
+            raise ValueError(f"judge returned invalid label '{label}'")
+        try:
+            confidence = float(parsed.get("confidence", 0.0))
+        except (TypeError, ValueError) as exc:
+            raise ValueError("judge confidence must be numeric") from exc
+        confidence = max(0.0, min(1.0, confidence))
+        reason = str(parsed.get("reason", "")).strip()
+        return {
+            "label": label,
+            "confidence": confidence,
+            "reason": reason,
+            "raw_response": raw_response,
+        }
+
+    def judge(self, dimension: str, field: str, gt_text: str, model_text: str) -> dict:
+        key = self.key(dimension, field, gt_text, model_text)
+        cached = self.cache.get(key)
+        if isinstance(cached, dict):
+            self.cache_hits += 1
+            return {**cached, "cache_key": key, "cache_hit": True}
+
+        self.calls += 1
+        try:
+            raw_response = self.generate(self.prompt(dimension, field, gt_text, model_text))
+            decision = self.parse_response(raw_response)
+        except Exception as exc:
+            self.failures += 1
+            decision = {
+                "label": "judge_error",
+                "confidence": 0.0,
+                "reason": str(exc),
+                "raw_response": "",
+            }
+        self.cache[key] = decision
+        return {**decision, "cache_key": key, "cache_hit": False}
+
+
+def apply_judge_to_rows(
+    rows: list[dict],
+    judge: LLMJudge | None,
+    low_threshold: float,
+    high_threshold: float,
+) -> None:
+    """Apply optional judge decisions to ambiguous row matches in-place."""
+    for row in rows:
+        score = float(row["score"])
+        row["embedding_score"] = f"{score:.6f}"
+        row["judge_used"] = False
+        row["judge_label"] = ""
+        row["judge_confidence"] = ""
+        row["judge_reason"] = ""
+        row["judge_cache_key"] = ""
+        row["judge_cache_hit"] = ""
+        row["judge_error"] = ""
+
+        if not judge or not row.get("model_atom_index"):
+            continue
+        if score < low_threshold or score > high_threshold:
+            continue
+
+        decision = judge.judge(
+            row["dimension"],
+            row["field"],
+            row["gt_text"],
+            row["model_text"],
+        )
+        row["judge_used"] = True
+        row["judge_label"] = decision["label"]
+        row["judge_confidence"] = f"{float(decision.get('confidence', 0.0)):.6f}"
+        row["judge_reason"] = decision.get("reason", "")
+        row["judge_cache_key"] = decision.get("cache_key", "")
+        row["judge_cache_hit"] = decision.get("cache_hit", "")
+
+        if decision["label"] == "judge_error":
+            row["judge_error"] = decision.get("reason", "")
+            continue
+
+        judged_score = JUDGE_LABEL_SCORES[decision["label"]]
+        row["score"] = f"{judged_score:.6f}"
+        row["matched"] = decision["label"] in {"equivalent", "partially_correct"}
 
 
 def collect_gt_outcomes_before_subquestion(gt_data: dict, subquestion_index: int) -> list[dict]:
@@ -553,7 +815,11 @@ def evaluate_one(
     ground_truth_root: Path,
     output_root: Path,
     embedder: EmbeddingModel,
+    embedding_model_name: str,
     threshold: float,
+    judge: LLMJudge | None,
+    judge_low_threshold: float,
+    judge_high_threshold: float,
 ) -> dict:
     metadata = parse_prediction_path(prediction_path, prediction_root)
     gt_path = ground_truth_path_for(metadata, ground_truth_root)
@@ -565,6 +831,10 @@ def evaluate_one(
         "ground_truth_path": str(gt_path),
         "output_dir": str(out_dir),
         "threshold": f"{threshold:.6f}",
+        "embedding_model": embedding_model_name,
+        "judge_model": judge.model if judge else "",
+        "judge_low_threshold": f"{judge_low_threshold:.6f}" if judge else "",
+        "judge_high_threshold": f"{judge_high_threshold:.6f}" if judge else "",
     }
 
     if not gt_path.exists():
@@ -592,6 +862,7 @@ def evaluate_one(
             for row in rows:
                 row["subquestion_index"] = sub_index
                 row["gt_source"] = "gt_atom"
+            apply_judge_to_rows(rows, judge, judge_low_threshold, judge_high_threshold)
             all_rows.extend(rows)
 
             for gt_atom_index in range(1, len(gt_atoms) + 1):
@@ -626,6 +897,7 @@ def evaluate_one(
         d4_rows = build_d4_rows(d4_targets, pred_atoms, embedder, threshold)
         for row in d4_rows:
             row["subquestion_index"] = sub_index
+        apply_judge_to_rows(d4_rows, judge, judge_low_threshold, judge_high_threshold)
         all_rows.extend(d4_rows)
 
         for target_index in range(1, len(d4_targets) + 1):
@@ -671,8 +943,16 @@ def evaluate_one(
             "gt_atom_path",
             "model_atom_path",
             "gt_source",
+            "embedding_score",
             "score",
             "matched",
+            "judge_used",
+            "judge_label",
+            "judge_confidence",
+            "judge_reason",
+            "judge_cache_key",
+            "judge_cache_hit",
+            "judge_error",
             "gt_text",
             "model_text",
         ],
@@ -839,15 +1119,68 @@ def d4_source_columns() -> list[str]:
     ]
 
 
+def cli_or_config(cli_value, config: dict, keys: list[str], default):
+    if cli_value is not None:
+        return cli_value
+    return get_nested(config, keys, default)
+
+
+def config_path_value(value) -> Path | None:
+    if value is None or value == "":
+        return None
+    return Path(value)
+
+
 def build_parser() -> argparse.ArgumentParser:
     parser = argparse.ArgumentParser(
         description="Evaluate final parsed Call 1 responses against ground-truth proof YAML.",
     )
-    parser.add_argument("--predictions", type=Path, default=DEFAULT_PREDICTIONS)
-    parser.add_argument("--ground-truth", type=Path, default=DEFAULT_GROUND_TRUTH)
-    parser.add_argument("--output", type=Path, default=DEFAULT_OUTPUT)
-    parser.add_argument("--model", default=DEFAULT_MODEL)
-    parser.add_argument("--threshold", type=float, default=0.415)
+    parser.add_argument("--config", type=Path, default=None)
+    parser.add_argument("--predictions", type=Path, default=None)
+    parser.add_argument("--ground-truth", type=Path, default=None)
+    parser.add_argument("--output", type=Path, default=None)
+    parser.add_argument("--model", default=None)
+    parser.add_argument("--threshold", type=float, default=None)
+    parser.add_argument(
+        "--judge-model",
+        default=None,
+        help="Optional Ollama model used as a second-stage judge for ambiguous matches.",
+    )
+    parser.add_argument(
+        "--judge-endpoint",
+        default=None,
+        help=f"Ollama generate endpoint for the judge. Default: {DEFAULT_JUDGE_ENDPOINT}",
+    )
+    parser.add_argument(
+        "--judge-timeout",
+        type=int,
+        default=None,
+        help="Timeout in seconds for each LLM judge request.",
+    )
+    parser.add_argument(
+        "--judge-temperature",
+        type=float,
+        default=None,
+        help="Temperature for LLM judge calls.",
+    )
+    parser.add_argument(
+        "--judge-low-threshold",
+        type=float,
+        default=None,
+        help="Embedding scores below this value are rejected without LLM judge.",
+    )
+    parser.add_argument(
+        "--judge-high-threshold",
+        type=float,
+        default=None,
+        help="Embedding scores above this value are accepted without LLM judge.",
+    )
+    parser.add_argument(
+        "--judge-cache",
+        type=Path,
+        default=None,
+        help="YAML cache path for LLM judge decisions. Default: <output>/judge_cache.yaml.",
+    )
     parser.add_argument("--project-root", type=Path, default=Path.cwd())
     return parser
 
@@ -856,18 +1189,81 @@ def main() -> None:
     parser = build_parser()
     args = parser.parse_args()
     project_root = args.project_root.resolve()
-    prediction_root = resolve_path(args.predictions, project_root)
-    ground_truth_root = resolve_path(args.ground_truth, project_root)
-    output_root = resolve_path(args.output, project_root)
+
+    config = load_config(resolve_path(args.config, project_root)) if args.config else {}
+    prediction_path = config_path_value(
+        cli_or_config(args.predictions, config, ["input", "predictions"], DEFAULT_PREDICTIONS)
+    )
+    ground_truth_path = config_path_value(
+        cli_or_config(args.ground_truth, config, ["input", "ground_truth"], DEFAULT_GROUND_TRUTH)
+    )
+    output_path = config_path_value(
+        cli_or_config(args.output, config, ["output", "root_directory"], DEFAULT_OUTPUT)
+    )
+    prediction_root = resolve_path(prediction_path, project_root)
+    ground_truth_root = resolve_path(ground_truth_path, project_root)
+    output_root = resolve_path(output_path, project_root)
+
+    embedding_model = cli_or_config(args.model, config, ["embedding", "model"], DEFAULT_MODEL)
+    threshold = float(cli_or_config(args.threshold, config, ["embedding", "threshold"], 0.415))
+
+    judge_model = cli_or_config(args.judge_model, config, ["judge", "model"], "")
+    judge_enabled = bool(get_nested(config, ["judge", "enabled"], False))
+    if args.judge_model is not None:
+        judge_enabled = True
+    judge_endpoint = cli_or_config(
+        args.judge_endpoint,
+        config,
+        ["judge", "endpoint"],
+        DEFAULT_JUDGE_ENDPOINT,
+    )
+    judge_timeout = int(cli_or_config(args.judge_timeout, config, ["judge", "timeout_seconds"], 120))
+    judge_temperature = float(
+        cli_or_config(args.judge_temperature, config, ["judge", "temperature"], 0.0)
+    )
+    judge_low_threshold = float(
+        cli_or_config(args.judge_low_threshold, config, ["judge", "low_threshold"], 0.375)
+    )
+    judge_high_threshold = float(
+        cli_or_config(args.judge_high_threshold, config, ["judge", "high_threshold"], 0.415)
+    )
+    judge_prompt = get_nested(config, ["prompts", "judge"], DEFAULT_JUDGE_PROMPT)
+    judge_cache_path = (
+        resolve_path(args.judge_cache, project_root)
+        if args.judge_cache
+        else output_root / "judge_cache.yaml"
+    )
+
+    judge = None
+    if judge_enabled:
+        if not judge_model:
+            raise SystemExit("Error: judge.enabled is true but no judge.model is configured.")
+        if judge_low_threshold > judge_high_threshold:
+            raise SystemExit("Error: --judge-low-threshold must be <= --judge-high-threshold.")
+        judge = LLMJudge(
+            judge_model,
+            judge_endpoint,
+            judge_timeout,
+            judge_cache_path,
+            judge_temperature,
+            judge_prompt,
+        )
 
     prediction_files = find_prediction_files(prediction_root)
     progress(
         "Evaluation starting: "
-        f"{len(prediction_files)} prediction file(s), model={args.model}, "
-        f"threshold={args.threshold:.6f}."
+        f"{len(prediction_files)} prediction file(s), model={embedding_model}, "
+        f"threshold={threshold:.6f}."
     )
+    if judge:
+        progress(
+            "LLM judge enabled: "
+            f"model={judge_model}, ambiguous band="
+            f"[{judge_low_threshold:.3f}, {judge_high_threshold:.3f}], "
+            f"cache={judge_cache_path}."
+        )
 
-    embedder = EmbeddingModel(args.model)
+    embedder = EmbeddingModel(embedding_model)
     summary_rows = []
     d4_source_rows = []
     for index, prediction_path in enumerate(prediction_files, start=1):
@@ -887,7 +1283,11 @@ def main() -> None:
             ground_truth_root,
             output_root,
             embedder,
-            args.threshold,
+            embedding_model,
+            threshold,
+            judge,
+            judge_low_threshold,
+            judge_high_threshold,
         )
         d4_source_rows.extend(row.pop("_d4_source_rows", []))
         summary_rows.append(row)
@@ -901,7 +1301,11 @@ def main() -> None:
         "call1_model",
         "language",
         "variation",
+        "embedding_model",
         "threshold",
+        "judge_model",
+        "judge_low_threshold",
+        "judge_high_threshold",
         "ground_truth_subquestions",
         "prediction_subquestions",
         "D1_mean_best_score",
@@ -995,6 +1399,13 @@ def main() -> None:
 
     ok_count = sum(row["status"] == "ok" for row in summary_rows)
     failed_count = len(summary_rows) - ok_count
+    if judge:
+        judge.save()
+        progress(
+            "LLM judge complete: "
+            f"{judge.calls} new call(s), {judge.cache_hits} cache hit(s), "
+            f"{judge.failures} failure(s). Cache: {judge.cache_path}"
+        )
     progress(f"Evaluation complete: {ok_count} ok, {failed_count} failed.")
     print(f"Wrote summary: {output_root / 'evaluation_summary.csv'}")
     print(f"Wrote model aggregate: {output_root / 'evaluation_by_model.csv'}")
