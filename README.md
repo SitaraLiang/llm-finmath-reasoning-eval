@@ -1,6 +1,8 @@
 # LLM FinMath Reasoning Eval
 
-A lightweight framework for evaluating how language models solve quantitative finance and financial mathematics exercises. The project turns human-annotated LaTeX solutions into structured ground-truth YAML, asks local Ollama models to solve the same exercises, then converts model answers into the same proof-atom representation for later evaluation.
+A structured framework for benchmarking how language models solve quantitative finance and financial mathematics exercises. The project turns human-annotated LaTeX solutions into structured ground-truth YAML, asks local Ollama models to solve the same exercises, converts model answers into the same proof-atom representation, and evaluates them with embedding-based alignment and optional LLM-as-a-judge checks.
+This repository was developed as part of my internship project at CMAP, École Polytechnique, supervised by Charles-Albert Lehalle.
+
 
 ## Pipeline
 
@@ -41,9 +43,11 @@ A lightweight framework for evaluating how language models solve quantitative fi
 5. **Evaluation**
    - Selected Call 2 conversions are stored under `outputs/parsed_results/`.
    - `src/extract_statements.py` extracts candidate ground-truth statements to `data/evaluation/ground_truth_statements.csv`.
-   - `src/seed_pairs.py` creates a starter `data/evaluation/formulation_pairs.yaml` for embedding-threshold calibration.
+   - `data/evaluation/formulation_pairs.yaml` stores curated formulation pairs for embedding-threshold calibration.
    - `src/eval_embeddings.py` scores formulation pairs and writes calibration outputs under `outputs/evaluation/`.
-   - `src/evaluate.py` builds D1/D3/D4 alignment tables, an experimental D2 order report, and aggregate summaries under `outputs/evaluation/`.
+   - `src/evaluate.py` builds D1/D3/D4 alignment tables, an experimental D2 order report, and aggregate summaries.
+   - Evaluation can run in embedding-only mode or with an optional second-stage LLM judge for ambiguous embedding matches.
+   - The current judge configuration lives in `config/evaluation/experiment_v1.yaml`.
 
 ## Setup
 
@@ -134,6 +138,22 @@ python src/evaluate.py \
   --output outputs/evaluation
 ```
 
+Run evaluation with the configured LLM judge:
+
+```bash
+python src/evaluate.py --config config/evaluation/experiment_v1.yaml
+```
+
+The current judge setup uses all-MiniLM embeddings with an LLM judge for ambiguous cases:
+
+```text
+embedding threshold: 0.4
+judge band: 0.375 to 0.415
+judge model: llama3.1:8b
+```
+
+Judge-enabled results are written to `outputs/evaluation_judge/` by default. The file `judge_cache.yaml` stores past judge decisions so repeated evaluations do not call Ollama again for the same ambiguous pair.
+
 ## Main Directories
 
 - `data/raw_tex/{lang}/`: imported annotated LaTeX exercises.
@@ -144,8 +164,10 @@ python src/evaluate.py \
 - `outputs/call2_zeroshot_per_question/`: zero-shot per-question Call 2 conversions.
 - `outputs/parsed_results/`: curated/selected parsed model responses used by evaluation.
 - `outputs/evaluation/`: generated evaluation results, including matrices, summaries, and embedding calibration CSVs.
+- `outputs/evaluation_judge/`: evaluation results with second-stage LLM judge decisions.
 - `config/call1/`: Call 1 experiment configurations.
 - `config/call2/`: Call 2 conversion configurations.
+- `config/evaluation/`: evaluation and LLM-judge configurations.
 - `tests/`: parser and conversion validation tests.
 
 ## Notes
