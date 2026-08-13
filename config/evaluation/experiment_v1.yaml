@@ -63,6 +63,7 @@ prompts:
     - If the two statements are close in topic but not equivalent, use partially_correct or incorrect,
       not equivalent.
     - Return only YAML. Do not add prose before or after the YAML.
+    - Use partially_correct only if the model statement explicitly covers at least one mathematical condition, formula, theorem, or conclusion contained in the ground-truth statement. If it is only about the same topic but does not cover any concrete part of the ground-truth content, use unrelated.
 
     Return exactly:
     label: equivalent|partially_correct|incorrect|unrelated
