@@ -1,7 +1,8 @@
 # LLM FinMath Reasoning Eval
 
-A structured framework to benchmark LLM reasoning capabilities, logic chaining, and sequential consistency in quantitative finance and financial mathematics. The project turns human-annotated LaTeX solutions into structured ground-truth YAML, asks local Ollama models to solve the same exercises, converts model answers into the same proof-atom representation, and evaluates them with embedding-based alignment and optional LLM-as-a-judge checks.
-This repository was developed as part of my internship project at CMAP, École Polytechnique, supervised by Charles-Albert Lehalle.
+A structured evaluation framework for analyzing and diagnosing LLM reasoning in quantitative finance and financial mathematics. The framework decomposes human-annotated LaTeX solutions and model-generated reasoning into a common proof-atom representation, enabling step-level evaluation of logical alignment, reasoning chains, and sequential error propagation. It supports multiple reasoning protocols for studying how intermediate context affects downstream performance and combines calibrated embedding-based alignment with selective LLM-as-a-judge adjudication for ambiguous cases.
+
+This repository was developed as part of my research internship at CMAP, École Polytechnique, under the supervision of Charles-Albert Lehalle.
 
 
 ## Pipeline
