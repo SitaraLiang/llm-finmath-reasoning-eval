@@ -419,6 +419,13 @@ def output_path(
     return root / directory_template.format(**values) / filename_template.format(**values)
 
 
+def output_mode_directory(output_mode: str) -> str:
+    """Return the top-level output folder name for a Call 1 mode."""
+    if output_mode == "yaml":
+        return "yaml"
+    return "plain_text"
+
+
 def atomic_write_text(path: Path, content: str, overwrite: bool) -> bool:
     """Atomically save content. Return True if the file was written."""
     if path.exists() and not overwrite:
@@ -479,11 +486,16 @@ def serialize_result(result: dict, output_mode: str) -> str:
     return serialize_plain_text_result(result)
 
 
-def write_error_report(config: dict, summary: dict, failed_jobs: list[dict]) -> None:
+def write_error_report(
+    config: dict,
+    output_mode: str,
+    summary: dict,
+    failed_jobs: list[dict],
+) -> None:
     output_config = config.get("output", {})
     root = project_path(output_config.get("root_directory", "outputs/call1"))
     report_filename = output_config.get("error_report_filename", "error_files.yaml")
-    report_path = root / report_filename
+    report_path = root / output_mode_directory(output_mode) / report_filename
     if not failed_jobs:
         if report_path.exists():
             report_path.unlink()
@@ -590,6 +602,15 @@ def run_call1(config: dict) -> None:
     skipped = 0
     failed = 0
     failed_jobs = []
+    mode_stats = {
+        output_mode: {
+            "written": 0,
+            "skipped": 0,
+            "failed": 0,
+            "failed_jobs": [],
+        }
+        for output_mode in output_modes
+    }
     total_jobs = (
         len(inputs)
         * len(variations)
@@ -631,6 +652,7 @@ def run_call1(config: dict) -> None:
                         )
                         if out_path.exists() and not overwrite:
                             skipped += 1
+                            mode_stats[output_mode]["skipped"] += 1
                             progress(f"{job_label}: skipped existing {out_path}")
                             continue
 
@@ -664,37 +686,54 @@ def run_call1(config: dict) -> None:
                                 overwrite=True,
                             ):
                                 written += 1
+                                mode_stats[output_mode]["written"] += 1
                                 progress(f"{job_label}: wrote {out_path}")
                         except RuntimeError as exc:
                             failed += 1
-                            failed_jobs.append(
-                                {
-                                    "exercise": f"pc{item['pc']}_q{item['exercise']}",
-                                    "model": model["id"],
-                                    "language": item["language"],
-                                    "variation": variation,
-                                    "prompt_type": prompt_type,
-                                    "output_mode": output_mode,
-                                    "error": str(exc),
-                                }
-                            )
+                            mode_stats[output_mode]["failed"] += 1
+                            failed_job = {
+                                "exercise": f"pc{item['pc']}_q{item['exercise']}",
+                                "model": model["id"],
+                                "language": item["language"],
+                                "variation": variation,
+                                "prompt_type": prompt_type,
+                                "output_mode": output_mode,
+                                "error": str(exc),
+                            }
+                            failed_jobs.append(failed_job)
+                            mode_stats[output_mode]["failed_jobs"].append(failed_job)
                             print(f"Error: {exc}", file=sys.stderr)
                             progress(f"{job_label}: failed")
 
     progress("Call 1 complete.")
-    summary = {
-        "input_exercise_files": len(inputs),
-        "complete_exercise_jobs": total_jobs,
-        "complete_exercise_files_written": written,
-        "complete_exercise_files_skipped": skipped,
-        "complete_exercise_generations_failed": failed,
-    }
-    write_error_report(config, summary, failed_jobs)
+    for output_mode in output_modes:
+        stats = mode_stats[output_mode]
+        mode_total_jobs = len(inputs) * len(variations) * len(prompt_types) * len(models)
+        write_error_report(
+            config,
+            output_mode,
+            {
+                "input_exercise_files": len(inputs),
+                "output_mode": output_mode,
+                "complete_exercise_jobs": mode_total_jobs,
+                "complete_exercise_files_written": stats["written"],
+                "complete_exercise_files_skipped": stats["skipped"],
+                "complete_exercise_generations_failed": stats["failed"],
+            },
+            stats["failed_jobs"],
+        )
     print(f"Input exercise files: {len(inputs)}")
     print(f"Complete exercise jobs: {total_jobs}")
     print(f"Complete exercise files written: {written}")
     print(f"Complete exercise files skipped: {skipped}")
     print(f"Complete exercise generations failed: {failed}")
+    for output_mode in output_modes:
+        stats = mode_stats[output_mode]
+        print(
+            f"{output_mode} files: "
+            f"{stats['written']} written, {stats['skipped']} skipped, "
+            f"{stats['failed']} failed"
+        )
     if failed_jobs:
         print("Failed jobs:")
         for job in failed_jobs:

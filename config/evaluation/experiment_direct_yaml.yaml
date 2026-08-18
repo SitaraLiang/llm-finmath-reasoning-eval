@@ -7,6 +7,23 @@ input:
   predictions: "outputs/call1/yaml"
   ground_truth: "data/ground_truth"
 
+expected:
+  # Folder names use the sanitized Call 1 model id, e.g. llama3.1:8b -> llama3.1-8b.
+  # These expected values let evaluate.py report missing direct-YAML generations
+  # instead of silently averaging only the files that exist.
+  models:
+    - "llama3.1-8b"
+    - "deepseek-r1-7b"
+  languages:
+    - "en"
+  variations:
+    - "baseline"
+  strategies:
+    - "seq"
+    - "acc"
+    - "gtf"
+    - "self"
+
 output:
   root_directory: "outputs/evaluation_direct_yaml_judge"
 

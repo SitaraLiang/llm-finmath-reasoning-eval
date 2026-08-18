@@ -169,6 +169,138 @@ def find_prediction_files(prediction_root: Path) -> list[Path]:
     return files
 
 
+def parse_ground_truth_path(path: Path, ground_truth_root: Path) -> dict | None:
+    """Parse data/ground_truth/{lang}/pcN_qM.yaml metadata."""
+    try:
+        relative = path.relative_to(ground_truth_root)
+    except ValueError:
+        return None
+    if len(relative.parts) < 2:
+        return None
+    match = re.fullmatch(r"(pc\d+_q\d+)", path.stem)
+    if not match:
+        return None
+    return {
+        "language": relative.parts[0],
+        "exercise": match.group(1),
+    }
+
+
+def find_ground_truth_items(ground_truth_root: Path) -> list[dict]:
+    """Find available ground-truth exercises for coverage reporting."""
+    if not ground_truth_root.exists():
+        return []
+    items = []
+    for path in sorted(ground_truth_root.rglob("*.yaml")):
+        parsed = parse_ground_truth_path(path, ground_truth_root)
+        if parsed:
+            items.append(parsed)
+    for path in sorted(ground_truth_root.rglob("*.yml")):
+        parsed = parse_ground_truth_path(path, ground_truth_root)
+        if parsed:
+            items.append(parsed)
+    return items
+
+
+def configured_string_list(config: dict, keys: list[str]) -> list[str]:
+    values = get_nested(config, keys, [])
+    if values is None:
+        return []
+    if not isinstance(values, list):
+        raise SystemExit(f"Error: config key {'.'.join(keys)} must be a list.")
+    return [str(value) for value in values]
+
+
+def collect_prediction_metadata(
+    prediction_files: list[Path],
+    prediction_root: Path,
+) -> list[dict]:
+    rows = []
+    for path in prediction_files:
+        try:
+            metadata = parse_prediction_path(path, prediction_root)
+        except ValueError:
+            continue
+        rows.append({**metadata, "prediction_path": str(path)})
+    return rows
+
+
+def build_coverage_rows(
+    config: dict,
+    prediction_files: list[Path],
+    prediction_root: Path,
+    ground_truth_root: Path,
+) -> list[dict]:
+    """Build expected-vs-found prediction coverage rows.
+
+    The evaluator scores only files that exist. This report makes missing
+    model/exercise/strategy outputs explicit, which is especially useful for
+    direct YAML Call 1 experiments where some models may fail to produce valid
+    YAML for a subset of jobs.
+    """
+    found_metadata = collect_prediction_metadata(prediction_files, prediction_root)
+    ground_truth_items = find_ground_truth_items(ground_truth_root)
+
+    models = configured_string_list(config, ["expected", "models"]) or sorted(
+        {item["call1_model"] for item in found_metadata}
+    )
+    languages = configured_string_list(config, ["expected", "languages"]) or sorted(
+        {item["language"] for item in found_metadata}
+        or {item["language"] for item in ground_truth_items}
+    )
+    variations = configured_string_list(config, ["expected", "variations"]) or sorted(
+        {item["variation"] for item in found_metadata}
+    )
+    strategies = configured_string_list(config, ["expected", "strategies"]) or sorted(
+        {item["strategy"] for item in found_metadata}
+    )
+
+    if not models or not languages or not variations or not strategies:
+        return []
+
+    exercises_by_language = {}
+    for item in ground_truth_items:
+        if item["language"] in languages:
+            exercises_by_language.setdefault(item["language"], set()).add(item["exercise"])
+
+    if not exercises_by_language:
+        for item in found_metadata:
+            if item["language"] in languages:
+                exercises_by_language.setdefault(item["language"], set()).add(item["exercise"])
+
+    found_by_key = {
+        (
+            item["call1_model"],
+            item["language"],
+            item["variation"],
+            item["exercise"],
+            item["strategy"],
+        ): item["prediction_path"]
+        for item in found_metadata
+    }
+
+    rows = []
+    for model in models:
+        for language in languages:
+            for variation in variations:
+                for exercise in sorted(exercises_by_language.get(language, [])):
+                    for strategy in strategies:
+                        key = (model, language, variation, exercise, strategy)
+                        prediction_path = found_by_key.get(key, "")
+                        rows.append(
+                            {
+                                "status": "found" if prediction_path else "missing",
+                                "call1_model": model,
+                                "language": language,
+                                "variation": variation,
+                                "exercise": exercise,
+                                "strategy": strategy,
+                                "prediction_path": prediction_path,
+                            }
+                        )
+    return rows
+
+
 def ground_truth_path_for(metadata: dict, ground_truth_root: Path) -> Path:
     return ground_truth_root / metadata["language"] / f"{metadata['exercise']}.yaml"
 
@@ -1111,11 +1243,44 @@ def add_d4_source_columns(
                     aggregate_row[column] = ""
 
 
+def add_coverage_columns(
+    aggregate_rows: list[dict],
+    coverage_rows: list[dict],
+    keys: list[str],
+) -> None:
+    grouped = {}
+    for row in coverage_rows:
+        key = tuple(row[item] for item in keys)
+        grouped.setdefault(key, []).append(row)
+
+    for aggregate_row in aggregate_rows:
+        key = tuple(aggregate_row[item] for item in keys)
+        rows = grouped.get(key, [])
+        expected = len(rows)
+        found = sum(row["status"] == "found" for row in rows)
+        missing = expected - found
+        aggregate_row["expected_cases"] = expected
+        aggregate_row["found_cases"] = found
+        aggregate_row["missing_cases"] = missing
+        aggregate_row["generation_coverage"] = (
+            f"{found / expected:.6f}" if expected else ""
+        )
+
+
 def d4_source_columns() -> list[str]:
     return [
         d4_source_column(source, metric)
         for source in D4_SOURCES
         for metric in D4_SOURCE_METRICS
+    ]
+
+
+def coverage_columns() -> list[str]:
+    return [
+        "expected_cases",
+        "found_cases",
+        "missing_cases",
+        "generation_coverage",
     ]
 
 
@@ -1250,6 +1415,12 @@ def main() -> None:
         )
 
     prediction_files = find_prediction_files(prediction_root)
+    coverage_rows = build_coverage_rows(
+        config,
+        prediction_files,
+        prediction_root,
+        ground_truth_root,
+    )
     progress(
         "Evaluation starting: "
         f"{len(prediction_files)} prediction file(s), model={embedding_model}, "
@@ -1337,8 +1508,23 @@ def main() -> None:
         for field in summary_fields:
             row.setdefault(field, "")
     write_csv(output_root / "evaluation_summary.csv", summary_rows, summary_fields)
+    if coverage_rows:
+        write_csv(
+            output_root / "evaluation_coverage.csv",
+            coverage_rows,
+            [
+                "status",
+                "call1_model",
+                "language",
+                "variation",
+                "exercise",
+                "strategy",
+                "prediction_path",
+            ],
+        )
 
     by_model = aggregate_by(summary_rows, ["call1_model"])
+    add_coverage_columns(by_model, coverage_rows, ["call1_model"])
     add_d4_source_columns(by_model, d4_source_rows, ["call1_model"])
     write_csv(
         output_root / "evaluation_by_model.csv",
@@ -1346,6 +1532,7 @@ def main() -> None:
         [
             "call1_model",
             "cases",
+            *coverage_columns(),
             "D1_mean_best_score",
             "D1_coverage",
             "D1_precision",
@@ -1368,6 +1555,7 @@ def main() -> None:
     )
 
     by_model_strategy = aggregate_by(summary_rows, ["call1_model", "strategy"])
+    add_coverage_columns(by_model_strategy, coverage_rows, ["call1_model", "strategy"])
     add_d4_source_columns(by_model_strategy, d4_source_rows, ["call1_model", "strategy"])
     write_csv(
         output_root / "evaluation_by_model_strategy.csv",
@@ -1376,6 +1564,7 @@ def main() -> None:
             "call1_model",
             "strategy",
             "cases",
+            *coverage_columns(),
             "D1_mean_best_score",
             "D1_coverage",
             "D1_precision",
@@ -1408,6 +1597,15 @@ def main() -> None:
         )
     progress(f"Evaluation complete: {ok_count} ok, {failed_count} failed.")
     print(f"Wrote summary: {output_root / 'evaluation_summary.csv'}")
+    if coverage_rows:
+        expected_count = len(coverage_rows)
+        found_count = sum(row["status"] == "found" for row in coverage_rows)
+        print(f"Wrote coverage: {output_root / 'evaluation_coverage.csv'}")
+        print(
+            "Prediction coverage: "
+            f"{found_count}/{expected_count} found, "
+            f"{expected_count - found_count} missing"
+        )
     print(f"Wrote model aggregate: {output_root / 'evaluation_by_model.csv'}")
     print(f"Wrote model/strategy aggregate: {output_root / 'evaluation_by_model_strategy.csv'}")
 

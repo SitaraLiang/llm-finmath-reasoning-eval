@@ -1,0 +1,20 @@
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0 = 0
+        - (X_t)_{t∈ℝ⁺} is a centered Gaussian process
+        - Cov(X_s, X_t) = min(s, t)
+        arguments:
+        - The process satisfies the properties of Brownian motion including starting
+            at zero, having independent increments with Gaussian distribution and
+            variance equal to time difference, and continuous paths.
+        outcomes:
+        - Therefore, (X_t)_{t∈ℝ⁺} is a Brownian motion.
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion for t > 0 and W_0 = 0
+        arguments:
+        - The process X_t inherits the properties of Brownian motion from W_t through
+            scaling and time inversion.
+        outcomes:
+        - Therefore, X_t is a Brownian motion.
