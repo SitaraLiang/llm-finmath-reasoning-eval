@@ -135,31 +135,31 @@ models:
 
   - id: "tinyllama"
     provider: "ollama"
-    enabled: false
+    enabled: true
     parameters:
       max_output_tokens: 3000
 
   - id: "llama3.2:1b"
     provider: "ollama"
-    enabled: false
+    enabled: true
     parameters:
       max_output_tokens: 3000
 
   - id: "deepseek-r1:1.5b"
     provider: "ollama"
-    enabled: false
+    enabled: true
     parameters:
       max_output_tokens: 6000
 
   - id: "qwen2.5-coder:0.5b"
     provider: "ollama"
-    enabled: false
+    enabled: true
     parameters:
       max_output_tokens: 3000
 
   - id: "qwen3:0.6b"
     provider: "ollama"
-    enabled: false
+    enabled: true
     parameters:
       temperature: 0.1
       max_output_tokens: 6000
