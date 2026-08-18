@@ -7,6 +7,12 @@ import time
 from string import Template
 from urllib import error, request
 
+from conversion_validator import (
+    parse_yaml_response,
+    repair_converted_exercise,
+    validate_single_question_conversion,
+)
+
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CONFIG = PROJECT_ROOT / "config" / "call1" / "example.yaml"
@@ -173,11 +179,11 @@ def validate_prompt_types(prompt_types: list[str]) -> None:
 
 
 def validate_output_modes(output_modes: list[str]) -> None:
-    unsupported = sorted(set(output_modes) - {"plain_text", "native_yaml"})
+    unsupported = sorted(set(output_modes) - {"plain_text", "yaml"})
     if unsupported:
         raise SystemExit(
             f"Error: Unsupported output mode(s): {', '.join(unsupported)}. "
-            "Supported values are: plain_text, native_yaml."
+            "Supported values are: plain_text, yaml."
         )
 
 
@@ -385,8 +391,12 @@ def output_path(
     """Build the single output path for a complete exercise."""
     output_config = config.get("output", {})
     root = project_path(output_config.get("root_directory", "outputs/call1"))
-    mode_dir = "native_yaml" if output_mode == "native_yaml" else "plain_text"
-    suffix = ".yaml" if output_mode == "native_yaml" else ".txt"
+    if output_mode == "yaml":
+        mode_dir = "yaml"
+        suffix = ".yaml"
+    else:
+        mode_dir = "plain_text"
+        suffix = ".txt"
 
     directory_template = output_config.get(
         "directory_template", "{mode}/{model}/{language}/{variation}"
@@ -442,9 +452,30 @@ def serialize_plain_text_result(result: dict) -> str:
     return "\n".join(lines).rstrip() + "\n"
 
 
+def serialize_direct_yaml_result(result: dict) -> str:
+    """Assemble direct proof-atom YAML from one YAML answer per subquestion."""
+    subquestions = []
+    for answer in result["answers"]:
+        parsed, error_message = parse_yaml_response(answer["answer"])
+        if parsed is None:
+            raise RuntimeError(
+                f"Could not parse direct YAML answer for subquestion "
+                f"{answer['subquestion']}: {error_message}"
+            )
+        parsed = repair_converted_exercise(parsed)
+        atoms, error_message = validate_single_question_conversion(parsed)
+        if atoms is None:
+            raise RuntimeError(
+                f"Invalid direct YAML answer for subquestion "
+                f"{answer['subquestion']}: {error_message}"
+            )
+        subquestions.append({"atoms": atoms})
+    return dump_yaml({"subquestions": subquestions})
+
+
 def serialize_result(result: dict, output_mode: str) -> str:
-    if output_mode == "native_yaml":
-        return dump_yaml(result)
+    if output_mode == "yaml":
+        return serialize_direct_yaml_result(result)
     return serialize_plain_text_result(result)
 
 

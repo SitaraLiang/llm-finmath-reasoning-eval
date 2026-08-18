@@ -27,8 +27,6 @@ input:
 
 output_modes:
   - "plain_text"
-  # Add "native_yaml" when you want Call 1 to save structured YAML.
-  # - "native_yaml"
 
 prompts:
   common_header: |

@@ -1,0 +1,169 @@
+experiment:
+  name: "financial_math_call1_direct_yaml_v2"
+  version: 2
+  seed: 42
+
+input:
+  root_directory: "data/ground_truth"
+  ground_truth_answer_keys:
+    - "solution"
+    - "ground_truth"
+    - "answer"
+    - "expected_answer"
+    - "atoms"
+
+  filters:
+    languages:
+      - "en"
+
+    variations:
+      - "baseline"
+
+    prompt_types:
+      - "strictly_sequential"
+      - "prompt_accumulation"
+      - "ground_truth_forcing"
+      - "self_history"
+
+output_modes:
+  - "yaml"
+
+prompts:
+  common_header: |
+    /no_think
+    You are solving a financial mathematics exercise.
+    Return your answer directly in the proof-atom YAML format.
+    Do not output prose outside the YAML block.
+    Use LaTeX for formulas.
+
+    Context:
+    $context
+
+    Global assumptions:
+    $global_assumptions
+
+    YAML FORMAT:
+    - Return exactly one Markdown code block tagged yml.
+    - The response must start with ```yml and end with ```.
+    - Inside the code block, return one YAML mapping with exactly one top-level key:
+      atoms
+    - Do not use YAML document separators such as --- or ...
+    - An atom is a mapping with exactly these required fields:
+        preconditions: ordered list of strings
+        arguments: ordered list of strings
+        outcomes: ordered list of strings
+      Optional field:
+        strength: number
+    - The atoms value may be one atom or an ordered list of atoms.
+    - Use !!python/tuple only when you explicitly want to represent an unordered
+      set of alternative or independent proof blocks.
+    - Every atom must contain at least one argument.
+    - If a step is mainly a calculation or computation, write:
+        arguments:
+        - Calculation
+    - Otherwise, write the theorem, property, definition, or idea used as an
+      ordinary argument string.
+    - Preconditions and outcomes may be empty lists, but arguments may not be empty.
+
+  strategies:
+    strictly_sequential: |
+      Local assumptions:
+      $current_assumptions
+
+      Question $current_question_number:
+      $current_question
+
+      Solve only Question $current_question_number and return only its atoms.
+
+    prompt_accumulation: |
+      Questions provided so far:
+      $accumulated_questions
+
+      Solve only Question $current_question_number and return only its atoms.
+
+    ground_truth_forcing: |
+      Previous questions and exact solutions:
+      $ground_truth_history
+
+      Local assumptions:
+      $current_assumptions
+
+      Current question $current_question_number:
+      $current_question
+
+      Solve only Question $current_question_number and return only its atoms.
+
+    self_history: |
+      Previous questions and your previous answers:
+      $self_history
+
+      Local assumptions:
+      $current_assumptions
+
+      Current question $current_question_number:
+      $current_question
+
+      Solve only Question $current_question_number and return only its atoms.
+
+output:
+  root_directory: "outputs/call1"
+  directory_template: "{mode}/{model}/{language}/{variation}"
+  filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}{suffix}"
+  error_report_filename: "error_files.yaml"
+  overwrite_existing: false
+
+ollama:
+  endpoint: "http://localhost:11434/api/generate"
+  timeout_seconds: 600
+
+models:
+  # Start with stronger models for direct YAML, then enable smaller models
+  # once the prompt has been validated.
+  - id: "llama3.1:8b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      temperature: 0.1
+      max_output_tokens: 3000
+
+  - id: "deepseek-r1:7b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      temperature: 0.1
+      max_output_tokens: 3000
+
+  - id: "tinyllama"
+    provider: "ollama"
+    enabled: false
+    parameters:
+      max_output_tokens: 3000
+
+  - id: "llama3.2:1b"
+    provider: "ollama"
+    enabled: false
+    parameters:
+      max_output_tokens: 3000
+
+  - id: "deepseek-r1:1.5b"
+    provider: "ollama"
+    enabled: false
+    parameters:
+      max_output_tokens: 6000
+
+  - id: "qwen2.5-coder:0.5b"
+    provider: "ollama"
+    enabled: false
+    parameters:
+      max_output_tokens: 3000
+
+  - id: "qwen3:0.6b"
+    provider: "ollama"
+    enabled: false
+    parameters:
+      temperature: 0.1
+      max_output_tokens: 6000
+
+execution:
+  max_retries: 5
+  retry_delay_seconds: 5

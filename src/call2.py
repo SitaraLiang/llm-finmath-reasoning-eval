@@ -82,10 +82,8 @@ def sanitize_path_component(value: str) -> str:
 
 
 def infer_call1_output_mode(input_root: Path, suffix: str) -> str:
-    if input_root.name in {"plain_text", "native_yaml"}:
+    if input_root.name == "plain_text":
         return input_root.name
-    if suffix.lower() in {".yaml", ".yml"}:
-        return "native_yaml"
     return "plain_text"
 
 
@@ -94,9 +92,12 @@ def parse_call1_path(path: Path, input_root: Path) -> dict | None:
 
     Supported roots:
     - outputs/call1:
-      {mode}/{model1}/{language}/{variation}/pc{n}_q{m}.{txt,yaml}
-    - outputs/call1/plain_text or outputs/call1/native_yaml:
-      {model1}/{language}/{variation}/pc{n}_q{m}.{txt,yaml}
+      plain_text/{model1}/{language}/{variation}/pc{n}_q{m}.txt
+    - outputs/call1/plain_text:
+      {model1}/{language}/{variation}/pc{n}_q{m}.txt
+
+    Direct YAML outputs from Call 1 are already structured and should be sent
+    directly to evaluate.py, not through Call 2.
     """
     try:
         relative = path.relative_to(input_root)
@@ -106,7 +107,10 @@ def parse_call1_path(path: Path, input_root: Path) -> dict | None:
     if len(relative.parts) < 4:
         return None
 
-    if relative.parts[0] in {"plain_text", "native_yaml"}:
+    if input_root.name != "plain_text" and relative.parts[0] != "plain_text":
+        return None
+
+    if relative.parts[0] == "plain_text":
         if len(relative.parts) < 5:
             return None
         output_mode, model1, language, variation = relative.parts[:4]
@@ -160,7 +164,7 @@ def discover_call1_inputs(config: dict) -> list[dict]:
     variation_filter = set(filters.get("variations", []))
     prompt_type_filter = set(filters.get("prompt_types", []))
 
-    suffixes = {".txt", ".yaml", ".yml"}
+    suffixes = {".txt"}
     files = []
     for path in sorted(input_root.rglob("pc*_q*.*")):
         if path.suffix.lower() not in suffixes:
@@ -206,22 +210,8 @@ def require_prompt_templates(config: dict) -> dict:
     return prompts
 
 
-def read_call1_output(path: Path):
-    text = path.read_text(encoding="utf-8")
-    if path.suffix.lower() not in {".yaml", ".yml"}:
-        return text
-
-    try:
-        import yaml
-    except ImportError as exc:
-        raise SystemExit(
-            "Error: Reading Call 1 YAML outputs requires PyYAML. Install it with "
-            "`pip install -r requirements.txt`."
-        ) from exc
-
-    # Call 1 native YAML is benchmark-generated local data. FullLoader preserves
-    # Python tuple tags if they are present. Do not use it for untrusted YAML.
-    return yaml.load(text, Loader=yaml.FullLoader)
+def read_call1_output(path: Path) -> str:
+    return path.read_text(encoding="utf-8")
 
 
 def dump_yaml(data) -> str:

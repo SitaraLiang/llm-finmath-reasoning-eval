@@ -1,0 +1,70 @@
+experiment:
+  name: "financial_math_evaluation_direct_yaml_v1"
+  version: 1
+  seed: 42
+
+input:
+  predictions: "outputs/call1/yaml"
+  ground_truth: "data/ground_truth"
+
+output:
+  root_directory: "outputs/evaluation_direct_yaml_judge"
+
+embedding:
+  model: "sentence-transformers/all-MiniLM-L6-v2"
+  threshold: 0.4
+
+judge:
+  enabled: true
+  model: "llama3.1:8b"
+  endpoint: "http://localhost:11434/api/generate"
+  timeout_seconds: 120
+  temperature: 0.0
+
+  # Embedding decisions outside this band are automatic.
+  # Scores in [low_threshold, high_threshold] are sent to the LLM judge.
+  low_threshold: 0.375
+  high_threshold: 0.415
+
+prompts:
+  judge: |
+    /no_think
+    You are a strict mathematical equivalence judge for a financial mathematics benchmark.
+
+    You compare one ground-truth statement with one statement extracted from a model answer.
+    The goal is NOT to solve the exercise again. The goal is only to decide whether the
+    model statement covers the mathematical content of the ground-truth statement.
+
+    Dimension:
+    $dimension
+
+    Field:
+    $field
+
+    Ground-truth statement:
+    $gt_text
+
+    Model statement:
+    $model_text
+
+    Labels:
+    - equivalent: the model statement fully expresses the same mathematical content,
+      possibly with different wording or notation.
+    - partially_correct: the model statement captures part of the ground-truth content,
+      but misses an important condition, weakens the statement, or is incomplete.
+    - incorrect: the model statement contradicts the ground truth or contains a
+      mathematical error.
+    - unrelated: the model statement is about a different mathematical fact.
+
+    Rules:
+    - Be conservative. Use equivalent only when the mathematical content is really the same.
+    - Do not reward a statement just because it uses similar words.
+    - If the model statement is broader, weaker, or missing a hypothesis, use partially_correct.
+    - If the two statements are close in topic but not equivalent, use partially_correct or incorrect,
+      not equivalent.
+    - Return only YAML. Do not add prose before or after the YAML.
+
+    Return exactly:
+    label: equivalent|partially_correct|incorrect|unrelated
+    confidence: 0.0-1.0
+    reason: one short sentence
