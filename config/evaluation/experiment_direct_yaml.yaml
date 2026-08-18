@@ -32,7 +32,7 @@ embedding:
   threshold: 0.4
 
 judge:
-  enabled: true
+  enabled: false
   model: "llama3.1:8b"
   endpoint: "http://localhost:11434/api/generate"
   timeout_seconds: 120
