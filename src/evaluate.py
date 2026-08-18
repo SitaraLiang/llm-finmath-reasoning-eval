@@ -152,18 +152,19 @@ def parse_prediction_path(path: Path, prediction_root: Path) -> dict:
 def find_prediction_files(prediction_root: Path) -> list[Path]:
     if not prediction_root.exists():
         raise SystemExit(f"Error: prediction directory does not exist: {prediction_root}")
-    files = sorted(
+    candidates = sorted(
         path
-        for path in prediction_root.rglob("*.yaml")
+        for suffix in ("*.yaml", "*.yml")
+        for path in prediction_root.rglob(suffix)
         if path.is_file() and not path.name.startswith(".")
     )
-    files.extend(
-        sorted(
-            path
-            for path in prediction_root.rglob("*.yml")
-            if path.is_file() and not path.name.startswith(".")
-        )
-    )
+    files = []
+    for path in candidates:
+        try:
+            parse_prediction_path(path, prediction_root)
+        except ValueError:
+            continue
+        files.append(path)
     if not files:
         raise SystemExit(f"Error: no YAML prediction files found under {prediction_root}")
     return files
