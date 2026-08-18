@@ -1,0 +1,17 @@
+status,call1_model,language,variation,exercise,strategy,prediction_path
+found,llama3.1-8b,en,baseline,pc2_q1,seq,/Users/sitaraliang/Downloads/stage/cmap/llm-finmath-reasoning-eval/outputs/call1/yaml/llama3.1-8b/en/baseline/pc2_q1_seq.yaml
+found,llama3.1-8b,en,baseline,pc2_q1,acc,/Users/sitaraliang/Downloads/stage/cmap/llm-finmath-reasoning-eval/outputs/call1/yaml/llama3.1-8b/en/baseline/pc2_q1_acc.yaml
+found,llama3.1-8b,en,baseline,pc2_q1,gtf,/Users/sitaraliang/Downloads/stage/cmap/llm-finmath-reasoning-eval/outputs/call1/yaml/llama3.1-8b/en/baseline/pc2_q1_gtf.yaml
+found,llama3.1-8b,en,baseline,pc2_q1,self,/Users/sitaraliang/Downloads/stage/cmap/llm-finmath-reasoning-eval/outputs/call1/yaml/llama3.1-8b/en/baseline/pc2_q1_self.yaml
+found,llama3.1-8b,en,baseline,pc4_q4,seq,/Users/sitaraliang/Downloads/stage/cmap/llm-finmath-reasoning-eval/outputs/call1/yaml/llama3.1-8b/en/baseline/pc4_q4_seq.yaml
+found,llama3.1-8b,en,baseline,pc4_q4,acc,/Users/sitaraliang/Downloads/stage/cmap/llm-finmath-reasoning-eval/outputs/call1/yaml/llama3.1-8b/en/baseline/pc4_q4_acc.yaml
+found,llama3.1-8b,en,baseline,pc4_q4,gtf,/Users/sitaraliang/Downloads/stage/cmap/llm-finmath-reasoning-eval/outputs/call1/yaml/llama3.1-8b/en/baseline/pc4_q4_gtf.yaml
+missing,llama3.1-8b,en,baseline,pc4_q4,self,
+missing,deepseek-r1-7b,en,baseline,pc2_q1,seq,
+missing,deepseek-r1-7b,en,baseline,pc2_q1,acc,
+missing,deepseek-r1-7b,en,baseline,pc2_q1,gtf,
+found,deepseek-r1-7b,en,baseline,pc2_q1,self,/Users/sitaraliang/Downloads/stage/cmap/llm-finmath-reasoning-eval/outputs/call1/yaml/deepseek-r1-7b/en/baseline/pc2_q1_self.yaml
+missing,deepseek-r1-7b,en,baseline,pc4_q4,seq,
+found,deepseek-r1-7b,en,baseline,pc4_q4,acc,/Users/sitaraliang/Downloads/stage/cmap/llm-finmath-reasoning-eval/outputs/call1/yaml/deepseek-r1-7b/en/baseline/pc4_q4_acc.yaml
+found,deepseek-r1-7b,en,baseline,pc4_q4,gtf,/Users/sitaraliang/Downloads/stage/cmap/llm-finmath-reasoning-eval/outputs/call1/yaml/deepseek-r1-7b/en/baseline/pc4_q4_gtf.yaml
+found,deepseek-r1-7b,en,baseline,pc4_q4,self,/Users/sitaraliang/Downloads/stage/cmap/llm-finmath-reasoning-eval/outputs/call1/yaml/deepseek-r1-7b/en/baseline/pc4_q4_self.yaml

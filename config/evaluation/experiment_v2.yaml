@@ -26,14 +26,15 @@ expected:
     - "self"
 
 output:
-  root_directory: "outputs/evaluation_direct_yaml_judge"
+  # evaluate.py appends with_judge or embedding_only from judge.enabled.
+  root_directory: "outputs/evaluation/direct_yaml"
 
 embedding:
   model: "sentence-transformers/all-MiniLM-L6-v2"
   threshold: 0.4
 
 judge:
-  enabled: false
+  enabled: true
   model: "llama3.1:8b"
   endpoint: "http://localhost:11434/api/generate"
   timeout_seconds: 120

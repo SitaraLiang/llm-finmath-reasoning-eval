@@ -4,11 +4,12 @@ experiment:
   seed: 42
 
 input:
-  predictions: "outputs/parsed_results"
+  predictions: "outputs/selected_responses"
   ground_truth: "data/ground_truth"
 
 output:
-  root_directory: "outputs/evaluation_judge"
+  # evaluate.py appends with_judge or embedding_only from judge.enabled.
+  root_directory: "outputs/evaluation/parsed_responses"
 
 embedding:
   model: "sentence-transformers/all-MiniLM-L6-v2"

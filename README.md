@@ -42,7 +42,7 @@ This repository was developed as part of my research internship at CMAP, École 
    - Failed conversions are summarized in `{output_root}/error_files.yaml`.
 
 5. **Evaluation**
-   - Selected Call 2 conversions are stored under `outputs/parsed_results/`.
+   - Selected Call 2 conversions are stored under `outputs/selected_responses/`.
    - `src/extract_statements.py` extracts candidate ground-truth statements to `data/evaluation/ground_truth_statements.csv`.
    - `data/evaluation/formulation_pairs.yaml` stores curated formulation pairs for embedding-threshold calibration.
    - `src/eval_embeddings.py` scores formulation pairs and writes calibration outputs under `outputs/evaluation/`.
@@ -134,9 +134,9 @@ Evaluate selected parsed responses:
 
 ```bash
 python src/evaluate.py \
-  --predictions outputs/parsed_results \
+  --predictions outputs/selected_responses \
   --ground-truth data/ground_truth \
-  --output outputs/evaluation
+  --output outputs/evaluation/parsed_responses
 ```
 
 Run evaluation with the configured LLM judge:
@@ -153,7 +153,27 @@ judge band: 0.375 to 0.415
 judge model: llama3.1:8b
 ```
 
-Judge-enabled results are written to `outputs/evaluation_judge/` by default. The file `judge_cache.yaml` stores past judge decisions so repeated evaluations do not call Ollama again for the same ambiguous pair.
+Judge-enabled parsed-response results are written to
+`outputs/evaluation/parsed_responses/with_judge/`. The file `judge_cache.yaml`
+stores past judge decisions so repeated evaluations do not call Ollama again for
+the same ambiguous pair.
+
+Evaluation outputs are grouped by prediction source and scoring method:
+
+```text
+outputs/evaluation/
+  parsed_responses/
+    embedding_only/
+    with_judge/
+  direct_yaml/
+    embedding_only/
+    with_judge/
+  threshold/
+```
+
+The configured `output.root_directory` (or `--output`) is the source-level base
+directory. `evaluate.py` automatically appends `embedding_only` when
+`judge.enabled` is false and `with_judge` when it is true.
 
 ## Main Directories
 
@@ -163,9 +183,8 @@ Judge-enabled results are written to `outputs/evaluation_judge/` by default. The
 - `outputs/call1/`: model-generated exercise answers.
 - `outputs/call2/`: few-shot Call 2 conversions.
 - `outputs/call2_zeroshot_per_question/`: zero-shot per-question Call 2 conversions.
-- `outputs/parsed_results/`: curated/selected parsed model responses used by evaluation.
-- `outputs/evaluation/`: generated evaluation results, including matrices, summaries, and embedding calibration CSVs.
-- `outputs/evaluation_judge/`: evaluation results with second-stage LLM judge decisions.
+- `outputs/selected_responses/`: curated Call 2 responses selected for evaluation.
+- `outputs/evaluation/`: evaluation results grouped by prediction source and scoring method, plus embedding-threshold calibration outputs.
 - `config/call1/`: Call 1 experiment configurations.
 - `config/call2/`: Call 2 conversion configurations.
 - `config/evaluation/`: evaluation and LLM-judge configurations.

@@ -1,0 +1,339 @@
+0d33bbf5ed9e572d9da5451546bfa4623e8cb0d6804335550ef7a079921a3548:
+    label: equivalent
+    confidence: 1.0
+    reason: Model statement explicitly mentions independent increments with variance
+        equal to time difference.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Model statement explicitly mentions independent increments with variance
+        equal to time difference.'
+aa285a95d3e0c164cbbd3a242963800f4799b4fed1f686a4e962de2836402f38:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical content, just with more details.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical content, just with more details.'
+8d9c85070ddfc7922f04fae3871f566317676f8056ab6806fc37c69eed0dba83:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical content, just different wording.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical content, just different wording.'
+734431883c8ca23c8639173447d8e0dbc399d1d2ffd56dc84c95c41caf289104:
+    label: partially_correct
+    confidence: 0.8
+    reason: Model statement is broader and does not specify variance as $t-s$.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: Model statement is broader and does not specify variance as $t-s$.'
+80d0b245c025ae8a3ee96f224994b05f40f85e930d2419abf803233eb7fca51e:
+    label: partially_correct
+    confidence: 0.8
+    reason: The model statement is a necessary condition for the ground-truth statement,
+        but it does not guarantee that the expectation of W_tau is zero.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: The model statement is a necessary condition for the ground-truth
+        statement, but it does not guarantee that the expectation of W_tau is zero.'
+52ce662d1ed4c17bfca5ca9ab34685cd68cff2a00d8dcfedc4fda37bf562bdbb:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical object, Brownian motion, is described.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical object, Brownian motion, is described.'
+2e005d1153f3c2bfa8fbab6790208d1277b40019ac8f693d1567525a04c4778e:
+    label: partially_correct
+    confidence: 0.8
+    reason: The model statement is a characteristic of Brownian motion, but misses
+        its classical definition.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: The model statement is a characteristic of Brownian motion, but misses
+        its classical definition.'
+1cce3a2f516b5e7bc396fec73a5daac0006012f81622d5f6bb0de4013a0c214f:
+    label: partially_correct
+    confidence: 0.8
+    reason: The model statement is broader and does not specify the initial condition
+        explicitly.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: The model statement is broader and does not specify the initial condition
+        explicitly.'
+4e01ac062958d6a8ea7be86f48be4b66e44c7264c7579009a9d371644e9242a7:
+    label: partially_correct
+    confidence: 0.8
+    reason: The model statement defines a Brownian motion, but does not explicitly
+        state the necessary ordering of time points for the covariance computation.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: The model statement defines a Brownian motion, but does not explicitly
+        state the necessary ordering of time points for the covariance computation.'
+3cd198c200024850a4a655130717cad19005dab7a0bf243d0c4214b193947b05:
+    label: partially_correct
+    confidence: 0.8
+    reason: Model statement describes a process with stationary increments, but does
+        not directly address the expectation of product of two random variables at
+        different times.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: Model statement describes a process with stationary increments, but
+        does not directly address the expectation of product of two random variables
+        at different times.'
+daa899af4223630470b571b226cdfe02f44527982a4250f9e5150d2a9d3cf087:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a property of a stochastic process, while
+        the ground-truth statement is about covariance between two random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a property of a stochastic process,
+        while the ground-truth statement is about covariance between two random variables.'
+af5cbfa2b2a7a068455d1a515b8bb78c1a28356ac83c9f2fb3fde9fdd4cda9f1:
+    label: partially_correct
+    confidence: 0.8
+    reason: Model statement implies a Gaussian process, but lacks explicit mention
+        of centrality.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: Model statement implies a Gaussian process, but lacks explicit mention
+        of centrality.'
+4c836128d50ea42c77fa5f8ff523ba4f8c0b9747b01922d9ffdc7615394b0c41:
+    label: partially_correct
+    confidence: 0.8
+    reason: Model statement is broader and does not explicitly mention arbitrary times.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: Model statement is broader and does not explicitly mention arbitrary
+        times.'
+ea178aa8019b171f1bc90ad69a6a5f43abef39ed72f7dc1b0e97e68f3411d51d:
+    label: partially_correct
+    confidence: 0.8
+    reason: Model statement is broader and does not explicitly mention arbitrary times.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: Model statement is broader and does not explicitly mention arbitrary
+        times.'
+d81177219801d1e67e4ab7428292d50129e5436271b5339198c7aab666a19dad:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement is about a Brownian motion, while the ground-truth
+        statement describes covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement is about a Brownian motion, while the ground-truth
+        statement describes covariance.'
+f5921746768ddabbbcee94c06c8f13a5b3ba3aebffc6ffd71a2af1416e99c139:
+    label: equivalent
+    confidence: 1.0
+    reason: Brownian motion is a centered Gaussian process by definition.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Brownian motion is a centered Gaussian process by definition.'
+54341e6c16bf83dbd16c19ec2688e86fa92907b2a53c005be2b7a284b9bd9ee5:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical definition of Brownian motion.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical definition of Brownian motion.'
+ac6d31ba1927859555bbfb204b36dff72f5c621baf4868ae2ec09430e16b874d:
+    label: partially_correct
+    confidence: 0.8
+    reason: The model statement describes a Brownian motion, which is a stochastic
+        process with Gaussian increments, but it does not explicitly state that the
+        process is centered.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: The model statement describes a Brownian motion, which is a stochastic
+        process with Gaussian increments, but it does not explicitly state that the
+        process is centered.'
+2d024006de61582187b32009ea3f0270d866a9a576531dce34d4e2af7f72a3be:
+    label: partially_correct
+    confidence: 0.8
+    reason: The model statement specifies a starting point for the Brownian motion,
+        but does not explicitly state that it is centered Gaussian.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: The model statement specifies a starting point for the Brownian motion,
+        but does not explicitly state that it is centered Gaussian.'
+27876e151c5db464c80b96c3919fed0db9d22783f1f19482d1a9f5c612436ae3:
+    label: partially_correct
+    confidence: 0.8
+    reason: The model statement implies Gaussianity, but does not explicitly state
+        it for any set of times.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: The model statement implies Gaussianity, but does not explicitly state
+        it for any set of times.'
+e68d4f46280d5742ae7c27d18c3556ba1ef8f4cdb26df86a660a977df1cc814e:
+    label: partially_correct
+    confidence: 0.8
+    reason: Model statement implies Gaussianity but does not explicitly state it.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: Model statement implies Gaussianity but does not explicitly state
+        it.'
+26217481c575a508deb609492b490553ee50f93583fb37bd78c5d0625ff2b1db:
+    label: unrelated
+    confidence: 1.0
+    reason: The model statement is about a Brownian motion, while the ground-truth
+        statement describes covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 1.0
+
+        reason: The model statement is about a Brownian motion, while the ground-truth
+        statement describes covariance.'
+9fbffd080530ec33fb7946aad28dd29f318880abf10e9a066008eb8248a95b87:
+    label: partially_correct
+    confidence: 0.8
+    reason: The model statement describes a Brownian motion, but it does not explicitly
+        state the covariance property.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: The model statement describes a Brownian motion, but it does not explicitly
+        state the covariance property.'
+194709c0d43337654c130429873ebe67715d059ee1760cef19e0a5ac62ff67bf:
+    label: partially_correct
+    confidence: 0.8
+    reason: Model statement is broader and does not specify the distribution of the
+        process.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: Model statement is broader and does not specify the distribution of
+        the process.'
+e046b40d8ff6c387ff2eb163ff2ec8c302e006bde80404f1ad509889dd52b8aa:
+    label: equivalent
+    confidence: 1.0
+    reason: Same definition of Brownian motion is given.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same definition of Brownian motion is given.'
+b7584bdb6fed5f0efb96ee65b90659f405473238e936447b5e2891329e3aaa63:
+    label: partially_correct
+    confidence: 0.8
+    reason: Model statement describes a Gaussian process, but does not address the
+        limit of W_{1/t} as t approaches 0.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: Model statement describes a Gaussian process, but does not address
+        the limit of W_{1/t} as t approaches 0.'
+48b9c96245aa78d30beb9cc0804adf86df6066b840e9982db43863e061e23fe3:
+    label: unrelated
+    confidence: 1.0
+    reason: The model statement introduces a new process, while the ground-truth statement
+        defines covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 1.0
+
+        reason: The model statement introduces a new process, while the ground-truth
+        statement defines covariance.'
+cd55c591797ea9c20f23cd7a16003da4072823b2012cdfcd020d1694e003e63d:
+    label: partially_correct
+    confidence: 0.8
+    reason: Model statement implies continuity but does not explicitly state it.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: Model statement implies continuity but does not explicitly state it.'
+208dba6ea116d884b304f72cb8f58478c3eccd47bc7e06e3a907ba2e63afabb7:
+    label: partially_correct
+    confidence: 0.8
+    reason: Model statement is a correct characterization of a Gaussian process, but
+        misses the key point that it's a linear combination of independent increments.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: Model statement is a correct characterization of a Gaussian process,
+        but misses the key point that it''s a linear combination of independent increments.'
+9aa37352d09b602fc9cd6c6a9d43f7483ad6b63b8b1089a2ad6a14b4035673d7:
+    label: partially_correct
+    confidence: 0.8
+    reason: The model statement describes a centered Gaussian process with covariance
+        depending on the infimum of s and t, which is related to but not equivalent
+        to the ground-truth statement that the law depends only on \(t-s\).
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: The model statement describes a centered Gaussian process with covariance
+        depending on the infimum of s and t, which is related to but not equivalent
+        to the ground-truth statement that the law depends only on \(t-s\).'
+c57a7ca15cca2a8740a71d162f3b6e1c2e31bcf8659dd2f4886a7fd3ad6b2355:
+    label: unrelated
+    confidence: 1.0
+    reason: The model statement is about a Brownian motion, while the ground-truth
+        statement describes covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 1.0
+
+        reason: The model statement is about a Brownian motion, while the ground-truth
+        statement describes covariance.'
+df7815100647f52012d7155ae7843299d5755e1823c157df9670e90497782e24:
+    label: partially_correct
+    confidence: 0.8
+    reason: Model statement is a related concept but lacks specificity about Doob's
+        optional stopping theorem application.
+    raw_response: 'label: partially_correct
+
+        confidence: 0.8
+
+        reason: Model statement is a related concept but lacks specificity about Doob''s
+        optional stopping theorem application.'

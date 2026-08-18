@@ -25,9 +25,9 @@ from eval_embeddings import (
 )
 
 
-DEFAULT_PREDICTIONS = Path("outputs/parsed_results")
+DEFAULT_PREDICTIONS = Path("outputs/selected_responses")
 DEFAULT_GROUND_TRUTH = Path("data/ground_truth")
-DEFAULT_OUTPUT = Path("outputs/evaluation")
+DEFAULT_OUTPUT = Path("outputs/evaluation/parsed_responses")
 DEFAULT_CONFIG = Path("config/evaluation/example.yaml")
 ATOM_DIMENSIONS = {
     "D1": "outcomes",
@@ -99,6 +99,14 @@ def resolve_path(path: Path, root: Path) -> Path:
     return path if path.is_absolute() else root / path
 
 
+def evaluation_output_root(base_root: Path, judge_enabled: bool) -> Path:
+    """Select the scoring-method directory from the configured output base."""
+    method_directory = "with_judge" if judge_enabled else "embedding_only"
+    if base_root.name in {"embedding_only", "with_judge"}:
+        return base_root.parent / method_directory
+    return base_root / method_directory
+
+
 def load_config(config_path: Path) -> dict:
     """Load an optional YAML/JSON evaluation configuration."""
     if not config_path.exists():
@@ -125,7 +133,7 @@ def get_nested(config: dict, keys: list[str], default=None):
 
 
 def parse_prediction_path(path: Path, prediction_root: Path) -> dict:
-    """Parse outputs/parsed_results/{model}/{lang}/{variation}/pcN_qM_type.yaml."""
+    """Parse outputs/selected_responses/{model}/{lang}/{variation}/pcN_qM_type.yaml."""
     relative = path.relative_to(prediction_root)
     if len(relative.parts) < 4:
         raise ValueError(
@@ -1368,7 +1376,7 @@ def main() -> None:
     )
     prediction_root = resolve_path(prediction_path, project_root)
     ground_truth_root = resolve_path(ground_truth_path, project_root)
-    output_root = resolve_path(output_path, project_root)
+    output_base_root = resolve_path(output_path, project_root)
 
     embedding_model = cli_or_config(args.model, config, ["embedding", "model"], DEFAULT_MODEL)
     threshold = float(cli_or_config(args.threshold, config, ["embedding", "threshold"], 0.415))
@@ -1377,6 +1385,7 @@ def main() -> None:
     judge_enabled = bool(get_nested(config, ["judge", "enabled"], False))
     if args.judge_model is not None:
         judge_enabled = True
+    output_root = evaluation_output_root(output_base_root, judge_enabled)
     judge_endpoint = cli_or_config(
         args.judge_endpoint,
         config,
