@@ -1,0 +1,28 @@
+context: ''
+assumption_global:
+- $W_t$ est un mouvement brownien.
+subquestions:
+-   question: Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau)$.
+    assumptions:
+    - $\tau$ est un temps d'arr\^et born\'e
+    atoms:
+    -   preconditions:
+        - $(W_t)_{t\geq 0}$ est une martingale.
+        - $\tau$ est un temps d'arr\^et born\'e.
+        arguments:
+        - Appliquez le théorème d'arrêt optionnel de Doob à $(W_t)_{t\geq 0}$ au temps
+            d'arrêt $\tau$
+        outcomes:
+        - \[ \mathbb{E}[W_\tau] = 0, \]
+-   question: Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau^2)$.
+    assumptions:
+    - $\tau$ est un temps d'arr\^et born\'e
+    atoms:
+    -   preconditions:
+        - $(W_t^2-t)_{t\geq 0}$ est une martingale.
+        - $\tau$ est un temps d'arr\^et born\'e.
+        arguments:
+        - Appliquez le théorème d'arrêt optionnel de Doob au processus $(W_t^2-t)_{t\geq
+            0}$ à l'instant $\tau$
+        outcomes:
+        - \[ \mathbb{E}[W_\tau^2] = \mathbb{E}[\tau]. \]

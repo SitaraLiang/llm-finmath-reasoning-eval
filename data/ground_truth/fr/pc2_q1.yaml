@@ -1,0 +1,84 @@
+context: ''
+assumption_global: []
+subquestions:
+-   question: 'Montrer qu''un processus $(X_t)_{t\in \R^+}$ est un mouvement brownien
+        si et seulement si: $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien
+        centr\''e, ${\rm Cov}(X_s,X_t)=\inf(s,t).$'
+    assumptions: []
+    atoms: !!python/tuple
+    -   -   preconditions:
+            - Pour \(s \leq t\), on décompose \(X_t = X_s + (X_t - X_s)\).
+            arguments:
+            - L'indépendance de \(X_s\) et \(X_t - X_s\)
+            outcomes:
+            - \(\mathrm{Cov}(X_s, X_t) = \min(s,t)\)
+        -   preconditions:
+            - Le brownien standard a des accroissements gaussiens
+            - \(X_0 = 0\),
+            arguments:
+            - une combinaison linéaire d'accroissements gaussiens indépendants, elle
+                est donc gaussienne
+            outcomes:
+            - Le processus est donc gaussien centré.
+    -   -   preconditions:
+            - En utilisant la propriété ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+            - Calculer $\text{Cov}(X_t - X_s, X_v - X_u)$ Pour \(s < t \leq u < v\)
+            arguments:
+            - Calculation
+            outcomes:
+            - les accroissements disjoints sont non corrélés, donc indépendants
+        -   preconditions:
+            - Calculez la variance d'un accroissement de $X$
+            arguments:
+            - donc la loi ne dépend que de \(t-s\)
+            outcomes:
+            - Ceci montre que les accroissements sont stationnaires et
+            - de loi \(\mathcal{N}(0, t-s)\).
+        - !!python/tuple
+            -   preconditions:
+                - les incréments disjoints sont indépendants
+                - la loi des accroissements est gaussienne centrée de variance $t-s$,
+                    c'est-à-dire \(\mathcal{N}(0, t-s)\),
+                arguments:
+                - plus l'hypothèse de continuité des trajectoires
+                outcomes:
+                - la définition classique du mouvement brownien.
+            -   preconditions:
+                - les incréments disjoints sont indépendants
+                - la loi des accroissements est gaussienne centrée de variance $t-s$,
+                    c'est-à-dire \(\mathcal{N}(0, t-s)\),
+                arguments:
+                - en prenant la version continue via le théorème de Kolmogorov
+                outcomes:
+                - la définition classique du mouvement brownien.
+-   question: Montrer que si $W_t$ est un mouvement brownien, $ \{X_t=t\;W_{\frac
+        1t}, t>0, X_0=0 \}$ l'est aussi.
+    assumptions: []
+    atoms: !!python/tuple
+    -   preconditions:
+        - calculer $\lim_{t \to 0^+} t W_{1/t}$
+        arguments:
+        - par la loi des grands nombres pour le brownien
+        outcomes:
+        - $\lim_{t \to 0^+} t W_{1/t} = 0$ a.s.
+    -   preconditions:
+        - Pour tout \(t_1, \dots, t_n\), le vecteur \((X_{t_1}, \dots, X_{t_n})\)
+        arguments:
+        - est une combinaison linéaire des \(W_{1/t_i}\)
+        outcomes:
+        - donc il est gaussien centré. \\
+    -   preconditions: []
+        arguments:
+        - Calculation
+        outcomes:
+        - i.e. $\mathbb{E}[X_t X_s] = \min(t,s)$. \\
+    -   preconditions:
+        - 'continuité: $\lim_{t \to 0^+} X_t = 0$ a.s.,'
+        - 'gaussianité: le vecteur \((X_{t_1}, \dots, X_{t_n})\) est gaussien centré
+            pour tout ensemble de temps'
+        - 'covariance: $\mathbb{E}[X_t X_s] = \min(t,s)$,'
+        - avec \(X_0 = 0\)
+        arguments:
+        - ce qui caractérisent le mouvement brownien
+        outcomes:
+        - \(X\) est un mouvement brownien
