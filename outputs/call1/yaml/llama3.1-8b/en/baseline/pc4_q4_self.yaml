@@ -1,0 +1,22 @@
+subquestions:
+-   atoms:
+    -   preconditions:
+        - "$\tau$ is a bounded stopping time"
+        arguments:
+        - The definition of expectation for a stopped process
+        outcomes:
+        - $\E(W_\tau) = \frac{W_{\tau^+} + W_{\tau^-}}{2}$
+-   atoms:
+    -   preconditions:
+        - "$\tau$ is a bounded stopping time"
+        arguments:
+        - The definition of expectation for a stopped process
+        outcomes:
+        - $\E(W_\tau^2) = \frac{W_{\tau^+}^2 + W_{\tau^-}^2}{2}$
+    -   preconditions:
+        - "$\tau$ is a bounded stopping time"
+        arguments:
+        - The property that $\E(W_t^2) = t$ for all $t \geq 0$
+        outcomes:
+        - $\E(W_{\tau^+}^2) = \tau^+$
+        - $\E(W_{\tau^-}^2) = \tau^-$
