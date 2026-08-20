@@ -117,7 +117,10 @@ def expected_subquestion_count(source_answer) -> int | None:
         question_labels = re.findall(r"(?m)^Question\s+\d+:\s*$", source_answer)
         if question_labels:
             return len(question_labels)
-        answer_labels = re.findall(r"(?m)^Answer:\s*$", source_answer)
+        answer_labels = re.findall(
+            r"(?mi)^(?:Answer|R[ée]ponse)\s*:\s*$",
+            source_answer,
+        )
         return len(answer_labels) or None
     if isinstance(source_answer, dict):
         subquestions = source_answer.get("subquestions")

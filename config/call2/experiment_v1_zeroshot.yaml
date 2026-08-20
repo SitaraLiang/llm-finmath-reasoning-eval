@@ -13,6 +13,7 @@ input:
 
     languages:
       - "en"
+      - "fr"
 
     variations:
       - "baseline"
@@ -32,209 +33,6 @@ output:
   save_prompt: false
 
 prompts:
-  conversion: |
-    /no_think
-    TASK: Convert the SOURCE ANSWER below into the exact proof-atom YAML format.
-    Preserve mathematical formulas exactly as written when they appear in
-    preconditions or outcomes. Do not rewrite, simplify, or correct formulas.
-    Represent reasoning as atom mappings, ordered YAML lists, and unordered
-    mathematical sets using !!python/tuple. Use the special argument string
-    "Calculation" only when the reasoning step is mainly a calculation or
-    computation. If the reasoning step is not mainly computational, write the
-    theorem, idea, definition, or method as an ordinary argument string instead.
-    For a mainly computational step, write:
-        arguments:
-        - Calculation
-
-    CRITICAL OUTPUT RULES:
-    - Do not output thinking, reasoning traces, analysis, explanations, or notes.
-    - Do not output text inside <think> tags.
-    - Return EXACTLY ONE Markdown code block tagged yml.
-    - The response MUST START with ```yml and END with ```.
-    - Do not write any text before or after the code block.
-    - Inside the code block, return exactly one YAML document.
-    - Do not use YAML document separators such as --- or ...
-    - The first non-empty line inside the code block must be exactly:
-      subquestions:
-    - Do not write explanations, titles, name, description, version, parameters,
-      scenarios, or any generic benchmark configuration.
-    - Do not solve the exercise again. Only structure the SOURCE ANSWER.
-    - Do not include fields other than subquestions, atoms, preconditions,
-      arguments, outcomes, and optional strength.
-    - The SOURCE ANSWER is plain text produced by Call 1. It is organized as
-      repeated blocks:
-        Question 1:
-        ...
-        Answer:
-        ...
-        Question 2:
-        ...
-        Answer:
-        ...
-    - The top-level subquestions list should follow the Question blocks in
-      SOURCE ANSWER.
-    - One Question block becomes one top-level subquestions item.
-    - Nested atom mappings, ordered lists, and !!python/tuple structures inside
-      an atoms field do NOT count as top-level subquestions.
-    - Each top-level subquestions item should represent one Question block and
-      must have exactly one atoms field.
-    - If a single Question block contains more than one Answer: label, treat all
-      of that text as belonging to the same Question block.
-    - Do not create one top-level subquestion per proof step.
-    - When possible, put all proof steps from the same Question block inside
-      that item's atoms structure.
-    - Preserve the order of Question blocks.
-    - Do not convert Question: text into atoms unless the same fact is repeated
-      inside the corresponding answer text.
-
-    PROOF-ATOM YAML FORMAT:
-    - Top-level:
-        subquestions:
-        - atoms: ...
-    - Usually, each Question block in SOURCE ANSWER becomes one item in
-      subquestions.
-    - If SOURCE ANSWER has 2 clear Question blocks, normally output 2 top-level
-      subquestions items.
-    - Nested structures inside atoms do not change the number of top-level
-      subquestions items.
-    - Each subquestions item must have exactly one key: atoms.
-    - The atoms value represents the full proof structure for that Question block.
-    - Do not create one subquestions item per proof step.
-    - Do not split proof steps into extra top-level subquestions; keep them inside the atoms structure for the corresponding Question block.
-    - The atoms field may contain one atom mapping, an ordered YAML list of atom
-      mappings, a !!python/tuple for an unordered mathematical set, or nested
-      lists and tuples.
-    - Every atom MUST be one mapping with at least these required fields:
-        preconditions: ordered list of strings
-        arguments: ordered list of strings
-        outcomes: ordered list of strings
-      Always write these lists in block style, with one item per line starting
-      with "-". Do NOT use inline lists such as ["..."].
-      Valid atom shape:
-      atoms:
-        - preconditions:
-            - ...
-          arguments:
-            - ...
-          outcomes:
-            - ...
-      The keys preconditions, arguments, and outcomes must be at the same indentation level.
-      They must not be split into separate list items.
-      Under atoms, each "-" begins one complete atom. Do NOT write
-      "- arguments:" or "- outcomes:" under atoms. The fields arguments and
-      outcomes belong inside the same atom item as preconditions.
-      There are only two structural YAML list levels before the
-      preconditions/arguments/outcomes string lists:
-      1. top-level items under subquestions;
-      2. atom items under atoms.
-      The lists under preconditions, arguments, and outcomes contain strings.
-      Correct:
-      atoms:
-        - preconditions:
-            - "P"
-          arguments:
-            - "Calculation"
-          outcomes:
-            - "O"
-      Incorrect:
-      atoms:
-        - preconditions:
-            - "P"
-        - arguments:
-            - "Calculation"
-        - outcomes:
-            - "O"
-      Invalid atom examples:
-      atoms:
-        - preconditions: []  # INVALID: missing arguments and outcomes.
-        - preconditions:
-            - ...
-        - arguments:
-            - ...
-        - outcomes:
-            - ...
-      The invalid example above is three separate list items, not one atom.
-    - The atoms field can be a !!python/tuple containing alternative unordered
-      proof branches or unordered groups of atoms. For example:
-      atoms: !!python/tuple
-        - preconditions:
-            - ...
-          arguments:
-            - ...
-          outcomes:
-            - ...
-        - preconditions:
-            - ...
-          arguments:
-            - ...
-          outcomes:
-            - ...
-    - The atoms field can contain nested lists and tuples.
-    - Individual atom mappings themselves must never be tuples or lists.
-    - Use preconditions: [] when no preconditions are stated.
-    - Use outcomes: [] only if no outcome is stated.
-    - The [] notation is allowed only for empty preconditions or empty outcomes.
-    - Never use [] for arguments; arguments must always contain at least one item.
-    - Never put strings inside square brackets. This is invalid:
-        preconditions: ["..."]
-        arguments: ["Calculation"]
-        outcomes: ["..."]
-      Use block-style lists instead:
-        preconditions:
-        - ...
-        arguments:
-        - Calculation
-        outcomes:
-        - ...
-    - Do not use [] for preconditions or outcomes when there are multiple items; use an ordered YAML list instead.
-    - Use "Calculation" only when the argument is mainly computation or
-      algebraic/probabilistic calculation.
-    - If the argument is mainly computation, use exactly:
-        arguments:
-        - Calculation
-    - If the argument is not mainly computation, do NOT use "Calculation"; write
-      the actual theorem, idea, definition, or method as a string.
-    - The arguments field must NEVER be empty. This is invalid:
-      arguments: []
-    - The arguments field must be a non-empty YAML list of strings.
-    - Usually use exactly one argument string:
-        arguments:
-        - argument string
-    - If the atom needs both a theorem/idea and a calculation, use exactly two strings:
-        arguments:
-        - argument string
-        - Calculation
-    - Do not repeat Calculation multiple times inside the same arguments list.
-
-    - A normal YAML sequence represents an ordered proof list.
-    - PyYAML's !!python/tuple tag represents an unordered mathematical set.
-    - Tuple order is only for deterministic serialization; it is not mathematical meaning.
-    - Use !!python/tuple for alternative unordered proof branches or unordered groups of atoms.
-    - Preserve LaTeX and mathematical symbols in strings.
-
-    - Quote any string containing braces, brackets, colons, commas, backslashes,
-      or LaTeX expressions. Example:
-        - "{X_t = t W_{1/t}, t > 0, X_0 = 0}"
-      Do not leave such strings unquoted.
-    - Do not invent proof facts not present in the source answer.
-    - Do not repeat identical atoms.
-    - If an atom has already appeared, do not output it again.
-    - Prefer fewer atoms over repeated atoms.
-
-    CURRENT METADATA:
-    pc: $pc
-    exercise: $exercise
-    language: $language
-    variation: $variation
-    prompt_type: $prompt_type
-    call1_model: $model1
-    call1_output_mode: $call1_output_mode
-
-    SOURCE ANSWER:
-    $source_answer
-
-    YAML OUTPUT:
-
   per_question_conversion: |
     /no_think
     TASK: Convert this SINGLE Question block into the proof-atom YAML format.
@@ -335,7 +133,7 @@ prompts:
     - Inside the code block, return exactly one YAML document.
     - Do not use YAML document separators such as --- or ...
     - The first non-empty line inside the code block must be exactly:
-      subquestions:
+      atoms:
     - Do not write explanations, titles, name, description, version, parameters,
       scenarios, or generic benchmark configuration.
     - Each atom must have preconditions, arguments, and outcomes.
@@ -345,6 +143,85 @@ prompts:
 
     Previous response and original task:
     $raw_response
+
+  # French inputs use French instructions. English uses the default templates.
+  languages:
+    fr:
+      per_question_conversion: |
+        /no_think
+        TACHE : Convertissez ce SEUL bloc Question au format YAML d'atomes de
+        preuve. Python assemblera ensuite les subquestions.
+
+        REGLES DE SORTIE OBLIGATOIRES :
+        - Ne produisez aucune analyse, reflexion, explication, note ou balise
+          <think>.
+        - Retournez exactement un bloc Markdown commencant par ```yml et se
+          terminant par ```, sans texte avant ou apres.
+        - Le bloc contient un seul document YAML, sans --- ni ....
+        - La premiere ligne non vide doit etre exactement :
+          atoms:
+        - Ne produisez pas le champ subquestions.
+        - Ne resolvez pas l'exercice : structurez uniquement la REPONSE SOURCE.
+        - N'utilisez que atoms, preconditions, arguments, outcomes et strength.
+
+        FORMAT :
+        - atoms peut etre un atome, une liste ordonnee, un !!python/tuple non
+          ordonne, ou une imbrication de listes et tuples.
+        - Chaque atome est un mapping complet avec preconditions, arguments et
+          outcomes au meme niveau d'indentation.
+        - Ces champs sont des listes YAML en style bloc, jamais des listes en ligne
+          comme ["..."] lorsqu'elles ne sont pas vides.
+        - Chaque "-" directement sous atoms commence un atome complet. Ne separez
+          jamais preconditions, arguments et outcomes en plusieurs elements.
+        - preconditions: [] et outcomes: [] sont admis uniquement lorsqu'ils sont
+          vides. arguments doit toujours contenir au moins une chaine.
+        - Utilisez "Calculation" seulement pour une etape principalement
+          calculatoire. Sinon, indiquez le theoreme, la definition, la propriete ou
+          la methode employee.
+        - Utilisez !!python/tuple uniquement pour les alternatives ou groupes non
+          ordonnes.
+        - Conservez exactement les formules de la source et mettez entre guillemets
+          les chaines contenant de la syntaxe LaTeX ou YAML speciale.
+        - N'inventez aucun fait et ne dupliquez aucun atome.
+
+        METADONNEES :
+        pc: $pc
+        exercise: $exercise
+        language: $language
+        variation: $variation
+        prompt_type: $prompt_type
+        call1_model: $model1
+        question_block_index: $question_block_index
+        question_block_count: $question_block_count
+
+        REPONSE SOURCE :
+        $source_answer
+
+        SORTIE YAML :
+
+      repair: |
+        TACHE : Reparez la reponse precedente afin d'obtenir un YAML d'atomes de
+        preuve valide.
+
+        Erreur de validation :
+        $error_message
+
+        REGLES OBLIGATOIRES :
+        - Retournez uniquement un bloc ```yml ... ```, sans analyse ni texte avant
+          ou apres.
+        - Conservez la cle de niveau superieur demandee par la tache originale :
+          atoms pour un seul bloc Question, ou subquestions pour l'exercice entier.
+        - Produisez un seul document YAML, sans --- ni ....
+        - Chaque atome doit contenir preconditions, arguments et outcomes.
+        - arguments ne doit jamais etre vide.
+        - Utilisez !!python/tuple uniquement pour un ensemble mathematique non
+          ordonne.
+        - Conservez exactement les formules et mettez entre guillemets les chaines
+          contenant de la syntaxe LaTeX ou YAML speciale.
+        - Corrigez uniquement l'erreur indiquee; n'ajoutez aucun fait.
+
+        Reponse precedente et tache originale :
+        $raw_response
 
 conversion:
   mode: "per_question"

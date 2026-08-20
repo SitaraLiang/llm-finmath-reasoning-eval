@@ -9,10 +9,8 @@ from string import Template
 from urllib import error, request
 
 from conversion_validator import (
-    expected_subquestion_count,
     parse_yaml_response,
     repair_converted_exercise,
-    validate_converted_exercise,
     validate_single_question_conversion,
 )
 
@@ -203,11 +201,36 @@ def require_prompt_templates(config: dict) -> dict:
     prompts = config.get("prompts")
     if not isinstance(prompts, dict):
         raise SystemExit("Error: config must define a 'prompts' mapping.")
-    if not prompts.get("conversion"):
-        raise SystemExit("Error: config.prompts.conversion is required.")
+    if not prompts.get("per_question_conversion"):
+        raise SystemExit("Error: config.prompts.per_question_conversion is required.")
     if not prompts.get("repair"):
         raise SystemExit("Error: config.prompts.repair is required.")
+    language_prompts = prompts.get("languages", {})
+    if language_prompts and not isinstance(language_prompts, dict):
+        raise SystemExit("Error: config.prompts.languages must be a mapping.")
+    for language, overrides in language_prompts.items():
+        if not isinstance(overrides, dict):
+            raise SystemExit(
+                f"Error: config.prompts.languages.{language} must be a mapping."
+            )
+        for key in ("per_question_conversion", "repair"):
+            if key in overrides and not overrides[key]:
+                raise SystemExit(
+                    f"Error: config.prompts.languages.{language}.{key} cannot be empty."
+                )
     return prompts
+
+
+def prompt_templates_for_language(prompts: dict, language: str) -> dict:
+    """Return default templates with any language-specific overrides applied."""
+    selected = {
+        key: value
+        for key, value in prompts.items()
+        if key != "languages"
+    }
+    overrides = prompts.get("languages", {}).get(language, {})
+    selected.update(overrides)
+    return selected
 
 
 def read_call1_output(path: Path) -> str:
@@ -330,22 +353,17 @@ def output_path(config: dict, metadata: dict, model2: str) -> Path:
 
 
 def output_root(config: dict) -> Path:
-    """Resolve output root, defaulting by experiment family and conversion mode."""
+    """Resolve the output root for per-question Call 2 conversion."""
     output_config = config.get("output", {})
     if "root_directory" in output_config:
         return project_path(output_config["root_directory"])
 
-    conversion_mode = get_nested(config, ["conversion", "mode"], "complete_exercise")
     experiment_name = str(get_nested(config, ["experiment", "name"], "")).lower()
     is_zeroshot = "zeroshot" in experiment_name or "zero_shot" in experiment_name
 
-    if conversion_mode == "per_question":
-        if is_zeroshot:
-            return project_path("outputs/call2_zeroshot_per_question")
-        return project_path("outputs/call2_per_question")
     if is_zeroshot:
-        return project_path("outputs/call2_zeroshot")
-    return project_path("outputs/call2")
+        return project_path("outputs/call2_zeroshot_per_question")
+    return project_path("outputs/call2_per_question")
 
 
 def raw_output_path(parsed_output_path: Path) -> Path:
@@ -386,49 +404,6 @@ def write_error_report(config: dict, summary: dict, failed_jobs: list[dict]) -> 
     progress(f"Wrote error report: {report_path}")
 
 
-def convert_with_repairs(
-    model: dict,
-    prompts: dict,
-    metadata: dict,
-    source_answer,
-    endpoint: str,
-    timeout: int,
-    repair_attempts: int,
-) -> tuple[dict | None, str, str | None, str]:
-    """Convert a complete Call 1 answer to YAML, with optional YAML repair."""
-    conversion_prompt = build_conversion_prompt(prompts, metadata, source_answer)
-    expected_subquestions = expected_subquestion_count(source_answer)
-    raw_response = ollama_generate(
-        model,
-        conversion_prompt,
-        endpoint,
-        timeout,
-    )
-    parsed, error_message = parse_yaml_response(raw_response)
-    if parsed is not None:
-        parsed = repair_converted_exercise(parsed)
-        parsed, error_message = validate_converted_exercise(parsed, expected_subquestions)
-
-    attempts = 0
-    while parsed is None and attempts < repair_attempts:
-        attempts += 1
-        raw_response = ollama_generate(
-            model,
-            build_repair_prompt(
-                prompts,
-                f"Original task:\n{conversion_prompt}\n\nInvalid response:\n{raw_response}",
-                error_message or "unknown error",
-            ),
-            endpoint,
-            timeout,
-        )
-        parsed, error_message = parse_yaml_response(raw_response)
-        if parsed is not None:
-            parsed = repair_converted_exercise(parsed)
-            parsed, error_message = validate_converted_exercise(parsed, expected_subquestions)
-    return parsed, raw_response, error_message, conversion_prompt
-
-
 def convert_question_block_with_repairs(
     model: dict,
     prompts: dict,
@@ -439,14 +414,11 @@ def convert_question_block_with_repairs(
     repair_attempts: int,
 ) -> tuple[object | None, str, str | None, str]:
     """Convert one question block to an atoms structure."""
-    prompt_key = "per_question_conversion"
-    if prompt_key not in prompts:
-        prompt_key = "conversion"
     conversion_prompt = build_conversion_prompt(
         prompts,
         metadata,
         question_block,
-        prompt_key=prompt_key,
+        prompt_key="per_question_conversion",
     )
     raw_response = ollama_generate(
         model,
@@ -541,10 +513,10 @@ def run_call2(config: dict) -> None:
     max_retries = get_nested(config, ["execution", "max_retries"], 1)
     retry_delay = get_nested(config, ["execution", "retry_delay_seconds"], 2)
     repair_attempts = get_nested(config, ["conversion", "repair", "max_attempts"], 1)
-    conversion_mode = get_nested(config, ["conversion", "mode"], "complete_exercise")
-    if conversion_mode not in {"complete_exercise", "per_question"}:
+    conversion_mode = get_nested(config, ["conversion", "mode"], "per_question")
+    if conversion_mode != "per_question":
         raise SystemExit(
-            "Error: conversion.mode must be 'complete_exercise' or 'per_question'."
+            "Error: Call 2 supports only conversion.mode='per_question'."
         )
 
     written = 0
@@ -572,6 +544,7 @@ def run_call2(config: dict) -> None:
 
     for item in inputs:
         source_answer = read_call1_output(item["path"])
+        item_prompts = prompt_templates_for_language(prompts, item["language"])
         for model in models:
             current_job += 1
             out_path = output_path(config, item, model["id"])
@@ -596,36 +569,20 @@ def run_call2(config: dict) -> None:
                     try:
                         if max_retries > 1:
                             progress(f"{job_label}: Ollama attempt {attempt}/{max_retries}")
-                        if conversion_mode == "per_question":
-                            (
-                                parsed,
-                                raw_response,
-                                error_message,
-                                conversion_prompt,
-                            ) = convert_per_question_with_repairs(
-                                model,
-                                prompts,
-                                item,
-                                source_answer,
-                                endpoint,
-                                timeout,
-                                repair_attempts,
-                            )
-                        else:
-                            (
-                                parsed,
-                                raw_response,
-                                error_message,
-                                conversion_prompt,
-                            ) = convert_with_repairs(
-                                model,
-                                prompts,
-                                item,
-                                source_answer,
-                                endpoint,
-                                timeout,
-                                repair_attempts,
-                            )
+                        (
+                            parsed,
+                            raw_response,
+                            error_message,
+                            conversion_prompt,
+                        ) = convert_per_question_with_repairs(
+                            model,
+                            item_prompts,
+                            item,
+                            source_answer,
+                            endpoint,
+                            timeout,
+                            repair_attempts,
+                        )
                         break
                     except RuntimeError:
                         if attempt == max_retries:
