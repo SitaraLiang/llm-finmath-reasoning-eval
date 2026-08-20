@@ -1,0 +1,56 @@
+Exercise: pc2_q1
+Model: tinyllama
+Variation: baseline
+Prompt type: ground_truth_forcing
+
+Question 1:
+Montrer qu'un processus $(X_t)_{t\in \R^+}$ est un mouvement brownien si et seulement si: $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien centr\'e, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+Pour résoudre l'exercice de mathématiques financières 2 (autre) :
+
+Question 1: Il faut déterminer les conditions sous-jacentes à un processus $X$ qui est un mouvement brownien et centré.
+
+Hypothèse globales :
+- $X_0=0$
+- $X_{t+1}=(X_t)_{t\in \R^+}$ est un processus gaussien centr\'e
+
+Quelques remarques sur les conditions sous-jacentes à un processus centré:
+- Il n'existe pas de distribution stationnaire pour ce type de processus car il n'y a pas d'association d'une mesure de centre de distribution.
+- Si le processus est centré et stationnaire, son taux de change est constant ($X_t=C$ pour tout $t$) mais il peut aussi avoir une variance stationnaire: $\sigma^2=\Var(X) = C^2/N$, avec $C$ un paramètre fixe et $N$ le nombre d'observations.
+
+Dans le cas de $X_t=s$, les deux conditions sont vraies pour tout $t$: $X_{t+1}=(X_t)_{t\in \R^+}$ est un processus centré et stationnaire, mais $X_t$ n'est pas constant si on suit $\sigma^2=\Var(X) = C^2/N$.
+
+La formule de l'équation peut donc être dérivée à partir des deux hypothèses:
+- Le taux de change est constant
+- L'évolution du taux de change est bien centr\'e et stationnaire
+
+Exemple :
+Pour la première solution, on prend $s=1$ et $C=\E[X_0]=0$, donc $\sigma^2=0$. Cela signifie que le processus est centré et stationnaire.
+
+Pour la seconde solution, on choisit $s=-1$ et $C=\Var(X)=-1/N$. Puisque $\E[X_t\mid X_0=x]=0$, on a $X_{t+1}=-(-1)^{(t+1)/N}x+\sqrt{-1}\sigma\,\dif(X_0)$. Comme $-\sigma^2=\Var(X)$ (voir le calcul de la secondaire), la distribution est centr\'e et stationnaire, avec $C=-\E[X\mid X_0=0]=\sqrt{N}$.
+
+Enfin, on peut toujours utiliser les hypothèses globales pour déterminer les conditions sous-jacentes à un processus centré. D'ailleurs, la distribution stationnaire est toujours un paramètre fixe et ne change pas en fonction de l'analyse.
+
+Question 2:
+Montrer que si $W_t$ est un mouvement brownien, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ l'est aussi.
+
+Answer:
+Question 2: Prove that if $(W_t)_{t\ge 0}$ is a Brownian motion and $ \{X_t = t\, W_{\frac{1}{t}}, X_0=0 \}$, then it also satisfies the Brownian motion assumption.
+
+Proof (by contradiction): Assume that there exists some initial condition $X_0 = 0$ such that $ \{X_t = t\, W_{\frac{1}{t}}, X_0=0 \}$ does not satisfy the Brownian motion assumption. Then, using the same reasoning used in question 1, we can find an infinite sequence $(t_n)_{n\ge 1}$ and a sequence of random variables $(\xi_n)_{n\ge 1}$, with probability one, such that
+
+- $X_{t_n}$ converges in law to $W(t)$ for all $t\in \mathbb{R}_+$
+- $(X_{t_n} - X_{t_{n+1}})^2$ converges in law to $0$ for all $t\in \mathbb{R}_+$
+- $\sum^N_{n=1} (\xi_{n+1}-\xi_n)^2$ converges in law to $0$ for all $N\ge 1$.
+
+Since the Brownian motion is a continuous process, we can find a subsequence $(t_m)_{m\ge n}$ and a random variable $(\eta_n)_{n\ge 1}$, with probability one, such that
+
+- $\lim_{n\to \infty} t_m = T$ and $(\xi_n)_{n\ge 1}$ converges in law to $W(T)$
+- $\sum^N_{n=1} (\eta_n)^2$ converges in law to $0$ for all $N\ge 1$.
+
+Since $(t_m)_{m\ge n}$ is an increasing sequence of positive numbers converging to $T$, we have that $t_m = \frac{t_{m+1}}{2^m}$ for all $m\in \mathbb{N}$. But then, by applying a similar argument to question 1, we get
+
+- $\lim_{n\to \infty} (\eta_{n+1}-\eta_n)^2$ converges in law to $0$ for all $n$.
+
+This contradicts the assumption that $X_0 = 0$ satisfies the Brownian motion assumption.

@@ -1,0 +1,61 @@
+Exercise: pc4_q4
+Model: deepseek-r1:7b
+Variation: baseline
+Prompt type: prompt_accumulation
+
+Question 1:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau)$.
+
+Answer:
+<think>
+Pour répondre à la question 1, je dois calculer lespérance de \( W_{\tau} \) où \( \tau \) est un temps d'arrêt borné.
+
+D'après le théorème de stopping de Doob, si \( \tau \) est un temps d'arrêt borné et que \( W_t \) est un mouvement brownien standard, alors \( \E[W_{\tau}] = \E[W_0] \).
+
+Comme \( W_0 = 0 \), cela implique que \( \E[W_{\tau}] = 0 \).
+</think>
+
+Lorsque $\tau$ est un temps d'arrêt borné, le théorème de stopping de Doob garantit que $\mathbb{E}[W_\tau] = \mathbb{E}[W_0]$.
+
+Comme $W_0 = 0$, on a :
+
+\[
+\boxed{\mathbb{E}\left[W_{\tau}\right] = 0}
+\]
+
+Question 2:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau^2)$.
+
+Answer:
+<think>
+Okay, I need to calculate the expected value of \( W_{\tau}^2 \) where \( \tau \) is a bounded stopping time. Hmm, I remember that for Brownian motion, certain properties hold when dealing with stopping times.
+
+First, since \( \tau \) is a bounded stopping time, it means there's some finite time \( T \) such that \( \tau \leq T \). This should help because we can use the Optional Stopping Theorem or maybe Itô's formula here.
+
+I recall that for Brownian motion squared, \( W_t^2 - t \) is a martingale. That might be useful. If I apply the expectation operator to both sides at time \( \tau \), then by the definition of a martingale, the expected value should equal its initial value.
+
+So, taking expectations on both sides: 
+\( \E[W_{\tau}^2 - \tau] = \E[0] \) because it's a martingale starting at 0. That simplifies to \( \E[W_{\tau}^2] = \E[\tau] \).
+
+Wait, but the question asks for \( \E[W_{\tau}^2] \). So according to this, it should be equal to \( \E[\tau] \). But I'm not sure if that's correct because sometimes there are additional terms when applying Itô's formula.
+
+Let me think again. Using Itô's formula on \( W_t^2 \), we have:
+\( d(W_t^2) = 2W_t dW_t + dt \).
+Integrating from 0 to \( \tau \):
+\( W_{\tau}^2 = 2 \int_0^{\tau} W_s dW_s + \tau \).
+
+Taking expectations on both sides:
+\( \E[W_{\tau}^2] = \E[2 \int_0^{\tau} W_s dW_s] + \E[\tau] \).
+
+The integral is a martingale, and since \( \tau \) is bounded, its expectation at time \( \tau \) is 0. So the first term drops out, leaving:
+\( \E[W_{\tau}^2] = \E[\tau] \).
+
+Wait, but I thought earlier that it's equal to \( \E[\tau] \). But now using Itô's formula also gives me the same result. Hmm, maybe both approaches confirm that.
+
+But wait, another way: since \( W_t^2 - t \) is a martingale, then at stopping time \( \tau \), we have:
+\( \E[W_{\tau}^2 - \tau] = 0 \Rightarrow \E[W_{\tau}^2] = \E[\tau] \).
+
+So both methods agree. Therefore, the expected value of \( W_{\tau}^2 \) is equal to the expectation of \( \tau \).
+</think>
+
+$\boxed{\mathbb{E}[W_{\tau}^{2}] = \mathbb{E}[\tau]}$

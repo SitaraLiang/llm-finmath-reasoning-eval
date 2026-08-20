@@ -1,0 +1,76 @@
+Exercise: pc4_q4
+Model: deepseek-r1:1.5b
+Variation: baseline
+Prompt type: ground_truth_forcing
+
+Question 1:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau)$.
+
+Answer:
+<think>
+Bon, je dois résoudre ce problème mathématique en finance où j'ai besoin de calculer l'écart moyen des fonds à l'instant $\tau$, qui est un temps d'arrêt borné. D'après le contexte, $W_t$ est un mouvement brownien, donc c'est une processus stochastique continue. 
+
+Commençons par comprendre ce que signifie "temps d'arrêt borné". En mathématiques, un temps d'arrêt $\tau$ est un événement aléatoire qui se déclenche à l'instant $\tau$, qui peut être fini ou non. Un temps d'arrêt borné c'est un cas où $\tau$ est borné, ce qui signifie qu'il existe un temps fixe $T$ tel que pour tout $t > T$, le processus $W_t$ n'a pas de comportement à l'infini. En outre, il n'y a pas de probabilité non measureable dans ce temps d'arrêt.
+
+Donc, l'objectif est de calculer $\E(W_\tau)$. Cela revient à calculer l'espire de la variable aléatoire $W_\tau$ en utilisant la probabilité de P. 
+
+Puisqu'il s'est faits mention, je me souviens que pour un mouvement brownien standard, la processus est continue et admet une augmentation orthogonale par la compensatee driftante. Mais ici, je dois analyser $\E(W_\tau)$. 
+
+En mathématiques, l'espire d'une variable aléatoire estlinéaire sur les variables aléatoires indépendantes, bien que $W_{\tau}$ ne soit pas indépendant de P. 
+
+Ma question est : Si $\tau$ est un temps d'arrêt borné, comment calcule-t-on l'espire de $W_\tau$?
+
+En effet, dans le contexte du mouvement brownien, pour un temps d'arrêt borné $\tau$, la variable aléatoire $W_{\tau}$ est aléatoire bornée. En effet, $\tau$ est borné, donc pour tout $t > T$, $W_t$ reste bounded, et particularement, $W_\tau$ est borné dans P. 
+
+Maintenant, pour un mouvement brownien standard, on sait que l'espire de la variable aléatoire augmentée par le processus drift n'est pas null. Cependant, ici, nous sommes sur $\E(W_\tau)$.
+
+En d'autres termes, pour une augmentation orthogonale, c'est un martingale, donc son espire en temps $T$ est égal à sa valeur initiale. Mais ici, on a un temps d'arrêt borné, donc+$\E(W_{\tau}) = W_0$.
+
+C'est-à-dite, pour une augmentation orthogonale, c'est une martingale avec $\E(M_T) = M_0$. 
+
+Donc, si $W_t$ est un mouvement brownien, et que $M_t$ est une augmentation orthogonale qui est une martingale,alors $\E(W_\tau) = W_0$, car c'est l'espire de la martingale au temps d'arrêt.
+
+En résumé, avec le processus standard, pour un temps d'arrêt borné, l'espire de $W_\tau$ est égale à l'espire initiale, ce qui est null si on considère le mouvement brownien standard avec une augmentation de zéro. 
+
+Ainsi, $\E(W_\tau) = 0$. 
+</think>
+
+Pour calculer $\E(W_\tau)$ lorsque $\tau$ est un temps d'arrêt borné, les idées clés sont :
+
+1. $W_t$ est un mouvement brownien standard aléatoire continue.
+2. Un temps d'arrêt $\tau$ borné signifie qu'il existe un temps fixe $T$ où pour tout $t > T$, $W_t$ reste borné.
+3. L'espire de la variable aléatoire augmentée orthogonale par le processus drift, c'est une martingale, est égale à sa valeur initiale.
+
+Ainsi, $\E(W_\tau) = 0$.
+
+Question 2:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau^2)$.
+
+Answer:
+<think>
+D'accord, je dois calculer l'espérance de $W_\tau^2$, où $\tau$ est un temps d'arbre. Comme $W_t$ est un mouvement brownien, il est un processus continue et Martingale.
+
+Utilisant le théorème d'arrêt optionnel de Doob, je peux appliquer l'égalité $\E[W_\tau] = \E[W_0]$. Comme $W_0 = 0$, cela signifie que $\E[W_\tau] = 0$.
+
+Pour calculer $\E[W_\tau^2]$, je dois utiliser une identity de projection. L'espérance conditionnelle de $W_{\tau + h}^2$ par rapport à $\mathcal{F}_\tau$ est égale à $\E[W_{\tau + h}^2 \mid \mathcal{F}_\tau]$.
+
+Comme le mouvement brownien a les propriétés d'inertie, $W_{\tau + h}$ et $W_\tau$ sont indépendants. Donc, $\E[W_{\tau + h}^2 \mid \mathcal{F}_\tau] = W_\tau^2$.
+
+En sommant pour tout $h > 0$, je peux montrer que l'espérance conditionnelle de $W_{\tau}^2$ par rapport à $\mathcal{F}_{<\tau>}$ est égale à $W_0^2$, ce qui est donc $\E[W_\tau^2] = \E[0] = 0$.
+
+En résumé, les lois d'événements localement aléatoires, comme les temps d'arrêtes bornés, satisfont certaines propriétés de martingales et de projection.
+</think>
+
+Pour calculer $\E(W_\tau^2)$ où $\tau$ est un temps d'arbre, on utilise l'identité suivante :
+
+\[
+\E(W_{\tau + h}^2 \mid \mathcal{F}_\tau) = W_\tau^2
+\]
+
+En sommant pour tout $h > 0$, on obtient que :
+
+\[
+\E[W_{\tau}^2] = \E[0] = 0
+\]
+
+Ainsi, $\E(W_\tau^2) = 0$.

@@ -1,0 +1,133 @@
+Exercise: pc2_q1
+Model: deepseek-r1:1.5b
+Variation: baseline
+Prompt type: strictly_sequential
+
+Question 1:
+Montrer qu'un processus $(X_t)_{t\in \R^+}$ est un mouvement brownien si et seulement si: $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien centr\'e, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+<think>
+D'accord, je dois démontrer que un processus $(X_t)_{t \in \mathbb{R}^+}$ est un mouvement brownien si et seulement si les trois conditions suivantes sont satisfaites : $X_0 = 0$, $(X_t)$ est un processus gaussien centré, et la covariance de $X_s$ et $X_t$ est égale à $\min(s, t)$. 
+
+Je commence par comprendre chaque condition. 
+
+1. **$X_0 = 0$** : Cela signifie que l'initiale position du processus est zéro. En mathématiques financières ou en probabilités, cela est essentiel pour les modèles de mouvement brownien, qui sont basés sur des dromages aléatoires.
+
+2. **$(X_t)$ est un processus gaussien centré** : Cela signifie que chaque variable $X_t$ suit une loi normale centrée-réduite. En d'autres terms, la variable centrée, c'est-à-dire $X_t - E[X_t]$ (où $E[X_t] = 0$), est Gaussienne. Cela signifie aussi que les variations de l'événements sont aléatoires et suivent une loi normale.
+
+3. **${\rm Cov}(X_s, X_t) = \min(s, t)$** : Lacovariance entre $X_s$ et $X_t$ est égale au minimum de $s$ et $t$. En termes de températures, cela signifie que les variations entre des temps passedus sont indépendantes ou associées de manière simple. Par exemple, la corrélation est zéro si $s \neq t$, ce qui signifie qu'une变动 à un temps n'a pas d'impact sur une变动 au autre.
+
+Je dois montrer l'implication "mangle" et "mangle inverse", c'est-à-dire que pour chaque condition, si on a les conditions vérifiées, alors le processus est bien un mouvement brownien. 
+
+Pour le **direction "mangle"** (Si $(X_t)$ est un mouvement brownien, alors X_0 = 0, (X_t) est gaussien centré et Cov(X_s,X_t)=min(s,t)). C'est-simple : les lois de Gaussian, la position initiale, et la covariance sont par définition des properties du mouvement brownien.
+
+Pour la **direction inversee**, c'est plus subtile. On suppose que X_0 = 0, (X_t) est un processus gaussien centré, et Cov(X_s,X_t)=min(s,t). On doit montrer qu'il y a une convergence en distribution vers un mouvement brownien.
+
+Je dois donc vérifier que les conditions de convergence hold :
+- X_t / sqrt(t) converge en distribution vers une variable Gaussienne Z, qui suit une loi N(0,1).
+- Covariance(X_s,X_t)/sqrt(s t) converge vers 0 pour s ≠ t.
+
+Cela implique d'utiliser des résultats de théorie des processus stochastiques, comme le Théorème d'Approximation de Donsker ou de Varadhan, qui affircent que si les conditions sur la covariance sont vachantes (i.e., tends vers zéro), et l'autre condition est remplie, alors X_t converge en distribution toward Brownian motion.
+
+Je dois donc écrire un argument basé sur ces convergences, en utilisant des approximations ou des martingales locaux, pour montrer que la variation des temps passedus tend vers un mouvement brownien.
+
+Enfin, je dois conclure que les conditions don't s'annuler together suffisamment pour équiper le processus de fonctionner comme un mouvement brownien.
+</think>
+
+Pour montrer qu'un processus $(X_t)_{t\in \mathbb{R}^+}$ est un mouvement brownien, il suffit d'établir que ses propriétés caractéristiques sont équivalentes à la suivante :
+
+**Propriétés caractéristiques du mouvement brownien :**
+
+1. $X_0 = 0$.
+2. $(X_t)$ est un processus gaussien centré, c'est-à-dire chaque variable $X_t$ suit une loi normale centrée-réduite.
+3. La covariance entre $X_s$ et $X_t$ est égale à $\min(s, t)$. 
+
+**Demonstration :**
+
+1. **Condition 1 : $X_0 = 0$**  
+   Si $(X_t)$ est un mouvement brownien, par définition, sa position initiale est bien zéro.
+
+2. **Condition 2 : $(X_t)$ est un processus gaussien centré**  
+   Cela signifie que pour tout $t \geq 0$, $X_t$ suit une loi normale centrée-réduite. En d'autres termes, la variable aléatoire centrée et réduite associée à $X_t$ suit une loi normale.
+
+3. **Condition 3 : Covariance ${\rm Cov}(X_s,X_t) = \min(s,t)$**  
+   La covariance entre les variables aléatoires $X_s$ et $X_t$ est égale au minimum de $s$ et $t$. Cela signifie que pour les temps passedus, les variations sont indépendantes ou associées de manière simple.
+
+**Conclusion :**
+
+Si une fonctionne $(X_t)$ satisfait toutes ces conditions — l'initiale position est zéro, chaque variable suit une loi normale centrée-réduite, et la covariance des variations est égale au minimum des temps —alors c'est un mouvement brownien. 
+
+ANSWER: 1. $X_0 = 0$, $(X_t)$ est gaussien centré, ${\rm Cov}(X_s,X_t)=\min(s,t)$.
+
+Question 2:
+Montrer que si $W_t$ est un mouvement brownien, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ l'est aussi.
+
+Answer:
+<think>
+Bon, je dois démontrer que si \( W_t \) est un mouvement brownien, alors \( \{X_t = t \cdot W_{\frac{1}{t}}, t > 0, X_0 = 0 \} \) l'est aussi. Je commence par comprendre le concept de mouvement brownien.
+
+Un mouvement brownien standard est une fonction continue à variation bornée avec des increments gaussiennement distribués indépendants en temps. En d'autres termes, \( W_t \) est une martingale, un processus admettant une variance bornée et sa variance est proportionnelle au temps. 
+
+Donc, pour montrer que \( X_t = t \cdot W_{\frac{1}{t}} \) est un mouvement brownien, je dois montrer qu'il vérifie les propriétés du mouvement brownien. Cela inclut de probablement vérifier l'admissibilité (continue et admettant des variations bornées), la martingale (la variation en temps est une martingale), et peut-être le processus admettant une variance bornée.
+
+Je vais donc analyser \( X_t \) en fonction de \( W_{\frac{1}{t}} \). Comme \( t > 0 \), \( \frac{1}{t} \) est bien un temps positif. Je suppose que \( W_t \) est brownien standard, donc \( W_t \) est continue, admet une variance \( t \sigma^2 \) (où \( \sigma^2 \) est la variance du mouvement brownien).
+
+En réécritant \( X_t = t \cdot W_{\frac{1}{t}} \), je vois que pour t fixé, \( X_t \) est une fonction affine sur l'indentation du temps, scaled par un facteur t.
+
+Je dois donc analyser la continue de \( X_t \). Puisque \( W_{\frac{1}{t}} \) est continue en 0 (comme brownien), et \( t \) est continu, il y a une composition continue, donc \( X_t \) est continue en tout point.
+
+Ensuite, je dois vérifier la martingale. Pour montrer que \( X_t \) est une martingale, je dois vérifier qu'il existe une processe de filtration \( \mathcal{F}_t^X \) telle que \( E[X_{t+s} - X_t | \mathcal{F}_t] = 0 \). 
+
+Ma solution semble être de considerer la variable aléatoire \( Z_t = W_{1/t} \), donc \( X_t = t Z_{1/t} \). Je dois analyser \( Z_t \).
+
+Puisque \( W_{1/t} \) est brownien, pour une variable aléatoire \( Y \), \( E[W_Y] = E[Y] \) si Y est une variable brownienne, mais ici Y est \( 1/t \), un temps positif fixé. 
+
+En réécritant \( X_t = t Z_{1/t} \), je dois donc analyser la relation entre \( X_t \) et \( W_s \) avec \( s = 1/t \). Je suppose que \( s = 1/t \), donc \( t = 1/s \).
+
+Je pense que l'un des principes est de considérer la variable aléatoire \( Z_{1/t} \) et le processus brownien. 
+
+En effet, pour une variable Brownienne \( W_s \), pour tout \( s > 0 \), il existe un processeur aléatoire \( Y = W_s \), et donc \( E[W_s] = 0 \). De plus, la variance est \( s \).
+
+Je suppose que \( X_t = t Z_{1/t} \) est une fonction affine sur l'indentation du temps. En réécritant, on peut regarder \( X_t \) comme une fonction brownienne scaled par un facteur \( 1/s \), où \( s = 1/t \).
+
+Je suppose que \( X_t \) est continue, admettant des variations bornées et admet une variance. Je dois donc vérifier si la variance est proportionnelle au temps.
+
+La variance de \( Z_{1/t} \) est \( (1/t) \sigma^2 \), donc la variance de \( X_t = t Z_{1/t} \) est \( t \times (1/t) \sigma^2 = \sigma^2 \). Cela show que la variance est constante, indépendant du temps.
+
+Cela signifie que \( X_t \) a une variance constante, c'est un bon candidate pour être brownien standard. 
+
+En résumé, je me souviens que pour montrer qu'une fonction aléatoire est brownien, il faut vérifier la continue, l'admissibilité (variance bornée), et la martingale. En appliquant ce à \( X_t \), je trouve que sa variance est constante, et donc elle vérifie les conditions nécessaires.
+
+Je pense qu'il faut peut-être plus formally explorer le processus pour montrer que l'espaced des variations browniennnes est bien une filtration continue et admettant des variations bornées. 
+
+De plus, je dois probably commencer en utilisant l'équation d'ordre du mouvement brownien, c'est-à-dire que \( W_{a + b} - W_a \) suit une distribution normale avec variance \( b \), si a et b sont des temps positifs. 
+
+En appliquant cela à \( X_t = t Z_{1/t} \), je pourrais affacer les variations browniennes au temps.
+
+Je suppose que c'est acceptable, mais je dois maybe vérifier un point plus.
+
+Faisons un exemple numeric. Si j' prends \( W_{1/t} \) comme une variable aléatoire avec variance \( 1/t \sigma^2 \), et en multipliant par t, on obtient variance \( \sigma^2 \). 
+
+Cela signifie que la variance est constante, ce qui est un bon indicateur de l'admissibilité.
+
+En résumé, je think qu'il faut utiliser les propriétés des variations browniennes et le processus brownien standar. Donc, en réécritant \( X_t \) comme une fonction brownienne browniennement scaling, on peut affirmer que c'est bien un mouvement brownien.
+
+Je pense aussi à l'équation de martingale. Si j'appelle M_t = E[ X_t | F_{t-} ], then M_t should satisfy M_t = M_{t-} + W_{1/t}, ce qui est une martingale.
+
+En réécritant, je suppose que c'est correct.
+
+Donc, en conclusion, pour montrer que \( X_t \) est brownien, je dois vérifier que son processus admet une variance constante, il est continu, et admetdes variations bornées, ce qui se traduit par la variance constante. En application de ce principe, on conclut que \( X_t = t W_{1/t} \) est bien un mouvement brownien.
+</think>
+
+Pour démontrer que \( X_t = t W_{\frac{1}{t}} \) est un mouvement brownien, suivant la hypothenese, on peut procéder comme suit :
+
+1. **Continuité** : Les processus Brownien sont continus, donc \( X_t \) est continu.
+
+2. **Variance constante** : La variance de \( W_{\frac{1}{t}} \) est \( \frac{\sigma^2}{t} \), donc la variance de \( X_t = t W_{\frac{1}{t}} \) est \( t \times \frac{\sigma^2}{t} = \sigma^2 \). Cela signifie que la variance est constante sur le temps, ce qui vérifie l'admissibilité.
+
+3. **Martingale** : L'écart type de \( X_t \) en temps \( t+s \) par rapport à \( t \) est une martingale.
+
+Ainsi, \( X_t = t W_{\frac{1}{t}} \) est bien un mouvement brownien.
+
+ANSWER: Montrons que pour tout \( t > 0 \), \( X_t = t W_{\frac{1}{t}} \) est un mouvement brownien.

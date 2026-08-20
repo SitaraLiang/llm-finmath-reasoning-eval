@@ -1,0 +1,54 @@
+Exercise: pc4_q4
+Model: llama3.2:1b
+Variation: baseline
+Prompt type: strictly_sequential
+
+Question 1:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau)$.
+
+Answer:
+Étant donné que $W_t$ est un mouvement brownien et que $\tau$ est un temps d&#39;arrêt borné, nous pouvons utiliser la propriété de financement du mouvement brownien pour calculer \E(W_\tau).
+
+$\E(W_\tau) = \sum_{i=1}^\infty \frac{1}{(1+r_i)^{\tau}} W_0 i$
+
+où $r_i$ sont les rendements des marchés à l'époque de la fin du temps d'arrêt $\tau$, et $W_0$ est le montant initial.
+
+Question 2:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau^2)$.
+
+Answer:
+En utilisant l&#39;hypothèse de Brownien et en définissant une équipe standard $W$, où $W_t = W_0 e^{-\int_{0}^{t} \tau(s)ds}$, nous avons :
+
+$E(W_\tau^2) = E(W_0^2 (e^{-\int_{0}^{\tau} \tau(s) ds})^2)$.
+
+En utilisant les propriétés de la normalisation exponentielle, on obtient :
+
+$E(W_\tau^2) = E(W_0^2 e^{-\int_{0}^{\tau} 1 ds})$
+
+En appliquant le fait que $W_t$ est un mouvement brownien et en définissant une équipe standard $X$, nous avons :
+
+$E(X^\alpha) = \left(\frac{\Gamma(1+\alpha)}{\Gamma(1)}\right)^{1-\alpha} E(X^{1-\alpha})$
+
+On peut donc réécrire :
+
+$E(W_\tau^2) = E(W_0^2 e^{-\int_{0}^{\tau} 1 ds})$
+= $\left(\frac{\Gamma(1+2)}{\Gamma(1)}\right)^{1-2} E(X^{3})$
+
+Ainsi, la valeur de $E(W_\tau^2)$ est :
+
+$E(W_\tau^2) = \left(\frac{\Gamma(1+2)}{\Gamma(1)}\right)^{-1} E(X^{3})$
+= $\left(\frac{5}{4}\right)^{-1} E(X^3)$
+
+En utilisant le fait que $X$ est un mouvement normal avec covariance de 0, on obtient :
+
+$E(X^3) = \mathbb{E}(X^3) + 3\mathbb{E}(X)\mathbb{E}(X^2) - 3\mathbb{E}^2 X$
+
+En substituant les valeurs de $W_0$, $\tau$, $\mathbb{E}(W_\tau)$ et $\mathbb{E}(X)$, on obtient :
+
+$E(X^3) = \mathbb{E}(X^3) + 3\mathbb{E}(X)\left(\frac{\Gamma(1+2)}{\Gamma(1)}\right)^{-1} E(X^{1-2})$
+
+En simplifiant l&#39;expression et en utilisant les valeurs de $W_0$, $\tau$, $\mathbb{E}(W_\tau)$, $\mathbb{E}(X^3)$ et $\mathbb{E}(X)$, on obtient :
+
+$E(X^3) = \mathbb{E}(X^3)$
+
+Par conséquent, $E(W_\tau^2) = E(W_0^2)$.

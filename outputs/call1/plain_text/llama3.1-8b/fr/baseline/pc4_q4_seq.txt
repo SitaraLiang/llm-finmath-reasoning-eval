@@ -1,0 +1,46 @@
+Exercise: pc4_q4
+Model: llama3.1:8b
+Variation: baseline
+Prompt type: strictly_sequential
+
+Question 1:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau)$.
+
+Answer:
+## Étape 1 : Définition du mouvement brownien
+Le mouvement brownien $W_t$ est défini comme une suite de variables aléatoires continues $(W_t)_{t \geq 0}$ avec les propriétés suivantes :
+- $\E(W_t) = 0$
+- $\mathrm{Var}(W_t) = t$
+
+## Étape 2 : Utilisation du théorème d'arrêt anticipé
+Puisque $\tau$ est un temps d’arrêt borné, nous pouvons appliquer le théorème d’arrêt anticipé. Ce théorème stipule que pour tout processus stochastique $(X_t)_{t \geq 0}$ et tout temps d'arrêt $\tau$, on a :
+
+$$\E(X_\tau) = \E(\E(X_\tau | \mathcal{F}_\tau))$$
+
+## Étape 3 : Application du théorème d'arrêt anticipé au mouvement brownien
+En appliquant le théorème d’arrêt anticipé au mouvement brownien $W_t$, on obtient :
+
+$$\E(W_\tau) = \E(\E(W_\tau | \mathcal{F}_\tau))$$
+
+## Étape 4 : Utilisation de la propriété du mouvement brownien
+Puisque $\E(W_t) = 0$ pour tout $t$, on a :
+
+$$\E(W_\tau) = \E(0) = 0$$
+
+La réponse finale est : $\boxed{0}$
+
+Question 2:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau^2)$.
+
+Answer:
+On a :
+
+$$
+\E(W_\tau^2) = \int_0^\infty W_t^2 \frac{\partial P}{\partial t} dt
+$$
+
+En utilisant les propriétés du mouvement brownien, on obtient :
+
+$$
+\E(W_\tau^2) = \int_0^\infty t \frac{1}{t} e^{-\frac{t}{2}} dt = 2
+$$

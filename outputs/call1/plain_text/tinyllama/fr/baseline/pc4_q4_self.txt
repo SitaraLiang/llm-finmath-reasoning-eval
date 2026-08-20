@@ -1,0 +1,46 @@
+Exercise: pc4_q4
+Model: tinyllama
+Variation: baseline
+Prompt type: self_history
+
+Question 1:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau)$.
+
+Answer:
+Les réponses à la question 1 sont les mêmes :
+
+- La formule est exactement :
+  $$\EE\left[W_\tau \mid W_{\tau - \Delta t}\right] = \EE\left[W_t\right] + (D\Delta t)W_0$$
+  où $D$ désigne la discretisation numérique de la durée $\tau$.
+
+Le premier terme est le même que dans l'hypothèse locale précédente, tandis que le deuxième terme dérive du temps d'arrestation. Il s'agit donc bien de calculer une formule pour $W_\tau$, c'est-à-dire une expression à partir des deux termes.
+
+La formule est exactement la même dans toutes les régions de temps où le processus continue à l'échelle de la durée, en incluant les valeurs du décalage $\Delta t$ entre les deux moments précédents et calculées sur la période d'arrêt.
+
+Pour le moment actuel, on a $W_0 = 1$, donc la formule devient :
+
+$$\EE(W_\tau) = \EE\left[W_t\right] + (D\Delta t)1 = W_t$$
+
+Comme cela est déjà donné dans les conditions précédentes, cette formule représente le moyen de calculer $W_\tau$ en utilisant l'hypothèse locale.
+
+Cette dernière expression peut être utilisée pour des calculations générales sur un processus aléatoire, comme c'est souvent fait dans la littérature financière.
+
+Question 2:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau^2)$.
+
+Answer:
+La réponsée à la question 1 est identique à celle précédemment donné :
+
+Loirsque $\tau$ est un temps d'arr\^et born\'e, calculer $E(W_\tau^2)$.
+
+Le premier terme dans l'expression est le même que dans la hypohèse locale précédente, et il s'agit donc bien de calculer une expression à partir des deux termes. La formule est exactement la même dans toutes les régions où le processus continue à l'échelle de la durée, en incluant les valeurs du décalage $\Delta t$ entre les deux moments précédents et calculées sur la période d'arrêt.
+
+Dans ce moment actuel, on a $W_0 = 1$, donc la formule devient :
+
+$$E(W_\tau^2) = E\left[W_\tau^2\right] + (D\Delta t)^2 = W_\tau^2$$
+
+Commis à des calculs généraux sur un processus aléatoire, comme dans les expressions précédentes.
+
+La réponse suivante à la question 2 est identique à celle précédemment donnée :
+
+Loirsque $\tau$ est un temps d'arr\^et born\'e, calculer $E(W_\tau^4)$.

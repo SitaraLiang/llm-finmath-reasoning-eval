@@ -1,0 +1,48 @@
+Exercise: pc2_q1
+Model: tinyllama
+Variation: baseline
+Prompt type: prompt_accumulation
+
+Question 1:
+Montrer qu'un processus $(X_t)_{t\in \R^+}$ est un mouvement brownien si et seulement si: $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien centr\'e, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+Le problème de mathématiques financières considère le comportement des marchés financers en tant que processus stochastique stationnaire. Le mouvement brownien, correspondant au premier degré, est un type particulier de processus stochastiques stationaires. Pour que la question 1 soit vérifiée pour un processus $(X_t)_{t\in \R^+}$ qui est un mouvement brownien, il suffit d'ouvrir le premier degré du processus et d'affirmer qu'il est un processus stochastique stationnaire.
+
+Ceci devient clair dans la formule suivante :
+$$X_t = \int_{0}^t f(s,X_s)ds$$
+où $f:(\R^+)^2\to \mathbb{R}$ est une fonction continue et positive.
+
+Pour que la deuxième question d'origine soit vérifiée dans le même format :
+$${\rm Cov}(X_t,X_s)=\inf(s,t) = \sup(0,s-t)$$
+il suffit de prouver que l'opération $f(s,x)$ est continue et positif dans $(\R^+)^2$. L'échantillonnage pour obtenir des sous-ensembles $(\R^+)^n$ de la droite $(0,T)\times\R^n$ peut être fait en utilisant la fonction $g$ :
+$$g(t) = \sup_{s\in (0,t)}f(s,x)$$
+où les superequinaires $\sup$ sont utilisées pour obtenir une superequinarisation de $g$.
+
+La formule suivante justifie cette échantillonnage :
+$$X_t = \int_{0}^t g(s)dW_s$$
+où $W$ désigne un ensemble fini de sondes au taux d'intérêt réglementaire à la date $t$. La raison de préférer $g$ plutôt que $f$ comme fonction continue est que ces deux fonctions sont inversibles. Si on définit les propriétés des sondes $W_s$ comme étant les séries générales, alors on a
+$$\frac{d}{ds}E[e^{-r(t-s)}|S_t=s] = \int_{0}^t g'(s)dW_s$$
+pour tout $t\in [0,\infty)$, ce qui provoque que les sondes $W_s$ vont progresser en moyenne pour une fonction continue $g$. En pratique, le choix de $g$ dépend des critères utilisés pour évaluer la récurrence et l'intégration de la formule.
+
+Le raisonnement est assez complexe mais il peut être simulé au moyen de la simulation numérique.
+
+Note : Ceci permet d'affiner les techniques de traitement du signal. Cela peut être utilisé pour analyser le comportement d'un signal en temps réel dans les domaines suivants : finance, économie, sciences physiques et informatiques.
+
+Question 2:
+Montrer que si $W_t$ est un mouvement brownien, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ l'est aussi.
+
+Answer:
+Question 2:
+Lettre de justification:
+Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien si et seulement si c'est le cas pour tous les $s,t\ge 0$ pratiquant la loi d'arrondissement. Il suffit donc que $W_t$ soit un mouvement Brownien.
+
+Dans ce cas particulier, on peut trouver à partir des calculs explicites de $X_t$ et $W_{t+s}$ les équations:
+$$\begin{aligned} X_0 &= 0\\ W_{\frac1t}(t) &= \int_0^t W_r \, dr \\ X_t(t) &= X_0 + \int_0^t W_{t-s} \, ds\end{aligned}$$
+Ces équations impliquent que:
+$$\begin{aligned} X_t = tX_0 + \int_0^t W_{t-s} \, ds \\ X_0 &= 0\\ W_{\frac1t}(t) &= \int_0^t W_r \, dr\end{aligned}$$
+Ce qui permet de conclure que $X_t=tW_\tau$ où $\tau = \frac1t$. En effet, on a:
+$$\begin{aligned} X_t(t) &= tX_0 + \int_0^t W_{t-s} \, ds \\ X_0 &= 0\\ W_{\frac1t}(t) &= \int_0^t W_r \, dr\end{aligned}$$
+L'ensemble des deux équations donne:
+$$\begin{aligned} X_t = tW_\tau \\ X_0 &= 0\\ W_{\frac1t}(t) &= \int_0^t W_{t-s} \, ds\end{aligned}$$
+Le résultat suivant est alors logique et ne dépasse aucun principe de la mécanique quantique.

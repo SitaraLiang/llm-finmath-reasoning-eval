@@ -1,0 +1,49 @@
+Exercise: pc4_q4
+Model: qwen2.5-coder:0.5b
+Variation: baseline
+Prompt type: ground_truth_forcing
+
+Question 1:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau)$.
+
+Answer:
+Pour résoudre l'équation $\E(W_{\tau}) = \mathbb{E}(W_t) - \beta W_t$ en utilisant les hypothèses globales et locales, on peut commencer par distinguer le cas où $\tau$ est un temps d'arrêt borné de celui dans lequel la movement brownien $W_t$ est calculée.
+
+1. Si $\tau$ est un temps d'arrêt born\'e :
+   \[
+   W_{\tau} = \mathbb{E}(W_t) - \beta W_t
+   \]
+   En multipliant l'équation par 2, on obtient:
+   \[
+   W_{2\tau} = 2 (\mathbb{E}(W_t) - \beta W_t)
+   \]
+
+2. Si $\tau$ est un temps d'arrêt non borné :
+   Pour calculer $\E(W_{2\tau})$, on utilise le facteur de covariance, qui est $1 + \beta^2$. Cela permet de simplifier la calculation:
+   \[
+   W_{2\tau} = (2 (\mathbb{E}(W_t) - \beta W_t)) \cdot 1 + (2 \beta^2)
+   \]
+   Simplifiant cette expression, on obtient:
+   \[
+   W_{2\tau} = 2 (\mathbb{E}(W_t) - \beta W_t) + 2 \beta^2
+   \]
+
+3. La valeur exacte des valeurs de $W_\tau$ dans l'ensemble $\{W_1, W_2, \ldots, W_n\}$ est une fonction de $t$. Pour calculer la médiane $\E(W_{2\tau})$, on utilise le facteur de variance, qui est $1 + 4\beta^2$. Cela permet de simplifier la calculation:
+   \[
+   \E(W_{2\tau}) = (2 (\mathbb{E}(W_t) - \beta W_t)) + 2 \beta^2 \cdot 1 + (2 \beta^2)^2
+   \]
+   Simplifiant cette expression, on obtient:
+   \[
+   \E(W_{2\tau}) = 2 (\mathbb{E}(W_t) - \beta W_t) + 2 \beta^2 + 4 \beta^4
+   \]
+
+En résumé, pour tout temps d'arrêt $t$, la valeur exacte de $\E(W_\tau)$ est:
+\[
+\boxed{2 (\mathbb{E}(W_t) - \beta W_t) + 2 \beta^2 + 4 \beta^4}
+\]
+
+Question 2:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau^2)$.
+
+Answer:
+Pour répondre à la question 2, nous utiliserons le théorème d'arrêt optionnel de Doob sur la martingale $W_t$. En utilisant ce théoreme, on peut calculer $\E(W_\tau^2) = \mathbb{E}[W_{\tau}^2 + W_{\tau}^3] - \mathbb{E}[W_\tau^2] = \mathbb{E}[W_1^2 + W_2^2 + W_3^2] = 3\mathbb{E}[W_1^2]$. Donc, la réponse à la question 2 est $\boxed{3\mathbb{E}[W_1^2]}$.

@@ -1,0 +1,57 @@
+Exercise: pc4_q4
+Model: qwen3:0.6b
+Variation: baseline
+Prompt type: self_history
+
+Question 1:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau)$.
+
+Answer:
+<think>
+Okay, so I need to calculate the expected value of a Brownian motion $ W_t $ when $ \tau $ is a bounded stopping time. Let me start by recalling some basics about Brownian motion and stopping times.
+
+First, Brownian motion is a stochastic process that can be represented as the sum of independent normal variables. The expected value of a Brownian motion at a stopping time $ \tau $ should be something that depends on the properties of $ \tau $, right? But how exactly?
+
+Wait, the question is to find $ \E(W_\tau) $. Since $ W_t $ is a Brownian motion, it's a continuous-time process with independent increments. But $ \tau $ is a bounded stopping time. So, does that mean that $ W_\tau $ is a bounded random variable?
+
+Yes, because if $ \tau $ is a bounded stopping time, then $ W_\tau $ is a bounded random variable. Therefore, the expected value $ \E(W_\tau) $ should be a constant, not depending on $ \tau $. But why is that the case?
+
+Let me think. The expected value of a Brownian motion at a stopping time $ \tau $ is the same as the expected value of the process at that time. Since Brownian motion is a continuous process, the expected value at any time $ t $ is the same as the expected value at any other time $ t $, right? Wait, no, that's not right. Wait, the expected value of a Brownian motion at time $ t $ is $ \mathbb{E}[W_t] $, which is a constant. But if $ \tau $ is a stopping time, does that mean that $ W_\tau $ is a bounded random variable, so its expectation is a constant?
+
+Yes, because even though $ \tau $ is a stopping time, the process $ W_t $ is continuous, so $ W_\tau $ is a bounded random variable. Therefore, the expectation $ \E(W_\tau) $ is a constant, and we can write it as $ \mathbb{E}[W_\tau] = \mathbb{E}[W_t] $, where $ t = \tau $.
+
+But wait, is there a way to express this expectation in terms of the process itself? Since $ W_t $ is a Brownian motion, which has a known expectation, maybe we can use that. For example, $ \mathbb{E}[W_t] = 0 $ for all $ t $, so $ \mathbb{E}[W_\tau] = 0 $. But is that correct?
+
+Yes, because the expected value of a Brownian motion at any time $ t $ is zero. Therefore, regardless of the stopping time $ \tau $, the expected value is zero. So the answer should be zero.
+
+But let me check if there's any possibility that $ \tau $ could affect this expectation. For example, if $ \tau $ is a stopping time, does that mean that $ W_\tau $ is a bounded random variable, so its expectation is a constant? Yes, because even though $ \tau $ is a stopping time, the process $ W_t $ is continuous, so $ W_\tau $ is bounded. Therefore, the expectation is a constant.
+
+Therefore, the answer is zero. So in LaTeX, that would be $ \boxed{0} $.
+
+**Final Answer**
+\boxed{0}
+</think>
+
+$$
+\boxed{0}
+$$
+
+Question 2:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau^2)$.
+
+Answer:
+<think>
+Okay, let's tackle this problem. The user is asking to calculate the expected value of $ W_\tau^2 $, where $ W_t $ is a Brownian motion and $ \tau $ is a bounded stopping time. 
+
+First, I need to recall some properties of Brownian motion. A Brownian motion $ W_t $ is a continuous-time stochastic process with independent increments. The expected value of a Brownian motion at any time $ t $ is zero, so $ \mathbb{E}[W_t] = 0 $. This is a fundamental property of Brownian motion.
+
+Now, the question is about $ \mathbb{E}[W_\tau^2] $. Since $ \tau $ is a bounded stopping time, $ W_\tau $ is a bounded random variable. However, the expected value of a bounded random variable is still a constant. Therefore, regardless of the specific value of $ \tau $, the expected value of $ W_\tau $ squared should be a constant.
+
+Since $ \mathbb{E}[W_t] = 0 $ for all $ t $, and $ \tau $ is a bounded stopping time, the expected value of $ W_\tau $ squared is also zero. 
+
+So, the answer should be zero. 
+
+**Final Answer**
+$$
+\boxed{0}
+$$

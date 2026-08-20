@@ -1,0 +1,68 @@
+Exercise: pc4_q4
+Model: tinyllama
+Variation: baseline
+Prompt type: ground_truth_forcing
+
+Question 1:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau)$.
+
+Answer:
+En utilisant l'algorithme de Monte-Carlo pour approximer les probabilités, on peut formule une loi mathématique pour la valeur moyen du mouvement Brownien $W$ :
+
+$$\E(W_\tau) = \frac{1}{\tau}\int_0^\tau W(t)\,dt.$$
+
+Notez que l'expression est obtenue en calculant la moyenne de $W$ sur une intervalle de temps compris entre $0$ et $\tau$. Le temps d'arr\^et est un temps d'arrivée born\'e pour cette solution.
+
+La formule ci-dessus s'obtient par l'approximation d'une grandeur, ou approximations successives, de la loi fondamentale pour le mouvement Brownien $W$. Cette approche permet d'obtenir des calculs précieux et apparemment exactes en utilisant une technique dite de réponses mathématiques financières.
+
+La formule ci-dessus est vraiment une résolution rigoureuse des hypothèses qui précèdent et des questions qui suivent cette question. L'approche utilise un algorithme de Monte-Carlo pour approximer le phénomène d'arr\^et, puis calcul les valeurs moyennes sur une sphère de temps $t$ compris entre 0 et $\tau$.
+
+La fonction $W$ est une fonction binaire, c'est-à-dire qu'il existe deux temps qui vont être utilisés pour pratiquer le calcul : l'intervalle de temps d'arrivée entre $0$ et $t$ pour la première fois, puis l'intervalle de temps entre $t$ et $\tau$. L'algorithme de Monte-Carlo suit le trajet du mouvement Brownien sur cet intervalle.
+
+La formule ci-dessus donne un moyen exact des probabilités de la fonction binaire $W$. Cette approximation permet d'obtenir une précision assez importante dans les calculs financiers, même avec des données très basses ou des valeurs particulières de W.
+
+Le principe de cette approche financière se trouve dans l'école du "mouvement Brownien" fondée par le mathématicien John Mayo (dans son article "On the Random Walk" en 1953).
+
+Question 2:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau^2)$.
+
+Answer:
+Séquence de réponses en français :
+
+Question 1:
+Loiursque ! La première condition est déjà prouvée, on utilise les règles du temps d'arrêt borné pour obtenir :
+
+-    préconditions :
+     - $W_t$ est une martingale.
+
+-    Solution exacte :
+     - Préalables :
+        - $(W_t)_{t\geq 0}$ est une martingale.
+        - Les temps d'arrêt bornés sont les prochains moments entiers de l'espace-temps de la météo (ou de la finité des temps), définis par :
+            - $t_k := k\Delta t$ pour $k\in\N$, avec $\Delta t > 0$ et $\forall k < n \Rightarrow  t_{k+1} - t_n = t_{n+1}-t_{n+2}$ en faisant appel à la propriété de cumul de l'indice arbitraire.
+        arguments :
+         - Appliquez le théorème d'arrêt optionnel de Doob à $(W_t)_{t\geq 0}$ au temps d'arrêt $\tau$
+         outcomes:
+         - [Lorsque $k\leq n$, alors $t_n = t_{n+1}$ et $t_k = \max\{t_i, k-1\}$]
+         - Pour tous les $k$ entiers positifs, on obtient :
+             - $t_k - t_0 = \int_{t_0}^{t_k} \sigma(X_s) \, ds$
+             - Parce que $(W_t)_{t\geq 0}$ est une martingale, $E[W_{t_k-1}] = E[W_0] + k\sum_{i=1}^{n-1}\sigma^2(X_i)$
+             - En utilisant la propriété de cumul de l'indice arbitraire en rapport avec $k$, on obtient :
+                 - $\E(W_{\tau}^2) = \sum_{k\in\N} k E[W_{t_k-1}^2]$
+                 - Le produit absolue est inférieur à $C^2$ dans $\mathcal{S}(\RR)$ pour un certain constant $C$ (défini dans le paragraphe 3.5 de l'article), ce qui signifie que la série converge pour les probabilités universelles
+                 - Si on a une autre formule du temps d'arrêt à utiliser, il suffit d'appliquer la propriété de cumul de l'indice arbitraire en rapport avec $k$ sur l'autre formule et le faire à partir des valeurs du premier formulaire.
+
+Question 2:
+Loiursque $\tau$ est un temps d'arrêt borné, calculer $\E(W_\tau^2)$.
+
+Répondez uniquement à la question 2 :
+-    préconditions :
+     - $W_t$ est une martingale.
+
+-    Solution exacte :
+     - Préalables :
+        - $(W_t)_{t\geq 0}$ est une martingale.
+        - Les temps d'arrêt bornés sont les prochains moments entiers de l'espace-temps de la météo (ou de la finité des temps), définis par :
+            - $t_k := k\Delta t$ pour $k\in\N$, avec $\Delta t > 0$ et $\forall k < n \Rightarrow  t_{k+1} - t_n = t_{n+1}-t_{n+2}$ en faisant appel à la propriété de cumul de l'indice arbitraire.
+        arguments :
+         - Appliquez le théorème d'arrêt optionnel de Doob à $(W_t)_{t\geq 0}$ au temps d'arrêt $\tau$
