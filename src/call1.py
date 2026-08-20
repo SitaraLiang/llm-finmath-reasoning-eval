@@ -162,9 +162,9 @@ def sanitize_path_component(value: str) -> str:
     return re.sub(r"[\/\\:\s]+", "-", value).strip("-")
 
 
-def format_items(items: list[str]) -> str:
+def format_items(items: list[str], empty_value: str = "none") -> str:
     if not items:
-        return "none"
+        return empty_value
     return "\n".join(f"- {item}" for item in items)
 
 
@@ -208,22 +208,58 @@ def ensure_no_output_collisions(config: dict, prompt_types: list[str]) -> None:
         )
 
 
-def require_prompt_templates(config: dict) -> dict:
-    prompts = config.get("prompts")
-    if not isinstance(prompts, dict):
-        raise SystemExit("Error: config must define a 'prompts' mapping.")
+def validate_prompt_templates(prompts: dict, location: str) -> None:
     if not prompts.get("common_header"):
-        raise SystemExit("Error: config.prompts.common_header is required.")
+        raise SystemExit(f"Error: {location}.common_header is required.")
     strategies = prompts.get("strategies")
     if not isinstance(strategies, dict):
-        raise SystemExit("Error: config.prompts.strategies must be a mapping.")
+        raise SystemExit(f"Error: {location}.strategies must be a mapping.")
     missing = sorted(CANONICAL_PROMPT_TYPES - set(strategies))
     if missing:
         raise SystemExit(
-            "Error: config.prompts.strategies is missing template(s): "
+            f"Error: {location}.strategies is missing template(s): "
             + ", ".join(missing)
         )
+
+
+def require_prompt_templates(config: dict) -> dict:
+    """Validate legacy prompts or language-specific prompt mappings."""
+    prompts = config.get("prompts")
+    if not isinstance(prompts, dict):
+        raise SystemExit("Error: config must define a 'prompts' mapping.")
+
+    if "common_header" in prompts:
+        validate_prompt_templates(prompts, "config.prompts")
+        return prompts
+
+    language_prompts = prompts.get("languages")
+    if not isinstance(language_prompts, dict) or not language_prompts:
+        raise SystemExit(
+            "Error: config.prompts must define either common_header/strategies "
+            "or a non-empty languages mapping."
+        )
+    for language, templates in language_prompts.items():
+        if not isinstance(templates, dict):
+            raise SystemExit(
+                f"Error: config.prompts.languages.{language} must be a mapping."
+            )
+        validate_prompt_templates(
+            templates,
+            f"config.prompts.languages.{language}",
+        )
     return prompts
+
+
+def prompt_templates_for_language(prompts: dict, language: str) -> dict:
+    """Return templates for one language, preserving legacy configurations."""
+    if "common_header" in prompts:
+        return prompts
+    templates = prompts["languages"].get(language)
+    if not isinstance(templates, dict):
+        raise SystemExit(
+            f"Error: No Call 1 prompt templates configured for language '{language}'."
+        )
+    return templates
 
 
 def dump_yaml(data) -> str:
@@ -263,13 +299,18 @@ def get_ground_truth_answer(
     )
 
 
-def format_question_block(index: int, subquestion: dict) -> str:
-    return f"Question {index}:\n{subquestion.get('question', '')}"
+def format_question_block(index: int, subquestion: dict, labels: dict | None = None) -> str:
+    question_label = (labels or {}).get("question", "Question")
+    return f"{question_label} {index}:\n{subquestion.get('question', '')}"
 
 
-def format_accumulated_questions(subquestions: list[dict], current_index: int) -> str:
+def format_accumulated_questions(
+    subquestions: list[dict],
+    current_index: int,
+    labels: dict | None = None,
+) -> str:
     return "\n\n".join(
-        format_question_block(index, subquestions[index - 1])
+        format_question_block(index, subquestions[index - 1], labels)
         for index in range(1, current_index + 1)
     )
 
@@ -279,24 +320,39 @@ def format_ground_truth_history(
     current_index: int,
     exercise_path: Path,
     fallback_keys: list[str],
+    empty_value: str = "none",
+    labels: dict | None = None,
 ) -> str:
     if current_index == 1:
-        return "none"
+        return empty_value
+    exact_solution_label = (labels or {}).get("exact_solution", "Exact solution")
     blocks = []
     for index in range(1, current_index):
         subquestion = subquestions[index - 1]
         answer = get_ground_truth_answer(subquestion, exercise_path, index, fallback_keys)
-        blocks.append(f"{format_question_block(index, subquestion)}\n\nExact solution:\n{answer}")
+        blocks.append(
+            f"{format_question_block(index, subquestion, labels)}\n\n"
+            f"{exact_solution_label}:\n{answer}"
+        )
     return "\n\n".join(blocks)
 
 
-def format_self_history(subquestions: list[dict], generated_answers: list[str]) -> str:
+def format_self_history(
+    subquestions: list[dict],
+    generated_answers: list[str],
+    empty_value: str = "none",
+    labels: dict | None = None,
+) -> str:
     if not generated_answers:
-        return "none"
+        return empty_value
+    answer_label = (labels or {}).get("your_answer", "Your answer")
     blocks = []
     for index, answer in enumerate(generated_answers, start=1):
         subquestion = subquestions[index - 1]
-        blocks.append(f"{format_question_block(index, subquestion)}\n\nYour answer:\n{answer}")
+        blocks.append(
+            f"{format_question_block(index, subquestion, labels)}\n\n"
+            f"{answer_label}:\n{answer}"
+        )
     return "\n\n".join(blocks)
 
 
@@ -312,10 +368,16 @@ def build_prompt(
     ground_truth_keys: list[str],
 ) -> str:
     """Build the user prompt from config templates and strategy variables."""
+    empty_value = prompts.get("empty_value", "none")
+    labels = prompts.get("labels", {})
     values = {
-        "context": exercise.get("context") or "None",
-        "global_assumptions": format_items(exercise.get("assumption_global", [])),
-        "current_assumptions": format_items(subquestion.get("assumptions", [])),
+        "context": exercise.get("context") or empty_value,
+        "global_assumptions": format_items(
+            exercise.get("assumption_global", []), empty_value
+        ),
+        "current_assumptions": format_items(
+            subquestion.get("assumptions", []), empty_value
+        ),
         "current_question_number": str(subquestion_index),
         "current_question": subquestion.get("question", ""),
         "accumulated_questions": "",
@@ -324,7 +386,7 @@ def build_prompt(
     }
     if prompt_type == "prompt_accumulation":
         values["accumulated_questions"] = format_accumulated_questions(
-            subquestions, subquestion_index
+            subquestions, subquestion_index, labels
         )
     elif prompt_type == "ground_truth_forcing":
         values["ground_truth_history"] = format_ground_truth_history(
@@ -332,9 +394,16 @@ def build_prompt(
             subquestion_index,
             exercise_path,
             ground_truth_keys,
+            empty_value,
+            labels,
         )
     elif prompt_type == "self_history":
-        values["self_history"] = format_self_history(subquestions, generated_answers)
+        values["self_history"] = format_self_history(
+            subquestions,
+            generated_answers,
+            empty_value,
+            labels,
+        )
 
     header = Template(prompts["common_header"]).safe_substitute(values).strip()
     strategy = Template(prompts["strategies"][prompt_type]).safe_substitute(values).strip()
@@ -591,6 +660,8 @@ def run_call1(config: dict) -> None:
     validate_prompt_types(prompt_types)
     validate_output_modes(output_modes)
     ensure_no_output_collisions(config, prompt_types)
+    for language in sorted({item["language"] for item in inputs}):
+        prompt_templates_for_language(prompts, language)
 
     overwrite = get_nested(config, ["output", "overwrite_existing"], False)
     endpoint = get_nested(config, ["ollama", "endpoint"], "http://localhost:11434/api/generate")
@@ -629,6 +700,7 @@ def run_call1(config: dict) -> None:
 
     for item in inputs:
         exercise_data = load_exercise_file(item["path"])
+        item_prompts = prompt_templates_for_language(prompts, item["language"])
         for variation in variations:
             for prompt_type in prompt_types:
                 for output_mode in output_modes:
@@ -663,7 +735,7 @@ def run_call1(config: dict) -> None:
                                 item["path"],
                                 model,
                                 prompt_type,
-                                prompts,
+                                item_prompts,
                                 ground_truth_keys,
                                 endpoint,
                                 timeout,

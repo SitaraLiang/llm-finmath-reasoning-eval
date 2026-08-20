@@ -30,55 +30,120 @@ output_modes:
   - "plain_text"
 
 prompts:
-  common_header: |
-    You are solving a financial mathematics exercise.
-    Write a concise rigorous mathematical answer. Do not include hidden reasoning or long explanations. Use LaTeX for formulas.
+  languages:
+    en:
+      empty_value: "none"
+      labels:
+        question: "Question"
+        exact_solution: "Exact solution"
+        your_answer: "Your answer"
 
-    Context:
-    $context
+      common_header: |
+        You are solving a financial mathematics exercise.
+        Write a concise rigorous mathematical answer in English. Do not include hidden reasoning or long explanations. Use LaTeX for formulas.
 
-    Global assumptions:
-    $global_assumptions
+        Context:
+        $context
 
-  strategies:
-    strictly_sequential: |
-      Local assumptions:
-      $current_assumptions
+        Global assumptions:
+        $global_assumptions
 
-      Question $current_question_number:
-      $current_question
+      strategies:
+        strictly_sequential: |
+          Local assumptions:
+          $current_assumptions
 
-      Answer only Question $current_question_number.
+          Question $current_question_number:
+          $current_question
 
-    prompt_accumulation: |
-      Questions provided so far:
-      $accumulated_questions
+          Answer only Question $current_question_number.
 
-      Answer only Question $current_question_number.
+        prompt_accumulation: |
+          Questions provided so far:
+          $accumulated_questions
 
-    ground_truth_forcing: |
-      Previous questions and exact solutions:
-      $ground_truth_history
+          Answer only Question $current_question_number.
 
-      Local assumptions:
-      $current_assumptions
+        ground_truth_forcing: |
+          Previous questions and exact solutions:
+          $ground_truth_history
 
-      Current question $current_question_number:
-      $current_question
+          Local assumptions:
+          $current_assumptions
 
-      Answer only Question $current_question_number.
+          Current question $current_question_number:
+          $current_question
 
-    self_history: |
-      Previous questions and your previous answers:
-      $self_history
+          Answer only Question $current_question_number.
 
-      Local assumptions:
-      $current_assumptions
+        self_history: |
+          Previous questions and your previous answers:
+          $self_history
 
-      Current question $current_question_number:
-      $current_question
+          Local assumptions:
+          $current_assumptions
 
-      Answer only Question $current_question_number.
+          Current question $current_question_number:
+          $current_question
+
+          Answer only Question $current_question_number.
+
+    fr:
+      empty_value: "aucune"
+      labels:
+        question: "Question"
+        exact_solution: "Solution exacte"
+        your_answer: "Votre réponse"
+
+      common_header: |
+        Vous résolvez un exercice de mathématiques financières.
+        Rédigez en français une réponse mathématique concise et rigoureuse. N'incluez pas de raisonnement caché ni de longues explications. Utilisez LaTeX pour les formules.
+
+        Contexte :
+        $context
+
+        Hypothèses globales :
+        $global_assumptions
+
+      strategies:
+        strictly_sequential: |
+          Hypothèses locales :
+          $current_assumptions
+
+          Question $current_question_number :
+          $current_question
+
+          Répondez uniquement à la question $current_question_number.
+
+        prompt_accumulation: |
+          Questions fournies jusqu'à présent :
+          $accumulated_questions
+
+          Répondez uniquement à la question $current_question_number.
+
+        ground_truth_forcing: |
+          Questions précédentes et solutions exactes :
+          $ground_truth_history
+
+          Hypothèses locales :
+          $current_assumptions
+
+          Question actuelle $current_question_number :
+          $current_question
+
+          Répondez uniquement à la question $current_question_number.
+
+        self_history: |
+          Questions précédentes et vos réponses précédentes :
+          $self_history
+
+          Hypothèses locales :
+          $current_assumptions
+
+          Question actuelle $current_question_number :
+          $current_question
+
+          Répondez uniquement à la question $current_question_number.
 
 output:
   root_directory: "outputs/call1"
