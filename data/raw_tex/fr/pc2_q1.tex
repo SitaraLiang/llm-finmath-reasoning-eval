@@ -1,0 +1,168 @@
+\titledquestion{Une autre d\'efinition du mouvement brownien}
+\begin{parts}
+    % @QUESTION
+    \part Montrer qu'un processus $(X_t)_{t\in \R^+}$ est un mouvement brownien si et seulement si:
+        \begin{itemize}
+        \item[i')] $X_0=0$,
+        \item[ii')] $(X_t)_{t\in \R^+}$ est un processus gaussien centr\'e,
+        \item[iii')] ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+        \end{itemize}
+    % @QUESTION_END
+    \begin{xsolution}
+    % @SET_START
+    Commençons par le sens : brownien $\Rightarrow$ processus gaussien.
+    % @LIST_START
+    \begin{enumerate}
+        \item Structure d'indépendance des accroissements :  
+           % @ATOM
+           % @PRECOND
+           Pour \(s \leq t\), on décompose \(X_t = X_s + (X_t - X_s)\).  
+           % @ARGUMENT
+           L'indépendance de \(X_s\) et \(X_t - X_s\) 
+           % @ARGUMENT_END
+           implique que la covariance se réduit à :  
+           \[
+           \mathrm{Cov}(X_s, X_t) = \mathrm{Cov}(X_s, X_s) + \mathrm{Cov}(X_s, X_t - X_s) = \mathrm{Var}(X_s) + 0 = s
+           \]  
+           ce qui donne directement 
+           % @OUTCOME
+           \(\mathrm{Cov}(X_s, X_t) = \min(s,t)\).
+           % @ATOM_END
+        \item Caractère gaussien :  
+           % @ATOM
+           % @PRECOND
+           Le brownien standard a des accroissements gaussiens et 
+           % @PRECOND
+           \(X_0 = 0\), 
+           % @PRECOND_END
+           donc toute combinaison linéaire finie de \((X_{t_1}, \dots, X_{t_n})\) est 
+           % @ARGUMENT
+           gaussienne (car égale à une combinaison linéaire d'accroissements indépendants gaussiens).  
+           % @OUTCOME
+           Le processus est donc gaussien centré.
+           % @ATOM_END
+    \end{enumerate}    
+    %Ces deux points exploitent essentiellement \emph{l'indépendance des accroissements} et la \emph{normalité} des accroissements.
+    % @LIST_END
+    Puis la réciproque:
+    % @LIST_START
+    \begin{enumerate}
+    \item Calcul de covariance des accroissements : 
+       % @ATOM
+       % @PRECOND
+       En utilisant la propriété ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+       % @PRECOND
+       Calculer $\text{Cov}(X_t - X_s, X_v - X_u)$
+       Pour \(s < t \leq u < v\) :
+       % @ARGUMENT:CALCUL
+       \[
+       \text{Cov}(X_t - X_s, X_v - X_u) = \min(t,v) - \min(t,u) - \min(s,v) + \min(s,u)
+       \]
+       Ceci donne systématiquement 0, prouvant que 
+       % @OUTCOME
+       les accroissements disjoints sont non corrélés, donc indépendants 
+       % @OUTCOME_END
+       (car vecteur gaussien).
+       % @ATOM_END
+    \item Calcul de la variance des accroissements :  
+       % @ATOM
+       % @PRECOND
+       Calculez la variance d'un accroissement de $X$:
+       % @PRECOND_END
+       Pour \(s < t\) :
+       \[
+       \text{Var}(X_t - X_s) = t + s - 2s = t - s
+       \]
+       % @ARGUMENT
+       donc la loi ne dépend que de \(t-s\).
+       % @OUTCOME
+       Ceci montre que les accroissements sont stationnaires et 
+       % @OUTCOME
+       de loi \(\mathcal{N}(0, t-s)\).
+       % @ATOM_END
+    
+    Ces deux points 
+    % @SET_START
+    % @ATOM
+    % @PRECOND
+    les incréments disjoints sont indépendants, et 
+    % @PRECOND
+    la loi des accroissements est gaussienne centrée de variance $t-s$, c'est-à-dire \(\mathcal{N}(0, t-s)\),
+    % @ARGUMENT
+    plus l'hypothèse de continuité des trajectoires 
+    % @ARGUMENT_END
+    donnent 
+    % @OUTCOME
+    la définition classique du mouvement brownien.
+    % @ATOM
+    % @PRECOND
+    les incréments disjoints sont indépendants, et 
+    % @PRECOND
+    la loi des accroissements est gaussienne centrée de variance $t-s$, c'est-à-dire \(\mathcal{N}(0, t-s)\),
+    % @ARGUMENT
+    en prenant la version continue via le théorème de Kolmogorov
+    % @ARGUMENT_END
+    donnent 
+    % @OUTCOME
+    la définition classique du mouvement brownien.
+    % @SET_END
+    \end{enumerate}
+    % @LIST_END
+    % @SET_END
+    \end{xsolution}
+
+    % @QUESTION
+    \part Montrer que si $W_t$ est un mouvement brownien, $ \{X_t=t\;W_{\frac
+    1t}, t>0, X_0=0 \}$
+    l'est aussi.
+    \begin{xsolution}
+    % @SET_START
+    % @ATOM
+    La Continuité en 0,
+    % @PRECOND
+    calculer $\lim_{t \to 0^+} t W_{1/t}$:
+    % @PRECOND_END
+   \[
+   \lim_{t \to 0^+} t W_{1/t} = \lim_{s \to \infty} \frac{W_s}{s} = 0 \quad \text{p.s.}
+   \]
+   % @ARGUMENT
+   par la loi des grands nombres pour le brownien.
+   % @OUTCOME 
+   $\lim_{t \to 0^+} t W_{1/t} = 0$ a.s.
+   % @ATOM
+   \\
+    Le caractère gaussien centré :  
+    % @PRECOND
+    Pour tout \(t_1, \dots, t_n\), le vecteur \((X_{t_1}, \dots, X_{t_n})\) 
+    % @ARGUMENT
+    est une combinaison linéaire des \(W_{1/t_i}\)
+    % @OUTCOME
+    donc il est gaussien centré.
+    \\
+    % @ATOM
+    La covariance brownienne : 
+    % @ARGUMENT:CALCUL 
+       \[
+       \mathbb{E}[X_t X_s] = ts \cdot \min\left(\frac{1}{t}, \frac{1}{s}\right) = \min(t,s)
+       \]
+    % @OUTCOME 
+    i.e. $\mathbb{E}[X_t X_s] = \min(t,s)$.
+    \\
+    % @ATOM
+    % @PRECOND
+    continuité: $\lim_{t \to 0^+} X_t = 0$ a.s.,
+    % @PRECOND
+    gaussianité: le vecteur \((X_{t_1}, \dots, X_{t_n})\) est gaussien centré pour tout ensemble de temps, et
+    % @PRECOND
+    covariance: $\mathbb{E}[X_t X_s] = \min(t,s)$,
+    % @PRECOND
+    avec \(X_0 = 0\)
+    % @ARGUMENT
+    ce qui caractérisent le mouvement brownien.
+    % @ARGUMENT_END
+    Ces trois points (continuité, gaussianité, covariance) suffisent à conclure que 
+    % @OUTCOME
+    \(X\) est un mouvement brownien.
+    % @SET_END
+    \end{xsolution}
+\end{parts}

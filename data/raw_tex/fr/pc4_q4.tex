@@ -1,0 +1,78 @@
+\titledquestion{}
+
+% @ASSUMPTION_GLOBAL
+$W_t$ est un mouvement brownien.
+
+\begin{parts}
+
+% @QUESTION
+\part Lorsque 
+
+% @ASSUMPTION
+$\tau$ est un temps d'arr\^et born\'e,
+% @ASSUMPTION_END
+
+calculer $\E(W_\tau)$.
+% @QUESTION_END
+
+\begin{xsolution}
+
+% @LIST_START
+
+% @ATOM
+
+% @PRECOND
+$(W_t)_{t\geq 0}$ est une martingale.
+
+% @PRECOND
+$\tau$ est un temps d'arr\^et born\'e.
+
+% @ARGUMENT
+Appliquez le théorème d'arrêt optionnel de Doob à $(W_t)_{t\geq 0}$ au temps d'arrêt $\tau$.
+
+% @OUTCOME
+\[
+\mathbb{E}[W_\tau] = 0,
+\]
+
+% @LIST_END
+\end{xsolution}
+
+% @QUESTION
+\part Lorsque 
+
+% @ASSUMPTION
+$\tau$ est un temps d'arr\^et born\'e,
+% @ASSUMPTION_END
+
+calculer $\E(W_\tau^2)$.
+% @QUESTION_END
+
+\begin{xsolution}
+
+% @LIST_START
+
+% @ATOM
+
+% @PRECOND
+$(W_t^2-t)_{t\geq 0}$ est une martingale.
+
+% @PRECOND
+$\tau$ est un temps d'arr\^et born\'e.
+
+% @ARGUMENT
+Appliquez le théorème d'arrêt optionnel de Doob au processus $(W_t^2-t)_{t\geq 0}$ à l'instant $\tau$.
+
+% @OUTCOME
+\[
+\mathbb{E}[W_\tau^2] = \mathbb{E}[\tau].
+\]
+
+% @LIST_END
+\end{xsolution}
+
+\begin{intuition}
+Note that $(W_t^2 - t)_{t \geq 0}$ is a martingale.
+\end{intuition}
+
+\end{parts}
