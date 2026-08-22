@@ -1,0 +1,35 @@
+pc: '4'
+exercise: '4'
+language: fr
+variation: baseline
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: qwen2.5-coder-0.5b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - τ
+        outcomes:
+        - E(W_τ)
+        strength: 1
+    -   preconditions: []
+        arguments:
+        - '0'
+        outcomes:
+        - La valeur moyenne du mouvement brownien de τ est 0.
+        strength: 1
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - τ
+        outcomes:
+        - E(W_τ^2)
+        strength: 1
+    -   preconditions: []
+        arguments:
+        - '0'
+        outcomes:
+        - valeur moyenne de τ d'un mouvement brownien
+        strength: 1

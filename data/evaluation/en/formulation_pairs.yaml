@@ -1,7 +1,8 @@
 metadata:
+  language: en
   description: First-pass embedding calibration set with equivalent, related-but-not-equivalent, and unrelated
     formulation pairs.
-  generated_from: outputs/evaluation/ground_truth_statements.csv
+  generated_from: data/evaluation/en/ground_truth_statements.csv
   labels:
   - equivalent
   - related_but_not_equivalent
@@ -15,7 +16,6 @@ selected_statements:
 - id: sem_0001
   type: semantic
   concept: brownian_motion
-  search_hint: Brownian motion definition stochastic process
   field: assumption_global
   source_file: data/ground_truth/en/pc4_q4.yaml
   subquestion_index: ''
@@ -24,7 +24,6 @@ selected_statements:
 - id: sem_0002
   type: semantic
   concept: centered_gaussian_process
-  search_hint: centered Gaussian process definition finite dimensional distributions
   field: outcomes
   source_file: data/ground_truth/en/pc2_q1.yaml
   subquestion_index: '1'
@@ -33,7 +32,6 @@ selected_statements:
 - id: sem_0003
   type: semantic
   concept: gaussian_increments
-  search_hint: Brownian motion Gaussian increments normally distributed increments
   field: preconditions
   source_file: data/ground_truth/en/pc2_q1.yaml
   subquestion_index: '1'
@@ -42,7 +40,6 @@ selected_statements:
 - id: sem_0004
   type: semantic
   concept: independent_increments
-  search_hint: Brownian motion independent increments disjoint intervals
   field: preconditions
   source_file: data/ground_truth/en/pc2_q1.yaml
   subquestion_index: '1'
@@ -51,7 +48,6 @@ selected_statements:
 - id: sem_0005
   type: semantic
   concept: stationary_increments
-  search_hint: Brownian motion stationary increments law depends only on time difference
   field: outcomes
   source_file: data/ground_truth/en/pc2_q1.yaml
   subquestion_index: '1'
@@ -60,7 +56,6 @@ selected_statements:
 - id: sem_0006
   type: semantic
   concept: continuity_of_paths
-  search_hint: stochastic process continuity of paths continuous sample paths
   field: arguments
   source_file: data/ground_truth/en/pc2_q1.yaml
   subquestion_index: '1'
@@ -69,7 +64,6 @@ selected_statements:
 - id: sem_0007
   type: semantic
   concept: kolmogorov_continuity_theorem
-  search_hint: Kolmogorov continuity theorem continuous modification stochastic process
   field: arguments
   source_file: data/ground_truth/en/pc2_q1.yaml
   subquestion_index: '1'
@@ -78,7 +72,6 @@ selected_statements:
 - id: sem_0008
   type: semantic
   concept: brownian_law_of_large_numbers
-  search_hint: law of large numbers for Brownian motion W_t over t
   field: arguments
   source_file: data/ground_truth/en/pc2_q1.yaml
   subquestion_index: '2'
@@ -87,7 +80,6 @@ selected_statements:
 - id: sem_0009
   type: semantic
   concept: brownian_time_inversion
-  search_hint: Brownian motion time inversion t W 1 over t
   field: preconditions
   source_file: data/ground_truth/en/pc2_q1.yaml
   subquestion_index: '2'
@@ -96,7 +88,6 @@ selected_statements:
 - id: sem_0010
   type: semantic
   concept: bounded_stopping_time
-  search_hint: bounded stopping time definition probability
   field: assumptions
   source_file: data/ground_truth/en/pc4_q4.yaml
   subquestion_index: '1'
@@ -105,7 +96,6 @@ selected_statements:
 - id: sem_0011
   type: semantic
   concept: martingale_property
-  search_hint: Brownian motion martingale property natural filtration
   field: preconditions
   source_file: data/ground_truth/en/pc4_q4.yaml
   subquestion_index: '1'
@@ -114,7 +104,6 @@ selected_statements:
 - id: sem_0012
   type: semantic
   concept: doob_optional_stopping_theorem
-  search_hint: Doob optional stopping theorem bounded stopping time martingale
   field: arguments
   source_file: data/ground_truth/en/pc4_q4.yaml
   subquestion_index: '1'
@@ -125,7 +114,6 @@ pair_templates:
   type: semantic
   label: equivalent
   concept: brownian_motion
-  search_hint: Brownian motion definition stochastic process
   source_statement_id: sem_0001
   text_a: $W_t$ is a Brownian Motion.
   text_b_variants:
@@ -135,7 +123,6 @@ pair_templates:
   type: semantic
   label: related_but_not_equivalent
   concept: brownian_motion
-  search_hint: Brownian motion definition stochastic process
   source_statement_id: sem_0001
   text_a: $W_t$ is a Brownian Motion.
   text_b_variants:
@@ -145,7 +132,6 @@ pair_templates:
   type: semantic
   label: unrelated
   concept: brownian_motion
-  search_hint: Brownian motion definition stochastic process
   source_statement_id: sem_0001
   text_a: $W_t$ is a Brownian Motion.
   text_b_variants:
@@ -155,7 +141,6 @@ pair_templates:
   type: semantic
   label: equivalent
   concept: centered_gaussian_process
-  search_hint: centered Gaussian process definition finite dimensional distributions
   source_statement_id: sem_0002
   text_a: The process is therefore centered Gaussian
   text_b_variants:
@@ -165,7 +150,6 @@ pair_templates:
   type: semantic
   label: related_but_not_equivalent
   concept: centered_gaussian_process
-  search_hint: centered Gaussian process definition finite dimensional distributions
   source_statement_id: sem_0002
   text_a: The process is therefore centered Gaussian
   text_b_variants:
@@ -175,7 +159,6 @@ pair_templates:
   type: semantic
   label: unrelated
   concept: centered_gaussian_process
-  search_hint: centered Gaussian process definition finite dimensional distributions
   source_statement_id: sem_0002
   text_a: The process is therefore centered Gaussian
   text_b_variants:
@@ -185,7 +168,6 @@ pair_templates:
   type: semantic
   label: equivalent
   concept: gaussian_increments
-  search_hint: Brownian motion Gaussian increments normally distributed increments
   source_statement_id: sem_0003
   text_a: Standard Brownian motion has Gaussian increments
   text_b_variants:
@@ -195,7 +177,6 @@ pair_templates:
   type: semantic
   label: related_but_not_equivalent
   concept: gaussian_increments
-  search_hint: Brownian motion Gaussian increments normally distributed increments
   source_statement_id: sem_0003
   text_a: Standard Brownian motion has Gaussian increments
   text_b_variants:
@@ -205,7 +186,6 @@ pair_templates:
   type: semantic
   label: unrelated
   concept: gaussian_increments
-  search_hint: Brownian motion Gaussian increments normally distributed increments
   source_statement_id: sem_0003
   text_a: Standard Brownian motion has Gaussian increments
   text_b_variants:
@@ -215,7 +195,6 @@ pair_templates:
   type: semantic
   label: equivalent
   concept: independent_increments
-  search_hint: Brownian motion independent increments disjoint intervals
   source_statement_id: sem_0004
   text_a: disjoint increments are independent
   text_b_variants:
@@ -225,7 +204,6 @@ pair_templates:
   type: semantic
   label: related_but_not_equivalent
   concept: independent_increments
-  search_hint: Brownian motion independent increments disjoint intervals
   source_statement_id: sem_0004
   text_a: disjoint increments are independent
   text_b_variants:
@@ -235,7 +213,6 @@ pair_templates:
   type: semantic
   label: unrelated
   concept: independent_increments
-  search_hint: Brownian motion independent increments disjoint intervals
   source_statement_id: sem_0004
   text_a: disjoint increments are independent
   text_b_variants:
@@ -245,7 +222,6 @@ pair_templates:
   type: semantic
   label: equivalent
   concept: stationary_increments
-  search_hint: Brownian motion stationary increments law depends only on time difference
   source_statement_id: sem_0005
   text_a: This shows that the increments are stationary
   text_b_variants:
@@ -255,7 +231,6 @@ pair_templates:
   type: semantic
   label: related_but_not_equivalent
   concept: stationary_increments
-  search_hint: Brownian motion stationary increments law depends only on time difference
   source_statement_id: sem_0005
   text_a: This shows that the increments are stationary
   text_b_variants:
@@ -265,7 +240,6 @@ pair_templates:
   type: semantic
   label: unrelated
   concept: stationary_increments
-  search_hint: Brownian motion stationary increments law depends only on time difference
   source_statement_id: sem_0005
   text_a: This shows that the increments are stationary
   text_b_variants:
@@ -275,7 +249,6 @@ pair_templates:
   type: semantic
   label: equivalent
   concept: continuity_of_paths
-  search_hint: stochastic process continuity of paths continuous sample paths
   source_statement_id: sem_0006
   text_a: plus the assumption of continuity of paths
   text_b_variants:
@@ -285,7 +258,6 @@ pair_templates:
   type: semantic
   label: related_but_not_equivalent
   concept: continuity_of_paths
-  search_hint: stochastic process continuity of paths continuous sample paths
   source_statement_id: sem_0006
   text_a: plus the assumption of continuity of paths
   text_b_variants:
@@ -295,7 +267,6 @@ pair_templates:
   type: semantic
   label: unrelated
   concept: continuity_of_paths
-  search_hint: stochastic process continuity of paths continuous sample paths
   source_statement_id: sem_0006
   text_a: plus the assumption of continuity of paths
   text_b_variants:
@@ -305,7 +276,6 @@ pair_templates:
   type: semantic
   label: equivalent
   concept: kolmogorov_continuity_theorem
-  search_hint: Kolmogorov continuity theorem continuous modification stochastic process
   source_statement_id: sem_0007
   text_a: by taking the continuous version via Kolmogorov's theorem
   text_b_variants:
@@ -316,7 +286,6 @@ pair_templates:
   type: semantic
   label: related_but_not_equivalent
   concept: kolmogorov_continuity_theorem
-  search_hint: Kolmogorov continuity theorem continuous modification stochastic process
   source_statement_id: sem_0007
   text_a: by taking the continuous version via Kolmogorov's theorem
   text_b_variants:
@@ -326,7 +295,6 @@ pair_templates:
   type: semantic
   label: unrelated
   concept: kolmogorov_continuity_theorem
-  search_hint: Kolmogorov continuity theorem continuous modification stochastic process
   source_statement_id: sem_0007
   text_a: by taking the continuous version via Kolmogorov's theorem
   text_b_variants:
@@ -336,7 +304,6 @@ pair_templates:
   type: semantic
   label: equivalent
   concept: brownian_law_of_large_numbers
-  search_hint: law of large numbers for Brownian motion W_t over t
   source_statement_id: sem_0008
   text_a: Hence by the law of large numbers for Brownian motion
   text_b_variants:
@@ -346,7 +313,6 @@ pair_templates:
   type: semantic
   label: related_but_not_equivalent
   concept: brownian_law_of_large_numbers
-  search_hint: law of large numbers for Brownian motion W_t over t
   source_statement_id: sem_0008
   text_a: Hence by the law of large numbers for Brownian motion
   text_b_variants:
@@ -356,7 +322,6 @@ pair_templates:
   type: semantic
   label: unrelated
   concept: brownian_law_of_large_numbers
-  search_hint: law of large numbers for Brownian motion W_t over t
   source_statement_id: sem_0008
   text_a: Hence by the law of large numbers for Brownian motion
   text_b_variants:
@@ -366,7 +331,6 @@ pair_templates:
   type: semantic
   label: equivalent
   concept: brownian_time_inversion
-  search_hint: Brownian motion time inversion t W 1 over t
   source_statement_id: sem_0009
   text_a: compute $\lim_{t \to 0^+} t W_{1/t}$
   text_b_variants:
@@ -376,7 +340,6 @@ pair_templates:
   type: semantic
   label: related_but_not_equivalent
   concept: brownian_time_inversion
-  search_hint: Brownian motion time inversion t W 1 over t
   source_statement_id: sem_0009
   text_a: compute $\lim_{t \to 0^+} t W_{1/t}$
   text_b_variants:
@@ -386,7 +349,6 @@ pair_templates:
   type: semantic
   label: unrelated
   concept: brownian_time_inversion
-  search_hint: Brownian motion time inversion t W 1 over t
   source_statement_id: sem_0009
   text_a: compute $\lim_{t \to 0^+} t W_{1/t}$
   text_b_variants:
@@ -396,7 +358,6 @@ pair_templates:
   type: semantic
   label: equivalent
   concept: bounded_stopping_time
-  search_hint: bounded stopping time definition probability
   source_statement_id: sem_0010
   text_a: $\tau$ is a bounded stopping time
   text_b_variants:
@@ -406,7 +367,6 @@ pair_templates:
   type: semantic
   label: related_but_not_equivalent
   concept: bounded_stopping_time
-  search_hint: bounded stopping time definition probability
   source_statement_id: sem_0010
   text_a: $\tau$ is a bounded stopping time
   text_b_variants:
@@ -416,7 +376,6 @@ pair_templates:
   type: semantic
   label: unrelated
   concept: bounded_stopping_time
-  search_hint: bounded stopping time definition probability
   source_statement_id: sem_0010
   text_a: $\tau$ is a bounded stopping time
   text_b_variants:
@@ -426,7 +385,6 @@ pair_templates:
   type: semantic
   label: equivalent
   concept: martingale_property
-  search_hint: Brownian motion martingale property natural filtration
   source_statement_id: sem_0011
   text_a: $(W_t)_{t\geq 0}$ is a martingale.
   text_b_variants:
@@ -436,7 +394,6 @@ pair_templates:
   type: semantic
   label: related_but_not_equivalent
   concept: martingale_property
-  search_hint: Brownian motion martingale property natural filtration
   source_statement_id: sem_0011
   text_a: $(W_t)_{t\geq 0}$ is a martingale.
   text_b_variants:
@@ -446,7 +403,6 @@ pair_templates:
   type: semantic
   label: unrelated
   concept: martingale_property
-  search_hint: Brownian motion martingale property natural filtration
   source_statement_id: sem_0011
   text_a: $(W_t)_{t\geq 0}$ is a martingale.
   text_b_variants:
@@ -456,7 +412,6 @@ pair_templates:
   type: semantic
   label: equivalent
   concept: doob_optional_stopping_theorem
-  search_hint: Doob optional stopping theorem bounded stopping time martingale
   source_statement_id: sem_0012
   text_a: Apply Doob's optional stopping theorem to $(W_t)_{t\geq 0}$ at $\tau$
   text_b_variants:
@@ -466,7 +421,6 @@ pair_templates:
   type: semantic
   label: related_but_not_equivalent
   concept: doob_optional_stopping_theorem
-  search_hint: Doob optional stopping theorem bounded stopping time martingale
   source_statement_id: sem_0012
   text_a: Apply Doob's optional stopping theorem to $(W_t)_{t\geq 0}$ at $\tau$
   text_b_variants:
@@ -476,7 +430,6 @@ pair_templates:
   type: semantic
   label: unrelated
   concept: doob_optional_stopping_theorem
-  search_hint: Doob optional stopping theorem bounded stopping time martingale
   source_statement_id: sem_0012
   text_a: Apply Doob's optional stopping theorem to $(W_t)_{t\geq 0}$ at $\tau$
   text_b_variants:

@@ -1,0 +1,41 @@
+pc: '4'
+exercise: '4'
+language: fr
+variation: baseline
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: qwen2.5-coder-0.5b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - tau est un temps d'arrêt borné
+        outcomes:
+        - E(W_tau) = E(W_t) - beta * W_t
+    -   preconditions: []
+        arguments:
+        - tau est un temps d'arrêt non borné
+        outcomes:
+        - E(W_2tau) = (2 * (E(W_t) - beta * W_t)) * (1 + beta^2)
+    -   preconditions: []
+        arguments:
+        - t est un temps d'arrêt
+        outcomes:
+        - E(W_tau) = 2 * (E(W_t) - beta * W_t) + 2 * beta^2 + 4 * beta^4
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - tau est un temps d'arrêt borné
+        outcomes:
+        - calculer E(W_tau^2)
+    -   preconditions: []
+        arguments:
+        - théorème d'arrêt optionnel de Doob sur la martingale W_t
+        outcomes:
+        - E(W_tau^2) = E[W_tau^2 + W_tau^3] - E[W_tau^2]
+    -   preconditions: []
+        arguments:
+        - calculer E[W_1^2 + W_2^2 + W_3^2]
+        outcomes:
+        - E[W_tau^2] = 3*E[W_1^2]

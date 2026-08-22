@@ -1,0 +1,452 @@
+---
+metadata:
+  language: fr
+  description: Language-specific embedding threshold calibration set.
+  generated_from: data/evaluation/fr/ground_truth_statements.csv
+  labels:
+  - equivalent
+  - related_but_not_equivalent
+  - unrelated
+  concept_count: 12
+  variants_per_label: 2
+selected_statements:
+- id: sem_0001
+  type: semantic
+  concept: brownian_motion
+  field: assumption_global
+  source_file: data/ground_truth/fr/pc4_q4.yaml
+  subquestion_index: ''
+  atom_path: global
+  text: "$W_t$ est un mouvement brownien."
+- id: sem_0002
+  type: semantic
+  concept: centered_gaussian_process
+  field: outcomes
+  source_file: data/ground_truth/fr/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[1]/list[2]
+  text: Le processus est donc gaussien centré.
+- id: sem_0003
+  type: semantic
+  concept: gaussian_increments
+  field: preconditions
+  source_file: data/ground_truth/fr/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[1]/list[2]
+  text: Le brownien standard a des accroissements gaussiens
+- id: sem_0004
+  type: semantic
+  concept: independent_increments
+  field: preconditions
+  source_file: data/ground_truth/fr/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[2]/list[3]/tuple[1]
+  text: les incréments disjoints sont indépendants
+- id: sem_0005
+  type: semantic
+  concept: stationary_increments
+  field: outcomes
+  source_file: data/ground_truth/fr/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[2]/list[2]
+  text: Ceci montre que les accroissements sont stationnaires et
+- id: sem_0006
+  type: semantic
+  concept: continuity_of_paths
+  field: arguments
+  source_file: data/ground_truth/fr/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[2]/list[3]/tuple[1]
+  text: plus l'hypothèse de continuité des trajectoires
+- id: sem_0007
+  type: semantic
+  concept: kolmogorov_continuity_theorem
+  field: arguments
+  source_file: data/ground_truth/fr/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[2]/list[3]/tuple[2]
+  text: en prenant la version continue via le théorème de Kolmogorov
+- id: sem_0008
+  type: semantic
+  concept: brownian_law_of_large_numbers
+  field: arguments
+  source_file: data/ground_truth/fr/pc2_q1.yaml
+  subquestion_index: '2'
+  atom_path: subquestions[2].atoms/tuple[1]
+  text: par la loi des grands nombres pour le brownien
+- id: sem_0009
+  type: semantic
+  concept: brownian_time_inversion
+  field: preconditions
+  source_file: data/ground_truth/fr/pc2_q1.yaml
+  subquestion_index: '2'
+  atom_path: subquestions[2].atoms/tuple[1]
+  text: calculer $\lim_{t \to 0^+} t W_{1/t}$
+- id: sem_0010
+  type: semantic
+  concept: bounded_stopping_time
+  field: assumptions
+  source_file: data/ground_truth/fr/pc4_q4.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].assumptions
+  text: "$\\tau$ est un temps d'arr\\^et born\\'e"
+- id: sem_0011
+  type: semantic
+  concept: martingale_property
+  field: preconditions
+  source_file: data/ground_truth/fr/pc4_q4.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/list[1]
+  text: "$(W_t)_{t\\geq 0}$ est une martingale."
+- id: sem_0012
+  type: semantic
+  concept: doob_optional_stopping_theorem
+  field: arguments
+  source_file: data/ground_truth/fr/pc4_q4.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/list[1]
+  text: Appliquez le théorème d'arrêt optionnel de Doob à $(W_t)_{t\geq 0}$ au temps
+    d'arrêt $\tau$
+pair_templates:
+- id: sem_0001_equivalent
+  type: semantic
+  label: equivalent
+  concept: brownian_motion
+  source_statement_id: sem_0001
+  text_a: "$W_t$ est un mouvement brownien."
+  text_b_variants:
+  - W est un mouvement brownien standard.
+  - Le processus W est un processus de Wiener.
+- id: sem_0001_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: brownian_motion
+  source_statement_id: sem_0001
+  text_a: "$W_t$ est un mouvement brownien."
+  text_b_variants:
+  - Le mouvement brownien possède des accroissements gaussiens indépendants et stationnaires.
+  - Les trajectoires d'un mouvement brownien sont presque sûrement continues.
+- id: sem_0001_unrelated
+  type: semantic
+  label: unrelated
+  concept: brownian_motion
+  source_statement_id: sem_0001
+  text_a: "$W_t$ est un mouvement brownien."
+  text_b_variants:
+  - Le déterminant d'une matrice triangulaire est le produit de ses éléments diagonaux.
+  - Toute fonction continue sur un segment atteint son maximum.
+- id: sem_0002_equivalent
+  type: semantic
+  label: equivalent
+  concept: centered_gaussian_process
+  source_statement_id: sem_0002
+  text_a: Le processus est donc gaussien centré.
+  text_b_variants:
+  - Le processus est gaussien et son espérance est nulle.
+  - Toutes ses lois de dimension finie sont gaussiennes centrées.
+- id: sem_0002_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: centered_gaussian_process
+  source_statement_id: sem_0002
+  text_a: Le processus est donc gaussien centré.
+  text_b_variants:
+  - Un processus gaussien est déterminé par sa moyenne et sa fonction de covariance.
+  - Un mouvement brownien est un processus gaussien centré.
+- id: sem_0002_unrelated
+  type: semantic
+  label: unrelated
+  concept: centered_gaussian_process
+  source_statement_id: sem_0002
+  text_a: Le processus est donc gaussien centré.
+  text_b_variants:
+  - Un nombre premier possède exactement deux diviseurs positifs.
+  - La dérivée d'une fonction constante est nulle.
+- id: sem_0003_equivalent
+  type: semantic
+  label: equivalent
+  concept: gaussian_increments
+  source_statement_id: sem_0003
+  text_a: Le brownien standard a des accroissements gaussiens
+  text_b_variants:
+  - Les accroissements du mouvement brownien suivent des lois normales.
+  - Pour s inférieur à t, la variable W_t moins W_s est gaussienne.
+- id: sem_0003_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: gaussian_increments
+  source_statement_id: sem_0003
+  text_a: Le brownien standard a des accroissements gaussiens
+  text_b_variants:
+  - Les accroissements sur des intervalles disjoints sont indépendants.
+  - La variance d'un accroissement brownien dépend de la longueur de l'intervalle.
+- id: sem_0003_unrelated
+  type: semantic
+  label: unrelated
+  concept: gaussian_increments
+  source_statement_id: sem_0003
+  text_a: Le brownien standard a des accroissements gaussiens
+  text_b_variants:
+  - Les valeurs propres d'une matrice diagonale sont ses éléments diagonaux.
+  - Une suite croissante et majorée est convergente.
+- id: sem_0004_equivalent
+  type: semantic
+  label: equivalent
+  concept: independent_increments
+  source_statement_id: sem_0004
+  text_a: les incréments disjoints sont indépendants
+  text_b_variants:
+  - Les accroissements correspondant à des intervalles disjoints sont indépendants.
+  - Les variations du processus sur des intervalles sans intersection sont indépendantes.
+- id: sem_0004_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: independent_increments
+  source_statement_id: sem_0004
+  text_a: les incréments disjoints sont indépendants
+  text_b_variants:
+  - Les accroissements browniens sont des variables gaussiennes.
+  - Le mouvement brownien possède des accroissements stationnaires.
+- id: sem_0004_unrelated
+  type: semantic
+  label: unrelated
+  concept: independent_increments
+  source_statement_id: sem_0004
+  text_a: les incréments disjoints sont indépendants
+  text_b_variants:
+  - Le théorème du rang relie la dimension du noyau et celle de l'image.
+  - Une fonction convexe est située sous chacune de ses cordes.
+- id: sem_0005_equivalent
+  type: semantic
+  label: equivalent
+  concept: stationary_increments
+  source_statement_id: sem_0005
+  text_a: Ceci montre que les accroissements sont stationnaires et
+  text_b_variants:
+  - La loi de X_t moins X_s ne dépend que de t moins s.
+  - La distribution d'un accroissement dépend de la durée de l'intervalle, pas de
+    son origine.
+- id: sem_0005_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: stationary_increments
+  source_statement_id: sem_0005
+  text_a: Ceci montre que les accroissements sont stationnaires et
+  text_b_variants:
+  - Le mouvement brownien a des accroissements indépendants.
+  - Les accroissements browniens sont normalement distribués.
+- id: sem_0005_unrelated
+  type: semantic
+  label: unrelated
+  concept: stationary_increments
+  source_statement_id: sem_0005
+  text_a: Ceci montre que les accroissements sont stationnaires et
+  text_b_variants:
+  - Les racines d'un polynôme du second degré sont données par la formule quadratique.
+  - Échanger deux lignes d'une matrice change le signe de son déterminant.
+- id: sem_0006_equivalent
+  type: semantic
+  label: equivalent
+  concept: continuity_of_paths
+  source_statement_id: sem_0006
+  text_a: plus l'hypothèse de continuité des trajectoires
+  text_b_variants:
+  - Le processus possède des trajectoires continues.
+  - Presque sûrement, l'application qui à t associe X_t est continue.
+- id: sem_0006_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: continuity_of_paths
+  source_statement_id: sem_0006
+  text_a: plus l'hypothèse de continuité des trajectoires
+  text_b_variants:
+  - Le théorème de continuité de Kolmogorov donne des conditions pour obtenir une
+    modification continue.
+  - Le mouvement brownien possède presque sûrement des trajectoires continues.
+- id: sem_0006_unrelated
+  type: semantic
+  label: unrelated
+  concept: continuity_of_paths
+  source_statement_id: sem_0006
+  text_a: plus l'hypothèse de continuité des trajectoires
+  text_b_variants:
+  - Le gradient indique la direction de plus forte croissance d'un champ scalaire.
+  - L'ordre d'un groupe fini est son nombre d'éléments.
+- id: sem_0007_equivalent
+  type: semantic
+  label: equivalent
+  concept: kolmogorov_continuity_theorem
+  source_statement_id: sem_0007
+  text_a: en prenant la version continue via le théorème de Kolmogorov
+  text_b_variants:
+  - Le théorème de continuité de Kolmogorov permet d'obtenir une modification continue
+    du processus.
+  - Le théorème de Kolmogorov-Chentsov fournit des conditions assurant l'existence
+    d'une version continue.
+- id: sem_0007_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: kolmogorov_continuity_theorem
+  source_statement_id: sem_0007
+  text_a: en prenant la version continue via le théorème de Kolmogorov
+  text_b_variants:
+  - Le mouvement brownien a des trajectoires presque sûrement continues.
+  - Le théorème de Kolmogorov-Chentsov sert à étudier la régularité des trajectoires.
+- id: sem_0007_unrelated
+  type: semantic
+  label: unrelated
+  concept: kolmogorov_continuity_theorem
+  source_statement_id: sem_0007
+  text_a: en prenant la version continue via le théorème de Kolmogorov
+  text_b_variants:
+  - L'inverse d'une matrice inversible est unique.
+  - L'intégrale d'un polynôme se calcule terme par terme.
+- id: sem_0008_equivalent
+  type: semantic
+  label: equivalent
+  concept: brownian_law_of_large_numbers
+  source_statement_id: sem_0008
+  text_a: par la loi des grands nombres pour le brownien
+  text_b_variants:
+  - Pour un mouvement brownien, W_t divisé par t converge presque sûrement vers zéro
+    lorsque t tend vers l'infini.
+  - Le taux de croissance moyen du mouvement brownien est presque sûrement nul à long
+    terme.
+- id: sem_0008_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: brownian_law_of_large_numbers
+  source_statement_id: sem_0008
+  text_a: par la loi des grands nombres pour le brownien
+  text_b_variants:
+  - Le mouvement brownien a une croissance sous-linéaire aux grands temps.
+  - La loi forte des grands nombres décrit la convergence presque sûre de moyennes
+    asymptotiques.
+- id: sem_0008_unrelated
+  type: semantic
+  label: unrelated
+  concept: brownian_law_of_large_numbers
+  source_statement_id: sem_0008
+  text_a: par la loi des grands nombres pour le brownien
+  text_b_variants:
+  - Une fonction holomorphe est dérivable au sens complexe dans un voisinage.
+  - La trace d'une matrice carrée est la somme de ses éléments diagonaux.
+- id: sem_0009_equivalent
+  type: semantic
+  label: equivalent
+  concept: brownian_time_inversion
+  source_statement_id: sem_0009
+  text_a: calculer $\lim_{t \to 0^+} t W_{1/t}$
+  text_b_variants:
+  - On étudie à l'origine le processus brownien inversé en temps t W_{1/t}.
+  - L'inversion du temps brownien permet d'analyser t W_{1/t} lorsque t tend vers
+    zéro.
+- id: sem_0009_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: brownian_time_inversion
+  source_statement_id: sem_0009
+  text_a: calculer $\lim_{t \to 0^+} t W_{1/t}$
+  text_b_variants:
+  - Le processus t W_{1/t} est lié à l'inversion du temps du mouvement brownien.
+  - La propriété d'échelle relie W_t à des trajectoires browniennes renormalisées.
+- id: sem_0009_unrelated
+  type: semantic
+  label: unrelated
+  concept: brownian_time_inversion
+  source_statement_id: sem_0009
+  text_a: calculer $\lim_{t \to 0^+} t W_{1/t}$
+  text_b_variants:
+  - La formule de Bayes exprime une probabilité conditionnelle à partir d'une vraisemblance.
+  - La transformée de Fourier transforme une convolution en un produit.
+- id: sem_0010_equivalent
+  type: semantic
+  label: equivalent
+  concept: bounded_stopping_time
+  source_statement_id: sem_0010
+  text_a: "$\\tau$ est un temps d'arr\\^et born\\'e"
+  text_b_variants:
+  - Tau est un temps d'arrêt majoré par une constante déterministe finie.
+  - Il existe une constante M telle que tau soit presque sûrement inférieur ou égal
+    à M.
+- id: sem_0010_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: bounded_stopping_time
+  source_statement_id: sem_0010
+  text_a: "$\\tau$ est un temps d'arr\\^et born\\'e"
+  text_b_variants:
+  - Un temps d'arrêt est un temps aléatoire déterminé par l'information disponible.
+  - Les théorèmes d'arrêt optionnel imposent souvent que le temps d'arrêt soit borné.
+- id: sem_0010_unrelated
+  type: semantic
+  label: unrelated
+  concept: bounded_stopping_time
+  source_statement_id: sem_0010
+  text_a: "$\\tau$ est un temps d'arr\\^et born\\'e"
+  text_b_variants:
+  - Une base d'un espace vectoriel est une famille libre et génératrice.
+  - L'aire d'un disque est égale à pi multiplié par le carré de son rayon.
+- id: sem_0011_equivalent
+  type: semantic
+  label: equivalent
+  concept: martingale_property
+  source_statement_id: sem_0011
+  text_a: "$(W_t)_{t\\geq 0}$ est une martingale."
+  text_b_variants:
+  - Le mouvement brownien est une martingale pour sa filtration naturelle.
+  - Pour s inférieur à t, l'espérance conditionnelle de W_t sachant F_s est égale
+    à W_s.
+- id: sem_0011_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: martingale_property
+  source_statement_id: sem_0011
+  text_a: "$(W_t)_{t\\geq 0}$ est une martingale."
+  text_b_variants:
+  - Le mouvement brownien est adapté à sa filtration naturelle.
+  - Pour une martingale, l'espérance conditionnelle d'une valeur future est la valeur
+    présente.
+- id: sem_0011_unrelated
+  type: semantic
+  label: unrelated
+  concept: martingale_property
+  source_statement_id: sem_0011
+  text_a: "$(W_t)_{t\\geq 0}$ est une martingale."
+  text_b_variants:
+  - L'algorithme d'Euclide calcule le plus grand commun diviseur.
+  - La dérivée d'une fonction convexe différentiable est croissante.
+- id: sem_0012_equivalent
+  type: semantic
+  label: equivalent
+  concept: doob_optional_stopping_theorem
+  source_statement_id: sem_0012
+  text_a: Appliquez le théorème d'arrêt optionnel de Doob à $(W_t)_{t\geq 0}$ au temps
+    d'arrêt $\tau$
+  text_b_variants:
+  - On applique le théorème d'arrêt optionnel à la martingale W au temps d'arrêt borné
+    tau.
+  - D'après le théorème d'arrêt optionnel de Doob, l'espérance de W_tau égale celle
+    de W_0 lorsque tau est borné.
+- id: sem_0012_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: doob_optional_stopping_theorem
+  source_statement_id: sem_0012
+  text_a: Appliquez le théorème d'arrêt optionnel de Doob à $(W_t)_{t\geq 0}$ au temps
+    d'arrêt $\tau$
+  text_b_variants:
+  - Le caractère borné du temps d'arrêt est une hypothèse fréquente du théorème d'arrêt
+    optionnel.
+  - L'arrêt optionnel concerne les martingales évaluées en des temps d'arrêt.
+- id: sem_0012_unrelated
+  type: semantic
+  label: unrelated
+  concept: doob_optional_stopping_theorem
+  source_statement_id: sem_0012
+  text_a: Appliquez le théorème d'arrêt optionnel de Doob à $(W_t)_{t\geq 0}$ au temps
+    d'arrêt $\tau$
+  text_b_variants:
+  - Une matrice symétrique réelle est diagonalisable avec des valeurs propres réelles.
+  - La règle de dérivation en chaîne s'applique à une composition de fonctions.
+pairs: []

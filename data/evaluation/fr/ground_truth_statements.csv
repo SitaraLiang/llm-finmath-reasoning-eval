@@ -1,0 +1,49 @@
+source_file,language,pc,exercise,subquestion_index,field,atom_path,text
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,preconditions,subquestions[1].atoms/tuple[1]/list[1],"Pour \(s \leq t\), on décompose \(X_t = X_s + (X_t - X_s)\)."
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,arguments,subquestions[1].atoms/tuple[1]/list[1],L'indépendance de \(X_s\) et \(X_t - X_s\)
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,outcomes,subquestions[1].atoms/tuple[1]/list[1],"\(\mathrm{Cov}(X_s, X_t) = \min(s,t)\)"
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,preconditions,subquestions[1].atoms/tuple[1]/list[2],Le brownien standard a des accroissements gaussiens
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,preconditions,subquestions[1].atoms/tuple[1]/list[2],"\(X_0 = 0\),"
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,arguments,subquestions[1].atoms/tuple[1]/list[2],"une combinaison linéaire d'accroissements gaussiens indépendants, elle est donc gaussienne"
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,outcomes,subquestions[1].atoms/tuple[1]/list[2],Le processus est donc gaussien centré.
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[1],"En utilisant la propriété ${\rm Cov}(X_s,X_t)=\inf(s,t).$"
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[1],"Calculer $\text{Cov}(X_t - X_s, X_v - X_u)$ Pour \(s < t \leq u < v\)"
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[1],Calculation
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[1],"les accroissements disjoints sont non corrélés, donc indépendants"
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[2],Calculez la variance d'un accroissement de $X$
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[2],donc la loi ne dépend que de \(t-s\)
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[2],Ceci montre que les accroissements sont stationnaires et
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[2],"de loi \(\mathcal{N}(0, t-s)\)."
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[3]/tuple[1],les incréments disjoints sont indépendants
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[3]/tuple[1],"la loi des accroissements est gaussienne centrée de variance $t-s$, c'est-à-dire \(\mathcal{N}(0, t-s)\),"
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[3]/tuple[1],plus l'hypothèse de continuité des trajectoires
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[3]/tuple[1],la définition classique du mouvement brownien.
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[3]/tuple[2],les incréments disjoints sont indépendants
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[3]/tuple[2],"la loi des accroissements est gaussienne centrée de variance $t-s$, c'est-à-dire \(\mathcal{N}(0, t-s)\),"
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[3]/tuple[2],en prenant la version continue via le théorème de Kolmogorov
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[3]/tuple[2],la définition classique du mouvement brownien.
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,2,preconditions,subquestions[2].atoms/tuple[1],calculer $\lim_{t \to 0^+} t W_{1/t}$
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,2,arguments,subquestions[2].atoms/tuple[1],par la loi des grands nombres pour le brownien
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,2,outcomes,subquestions[2].atoms/tuple[1],$\lim_{t \to 0^+} t W_{1/t} = 0$ a.s.
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,2,preconditions,subquestions[2].atoms/tuple[2],"Pour tout \(t_1, \dots, t_n\), le vecteur \((X_{t_1}, \dots, X_{t_n})\)"
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,2,arguments,subquestions[2].atoms/tuple[2],est une combinaison linéaire des \(W_{1/t_i}\)
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,2,outcomes,subquestions[2].atoms/tuple[2],donc il est gaussien centré. \\
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,2,arguments,subquestions[2].atoms/tuple[3],Calculation
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,2,outcomes,subquestions[2].atoms/tuple[3],"i.e. $\mathbb{E}[X_t X_s] = \min(t,s)$. \\"
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,2,preconditions,subquestions[2].atoms/tuple[4],"continuité: $\lim_{t \to 0^+} X_t = 0$ a.s.,"
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,2,preconditions,subquestions[2].atoms/tuple[4],"gaussianité: le vecteur \((X_{t_1}, \dots, X_{t_n})\) est gaussien centré pour tout ensemble de temps"
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,2,preconditions,subquestions[2].atoms/tuple[4],"covariance: $\mathbb{E}[X_t X_s] = \min(t,s)$,"
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,2,preconditions,subquestions[2].atoms/tuple[4],avec \(X_0 = 0\)
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,2,arguments,subquestions[2].atoms/tuple[4],ce qui caractérisent le mouvement brownien
+data/ground_truth/fr/pc2_q1.yaml,fr,2,1,2,outcomes,subquestions[2].atoms/tuple[4],\(X\) est un mouvement brownien
+data/ground_truth/fr/pc4_q4.yaml,fr,4,4,,assumption_global,global,$W_t$ est un mouvement brownien.
+data/ground_truth/fr/pc4_q4.yaml,fr,4,4,1,assumptions,subquestions[1].assumptions,$\tau$ est un temps d'arr\^et born\'e
+data/ground_truth/fr/pc4_q4.yaml,fr,4,4,1,preconditions,subquestions[1].atoms/list[1],$(W_t)_{t\geq 0}$ est une martingale.
+data/ground_truth/fr/pc4_q4.yaml,fr,4,4,1,preconditions,subquestions[1].atoms/list[1],$\tau$ est un temps d'arr\^et born\'e.
+data/ground_truth/fr/pc4_q4.yaml,fr,4,4,1,arguments,subquestions[1].atoms/list[1],Appliquez le théorème d'arrêt optionnel de Doob à $(W_t)_{t\geq 0}$ au temps d'arrêt $\tau$
+data/ground_truth/fr/pc4_q4.yaml,fr,4,4,1,outcomes,subquestions[1].atoms/list[1],"\[ \mathbb{E}[W_\tau] = 0, \]"
+data/ground_truth/fr/pc4_q4.yaml,fr,4,4,2,assumptions,subquestions[2].assumptions,$\tau$ est un temps d'arr\^et born\'e
+data/ground_truth/fr/pc4_q4.yaml,fr,4,4,2,preconditions,subquestions[2].atoms/list[1],$(W_t^2-t)_{t\geq 0}$ est une martingale.
+data/ground_truth/fr/pc4_q4.yaml,fr,4,4,2,preconditions,subquestions[2].atoms/list[1],$\tau$ est un temps d'arr\^et born\'e.
+data/ground_truth/fr/pc4_q4.yaml,fr,4,4,2,arguments,subquestions[2].atoms/list[1],Appliquez le théorème d'arrêt optionnel de Doob au processus $(W_t^2-t)_{t\geq 0}$ à l'instant $\tau$
+data/ground_truth/fr/pc4_q4.yaml,fr,4,4,2,outcomes,subquestions[2].atoms/list[1],\[ \mathbb{E}[W_\tau^2] = \mathbb{E}[\tau]. \]

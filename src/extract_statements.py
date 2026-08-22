@@ -190,6 +190,25 @@ def write_csv(output_path: Path, rows: list[dict]) -> None:
         writer.writerows(rows)
 
 
+def write_language_csvs(output_root: Path, rows: list[dict]) -> list[Path]:
+    """Write one statement inventory per language."""
+    grouped = {}
+    for row in rows:
+        language = row.get("language", "")
+        if not language:
+            raise SystemExit(
+                f"Error: Could not infer language for statement from {row['source_file']}."
+            )
+        grouped.setdefault(language, []).append(row)
+
+    paths = []
+    for language, language_rows in sorted(grouped.items()):
+        path = output_root / language / "ground_truth_statements.csv"
+        write_csv(path, language_rows)
+        paths.append(path)
+    return paths
+
+
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
         description=(
@@ -204,11 +223,18 @@ def parse_args() -> argparse.Namespace:
     )
     parser.add_argument(
         "--output",
-        default="data/evaluation/ground_truth_statements.csv",
+        default="data/evaluation",
         help=(
-            "CSV output path. Defaults to "
-            "data/evaluation/ground_truth_statements.csv."
+            "Output root. One CSV is written to {output}/{lang}/"
+            "ground_truth_statements.csv. A path ending in .csv keeps the old "
+            "combined-file behavior."
         ),
+    )
+    parser.add_argument(
+        "--language",
+        action="append",
+        default=[],
+        help="Only extract this language. Can be repeated.",
     )
     return parser.parse_args()
 
@@ -221,6 +247,9 @@ def main() -> None:
     yaml_files = discover_yaml_files(input_dir)
     rows = []
     for yaml_file in yaml_files:
+        language = language_from_path(yaml_file, input_dir)
+        if args.language and language not in set(args.language):
+            continue
         rows.extend(collect_from_file(yaml_file, input_dir))
 
     if not rows:
@@ -230,11 +259,16 @@ def main() -> None:
         )
         sys.exit(1)
 
-    write_csv(output_path, rows)
+    if output_path.suffix.lower() == ".csv":
+        write_csv(output_path, rows)
+        output_paths = [output_path]
+    else:
+        output_paths = write_language_csvs(output_path, rows)
     print("Ground-truth statement extraction complete.")
     print(f"Input YAML files: {len(yaml_files)}")
     print(f"Statements extracted: {len(rows)}")
-    print(f"Output CSV: {output_path}")
+    for path in output_paths:
+        print(f"Output CSV: {path}")
 
 
 if __name__ == "__main__":
