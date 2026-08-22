@@ -26,6 +26,7 @@ input:
       - "self_history"
 
 output:
+  root_directory: "outputs/call2"
   directory_template: "{model1}/{model2}/{language}/{variation}"
   filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}.yaml"
   overwrite_existing: false
