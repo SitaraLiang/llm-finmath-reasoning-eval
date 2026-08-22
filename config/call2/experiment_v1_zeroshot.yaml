@@ -275,7 +275,7 @@ models:
 
   - id: "qwen3:8b"
     provider: "ollama"
-    enabled: false
+    enabled: true
     parameters:
       temperature: 0.0
       max_output_tokens: 800
