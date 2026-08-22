@@ -1,0 +1,42 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions: []
+  arguments:
+  - "Lorsque $\tau$ est un temps d'arr\^et born\'e"
+  outcomes:
+  - "Calculer $\E(W_\tau)$"
+  strength: "Calculation"
+- preconditions:
+  - "Le mouvement brownien $W_t$ satisfait l'équation différentielle suivante : $$\frac{dW_t}{dt} = \sigma B_t$$"
+  arguments:
+  - "Définition du mouvement brownien"
+  outcomes:
+  - "Utiliser le théorème de la moyenne pour calculer $\E(W_\tau)$"
+  strength: "Definition"
+- preconditions:
+  - "Puisque $W_\tau$ est une fonction continue de $\tau$, nous pouvons utiliser le théorème de la moyenne pour calculer sa valeur attendue : $$\E(W_\tau) = \int_{-\infty}^{\infty} W_\tau f(\tau) d\tau$$"
+  arguments:
+  - "Utilisation du théorème de la moyenne"
+  outcomes:
+  - "Calculer $\E(W_\tau)$"
+  strength: "Theorem"
+- preconditions:
+  - "Puisque le mouvement brownien est un processus gaussien, nous savons que $$W_\tau \sim \mathcal{N}(0, \sigma^2\tau)$$"
+  arguments:
+  - "Utilisation de la propriété du mouvement brownien"
+  outcomes:
+  - "Calculer $\E(W_\tau)$"
+  strength: "Property"
+- preconditions:
+  - "En utilisant la propriété du mouvement brownien, on peut calculer l'espérance de $W_\tau$ : $$\E(W_\tau) = \int_{-\infty}^{\infty} W_\tau f(\tau) d\tau = 0$$"
+  arguments:
+  - "Calcul de l'espérance"
+  outcomes:
+  - "Calculer $\E(W_\tau)$"
+  strength: "Calculation"
+```

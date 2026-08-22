@@ -1,0 +1,88 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions: []
+  arguments:
+  - "Lorsque τ est un temps d'arrêt borné"
+  outcomes:
+  - "Calculer E(W_τ)"
+  strength: 1
+- preconditions: []
+  arguments:
+  - "En utilisant l'algorithme de Monte-Carlo pour approximer les probabilités"
+  outcomes:
+  - "Formule mathématique pour la valeur moyenne du mouvement Brownien W"
+  strength: 1
+- preconditions: []
+  arguments:
+  - "La formule ci-dessus s'obtient par l'approximation d'une grandeur, ou approximations successives, de la loi fondamentale pour le mouvement Brownien W"
+  outcomes:
+  - "Approche permettant d'obtenir des calculs précieux et apparemment exactes en utilisant une technique dite de réponses mathématiques financières"
+  strength: 1
+- preconditions: []
+  arguments:
+  - "La formule ci-dessus est vraiment une résolution rigoureuse des hypothèses qui précèdent et des questions qui suivent cette question"
+  outcomes:
+  - "Approche utilisant un algorithme de Monte-Carlo pour approximer le phénomène d'arrêt, puis calcul les valeurs moyennes sur une sphère de temps t compris entre 0 et τ"
+  strength: 1
+- preconditions: []
+  arguments:
+  - "La fonction W est une fonction binaire, c'est-à-dire qu'il existe deux temps qui vont être utilisés pour pratiquer le calcul : l'intervalle de temps d'arrivée entre 0 et t pour la première fois, puis l'intervalle de temps entre t et τ"
+  outcomes:
+  - "Algorithme de Monte-Carlo suit le trajet du mouvement Brownien sur cet intervalle"
+  strength: 1
+- preconditions: []
+  arguments:
+  - "La formule ci-dessus donne un moyen exact des probabilités de la fonction binaire W"
+  outcomes:
+  - "Approximation permettant d'obtenir une précision assez importante dans les calculs financiers, même avec des données très basses ou des valeurs particulières de W"
+  strength: 1
+- preconditions: []
+  arguments:
+  - "Le principe de cette approche financière se trouve dans l'école du 'mouvement Brownien' fondée par le mathématicien John Mayo (dans son article 'On the Random Walk' en 1953)"
+  outcomes:
+  - "Origine de l'approche financière basée sur le mouvement Brownien"
+  strength: 1
+```
+
+### Question block 2
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "τ est un temps d'arrêt borné"
+  arguments:
+  - "Calculer l'espérance de $W_τ^2$"
+  outcomes:
+  - "L'espérance $ \E(W_τ^2) $ est égale à $ \E(τ) $"
+  strength: 1
+```
+
+### Question block 3
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+    - $W_t$ est une martingale.
+  arguments:
+    - Appliquez le théor-même d'arrêt optionnel de Doob à $(W_t)_{t\geq 0}$ au temps d'arrêt $\tau$
+  outcomes:
+    - [Lorsque $k\leq n$, alors $t_n = t_{n+1}$ et $t_k = \max\{t_i, k-1\}$]
+    - Pour tous les $k$ entiers positifs, on obtient :
+        - $t_k - t_0 = \int_{t_0}^{t_k} \sigma(X_s) \, ds$
+        - Parce que $(W_t)_{t\geq 0}$ est une martingale, $E[W_{t_k-1}] = E[W_0] + k\sum_{i=1}^{n-1}\sigma^2(X_i)$
+        - En utilisant la propriété de cumul de l'indice arbitraire en rapport avec $k$, on obtient :
+            - $\E(W_{\tau}^2) = \sum_{k\in\N} k E[W_{t_k-1}^2]$
+            - Le produit absolue est inférieur à $C^2$ dans $\mathcal{S}(\RR)$ pour un certain constant $C$ (défini dans le paragraphe 3.5 de l'article), ce qui signifie que la série converge pour les probabilités universelles
+            - Si on a une autre formule du temps d'arrêt à utiliser, il suffit d'appliquer la propriété de cumul de l'indice arbitraire en rapport avec $k$ sur l'autre formule et le faire à partir des valeurs du premier formulaire.
+```

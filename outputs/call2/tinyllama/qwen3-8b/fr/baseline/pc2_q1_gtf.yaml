@@ -1,0 +1,140 @@
+pc: '2'
+exercise: '1'
+language: fr
+variation: baseline
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: tinyllama
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien.
+        arguments:
+        - On suppose que $(X_t)_{t\in \R^+}$ est un mouvement brownien.
+        outcomes:
+        - Alors $X_0=0$.
+    -   preconditions:
+        - Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien.
+        arguments:
+        - On suppose que $(X_t)_{t\in \R^+}$ est un mouvement brownien.
+        outcomes:
+        - Alors $(X_t)_{t\in \R^+}$ est un processus gaussien centré.
+    -   preconditions:
+        - Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien.
+        arguments:
+        - On suppose que $(X_t)_{t\in \R^+}$ est un mouvement brownien.
+        outcomes:
+        - ${\rm Cov}(X_s,X_t)=\inf(s,t).
+    -   preconditions:
+        - On suppose que $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien centré
+            et ${\rm Cov}(X_s,X_t)=\inf(s,t).
+        arguments:
+        - On suppose que $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien centré
+            et ${\rm Cov}(X_s,X_t)=\inf(s,t).
+        outcomes:
+        - Alors $(X_t)_{t\in \R^+}$ est un mouvement brownien.
+-   atoms:
+    -   preconditions:
+        - X_0=0
+        - X_{t+1}=(X_t)_{t\in \R^+} est un processus gaussien centré
+        arguments:
+        - Il n'existe pas de distribution stationnaire pour ce type de processus car
+            il n'y a pas d'association d'une mesure de centre de distribution.
+        outcomes:
+        - Le processus n'a pas de distribution stationnaire.
+    -   preconditions:
+        - Le processus est centré et stationnaire
+        arguments:
+        - Son taux de change est constant ($X_t=C$ pour tout $t$)
+        outcomes:
+        - Le taux de change est constant.
+    -   preconditions:
+        - Le processus est centré et stationnaire
+        arguments:
+        - 'Il peut avoir une variance stationnaire: $\sigma^2=\Var(X) = C^2/N$, avec
+            $C$ un paramètre fixe et $N$ le nombre d''observations.'
+        outcomes:
+        - 'La variance est stationnaire: $\sigma^2=\Var(X) = C^2/N$.'
+    -   preconditions:
+        - 'Dans le cas de $X_t=s$, les deux conditions sont vraies pour tout $t$:
+            $X_{t+1}=(X_t)_{t\in \R^+}$ est un processus centré et stationnaire'
+        arguments:
+        - Mais $X_t$ n'est pas constant si on suit $\sigma^2=\Var(X) = C^2/N$.
+        outcomes:
+        - Le processus est centré et stationnaire, mais $X_t$ n'est pas constant.
+    -   preconditions:
+        - La formule de l'équation peut être dérivée à partir des deux hypothèses
+        arguments:
+        - Le taux de change est constant
+        - L'évolution du taux de change est bien centré et stationnaire
+        outcomes:
+        - La formule de l'équation est dérivée à partir des deux hypothèses.
+    -   preconditions:
+        - Pour la première solution, on prend $s=1$ et $C=\E[X_0]=0$, donc $\sigma^2=0$
+        arguments:
+        - Cela signifie que le processus est centré et stationnaire.
+        outcomes:
+        - Le processus est centré et stationnaire.
+    -   preconditions:
+        - Pour la seconde solution, on choisit $s=-1$ et $C=\Var(X)=-1/N$
+        arguments:
+        - Puisque $\E[X_t\mid X_0=x]=0$, on a $X_{t+1}=-(-1)^{(t+1)/N}x+\sqrt{-1}\sigma\,\dif(X_0)$
+        outcomes:
+        - La distribution est centrée et stationnaire, avec $C=-\E[X\mid X_0=0]=\sqrt{N}$.
+    -   preconditions:
+        - Enfin, on peut toujours utiliser les hypothèses globales pour déterminer
+            les conditions sous-jacentes à un processus centré
+        arguments:
+        - La distribution stationnaire est toujours un paramètre fixe et ne change
+            pas en fonction de l'analyse.
+        outcomes:
+        - La distribution stationnaire est un paramètre fixe.
+-   atoms:
+    -   preconditions:
+        - W_t est un mouvement brownien
+        - t > 0
+        - X_0 = 0
+        arguments:
+        - X_t = t \cdot W_{\frac{1}{t}}
+        outcomes:
+        - X_t est un mouvement brownien
+        strength: 1
+    -   preconditions:
+        - W_t est un mouvement brownien
+        - t > 0
+        - X_0 = 0
+        arguments:
+        - X_t = t \cdot W_{\frac{1}{t}}
+        outcomes:
+        - X_t est un mouvement brownien
+        strength: 1
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        - X_t = t W_{1/t}, X_0 = 0
+        arguments:
+        - Assume that X_t does not satisfy the Brownian motion assumption
+        outcomes:
+        - Find an infinite sequence (t_n) and a sequence (ξ_n) such that X_{t_n} converges
+            in law to W(t), (X_{t_n} - X_{t_{n+1}})^2 converges in law to 0, and ∑^N_{n=1}
+            (ξ_{n+1} - ξ_n)^2 converges in law to 0
+    -   preconditions:
+        - Brownian motion is a continuous process
+        arguments:
+        - Find a subsequence (t_m) and a random variable (η_n) such that lim_{n→∞}
+            t_m = T and (ξ_n) converges in law to W(T)
+        outcomes:
+        - ∑^N_{n=1} (η_n)^2 converges in law to 0 for all N ≥ 1
+    -   preconditions:
+        - (t_m) is an increasing sequence of positive numbers converging to T
+        arguments:
+        - t_m = t_{m+1}/2^m for all m ∈ ℕ
+        outcomes:
+        - lim_{n→∞} (η_{n+1} - η_n)^2 converges in law to 0 for all n
+    -   preconditions:
+        - lim_{n→∞} (η_{n+1} - η_n)^2 converges in law to 0 for all n
+        arguments:
+        - Contradicts the assumption that X_0 = 0 satisfies the Brownian motion assumption
+        outcomes:
+        - Therefore, X_t satisfies the Brownian motion assumption

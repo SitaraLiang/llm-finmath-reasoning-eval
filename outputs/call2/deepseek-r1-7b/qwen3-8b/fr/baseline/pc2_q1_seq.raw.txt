@@ -1,0 +1,38 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien"
+  arguments:
+  - "Par définition, un mouvement brownien commence à 0"
+  outcomes:
+  - "On a $X_0 = 0$"
+  strength: "Calculation"
+- preconditions:
+  - "Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien"
+  arguments:
+  - "Un mouvement brownien est un processus gaussien centré"
+  outcomes:
+  - "Le processus $(X_t)_{t\in \R^+}$ est gaussien centré"
+  strength: "Definition"
+- preconditions:
+  - "Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien"
+  arguments:
+  - "La covariance entre $X_s$ et $X_t$ est donnée par $\inf(s,t)$"
+  outcomes:
+  - "${\rm Cov}(X_s,X_t)=\inf(s,t)$"
+  strength: "Property"
+- preconditions:
+  - "$X_0 = 0$"
+  - "Le processus $(X_t)_{t\in \R^+}$ est gaussien centré"
+  - "${\rm Cov}(X_s,X_t)=\inf(s,t)$"
+  arguments:
+  - "Un processus gaussien centré avec covariance $\inf(s,t)$ est un mouvement brownien"
+  outcomes:
+  - "Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien"
+  strength: "Theorem"
+```

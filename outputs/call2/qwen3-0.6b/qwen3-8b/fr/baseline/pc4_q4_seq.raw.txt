@@ -1,0 +1,12 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions: ["$\tau$ est un temps d'arr\^et born\'e"]
+  arguments: ["Calculer $\E(W_\tau)$"]
+  outcomes: ["$\E(W_\tau) = 0$"]
+  strength: "Calculation"
+```

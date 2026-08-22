@@ -1,0 +1,29 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "τ est un temps d'arrêt borné"
+  arguments:
+  - "Calculer l'espérance de W_τ"
+  outcomes:
+  - "E(W_τ) = E(W_0) + E(∫₀^τ W_s dW_s)"
+  strength: "Calculation"
+- preconditions:
+  - "τ est un temps d'arrêt borné"
+  arguments:
+  - "Utiliser la formule de l'espérance conditionnelle"
+  outcomes:
+  - "E(W_τ) = E(E(W_τ | F_τ))"
+  strength: "Theorem"
+- preconditions:
+  - "τ est un temps d'arrêt borné"
+  arguments:
+  - "W est un mouvement brownien standard"
+  outcomes:
+  - "E(W_τ) = 0"
+  strength: "Property"
+```

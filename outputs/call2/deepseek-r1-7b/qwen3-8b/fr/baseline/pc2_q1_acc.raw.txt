@@ -1,0 +1,78 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "X_0 = 0"
+  - "X_t est un processus gaussien centré"
+  - "Cov(X_s, X_t) = inf(s, t)"
+  arguments:
+  - "Si (X_t) est un mouvement brownien standard, alors X_0 = 0, X_t est un processus gaussien centré et Cov(X_s, X_t) = inf(s, t)"
+  outcomes:
+  - "Les conditions sont vérifiées pour un mouvement brownien standard"
+- preconditions:
+  - "X_0 = 0"
+  - "X_t est un processus gaussien centré"
+  - "Cov(X_s, X_t) = inf(s, t)"
+  arguments:
+  - "Si (X_t) satisfait ces trois conditions, alors il est un mouvement brownien standard"
+  outcomes:
+  - "Les accroissements sont indépendants et la variance est t"
+- preconditions:
+  - "X_0 = 0"
+  - "X_t est un processus gaussien centré"
+  - "Cov(X_s, X_t) = inf(s, t)"
+  arguments:
+  - "Les accroissements X_{t+s} - X_t et X_t sont indépendants"
+  outcomes:
+  - "Les accroissements sont indépendants"
+- preconditions:
+  - "X_0 = 0"
+  - "X_t est un processus gaussien centré"
+  - "Cov(X_s, X_t) = inf(s, t)"
+  arguments:
+  - "La variance de X_t est t"
+  outcomes:
+  - "La variance est t"
+- preconditions:
+  - "X_0 = 0"
+  - "X_t est un processus gaussien centré"
+  - "Cov(X_s, X_t) = inf(s, t)"
+  arguments:
+  - "Les accroissements X_{t+s} - X_t sont gaussiens centrés"
+  outcomes:
+  - "Les accroissements sont gaussiens centrés"
+- preconditions:
+  - "X_0 = 0"
+  - "X_t est un processus gaussien centré"
+  - "Cov(X_s, X_t) = inf(s, t)"
+  arguments:
+  - "Les accroissements X_{t+s} - X_t sont indépendants"
+  outcomes:
+  - "Les accroissements sont indépendants"
+- preconditions:
+  - "X_0 = 0"
+  - "X_t est un processus gaussien centré"
+  - "Cov(X_s, X_t) = inf(s, t)"
+  arguments:
+  - "Les accroissements X_{t+s} - X_t ont une variance de s"
+  outcomes:
+  - "Les accroissements ont une variance de s"
+- preconditions:
+  - "X_0 = 0"
+  - "X_t est un processus gaussien centré"
+  - "Cov(X_s, X_t) = inf(s, t)"
+  arguments:
+  - "Les accroissements X_{t+s} - X_t sont gaussiens centrés"
+  outcomes:
+  - "Les accroissements sont gaussiens centrés"
+- preconditions:
+  - "X_0 = 0"
+  - "X_t est un processus gaussien centré"
+  - "Cov(X_s, X_t) = inf(s, t)"
+  arguments:
+  - "Les accroissements X_{t+s} - X_t sont indépendants"
+  outcomes

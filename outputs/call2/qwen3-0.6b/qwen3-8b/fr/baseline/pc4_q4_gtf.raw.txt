@@ -1,0 +1,29 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "τ est un temps d'arrêt borné"
+  arguments:
+  - "Calculer l'espérance de W_τ"
+  outcomes:
+  - "L'espérance de W_τ est égale à l'espérance de W_t pour tout t"
+  strength: "Calculation"
+- preconditions:
+  - "W_t est un mouvement brownien"
+  arguments:
+  - "W_t est un processus à accroissements indépendants et stationnaires"
+  outcomes:
+  - "L'espérance de W_t est nulle"
+  strength: "Definition"
+- preconditions:
+  - "τ est un temps d'arrêt borné"
+  arguments:
+  - "W_τ est une variable aléatoire centrée"
+  outcomes:
+  - "L'espérance de W_τ est nulle"
+  strength: "Theorem"
+```

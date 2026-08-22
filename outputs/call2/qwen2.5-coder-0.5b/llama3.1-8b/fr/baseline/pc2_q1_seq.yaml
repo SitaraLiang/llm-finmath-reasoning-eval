@@ -1,0 +1,63 @@
+pc: '2'
+exercise: '1'
+language: fr
+variation: baseline
+prompt_type: strictly_sequential
+call1_output_mode: plain_text
+call1_model: qwen2.5-coder-0.5b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - X_0 = 0
+        - X_t est un processus gaussien centré
+        - Cov(X_s,X_t) = inf(s,t)
+        outcomes:
+        - X_t est un mouvement brownien
+    -   preconditions: []
+        arguments:
+        - E[X_t] = 0
+        - Var(X_t) = ∞ (pour un mouvement brownien)
+        - Cov(X_s,X_t) = ∞ (pour un mouvement gaussien)
+        outcomes:
+        - X_t est un mouvement brownien
+    -   preconditions: []
+        arguments:
+        - E[X_t] = 0
+        - Var(X_t) = E[(X_s-0)^2]
+        - Cov(X_s,X_t) = ∞ (pour un mouvement gaussien)
+        outcomes:
+        - X_t est un mouvement brownien
+    -   preconditions: []
+        arguments:
+        - E[X_t] = 0
+        - Var(X_t) = E[(X_s-0)^2]
+        - Cov(X_s,X_t) = ∞ (pour un mouvement gaussien)
+        outcomes:
+        - X_t est un mouvement brownien
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - W_t est un mouvement brownien
+        outcomes:
+        - X_t = W_{\frac{1}{t}} pour tout t > 0
+    -   preconditions: []
+        arguments:
+        - Le théorème de Brownie indique que le mouvement Brownien est une variété
+            stationnaire
+        outcomes:
+        - La fonction f(t) = W_{\frac{1}{t}} est stationnaire pour tout entier t >
+            0
+    -   preconditions: []
+        arguments:
+        - La fonction f(t) est dépendante de t seulement et non directement en fonction
+            d'un autre paramètre
+        outcomes:
+        - Il existe un point unique dans cette variété qui correspond à tout t > 0
+    -   preconditions: []
+        arguments:
+        - Le mouvement brownien est généralement représenté par une fonction similaire
+            à la fonction f(t)
+        outcomes:
+        - X_t = W_{\frac{1}{t}} pour tout t > 0

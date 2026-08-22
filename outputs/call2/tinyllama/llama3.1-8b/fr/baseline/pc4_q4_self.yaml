@@ -1,0 +1,37 @@
+pc: '4'
+exercise: '4'
+language: fr
+variation: baseline
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: tinyllama
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - tau est un temps d'arrêt borné
+        outcomes:
+        - EE(W_tau) = EE[W_t] + (DΔt)W_0
+    -   preconditions: []
+        arguments:
+        - tau est un temps d'arrêt borné
+        - W_0 = 1
+        outcomes:
+        - EE(W_tau) = W_t
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - τ est un temps d'arrêt borné
+        outcomes:
+        - Calculer E(W_τ^2)
+    -   preconditions: []
+        arguments:
+        - W_0 = 1
+        outcomes:
+        - E(W_τ^2) = E[W_τ^2] + (DΔt)^2 = W_τ^2
+    -   preconditions: []
+        arguments:
+        - τ est un temps d'arrêt borné
+        outcomes:
+        - Calculer E(W_τ^4)

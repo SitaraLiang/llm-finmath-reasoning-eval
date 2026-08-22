@@ -1,0 +1,58 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "W_t est un mouvement brownien"
+  arguments:
+  - "τ est un temps d'arrêts borné"
+  outcomes:
+  - "E(W_τ) est la moyenne de l'espace W_t en fonction du temps t, sous l'assistance d'une hypothèse de temps d'arrêt borné"
+- preconditions:
+  - "W_t est un mouvement brownien"
+  - "τ est un temps d'arrêt borné"
+  arguments:
+  - "Condition nécessaire"
+  outcomes:
+  - "La première hypothèse globale est vraie, donc la seconde est également vraie pour toute valeur appropriée pour τ"
+- preconditions:
+  - "W_t est un mouvement brownien"
+  - "τ est un temps d'arrêt borné"
+  arguments:
+  - "Condition déterminante"
+  outcomes:
+  - "La seconde hypothèse locale est vraie pour toute valeur appropriée pour τ et donc toutes les autres questions du problème peuvent être résolues"
+```
+
+### Question block 2
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "τ est un temps d'arrêt borné"
+  arguments:
+  - "Utiliser la formule de la variance conditionnelle pour un temps d'arrêt borné"
+  outcomes:
+  - "E(W_τ²) = E(E(W_τ² | F_τ))"
+  strength: 1
+- preconditions:
+  - "τ est un temps d'arrêt borné"
+  arguments:
+  - "Appliquer la propriété de la martingale pour W_τ"
+  outcomes:
+  - "E(W_τ²) = E(W_τ² | F_τ) = W_τ²"
+  strength: "Theorem"
+- preconditions:
+  - "τ est un temps d'arrêt borné"
+  arguments:
+  - "Utiliser la formule de la variance d'une martingale bornée"
+  outcomes:
+  - "E(W_τ²) = E(W_τ²)"
+  strength: "Definition"
+```

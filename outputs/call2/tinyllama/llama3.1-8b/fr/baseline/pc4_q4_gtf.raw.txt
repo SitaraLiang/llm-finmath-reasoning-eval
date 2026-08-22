@@ -1,0 +1,78 @@
+### Question block 1
+Voici la sortie YAML attendue :
+
+```yml
+atoms:
+- preconditions: []
+  arguments:
+  - "tau est un temps d'arrêt borné"
+  outcomes:
+  - "E(W_tau) = (1/tau) * ∫[0, tau] W(t) dt"
+- preconditions: []
+  arguments:
+  - "utilisation de l'algorithme de Monte-Carlo pour approximer les probabilités"
+  outcomes:
+  - "formule de la valeur moyenne du mouvement Brownien W"
+- preconditions: []
+  arguments:
+  - "approximation d'une grandeur ou d'approximations successives de la loi fondamentale pour le mouvement Brownien W"
+  outcomes:
+  - "calculs précieux et apparemment exacts en utilisant une technique dite de réponses mathématiques financières"
+- preconditions: []
+  arguments:
+  - "utilisation d'un algorithme de Monte-Carlo pour approximer le phénomène d'arrêt"
+  outcomes:
+  - "calcul des valeurs moyennes sur une sphère de temps t compris entre 0 et tau"
+```
+
+### Question block 2
+Voici la réponse sous forme de bloc Markdown YAML :
+```yml
+atoms:
+  - preconditions: []
+    arguments:
+      - "τ est un temps d'arrêt borné"
+    outcomes:
+      - "Calculer E(W_τ^2)"
+  - preconditions: ["τ est un temps d'arrêt borné"]
+    arguments:
+      - "W_τ"
+    outcomes:
+      - "E(W_τ^2) = ∫[0, τ] W_s^2 ds"
+  - preconditions: ["τ est un temps d'arrêt borné", "E(W_τ^2) = ∫[0, τ] W_s^2 ds"]
+    arguments:
+      - "W_s"
+    outcomes:
+      - "E(W_τ^2) = ∫[0, τ] E(W_s^2) ds"
+  - preconditions: ["τ est un temps d'arrêt borné", "E(W_τ^2) = ∫[0, τ] E(W_s^2) ds"]
+    arguments:
+      - "E(W_s^2)"
+    outcomes:
+      - "E(W_τ^2) = ∫[0, τ] σ^2 ds"
+```
+J'ai suivi les règles de sortie obligatoires et j'ai structuré la réponse en utilisant uniquement les champs requis : `atoms`, `preconditions`, `arguments` et `outcomes`. J'ai également conservé exactement les formules de la source et mis entre guillemets les chaines contenant de la syntaxe LaTeX ou YAML spéciale.
+
+### Question block 3
+```yml
+atoms:
+  - preconditions: 
+      - "$W_t$ est une martingale."
+    arguments:
+      - "Appliquez le théorème d'arrêt optionnel de Doob à $(W_t)_{t\geq 0}$ au temps d'arrêt $\tau$"
+    outcomes:
+      - "[Lorsque $k\leq n$, alors $t_n = t_{n+1}$ et $t_k = \max\{t_i, k-1\}]"
+      - "Pour tous les $k$ entiers positifs, on obtient :"
+        - "$t_k - t_0 = \int_{t_0}^{t_k} \sigma(X_s) \, ds$"
+        - "Parce que $(W_t)_{t\geq 0}$ est une martingale, $E[W_{t_k-1}] = E[W_0] + k\sum_{i=1}^{n-1}\sigma^2(X_i)$"
+        - "En utilisant la propriété de cumul de l'indice arbitraire en rapport avec $k$, on obtient :"
+          - "$\E(W_{\tau}^2) = \sum_{k\in\N} k E[W_{t_k-1}^2]$"
+          - "Le produit absolue est inférieur à $C^2$ dans $\mathcal{S}(\RR)$ pour un certain constant $C$ (défini dans le paragraphe 3.5 de l'article), ce qui signifie que la série converge pour les probabilités universelles"
+          - "Si on a une autre formule du temps d'arrêt à utiliser, il suffit d'appliquer la propriété de cumul de l'indice arbitraire en rapport avec $k$ sur l'autre formule et le faire à partir des valeurs du premier formulaire."
+  - preconditions: 
+      - "$(W_t)_{t\geq 0}$ est une martingale."
+    arguments:
+      - "Les temps d'arrêt bornés sont les prochains moments entiers de l'espace-temps de la météo (ou de la finité des temps), définis par :"
+        - "$t_k := k\Delta t$ pour $k\in\N$, avec $\Delta t > 0$ et $\forall k < n \Rightarrow  t_{k+1} - t_n = t_{n+1}-t_{n+2}$ en faisant appel à la propriété de cumul de l'indice arbitraire."
+    outcomes:
+      - "[Lorsque $k\leq n$, alors $t_n = t_{n+1}$ et $t_k = \max\{t_i, k-1\}]"
+```
