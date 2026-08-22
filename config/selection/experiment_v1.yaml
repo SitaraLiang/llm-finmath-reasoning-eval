@@ -4,7 +4,7 @@ experiment:
 
 input:
   call1_root: "outputs/call1/plain_text"
-  call2_root: "outputs/call2_zeroshot_per_question"
+  call2_root: "outputs/call2"
 
 output:
   root_directory: "outputs/selected_responses"
