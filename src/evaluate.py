@@ -47,10 +47,10 @@ D4_SOURCE_METRICS = (
 )
 JUDGE_LABEL_SCORES = {
     "equivalent": 1.0,
-    "partially_correct": 0.5,
-    "incorrect": 0.0,
+    "related_but_not_equivalent": 0.5,
     "unrelated": 0.0,
 }
+JUDGE_SCHEMA_VERSION = 2
 DEFAULT_JUDGE_ENDPOINT = "http://localhost:11434/api/generate"
 DEFAULT_JUDGE_PROMPT = """You are judging whether a model answer covers a ground-truth mathematical statement.
 
@@ -68,12 +68,12 @@ Model statement:
 
 Choose exactly one label:
 - equivalent: the model statement fully expresses the same mathematical content.
-- partially_correct: the model statement captures part of the content but misses or weakens something important.
-- incorrect: the model statement is mathematically wrong or contradicts the ground truth.
+- related_but_not_equivalent: the statements concern the same mathematical topic,
+  but the model statement is incomplete, weaker, stronger, or mathematically different.
 - unrelated: the model statement is about a different mathematical fact.
 
 Return only YAML, with exactly these keys:
-label: equivalent|partially_correct|incorrect|unrelated
+label: equivalent|related_but_not_equivalent|unrelated
 confidence: 0.0-1.0
 reason: one short sentence
 """
@@ -99,12 +99,22 @@ def resolve_path(path: Path, root: Path) -> Path:
     return path if path.is_absolute() else root / path
 
 
-def evaluation_output_root(base_root: Path, judge_enabled: bool) -> Path:
-    """Select the scoring-method directory from the configured output base."""
+def evaluation_output_root(
+    base_root: Path,
+    judge_enabled: bool,
+    language: str,
+    variation: str,
+) -> Path:
+    """Build {base}/{language}/{variation}/{scoring_method}."""
     method_directory = "with_judge" if judge_enabled else "embedding_only"
     if base_root.name in {"embedding_only", "with_judge"}:
-        return base_root.parent / method_directory
-    return base_root / method_directory
+        base_root = base_root.parent
+    return base_root / language / variation / method_directory
+
+
+def output_group_has_results(output_root: Path) -> bool:
+    """Return whether a language/variation report directory is non-empty."""
+    return output_root.exists() and any(path.is_file() for path in output_root.rglob("*"))
 
 
 def load_config(config_path: Path) -> dict:
@@ -319,8 +329,6 @@ def matrix_output_dir(metadata: dict, output_root: Path) -> Path:
         output_root
         / "matrices"
         / metadata["call1_model"]
-        / metadata["language"]
-        / metadata["variation"]
         / f"{metadata['exercise']}_{metadata['strategy']}".rstrip("_")
     )
 
@@ -468,6 +476,8 @@ class LLMJudge:
 
     def key(self, dimension: str, field: str, gt_text: str, model_text: str) -> str:
         payload = {
+            "judge_schema_version": JUDGE_SCHEMA_VERSION,
+            "prompt_template": self.prompt_template,
             "judge_model": self.model,
             "dimension": dimension,
             "field": field,
@@ -608,7 +618,7 @@ def apply_judge_to_rows(
 
         judged_score = JUDGE_LABEL_SCORES[decision["label"]]
         row["score"] = f"{judged_score:.6f}"
-        row["matched"] = decision["label"] in {"equivalent", "partially_correct"}
+        row["matched"] = decision["label"] == "equivalent"
 
 
 def collect_gt_outcomes_before_subquestion(gt_data: dict, subquestion_index: int) -> list[dict]:
@@ -1274,6 +1284,17 @@ def add_coverage_columns(
         aggregate_row["generation_coverage"] = (
             f"{found / expected:.6f}" if expected else ""
         )
+        if expected:
+            generation_coverage = found / expected
+            aggregate_row["end_to_end_overall_mean_score"] = (
+                f"{float(aggregate_row['overall_mean_score']) * generation_coverage:.6f}"
+            )
+            aggregate_row["end_to_end_overall_with_D2_score"] = (
+                f"{float(aggregate_row['overall_with_D2_score']) * generation_coverage:.6f}"
+            )
+        else:
+            aggregate_row["end_to_end_overall_mean_score"] = ""
+            aggregate_row["end_to_end_overall_with_D2_score"] = ""
 
 
 def d4_source_columns() -> list[str]:
@@ -1303,6 +1324,121 @@ def config_path_value(value) -> Path | None:
     if value is None or value == "":
         return None
     return Path(value)
+
+
+def embedding_threshold_for_language(
+    config: dict,
+    language: str,
+    fallback: float,
+    cli_threshold: float | None = None,
+) -> float:
+    """Return a language-specific threshold, with CLI and scalar fallbacks."""
+    if cli_threshold is not None:
+        return float(cli_threshold)
+    thresholds = get_nested(config, ["embedding", "thresholds"], {}) or {}
+    if not isinstance(thresholds, dict):
+        raise SystemExit("Error: embedding.thresholds must be a language mapping.")
+    return float(thresholds.get(language, fallback))
+
+
+def judge_thresholds_for_language(
+    config: dict,
+    language: str,
+    fallback_low: float,
+    fallback_high: float,
+    cli_low: float | None = None,
+    cli_high: float | None = None,
+) -> tuple[float, float]:
+    """Return the judge band for one language, honoring CLI overrides."""
+    thresholds = get_nested(config, ["judge", "thresholds"], {}) or {}
+    if not isinstance(thresholds, dict):
+        raise SystemExit("Error: judge.thresholds must be a language mapping.")
+    language_values = thresholds.get(language, {}) or {}
+    if not isinstance(language_values, dict):
+        raise SystemExit(
+            f"Error: judge.thresholds.{language} must contain low and high values."
+        )
+    low = float(language_values.get("low", fallback_low))
+    high = float(language_values.get("high", fallback_high))
+    if cli_low is not None:
+        low = float(cli_low)
+    if cli_high is not None:
+        high = float(cli_high)
+    if low > high:
+        raise SystemExit(
+            f"Error: judge threshold low ({low}) exceeds high ({high}) for language '{language}'."
+        )
+    return low, high
+
+
+def write_evaluation_reports(
+    output_root: Path,
+    summary_rows: list[dict],
+    coverage_rows: list[dict],
+    d4_source_rows: list[dict],
+    summary_fields: list[str],
+) -> None:
+    """Write one complete report bundle for a language/variation pair."""
+    for row in summary_rows:
+        for field in summary_fields:
+            row.setdefault(field, "")
+    write_csv(output_root / "evaluation_summary.csv", summary_rows, summary_fields)
+    if coverage_rows:
+        write_csv(
+            output_root / "evaluation_coverage.csv",
+            coverage_rows,
+            [
+                "status",
+                "call1_model",
+                "language",
+                "variation",
+                "exercise",
+                "strategy",
+                "prediction_path",
+            ],
+        )
+
+    aggregate_fields = [
+        *coverage_columns(),
+        "D1_mean_best_score",
+        "D1_coverage",
+        "D1_precision",
+        "D1_f1",
+        "D3_mean_best_score",
+        "D3_coverage",
+        "D3_precision",
+        "D3_f1",
+        "D4_mean_best_score",
+        "D4_coverage",
+        "D4_precision",
+        "D4_f1",
+        "D2_order_score",
+        "D2_order_coverage",
+        "D2_strict_order_score",
+        "overall_mean_score",
+        "overall_with_D2_score",
+        "end_to_end_overall_mean_score",
+        "end_to_end_overall_with_D2_score",
+        *d4_source_columns(),
+    ]
+
+    by_model = aggregate_by(summary_rows, ["call1_model"])
+    add_coverage_columns(by_model, coverage_rows, ["call1_model"])
+    add_d4_source_columns(by_model, d4_source_rows, ["call1_model"])
+    write_csv(
+        output_root / "evaluation_by_model.csv",
+        by_model,
+        ["call1_model", "cases", *aggregate_fields],
+    )
+
+    by_model_strategy = aggregate_by(summary_rows, ["call1_model", "strategy"])
+    add_coverage_columns(by_model_strategy, coverage_rows, ["call1_model", "strategy"])
+    add_d4_source_columns(by_model_strategy, d4_source_rows, ["call1_model", "strategy"])
+    write_csv(
+        output_root / "evaluation_by_model_strategy.csv",
+        by_model_strategy,
+        ["call1_model", "strategy", "cases", *aggregate_fields],
+    )
 
 
 def build_parser() -> argparse.ArgumentParser:
@@ -1377,15 +1513,16 @@ def main() -> None:
     prediction_root = resolve_path(prediction_path, project_root)
     ground_truth_root = resolve_path(ground_truth_path, project_root)
     output_base_root = resolve_path(output_path, project_root)
+    overwrite_existing = bool(get_nested(config, ["output", "overwrite_existing"], True))
 
     embedding_model = cli_or_config(args.model, config, ["embedding", "model"], DEFAULT_MODEL)
-    threshold = float(cli_or_config(args.threshold, config, ["embedding", "threshold"], 0.415))
+    default_threshold = float(get_nested(config, ["embedding", "threshold"], 0.415))
 
     judge_model = cli_or_config(args.judge_model, config, ["judge", "model"], "")
     judge_enabled = bool(get_nested(config, ["judge", "enabled"], False))
     if args.judge_model is not None:
         judge_enabled = True
-    output_root = evaluation_output_root(output_base_root, judge_enabled)
+    method_directory = "with_judge" if judge_enabled else "embedding_only"
     judge_endpoint = cli_or_config(
         args.judge_endpoint,
         config,
@@ -1396,25 +1533,21 @@ def main() -> None:
     judge_temperature = float(
         cli_or_config(args.judge_temperature, config, ["judge", "temperature"], 0.0)
     )
-    judge_low_threshold = float(
-        cli_or_config(args.judge_low_threshold, config, ["judge", "low_threshold"], 0.375)
-    )
-    judge_high_threshold = float(
-        cli_or_config(args.judge_high_threshold, config, ["judge", "high_threshold"], 0.415)
-    )
+    judge_low_fallback = float(get_nested(config, ["judge", "low_threshold"], 0.375))
+    judge_high_fallback = float(get_nested(config, ["judge", "high_threshold"], 1.0))
     judge_prompt = get_nested(config, ["prompts", "judge"], DEFAULT_JUDGE_PROMPT)
     judge_cache_path = (
         resolve_path(args.judge_cache, project_root)
         if args.judge_cache
-        else output_root / "judge_cache.yaml"
+        else output_base_root / "_shared" / method_directory / "judge_cache.yaml"
     )
 
     judge = None
     if judge_enabled:
         if not judge_model:
             raise SystemExit("Error: judge.enabled is true but no judge.model is configured.")
-        if judge_low_threshold > judge_high_threshold:
-            raise SystemExit("Error: --judge-low-threshold must be <= --judge-high-threshold.")
+        if judge_low_fallback > judge_high_fallback:
+            raise SystemExit("Error: judge low threshold must be <= its high threshold.")
         judge = LLMJudge(
             judge_model,
             judge_endpoint,
@@ -1431,16 +1564,72 @@ def main() -> None:
         prediction_root,
         ground_truth_root,
     )
+    available_groups = {
+        (metadata["language"], metadata["variation"])
+        for metadata in (
+            parse_prediction_path(path, prediction_root)
+            for path in prediction_files
+        )
+    } | {
+        (row["language"], row["variation"])
+        for row in coverage_rows
+    }
+    skipped_groups = {
+        group
+        for group in available_groups
+        if not overwrite_existing
+        and output_group_has_results(
+            evaluation_output_root(
+                output_base_root,
+                judge_enabled,
+                group[0],
+                group[1],
+            )
+        )
+    }
+    if skipped_groups:
+        for language, variation in sorted(skipped_groups):
+            progress(
+                f"Skipping existing evaluation group: {language}/{variation}/"
+                f"{method_directory}"
+            )
+        prediction_files = [
+            path
+            for path in prediction_files
+            if (
+                parse_prediction_path(path, prediction_root)["language"],
+                parse_prediction_path(path, prediction_root)["variation"],
+            )
+            not in skipped_groups
+        ]
+        coverage_rows = [
+            row
+            for row in coverage_rows
+            if (row["language"], row["variation"]) not in skipped_groups
+        ]
+    if available_groups and available_groups == skipped_groups:
+        progress("Evaluation complete: every configured language/variation group already exists.")
+        return
     progress(
         "Evaluation starting: "
         f"{len(prediction_files)} prediction file(s), model={embedding_model}, "
-        f"threshold={threshold:.6f}."
+        "using language-specific thresholds."
     )
     if judge:
+        judge_bands = {
+            language: judge_thresholds_for_language(
+                config,
+                language,
+                judge_low_fallback,
+                judge_high_fallback,
+                args.judge_low_threshold,
+                args.judge_high_threshold,
+            )
+            for language, _ in available_groups
+        }
         progress(
             "LLM judge enabled: "
-            f"model={judge_model}, ambiguous band="
-            f"[{judge_low_threshold:.3f}, {judge_high_threshold:.3f}], "
+            f"model={judge_model}, language bands={judge_bands}, "
             f"cache={judge_cache_path}."
         )
 
@@ -1458,17 +1647,37 @@ def main() -> None:
         except ValueError:
             label = str(prediction_path)
         progress(f"[{index}/{len(prediction_files)}] {label}: started")
+        item_output_root = evaluation_output_root(
+            output_base_root,
+            judge_enabled,
+            metadata["language"],
+            metadata["variation"],
+        )
+        item_threshold = embedding_threshold_for_language(
+            config,
+            metadata["language"],
+            default_threshold,
+            args.threshold,
+        )
+        item_judge_low, item_judge_high = judge_thresholds_for_language(
+            config,
+            metadata["language"],
+            judge_low_fallback,
+            judge_high_fallback,
+            args.judge_low_threshold,
+            args.judge_high_threshold,
+        )
         row = evaluate_one(
             prediction_path,
             prediction_root,
             ground_truth_root,
-            output_root,
+            item_output_root,
             embedder,
             embedding_model,
-            threshold,
+            item_threshold,
             judge,
-            judge_low_threshold,
-            judge_high_threshold,
+            item_judge_low,
+            item_judge_high,
         )
         d4_source_rows.extend(row.pop("_d4_source_rows", []))
         summary_rows.append(row)
@@ -1514,87 +1723,42 @@ def main() -> None:
         "ground_truth_path",
         "output_dir",
     ]
-    for row in summary_rows:
-        for field in summary_fields:
-            row.setdefault(field, "")
-    write_csv(output_root / "evaluation_summary.csv", summary_rows, summary_fields)
-    if coverage_rows:
-        write_csv(
-            output_root / "evaluation_coverage.csv",
-            coverage_rows,
-            [
-                "status",
-                "call1_model",
-                "language",
-                "variation",
-                "exercise",
-                "strategy",
-                "prediction_path",
-            ],
+    report_groups = {
+        (row["language"], row["variation"])
+        for row in [*summary_rows, *coverage_rows]
+    }
+    for language, variation in sorted(report_groups):
+        group_output_root = evaluation_output_root(
+            output_base_root,
+            judge_enabled,
+            language,
+            variation,
         )
-
-    by_model = aggregate_by(summary_rows, ["call1_model"])
-    add_coverage_columns(by_model, coverage_rows, ["call1_model"])
-    add_d4_source_columns(by_model, d4_source_rows, ["call1_model"])
-    write_csv(
-        output_root / "evaluation_by_model.csv",
-        by_model,
-        [
-            "call1_model",
-            "cases",
-            *coverage_columns(),
-            "D1_mean_best_score",
-            "D1_coverage",
-            "D1_precision",
-            "D1_f1",
-            "D3_mean_best_score",
-            "D3_coverage",
-            "D3_precision",
-            "D3_f1",
-            "D4_mean_best_score",
-            "D4_coverage",
-            "D4_precision",
-            "D4_f1",
-            "D2_order_score",
-            "D2_order_coverage",
-            "D2_strict_order_score",
-            "overall_mean_score",
-            "overall_with_D2_score",
-            *d4_source_columns(),
-        ],
-    )
-
-    by_model_strategy = aggregate_by(summary_rows, ["call1_model", "strategy"])
-    add_coverage_columns(by_model_strategy, coverage_rows, ["call1_model", "strategy"])
-    add_d4_source_columns(by_model_strategy, d4_source_rows, ["call1_model", "strategy"])
-    write_csv(
-        output_root / "evaluation_by_model_strategy.csv",
-        by_model_strategy,
-        [
-            "call1_model",
-            "strategy",
-            "cases",
-            *coverage_columns(),
-            "D1_mean_best_score",
-            "D1_coverage",
-            "D1_precision",
-            "D1_f1",
-            "D3_mean_best_score",
-            "D3_coverage",
-            "D3_precision",
-            "D3_f1",
-            "D4_mean_best_score",
-            "D4_coverage",
-            "D4_precision",
-            "D4_f1",
-            "D2_order_score",
-            "D2_order_coverage",
-            "D2_strict_order_score",
-            "overall_mean_score",
-            "overall_with_D2_score",
-            *d4_source_columns(),
-        ],
-    )
+        group_summaries = [
+            row
+            for row in summary_rows
+            if row["language"] == language and row["variation"] == variation
+        ]
+        group_coverage = [
+            row
+            for row in coverage_rows
+            if row["language"] == language and row["variation"] == variation
+        ]
+        group_d4_sources = [
+            row
+            for row in d4_source_rows
+            if row["language"] == language and row["variation"] == variation
+        ]
+        write_evaluation_reports(
+            group_output_root,
+            group_summaries,
+            group_coverage,
+            group_d4_sources,
+            summary_fields,
+        )
+        progress(
+            f"Wrote {language}/{variation} reports: {group_output_root}"
+        )
 
     ok_count = sum(row["status"] == "ok" for row in summary_rows)
     failed_count = len(summary_rows) - ok_count
@@ -1606,18 +1770,14 @@ def main() -> None:
             f"{judge.failures} failure(s). Cache: {judge.cache_path}"
         )
     progress(f"Evaluation complete: {ok_count} ok, {failed_count} failed.")
-    print(f"Wrote summary: {output_root / 'evaluation_summary.csv'}")
     if coverage_rows:
         expected_count = len(coverage_rows)
         found_count = sum(row["status"] == "found" for row in coverage_rows)
-        print(f"Wrote coverage: {output_root / 'evaluation_coverage.csv'}")
         print(
-            "Prediction coverage: "
+            "Prediction coverage across all language/variation groups: "
             f"{found_count}/{expected_count} found, "
             f"{expected_count - found_count} missing"
         )
-    print(f"Wrote model aggregate: {output_root / 'evaluation_by_model.csv'}")
-    print(f"Wrote model/strategy aggregate: {output_root / 'evaluation_by_model_strategy.csv'}")
 
     if failed_count:
         sys.exit(1)

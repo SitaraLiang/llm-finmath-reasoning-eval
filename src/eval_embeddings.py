@@ -1,5 +1,6 @@
 import argparse
 import csv
+import re
 import statistics
 import sys
 from pathlib import Path
@@ -9,7 +10,7 @@ import yaml
 
 DEFAULT_MODEL = "sentence-transformers/all-MiniLM-L6-v2"
 DEFAULT_SANITY_MODEL = "answerdotai/ModernBERT-base"
-DEFAULT_PAIRS = Path("data/evaluation/formulation_pairs.yaml")
+DEFAULT_PAIRS = Path("data/evaluation")
 DEFAULT_OUTPUT_DIR = Path("outputs/evaluation")
 DEFAULT_THRESHOLD_OUTPUT_DIR = DEFAULT_OUTPUT_DIR / "threshold"
 DEFAULT_MATRIX_THRESHOLD = 0.75
@@ -89,6 +90,40 @@ def unique_model_names(model_names: list[str]) -> list[str]:
 def load_yaml(path: Path):
     with path.open("r", encoding="utf-8") as file:
         return yaml.load(file, Loader=yaml.FullLoader)
+
+
+def formulation_pairs_language(path: Path, data: dict) -> str:
+    """Infer calibration language from metadata, source paths, or parent folder."""
+    metadata_language = data.get("metadata", {}).get("language")
+    if metadata_language:
+        return str(metadata_language)
+    languages = set()
+    for statement in data.get("selected_statements", []):
+        source_file = str(statement.get("source_file", ""))
+        match = re.search(r"(?:^|/)ground_truth/([^/]+)/", source_file)
+        if match:
+            languages.add(match.group(1))
+    if len(languages) == 1:
+        return languages.pop()
+    if path.parent.name not in {"evaluation", "data", ""}:
+        return path.parent.name
+    raise SystemExit(
+        f"Error: Could not infer one language for formulation-pair file '{path}'. "
+        "Add metadata.language."
+    )
+
+
+def discover_formulation_pair_files(input_path: Path) -> list[Path]:
+    if input_path.is_file():
+        return [input_path]
+    if not input_path.is_dir():
+        raise SystemExit(f"Error: formulation-pair input does not exist: {input_path}")
+    files = sorted(input_path.glob("*/formulation_pairs.y*ml"))
+    if not files:
+        raise SystemExit(
+            f"Error: no {{lang}}/formulation_pairs.yaml files found under {input_path}."
+        )
+    return files
 
 
 def write_csv(path: Path, rows: list[dict], fieldnames: list[str]) -> None:
@@ -172,6 +207,7 @@ def score_statement_pairs(
     model_name: str,
     threshold: float | None,
     threshold_step: float,
+    language: str,
 ) -> None:
     data = load_yaml(pairs_path)
     embedder = EmbeddingModel(model_name)
@@ -184,6 +220,7 @@ def score_statement_pairs(
             expected_match = template["label"] == "equivalent"
             rows.append(
                 {
+                    "language": language,
                     "pair_id": template["id"],
                     "source_statement_id": template["source_statement_id"],
                     "concept": template["concept"],
@@ -208,6 +245,7 @@ def score_statement_pairs(
         predicted_match = row["cosine_value"] >= selected_threshold
         output_rows.append(
                 {
+                    "language": language,
                     "pair_id": row["pair_id"],
                     "source_statement_id": row["source_statement_id"],
                     "concept": row["concept"],
@@ -229,6 +267,7 @@ def score_statement_pairs(
         scores_path,
         output_rows,
         [
+            "language",
             "pair_id",
             "source_statement_id",
             "concept",
@@ -251,6 +290,7 @@ def score_statement_pairs(
         label_correct = [row["correct_at_threshold"] for row in output_rows if row["label"] == label]
         summary_rows.append(
             {
+                "language": language,
                 "label": label,
                 "count": len(label_scores),
                 "mean": f"{statistics.fmean(label_scores):.6f}",
@@ -265,6 +305,7 @@ def score_statement_pairs(
         )
     summary_rows.append(
         {
+            "language": language,
             "label": "overall",
             "count": len(output_rows),
             "mean": "",
@@ -283,6 +324,7 @@ def score_statement_pairs(
         summary_path,
         summary_rows,
         [
+            "language",
             "label",
             "count",
             "mean",
@@ -533,7 +575,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     pairs = subparsers.add_parser(
         "pairs",
-        help="Score formulation_pairs.yaml for threshold calibration.",
+        help="Score language-specific formulation-pair files for threshold calibration.",
     )
     pairs.add_argument("--input", type=Path, default=DEFAULT_PAIRS)
     pairs.add_argument(
@@ -551,7 +593,8 @@ def build_parser() -> argparse.ArgumentParser:
         default=DEFAULT_THRESHOLD_OUTPUT_DIR,
         help=(
             "Root directory for threshold-calibration outputs. Each embedding "
-            "model is written to a subdirectory. Default: outputs/evaluation/threshold."
+            "language/model is written to its own subdirectory. Default: "
+            "outputs/evaluation/threshold."
         ),
     )
 
@@ -576,21 +619,30 @@ def main() -> None:
     project_root = args.project_root.resolve()
     if args.command == "pairs":
         output_root = resolve_path(args.output_dir, project_root)
-        pairs_path = resolve_path(args.input, project_root)
+        pairs_input = resolve_path(args.input, project_root)
+        pair_files = discover_formulation_pair_files(pairs_input)
         model_names = unique_model_names([args.model, *args.models])
         if args.sanity_model:
             model_names = unique_model_names([*model_names, args.sanity_model])
 
-        for model_name in model_names:
-            output_dir = output_root / threshold_model_slug(model_name)
-            print(f"Running embedding model: {model_name}")
-            score_statement_pairs(
-                pairs_path,
-                output_dir,
-                model_name,
-                args.threshold,
-                args.threshold_step,
-            )
+        seen_languages = set()
+        for pairs_path in pair_files:
+            pair_data = load_yaml(pairs_path)
+            language = formulation_pairs_language(pairs_path, pair_data)
+            if language in seen_languages:
+                raise SystemExit(f"Error: multiple formulation-pair files for language '{language}'.")
+            seen_languages.add(language)
+            for model_name in model_names:
+                output_dir = output_root / language / threshold_model_slug(model_name)
+                print(f"Running embedding model: {model_name} (language={language})")
+                score_statement_pairs(
+                    pairs_path,
+                    output_dir,
+                    model_name,
+                    args.threshold,
+                    args.threshold_step,
+                    language,
+                )
         return
 
     if args.command == "matrix":
