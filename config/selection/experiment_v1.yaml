@@ -1,0 +1,40 @@
+experiment:
+  name: "call2_response_selection_v1"
+  version: 1
+
+input:
+  call1_root: "outputs/call1/plain_text"
+  call2_root: "outputs/call2_zeroshot_per_question"
+
+output:
+  root_directory: "outputs/selected_responses"
+  report_file: "selection_report.yaml"
+  # Remove an older selected YAML when every current candidate is invalid.
+  synchronize_outputs: true
+
+filters:
+  # Empty lists accept every value discovered in the directory structure.
+  call1_models: []
+  call2_models: []
+  languages:
+    - "en"
+    - "fr"
+  variations:
+    - "baseline"
+  strategies:
+    - "strictly_sequential"
+    - "prompt_accumulation"
+    - "ground_truth_forcing"
+    - "self_history"
+
+ranking:
+  # These source-grounded checks never read data/ground_truth.
+  weights:
+    formula_fidelity: 0.30
+    source_coverage: 0.30
+    non_hallucination: 0.20
+    atom_completeness: 0.10
+    non_duplication: 0.10
+
+  # Close candidates remain deterministically selected but are flagged for review.
+  tie_margin: 0.03
