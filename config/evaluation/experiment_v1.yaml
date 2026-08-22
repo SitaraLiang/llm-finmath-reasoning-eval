@@ -43,7 +43,7 @@ embedding:
     fr: 0.45
 
 judge:
-  enabled: false
+  enabled: true 
   model: "llama3.1:8b"
   endpoint: "http://localhost:11434/api/generate"
   timeout_seconds: 120
