@@ -17,11 +17,11 @@ except ImportError:
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(PROJECT_ROOT / "src"))
 sys.path.insert(
     0,
     "/Users/sitaraliang/Downloads/stage/cmap/llm-finmath-reasoning-eval/src",
 )
+sys.path.insert(0, str(PROJECT_ROOT / "src"))
 
 from select_responses import run_selection  # noqa: E402
 
@@ -121,6 +121,19 @@ class SelectionTest(unittest.TestCase):
         self.assertEqual(report["summary"]["stale_outputs_removed"], 1)
         self.assertEqual(report["selections"][0]["status"], "all_candidates_failed")
         self.assertFalse(stale.exists())
+
+    def test_existing_selected_yaml_is_not_overwritten_by_default(self):
+        self.write_candidate("valid-model", valid_conversion("E[W_t]=0"))
+        destination = self.selected / "model-a" / "en" / "baseline" / "pc2_q1_seq.yaml"
+        destination.parent.mkdir(parents=True)
+        destination.write_text("existing: true\n", encoding="utf-8")
+
+        report = run_selection(self.config())
+
+        self.assertEqual(destination.read_text(encoding="utf-8"), "existing: true\n")
+        self.assertEqual(report["summary"]["selected_files_written"], 0)
+        self.assertEqual(report["summary"]["selected_files_skipped"], 1)
+        self.assertEqual(report["selections"][0]["file_status"], "skipped_existing")
 
 
 if __name__ == "__main__":

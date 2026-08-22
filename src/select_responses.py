@@ -385,6 +385,7 @@ def run_selection(config: dict) -> dict:
         get_nested(config, ["output", "root_directory"], "outputs/selected_responses")
     )
     report_name = str(get_nested(config, ["output", "report_file"], "selection_report.yaml"))
+    overwrite = bool(get_nested(config, ["output", "overwrite_existing"], False))
     synchronize = bool(get_nested(config, ["output", "synchronize_outputs"], True))
     tie_margin = float(get_nested(config, ["ranking", "tie_margin"], 0.03))
     weights = configured_weights(config)
@@ -393,6 +394,8 @@ def run_selection(config: dict) -> dict:
     candidates_by_key = discover_call2_candidates(call2_root, config)
     selections = []
     selected_count = 0
+    written_count = 0
+    skipped_count = 0
     all_failed_count = 0
     removed_stale_count = 0
 
@@ -427,10 +430,16 @@ def run_selection(config: dict) -> dict:
             winner = valid[0]
             margin = winner["score"] - valid[1]["score"] if len(valid) > 1 else None
             source_candidate = Path(winner["path"])
-            destination.parent.mkdir(parents=True, exist_ok=True)
-            shutil.copy2(source_candidate, destination)
+            file_status = "skipped_existing" if destination.exists() and not overwrite else "written"
+            if file_status == "written":
+                destination.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copy2(source_candidate, destination)
+                written_count += 1
+            else:
+                skipped_count += 1
             record.update(
                 {
+                    "file_status": file_status,
                     "selected_call2_model": winner["call2_model"],
                     "selection_score": round(winner["score"], 6),
                     "selection_margin": round(margin, 6) if margin is not None else None,
@@ -453,6 +462,8 @@ def run_selection(config: dict) -> dict:
         "summary": {
             "call1_responses": len(responses),
             "responses_selected": selected_count,
+            "selected_files_written": written_count,
+            "selected_files_skipped": skipped_count,
             "all_candidates_failed": all_failed_count,
             "selection_coverage": round(selected_count / len(responses), 6),
             "stale_outputs_removed": removed_stale_count,

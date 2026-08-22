@@ -9,6 +9,7 @@ input:
 output:
   root_directory: "outputs/selected_responses"
   report_file: "selection_report.yaml"
+  overwrite_existing: false
   # Remove an older selected YAML when every current candidate is invalid.
   synchronize_outputs: true
 
