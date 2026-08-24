@@ -1,0 +1,11 @@
+extends:
+  - "quant_expert_plain_text.yaml"
+
+input:
+  filters:
+    languages:
+      - "en"
+
+experiment:
+  name: "call1_quant_expert_plain_text_en"
+  version: 1
