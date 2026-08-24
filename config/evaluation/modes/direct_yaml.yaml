@@ -1,0 +1,13 @@
+input:
+  predictions: "outputs/call1/yaml"
+
+expected:
+  models:
+    - "llama3.1-8b"
+    - "deepseek-r1-7b"
+
+output:
+  root_directory: "outputs/evaluation/direct_yaml"
+
+judge:
+  enabled: true

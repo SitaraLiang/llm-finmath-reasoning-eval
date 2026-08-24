@@ -57,7 +57,7 @@ This repository was developed as part of my research internship at CMAP, École 
    - `src/eval_embeddings.py` scores formulation pairs and writes calibration outputs under `outputs/evaluation/`.
    - `src/evaluate.py` builds D1/D3/D4 alignment tables, an experimental D2 order report, and aggregate summaries.
    - Evaluation can run in embedding-only mode or with an optional second-stage LLM judge for ambiguous embedding matches.
-   - Parsed-response evaluation is configured in `config/evaluation/plain_text.yaml`; direct-YAML evaluation uses `config/evaluation/direct_yaml.yaml`.
+   - Downstream stages use composable `base.yaml` and `experiments/` configurations, matching the Call 1 structure.
 
 ## Setup
 
@@ -177,16 +177,27 @@ When adding a new language, add its ground-truth directory, include it in
 `base.yaml`, provide localized prompts in both mode files, and add the localized
 instruction to every variation that will run in that language.
 
-Run Call 2 zero-shot per-question conversion:
+Run the English baseline plain-text pipeline after Call 1:
 
 ```bash
-python src/call2.py --config config/call2/experiment_zeroshot.yaml
+python src/call2.py --config config/call2/experiments/baseline_en.yaml
+python src/select_responses.py --config config/selection/experiments/baseline_en.yaml
+python src/evaluate.py --config config/evaluation/experiments/baseline_plain_text_en.yaml
 ```
 
-Select the best valid Call 2 conversion for every Call 1 response:
+Run the English quantitative-expert plain-text pipeline:
 
 ```bash
-python src/select_responses.py --config config/selection/experiment_v1.yaml
+python src/call2.py --config config/call2/experiments/quant_expert_en.yaml
+python src/select_responses.py --config config/selection/experiments/quant_expert_en.yaml
+python src/evaluate.py --config config/evaluation/experiments/quant_expert_plain_text_en.yaml
+```
+
+Evaluate the English baseline direct-YAML experiment, which bypasses Call 2
+and selection:
+
+```bash
+python src/evaluate.py --config config/evaluation/experiments/baseline_direct_yaml_en.yaml
 ```
 
 The selector first excludes missing or structurally invalid candidates. It then
@@ -226,26 +237,67 @@ outputs/evaluation/threshold/en/all-minilm-l6-v2/
 outputs/evaluation/threshold/fr/all-minilm-l6-v2/
 ```
 
-Evaluate selected parsed responses:
+### Adding a Downstream Experiment
 
-```bash
-python src/evaluate.py \
-  --predictions outputs/selected_responses \
-  --ground-truth data/ground_truth \
-  --output outputs/evaluation/parsed_responses
+Call 2, selection, and evaluation use the same inheritance convention as Call
+1. Shared prompts, models, paths, and scoring settings belong in `base.yaml` or
+`modes/`; a file under `experiments/` should contain only the language and
+variation being tested.
+
+```text
+config/call2/
+├── base.yaml
+└── experiments/
+
+config/selection/
+├── base.yaml
+└── experiments/
+
+config/evaluation/
+├── base.yaml
+├── modes/
+└── experiments/
 ```
 
-Run selected plain-text-response evaluation with its configured LLM judge:
+For a new English variation named `role_researcher`, create matching thin
+manifests in all three stages:
 
-```bash
-python src/evaluate.py --config config/evaluation/plain_text.yaml
+```yaml
+# config/call2/experiments/researcher_en.yaml
+extends:
+  - "../base.yaml"
+
+input:
+  filters:
+    languages: ["en"]
+    variations: ["role_researcher"]
 ```
 
-Evaluate direct-YAML Call 1 responses:
+```yaml
+# config/selection/experiments/researcher_en.yaml
+extends:
+  - "../base.yaml"
 
-```bash
-python src/evaluate.py --config config/evaluation/direct_yaml.yaml
+filters:
+  languages: ["en"]
+  variations: ["role_researcher"]
 ```
+
+```yaml
+# config/evaluation/experiments/researcher_plain_text_en.yaml
+extends:
+  - "../base.yaml"
+  - "../modes/plain_text.yaml"
+
+input:
+  filters:
+    languages: ["en"]
+    variations: ["role_researcher"]
+```
+
+Evaluation filters are real input filters. Files from other languages or
+variations are not scored, while the expected model and strategy lists still
+make missing outputs visible in coverage reports.
 
 The current judge setup uses all-MiniLM embeddings with an LLM judge for ambiguous cases:
 
@@ -295,9 +347,9 @@ still evaluated.
 - `outputs/selected_responses/`: curated Call 2 responses selected for evaluation.
 - `outputs/evaluation/`: evaluation results grouped by prediction source and scoring method, plus embedding-threshold calibration outputs.
 - `config/call1/`: Call 1 experiment configurations.
-- `config/call2/`: Call 2 conversion configurations.
-- `config/selection/`: Call 2 candidate-selection configurations.
-- `config/evaluation/`: evaluation and LLM-judge configurations.
+- `config/call2/`: shared Call 2 settings and thin experiment manifests.
+- `config/selection/`: shared candidate-selection settings and experiment manifests.
+- `config/evaluation/`: shared scoring settings, prediction modes, and experiment manifests.
 - `tests/`: parser and conversion validation tests.
 
 ## Notes

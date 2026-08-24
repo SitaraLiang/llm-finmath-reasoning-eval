@@ -1,27 +1,18 @@
 experiment:
-  name: "financial_math_evaluation_judge_v1"
+  name: "financial_math_evaluation_base"
   version: 1
   seed: 42
 
 input:
-  predictions: "outputs/selected_responses"
   ground_truth: "data/ground_truth"
+  filters:
+    call1_models: []
+    languages: []
+    variations: []
+    strategies: []
 
 # Keep missing Call 1/Call 2 cases visible in coverage and end-to-end scores.
 expected:
-  models:
-    - "tinyllama"
-    - "llama3.2-1b"
-    - "deepseek-r1-1.5b"
-    - "qwen2.5-coder-0.5b"
-    - "qwen3-0.6b"
-    - "llama3.1-8b"
-    - "deepseek-r1-7b"
-  languages:
-    - "en"
-    - "fr"
-  variations:
-    - "baseline"
   strategies:
     - "seq"
     - "acc"
@@ -29,8 +20,6 @@ expected:
     - "self"
 
 output:
-  # evaluate.py appends {language}/{variation}/{with_judge|embedding_only}.
-  root_directory: "outputs/evaluation/parsed_responses"
   overwrite_existing: false
 
 embedding:

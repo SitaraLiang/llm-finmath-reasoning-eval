@@ -1,5 +1,5 @@
 experiment:
-  name: "financial_math_call2_zeroshot_v1"
+  name: "financial_math_call2_base"
   version: 1
   seed: 42
 
@@ -11,12 +11,8 @@ input:
     # outputs/call1/plain_text/{model}/{language}/{variation}/.
     models: []
 
-    languages:
-      - "en"
-      - "fr"
-
-    variations:
-      - "baseline"
+    languages: []
+    variations: []
 
     # Leave empty or omit to accept every prompt type found in the Call 1 file.
     prompt_types:

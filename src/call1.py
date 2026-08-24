@@ -12,10 +12,11 @@ from conversion_validator import (
     repair_converted_exercise,
     validate_single_question_conversion,
 )
+from config_loader import load_config
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_CONFIG = PROJECT_ROOT / "config" / "call1" / "example.yaml"
+DEFAULT_CONFIG = PROJECT_ROOT / "config" / "call1" / "experiments" / "baseline_plain_text.yaml"
 CANONICAL_PROMPT_TYPES = {
     "strictly_sequential",
     "prompt_accumulation",
@@ -28,61 +29,6 @@ PROMPT_TYPE_ABBREVIATIONS = {
     "ground_truth_forcing": "gtf",
     "self_history": "self",
 }
-
-
-def merge_config(base: dict, override: dict) -> dict:
-    """Recursively merge mappings; scalar and list values replace their base."""
-    merged = dict(base)
-    for key, value in override.items():
-        if key == "extends":
-            continue
-        if isinstance(value, dict) and isinstance(merged.get(key), dict):
-            merged[key] = merge_config(merged[key], value)
-        else:
-            merged[key] = value
-    return merged
-
-
-def load_config(config_path: Path, loading: tuple[Path, ...] = ()) -> dict:
-    """Load one config and recursively merge files listed by ``extends``."""
-    config_path = config_path.resolve()
-    if not config_path.exists():
-        raise SystemExit(f"Error: Config file '{config_path}' does not exist.")
-    if config_path in loading:
-        chain = " -> ".join(str(path) for path in (*loading, config_path))
-        raise SystemExit(f"Error: Circular Call 1 config inheritance: {chain}")
-
-    text = config_path.read_text(encoding="utf-8")
-    if config_path.suffix.lower() == ".json":
-        loaded = json.loads(text)
-    else:
-        try:
-            import yaml
-        except ImportError as exc:
-            raise SystemExit(
-                "Error: YAML config files require PyYAML. Install it with "
-                "`pip install -r requirements.txt`."
-            ) from exc
-        loaded = yaml.safe_load(text)
-    if not isinstance(loaded, dict):
-        raise SystemExit(f"Error: Config file '{config_path}' must contain a mapping.")
-
-    parents = loaded.get("extends", [])
-    if isinstance(parents, str):
-        parents = [parents]
-    if not isinstance(parents, list) or not all(isinstance(path, str) for path in parents):
-        raise SystemExit(f"Error: Config file '{config_path}' extends must be a string or list.")
-
-    merged = {}
-    for parent in parents:
-        parent_path = Path(parent)
-        if not parent_path.is_absolute():
-            parent_path = config_path.parent / parent_path
-        merged = merge_config(
-            merged,
-            load_config(parent_path, (*loading, config_path)),
-        )
-    return merge_config(merged, loaded)
 
 
 def project_path(path_value: str | Path) -> Path:

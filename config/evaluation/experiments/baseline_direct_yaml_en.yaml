@@ -1,0 +1,14 @@
+extends:
+  - "../base.yaml"
+  - "../modes/direct_yaml.yaml"
+
+experiment:
+  name: "evaluation_baseline_direct_yaml_en"
+  version: 1
+
+input:
+  filters:
+    languages:
+      - "en"
+    variations:
+      - "baseline"

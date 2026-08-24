@@ -13,10 +13,11 @@ from conversion_validator import (
     repair_converted_exercise,
     validate_single_question_conversion,
 )
+from config_loader import load_config
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_CONFIG = PROJECT_ROOT / "config" / "call2" / "example.yaml"
+DEFAULT_CONFIG = PROJECT_ROOT / "config" / "call2" / "experiment_zeroshot.yaml"
 PROMPT_TYPE_ABBREVIATIONS = {
     "strictly_sequential": "seq",
     "prompt_accumulation": "acc",
@@ -27,29 +28,6 @@ ABBREVIATION_TO_PROMPT_TYPE = {
     abbreviation: prompt_type
     for prompt_type, abbreviation in PROMPT_TYPE_ABBREVIATIONS.items()
 }
-
-
-def load_config(config_path: Path) -> dict:
-    """Load a JSON or YAML configuration file."""
-    if not config_path.exists():
-        raise SystemExit(f"Error: Config file '{config_path}' does not exist.")
-
-    text = config_path.read_text(encoding="utf-8")
-    if config_path.suffix.lower() == ".json":
-        return json.loads(text)
-
-    try:
-        import yaml
-    except ImportError as exc:
-        raise SystemExit(
-            "Error: YAML config files require PyYAML. Install it with "
-            "`pip install -r requirements.txt`."
-        ) from exc
-
-    loaded = yaml.safe_load(text)
-    if not isinstance(loaded, dict):
-        raise SystemExit(f"Error: Config file '{config_path}' must contain a mapping.")
-    return loaded
 
 
 def project_path(path_value: str | Path) -> Path:

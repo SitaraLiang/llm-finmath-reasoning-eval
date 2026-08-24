@@ -23,6 +23,7 @@ from eval_embeddings import (
     load_yaml,
     write_csv,
 )
+from config_loader import load_config
 
 
 DEFAULT_PREDICTIONS = Path("outputs/selected_responses")
@@ -117,22 +118,6 @@ def output_group_has_results(output_root: Path) -> bool:
     return output_root.exists() and any(path.is_file() for path in output_root.rglob("*"))
 
 
-def load_config(config_path: Path) -> dict:
-    """Load an optional YAML/JSON evaluation configuration."""
-    if not config_path.exists():
-        raise SystemExit(f"Error: Config file '{config_path}' does not exist.")
-    text = config_path.read_text(encoding="utf-8")
-    if config_path.suffix.lower() == ".json":
-        loaded = json.loads(text)
-    else:
-        loaded = yaml.safe_load(text)
-    if loaded is None:
-        return {}
-    if not isinstance(loaded, dict):
-        raise SystemExit(f"Error: Config file '{config_path}' must contain a mapping.")
-    return loaded
-
-
 def get_nested(config: dict, keys: list[str], default=None):
     current = config
     for key in keys:
@@ -186,6 +171,32 @@ def find_prediction_files(prediction_root: Path) -> list[Path]:
     if not files:
         raise SystemExit(f"Error: no YAML prediction files found under {prediction_root}")
     return files
+
+
+def filter_prediction_files(
+    prediction_files: list[Path],
+    prediction_root: Path,
+    config: dict,
+) -> list[Path]:
+    """Apply experiment filters to discovered prediction files."""
+    configured = {
+        "call1_model": set(configured_string_list(config, ["input", "filters", "call1_models"])),
+        "language": set(configured_string_list(config, ["input", "filters", "languages"])),
+        "variation": set(configured_string_list(config, ["input", "filters", "variations"])),
+        "strategy": set(configured_string_list(config, ["input", "filters", "strategies"])),
+    }
+    selected = []
+    for path in prediction_files:
+        metadata = parse_prediction_path(path, prediction_root)
+        if any(values and metadata[field] not in values for field, values in configured.items()):
+            continue
+        selected.append(path)
+    if not selected:
+        active = {field: sorted(values) for field, values in configured.items() if values}
+        raise SystemExit(
+            f"Error: no YAML prediction files under {prediction_root} match filters {active}."
+        )
+    return selected
 
 
 def parse_ground_truth_path(path: Path, ground_truth_root: Path) -> dict | None:
@@ -260,18 +271,34 @@ def build_coverage_rows(
     found_metadata = collect_prediction_metadata(prediction_files, prediction_root)
     ground_truth_items = find_ground_truth_items(ground_truth_root)
 
-    models = configured_string_list(config, ["expected", "models"]) or sorted(
+    models = (
+        configured_string_list(config, ["expected", "models"])
+        or configured_string_list(config, ["input", "filters", "call1_models"])
+        or sorted(
         {item["call1_model"] for item in found_metadata}
+        )
     )
-    languages = configured_string_list(config, ["expected", "languages"]) or sorted(
+    languages = (
+        configured_string_list(config, ["expected", "languages"])
+        or configured_string_list(config, ["input", "filters", "languages"])
+        or sorted(
         {item["language"] for item in found_metadata}
         or {item["language"] for item in ground_truth_items}
+        )
     )
-    variations = configured_string_list(config, ["expected", "variations"]) or sorted(
+    variations = (
+        configured_string_list(config, ["expected", "variations"])
+        or configured_string_list(config, ["input", "filters", "variations"])
+        or sorted(
         {item["variation"] for item in found_metadata}
+        )
     )
-    strategies = configured_string_list(config, ["expected", "strategies"]) or sorted(
+    strategies = (
+        configured_string_list(config, ["expected", "strategies"])
+        or configured_string_list(config, ["input", "filters", "strategies"])
+        or sorted(
         {item["strategy"] for item in found_metadata}
+        )
     )
 
     if not models or not languages or not variations or not strategies:
@@ -1557,7 +1584,11 @@ def main() -> None:
             judge_prompt,
         )
 
-    prediction_files = find_prediction_files(prediction_root)
+    prediction_files = filter_prediction_files(
+        find_prediction_files(prediction_root),
+        prediction_root,
+        config,
+    )
     coverage_rows = build_coverage_rows(
         config,
         prediction_files,

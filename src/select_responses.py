@@ -7,7 +7,6 @@ to a separate selection report.
 """
 
 import argparse
-import json
 from pathlib import Path
 import re
 import shutil
@@ -15,6 +14,7 @@ import sys
 import time
 
 from conversion_validator import expected_subquestion_count, validate_converted_exercise
+from config_loader import load_config
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
@@ -43,23 +43,6 @@ STOPWORDS = {
 
 def progress(message: str) -> None:
     print(f"[{time.strftime('%H:%M:%S')}] {message}", flush=True)
-
-
-def load_config(path: Path) -> dict:
-    if not path.exists():
-        raise SystemExit(f"Error: Config file '{path}' does not exist.")
-    text = path.read_text(encoding="utf-8")
-    if path.suffix.lower() == ".json":
-        data = json.loads(text)
-    else:
-        try:
-            import yaml
-        except ImportError as exc:
-            raise SystemExit("Error: selection requires PyYAML.") from exc
-        data = yaml.safe_load(text)
-    if not isinstance(data, dict):
-        raise SystemExit(f"Error: Config file '{path}' must contain a mapping.")
-    return data
 
 
 def project_path(value: str | Path) -> Path:

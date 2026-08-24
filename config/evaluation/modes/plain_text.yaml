@@ -1,0 +1,18 @@
+input:
+  predictions: "outputs/selected_responses"
+
+expected:
+  models:
+    - "tinyllama"
+    - "llama3.2-1b"
+    - "deepseek-r1-1.5b"
+    - "qwen2.5-coder-0.5b"
+    - "qwen3-0.6b"
+    - "llama3.1-8b"
+    - "deepseek-r1-7b"
+
+output:
+  root_directory: "outputs/evaluation/parsed_responses"
+
+judge:
+  enabled: true
