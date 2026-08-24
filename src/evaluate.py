@@ -28,7 +28,7 @@ from eval_embeddings import (
 DEFAULT_PREDICTIONS = Path("outputs/selected_responses")
 DEFAULT_GROUND_TRUTH = Path("data/ground_truth")
 DEFAULT_OUTPUT = Path("outputs/evaluation/parsed_responses")
-DEFAULT_CONFIG = Path("config/evaluation/example.yaml")
+DEFAULT_CONFIG = Path("config/evaluation/plain_text.yaml")
 ATOM_DIMENSIONS = {
     "D1": "outcomes",
     "D3": "arguments",
