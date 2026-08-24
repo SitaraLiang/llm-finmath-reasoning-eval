@@ -218,7 +218,31 @@ inventory per language. To extract only French, use:
 python src/extract_statements.py --language fr
 ```
 
-Create and curate `formulation_pairs.yaml` separately for each language. Pair
+Seed 12 formulation-pair concepts for every available language:
+
+```bash
+python src/seed_pairs.py \
+  --input-root data/evaluation \
+  --output-root data/evaluation \
+  --concept-count 12
+```
+
+To seed only English:
+
+```bash
+python src/seed_pairs.py --language en --concept-count 12
+```
+
+Existing `formulation_pairs.yaml` files are preserved by default. Use
+`--overwrite` to update a seed while retaining completed variants, or combine
+`--overwrite --reselect` to discard the previous statement selection and draw
+a new balanced sample:
+
+```bash
+python src/seed_pairs.py --language en --concept-count 12 --overwrite --reselect
+```
+
+After seeding, curate `formulation_pairs.yaml` separately for each language. Pair
 variants must be written in the same language as `text_a`; an English threshold
 must not be reused as a French calibration result without testing it.
 
