@@ -1,0 +1,131 @@
+output_modes:
+  - "yaml"
+
+prompts:
+  languages:
+    en:
+      empty_value: "none"
+      labels:
+        question: "Question"
+        exact_solution: "Exact solution"
+        your_answer: "Your answer"
+      common_header: |
+        /no_think
+        $variation_instruction
+        You are solving a financial mathematics exercise.
+        Return your answer directly in the proof-atom YAML format.
+        Do not output prose outside the YAML block. Use LaTeX for formulas.
+
+        Context:
+        $context
+
+        Global assumptions:
+        $global_assumptions
+
+        YAML FORMAT:
+        - Return exactly one Markdown code block tagged yml.
+        - Inside it, return one mapping with exactly one top-level key: atoms.
+        - Do not use YAML document separators.
+        - Every atom has preconditions, arguments, and outcomes lists.
+        - Arguments must contain at least one item; the other lists may be empty.
+        - Use "Calculation" only for a calculation or computation.
+        - Use !!python/tuple only for an explicitly unordered set of proof blocks.
+      strategies:
+        strictly_sequential: |
+          Local assumptions:
+          $current_assumptions
+
+          Question $current_question_number:
+          $current_question
+
+          Solve only Question $current_question_number and return only its atoms.
+        prompt_accumulation: |
+          Questions provided so far:
+          $accumulated_questions
+
+          Solve only Question $current_question_number and return only its atoms.
+        ground_truth_forcing: |
+          Previous questions and exact solutions:
+          $ground_truth_history
+
+          Local assumptions:
+          $current_assumptions
+
+          Current question $current_question_number:
+          $current_question
+
+          Solve only Question $current_question_number and return only its atoms.
+        self_history: |
+          Previous questions and your previous answers:
+          $self_history
+
+          Local assumptions:
+          $current_assumptions
+
+          Current question $current_question_number:
+          $current_question
+
+          Solve only Question $current_question_number and return only its atoms.
+    fr:
+      empty_value: "aucune"
+      labels:
+        question: "Question"
+        exact_solution: "Solution exacte"
+        your_answer: "Votre réponse"
+      common_header: |
+        /no_think
+        $variation_instruction
+        Vous résolvez un exercice de mathématiques financières.
+        Retournez directement votre réponse au format YAML d'atomes de preuve.
+        N'ajoutez aucun texte en dehors du bloc YAML. Utilisez LaTeX pour les formules.
+
+        Contexte :
+        $context
+
+        Hypothèses globales :
+        $global_assumptions
+
+        FORMAT YAML :
+        - Retournez exactement un bloc Markdown étiqueté yml.
+        - Dans ce bloc, retournez un mapping avec une seule clé de premier niveau : atoms.
+        - N'utilisez pas de séparateur de document YAML.
+        - Chaque atome contient les listes preconditions, arguments et outcomes.
+        - La liste arguments contient au moins un élément; les deux autres peuvent être vides.
+        - Utilisez "Calculation" uniquement pour un calcul ou une opération explicite.
+        - Utilisez !!python/tuple uniquement pour un ensemble explicitement non ordonné de blocs de preuve.
+      strategies:
+        strictly_sequential: |
+          Hypothèses locales :
+          $current_assumptions
+
+          Question $current_question_number :
+          $current_question
+
+          Résolvez uniquement la question $current_question_number et retournez seulement ses atomes.
+        prompt_accumulation: |
+          Questions fournies jusqu'à présent :
+          $accumulated_questions
+
+          Résolvez uniquement la question $current_question_number et retournez seulement ses atomes.
+        ground_truth_forcing: |
+          Questions précédentes et solutions exactes :
+          $ground_truth_history
+
+          Hypothèses locales :
+          $current_assumptions
+
+          Question actuelle $current_question_number :
+          $current_question
+
+          Résolvez uniquement la question $current_question_number et retournez seulement ses atomes.
+        self_history: |
+          Questions précédentes et vos réponses précédentes :
+          $self_history
+
+          Hypothèses locales :
+          $current_assumptions
+
+          Question actuelle $current_question_number :
+          $current_question
+
+          Résolvez uniquement la question $current_question_number et retournez seulement ses atomes.

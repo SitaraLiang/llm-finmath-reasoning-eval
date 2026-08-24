@@ -1,0 +1,7 @@
+extends:
+  - "../base.yaml"
+  - "../modes/yaml.yaml"
+  - "../variations/baseline.yaml"
+experiment:
+  name: "call1_baseline_direct_yaml"
+  version: 1

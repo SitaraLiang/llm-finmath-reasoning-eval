@@ -19,7 +19,9 @@ This repository was developed as part of my research internship at CMAP, École 
 
 3. **Call 1: generate model answers**
    - `src/call1.py` prompts Ollama models to solve each exercise.
-   - Outputs are stored under `outputs/call1/plain_text/{model}/{lang}/{variation}/`.
+   - Plain-text outputs are stored under `outputs/call1/plain_text/{model}/{lang}/{variation}/`.
+   - Direct proof-atom YAML outputs are stored under `outputs/call1/yaml/{model}/{lang}/{variation}/` and bypass Call 2.
+   - Call 1 configurations are composed from shared settings, an output mode, and one multilingual variation under `config/call1/`.
    - Each strategy gets its own file:
      - `pc2_q1_seq.txt`: strictly sequential
      - `pc2_q1_acc.txt`: prompt accumulation
@@ -30,25 +32,32 @@ This repository was developed as part of my research internship at CMAP, École 
      - **prompt accumulation (`acc`)**: the model sees all questions up to the current one, but answers only the current subquestion.
      - **ground-truth forcing (`gtf`)**: the model sees previous questions together with their ground-truth solutions, then answers the current subquestion.
      - **self history (`self`)**: the model sees previous questions together with its own previous answers, then answers the current subquestion.
-   - Failed generations are written to `outputs/call1/error_files.yaml`.
+   - Failed generations are written separately under the corresponding `outputs/call1/{mode}/` directory.
 
 4. **Call 2: convert answers to proof-atom YAML**
    - `src/call2.py` converts Call 1 text answers into the structured YAML format.
    - Current recommended mode is `per_question`: each `Question N:` block is converted separately, then Python assembles the final `subquestions` list.
    - Validation and repair helpers live in `src/conversion_validator.py`.
    - Successful conversions write only `.yaml`; raw model text is saved as `.raw.txt` only for failed conversions.
-   - Few-shot outputs default to `outputs/call2/`.
-   - Zero-shot per-question outputs default to `outputs/call2_zeroshot_per_question/`.
+   - The current zero-shot per-question experiment writes to `outputs/call2/`.
    - Failed conversions are summarized in `{output_root}/error_files.yaml`.
 
-5. **Evaluation**
-   - Selected Call 2 conversions are stored under `outputs/selected_responses/`.
-   - `src/extract_statements.py` extracts candidate ground-truth statements to `data/evaluation/ground_truth_statements.csv`.
-   - `data/evaluation/formulation_pairs.yaml` stores curated formulation pairs for embedding-threshold calibration.
+5. **Select Call 2 conversions**
+   - `src/select_responses.py` validates and ranks all available Call 2
+     conversions for each Call 1 response.
+   - Ranking compares candidates only with the Call 1 source; it never reads the
+     ground truth.
+   - Selected YAML files are stored unchanged under `outputs/selected_responses/`.
+   - `outputs/selected_responses/selection_report.yaml` records candidate scores,
+     validation failures, close decisions, and cases where every converter failed.
+
+6. **Evaluation**
+   - `src/extract_statements.py` extracts statements separately to `data/evaluation/{lang}/ground_truth_statements.csv`.
+   - `data/evaluation/{lang}/formulation_pairs.yaml` stores independently curated formulation pairs for each language.
    - `src/eval_embeddings.py` scores formulation pairs and writes calibration outputs under `outputs/evaluation/`.
    - `src/evaluate.py` builds D1/D3/D4 alignment tables, an experimental D2 order report, and aggregate summaries.
    - Evaluation can run in embedding-only mode or with an optional second-stage LLM judge for ambiguous embedding matches.
-   - The current judge configuration lives in `config/evaluation/experiment_v1.yaml`.
+   - Parsed-response evaluation is configured in `config/evaluation/plain_text.yaml`; direct-YAML evaluation uses `config/evaluation/direct_yaml.yaml`.
 
 ## Setup
 
@@ -92,20 +101,98 @@ python src/parser.py --input data/raw_tex --output data/ground_truth
 Run Call 1:
 
 ```bash
-python src/call1.py --config config/call1/experiment_v1.yaml
+python src/call1.py \
+  --config config/call1/experiments/baseline_plain_text.yaml
 ```
 
-Run Call 2 few-shot:
+Run the baseline direct-YAML pipeline:
 
 ```bash
-python src/call2.py --config config/call2/experiment_v1.yaml
+python src/call1.py \
+  --config config/call1/experiments/baseline_direct_yaml.yaml
 ```
+
+### Adding a Call 1 Experiment
+
+Call 1 configurations are assembled recursively with `extends`:
+
+```text
+config/call1/
+├── base.yaml                 # models, languages, paths, retries, strategies
+├── modes/
+│   ├── plain_text.yaml       # localized plain-text prompts
+│   └── yaml.yaml             # localized direct-YAML prompts
+├── variations/              # one multilingual experimental change per file
+└── experiments/             # small runnable manifests
+```
+
+To add a variation, first create `config/call1/variations/role_researcher.yaml`:
+
+```yaml
+variation:
+  id: "role_researcher"
+  instruction:
+    en: "You are a researcher in quantitative finance."
+    fr: "Vous êtes chercheur en finance quantitative."
+```
+
+Then create a runnable manifest, for example
+`config/call1/experiments/researcher_plain_text.yaml`:
+
+```yaml
+extends:
+  - "../base.yaml"
+  - "../modes/plain_text.yaml"
+  - "../variations/role_researcher.yaml"
+
+experiment:
+  name: "call1_researcher_plain_text"
+  version: 1
+```
+
+Run it with:
+
+```bash
+python src/call1.py \
+  --config config/call1/experiments/researcher_plain_text.yaml
+```
+
+For direct YAML, create the same manifest with `../modes/yaml.yaml`. The
+variation identifier becomes the output directory name, for example
+`outputs/call1/plain_text/{model}/fr/role_researcher/`. Shared settings should
+be changed in `base.yaml`; mode-specific prompt rules belong in `modes/`; only
+the experimental instruction belongs in `variations/`.
+
+To run an experiment for only one language, override the inherited language
+filter in its manifest:
+
+```yaml
+input:
+  filters:
+    languages:
+      - "fr"
+```
+
+When adding a new language, add its ground-truth directory, include it in
+`base.yaml`, provide localized prompts in both mode files, and add the localized
+instruction to every variation that will run in that language.
 
 Run Call 2 zero-shot per-question conversion:
 
 ```bash
-python src/call2.py --config config/call2/experiment_v1_zeroshot.yaml
+python src/call2.py --config config/call2/experiment_zeroshot.yaml
 ```
+
+Select the best valid Call 2 conversion for every Call 1 response:
+
+```bash
+python src/select_responses.py --config config/selection/experiment_v1.yaml
+```
+
+The selector first excludes missing or structurally invalid candidates. It then
+ranks valid candidates using source coverage, formula fidelity, a hallucination
+proxy, atom completeness, and duplicate detection. Close rankings are marked
+with `needs_review: true` in the selection report.
 
 Extract statements for embedding calibration:
 
@@ -113,21 +200,30 @@ Extract statements for embedding calibration:
 python src/extract_statements.py
 ```
 
-Create the starter formulation-pair file (Manually)
+This reads every `data/ground_truth/{lang}/` directory and writes one statement
+inventory per language. To extract only French, use:
+
+```bash
+python src/extract_statements.py --language fr
+```
+
+Create and curate `formulation_pairs.yaml` separately for each language. Pair
+variants must be written in the same language as `text_a`; an English threshold
+must not be reused as a French calibration result without testing it.
 
 Calibrate embedding similarity thresholds:
 
 ```bash
 python src/eval_embeddings.py pairs \
-  --input data/evaluation/formulation_pairs.yaml \
+  --input data/evaluation \
   --output-dir outputs/evaluation/threshold 
 ```
 
 This writes one folder per embedding model, for example:
 
 ```text
-outputs/evaluation/threshold/modernBert/
-outputs/evaluation/threshold/all-minilm-l6-v2/
+outputs/evaluation/threshold/en/all-minilm-l6-v2/
+outputs/evaluation/threshold/fr/all-minilm-l6-v2/
 ```
 
 Evaluate selected parsed responses:
@@ -139,22 +235,29 @@ python src/evaluate.py \
   --output outputs/evaluation/parsed_responses
 ```
 
-Run evaluation with the configured LLM judge:
+Run selected plain-text-response evaluation with its configured LLM judge:
 
 ```bash
-python src/evaluate.py --config config/evaluation/experiment_v1.yaml
+python src/evaluate.py --config config/evaluation/plain_text.yaml
+```
+
+Evaluate direct-YAML Call 1 responses:
+
+```bash
+python src/evaluate.py --config config/evaluation/direct_yaml.yaml
 ```
 
 The current judge setup uses all-MiniLM embeddings with an LLM judge for ambiguous cases:
 
 ```text
-embedding threshold: 0.4
-judge band: 0.375 to 0.415
+embedding thresholds: en=0.375, fr=0.45
+judge bands: en=0.30 to 1.0, fr=0.35 to 1.0
 judge model: llama3.1:8b
 ```
 
 Judge-enabled parsed-response results are written to
-`outputs/evaluation/parsed_responses/with_judge/`. The file `judge_cache.yaml`
+`outputs/evaluation/parsed_responses/{lang}/{variation}/with_judge/`. The shared
+file `judge_cache.yaml`
 stores past judge decisions so repeated evaluations do not call Ollama again for
 the same ambiguous pair.
 
@@ -163,30 +266,37 @@ Evaluation outputs are grouped by prediction source and scoring method:
 ```text
 outputs/evaluation/
   parsed_responses/
-    embedding_only/
-    with_judge/
+    {lang}/{variation}/
+      embedding_only/
+      with_judge/
   direct_yaml/
-    embedding_only/
-    with_judge/
+    {lang}/{variation}/
+      embedding_only/
+      with_judge/
   threshold/
 ```
 
 The configured `output.root_directory` (or `--output`) is the source-level base
-directory. `evaluate.py` automatically appends `embedding_only` when
-`judge.enabled` is false and `with_judge` when it is true.
+directory. `evaluate.py` automatically partitions results by language and
+variation, then appends `embedding_only` when `judge.enabled` is false or
+`with_judge` when it is true.
+
+With `output.overwrite_existing: false`, an existing non-empty
+language/variation/method directory is left untouched, while missing groups are
+still evaluated.
 
 ## Main Directories
 
 - `data/raw_tex/{lang}/`: imported annotated LaTeX exercises.
 - `data/ground_truth/{lang}/`: parsed ground-truth YAML.
-- `data/evaluation/`: curated evaluation inputs, including `ground_truth_statements.csv` and `formulation_pairs.yaml`.
+- `data/evaluation/{lang}/`: language-specific statement inventories and formulation-pair calibration datasets.
 - `outputs/call1/`: model-generated exercise answers.
-- `outputs/call2/`: few-shot Call 2 conversions.
-- `outputs/call2_zeroshot_per_question/`: zero-shot per-question Call 2 conversions.
+- `outputs/call2/`: zero-shot per-question Call 2 conversions.
 - `outputs/selected_responses/`: curated Call 2 responses selected for evaluation.
 - `outputs/evaluation/`: evaluation results grouped by prediction source and scoring method, plus embedding-threshold calibration outputs.
 - `config/call1/`: Call 1 experiment configurations.
 - `config/call2/`: Call 2 conversion configurations.
+- `config/selection/`: Call 2 candidate-selection configurations.
 - `config/evaluation/`: evaluation and LLM-judge configurations.
 - `tests/`: parser and conversion validation tests.
 
@@ -196,3 +306,7 @@ directory. `evaluate.py` automatically appends `embedding_only` when
 - YAML files containing `!!python/tuple` should only be loaded with a trusted PyYAML loader when they are benchmark-generated local files.
 - Generated outputs can be large and are usually not meant to be committed.
 - If a Call 2 run fails, inspect `{output_root}/error_files.yaml` and the corresponding `.raw.txt` failure sidecar.
+- Evaluation aggregate files report both conditional scores over available
+  selected responses and coverage-adjusted `end_to_end_*` scores. A response for
+  which every Call 2 model failed remains explicitly missing rather than being
+  silently excluded.

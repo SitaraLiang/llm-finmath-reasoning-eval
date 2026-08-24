@@ -1,0 +1,5 @@
+variation:
+  id: "role_quant_expert"
+  instruction:
+    en: "You are an expert in quantitative finance and stochastic calculus."
+    fr: "Vous êtes spécialiste en finance quantitative et en calcul stochastique."

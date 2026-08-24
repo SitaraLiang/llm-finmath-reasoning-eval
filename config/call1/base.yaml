@@ -1,0 +1,75 @@
+experiment:
+  seed: 42
+
+input:
+  root_directory: "data/ground_truth"
+  ground_truth_answer_keys:
+    - "solution"
+    - "ground_truth"
+    - "answer"
+    - "expected_answer"
+    - "atoms"
+  filters:
+    languages:
+      - "en"
+      - "fr"
+    prompt_types:
+      - "strictly_sequential"
+      - "prompt_accumulation"
+      - "ground_truth_forcing"
+      - "self_history"
+
+output:
+  root_directory: "outputs/call1"
+  directory_template: "{mode}/{model}/{language}/{variation}"
+  filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}{suffix}"
+  error_report_filename: "error_files.yaml"
+  overwrite_existing: false
+
+ollama:
+  endpoint: "http://localhost:11434/api/generate"
+  timeout_seconds: 600
+
+models:
+  - id: "tinyllama"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      max_output_tokens: 3000
+  - id: "llama3.2:1b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      max_output_tokens: 3000
+  - id: "deepseek-r1:1.5b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      max_output_tokens: 6000
+  - id: "qwen2.5-coder:0.5b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      max_output_tokens: 3000
+  - id: "qwen3:0.6b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      temperature: 0.1
+      max_output_tokens: 6000
+  - id: "llama3.1:8b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      temperature: 0.1
+      max_output_tokens: 3000
+  - id: "deepseek-r1:7b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      temperature: 0.1
+      max_output_tokens: 3000
+
+execution:
+  max_retries: 5
+  retry_delay_seconds: 5

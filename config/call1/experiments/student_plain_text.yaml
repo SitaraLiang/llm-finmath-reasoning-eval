@@ -1,0 +1,7 @@
+extends:
+  - "../base.yaml"
+  - "../modes/plain_text.yaml"
+  - "../variations/role_student.yaml"
+experiment:
+  name: "call1_student_plain_text"
+  version: 1

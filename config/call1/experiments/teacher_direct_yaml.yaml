@@ -1,0 +1,7 @@
+extends:
+  - "../base.yaml"
+  - "../modes/yaml.yaml"
+  - "../variations/role_teacher.yaml"
+experiment:
+  name: "call1_teacher_direct_yaml"
+  version: 1

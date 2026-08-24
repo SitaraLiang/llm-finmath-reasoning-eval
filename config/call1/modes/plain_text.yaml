@@ -1,31 +1,3 @@
-experiment:
-  name: "financial_math_call1_v1"
-  version: 1
-  seed: 42
-
-input:
-  root_directory: "data/ground_truth"
-  ground_truth_answer_keys:
-    - "solution"
-    - "ground_truth"
-    - "answer"
-    - "expected_answer"
-    - "atoms"
-
-  filters:
-    languages:
-      - "en"
-      - "fr"
-
-    variations:
-      - "baseline"
-
-    prompt_types:
-      - "strictly_sequential"
-      - "prompt_accumulation"
-      - "ground_truth_forcing"
-      - "self_history"
-
 output_modes:
   - "plain_text"
 
@@ -37,8 +9,8 @@ prompts:
         question: "Question"
         exact_solution: "Exact solution"
         your_answer: "Your answer"
-
       common_header: |
+        $variation_instruction
         You are solving a financial mathematics exercise.
         Write a concise rigorous mathematical answer in English. Do not include hidden reasoning or long explanations. Use LaTeX for formulas.
 
@@ -47,7 +19,6 @@ prompts:
 
         Global assumptions:
         $global_assumptions
-
       strategies:
         strictly_sequential: |
           Local assumptions:
@@ -57,13 +28,11 @@ prompts:
           $current_question
 
           Answer only Question $current_question_number.
-
         prompt_accumulation: |
           Questions provided so far:
           $accumulated_questions
 
           Answer only Question $current_question_number.
-
         ground_truth_forcing: |
           Previous questions and exact solutions:
           $ground_truth_history
@@ -75,7 +44,6 @@ prompts:
           $current_question
 
           Answer only Question $current_question_number.
-
         self_history: |
           Previous questions and your previous answers:
           $self_history
@@ -87,15 +55,14 @@ prompts:
           $current_question
 
           Answer only Question $current_question_number.
-
     fr:
       empty_value: "aucune"
       labels:
         question: "Question"
         exact_solution: "Solution exacte"
         your_answer: "Votre réponse"
-
       common_header: |
+        $variation_instruction
         Vous résolvez un exercice de mathématiques financières.
         Rédigez en français une réponse mathématique concise et rigoureuse. N'incluez pas de raisonnement caché ni de longues explications. Utilisez LaTeX pour les formules.
 
@@ -104,7 +71,6 @@ prompts:
 
         Hypothèses globales :
         $global_assumptions
-
       strategies:
         strictly_sequential: |
           Hypothèses locales :
@@ -114,13 +80,11 @@ prompts:
           $current_question
 
           Répondez uniquement à la question $current_question_number.
-
         prompt_accumulation: |
           Questions fournies jusqu'à présent :
           $accumulated_questions
 
           Répondez uniquement à la question $current_question_number.
-
         ground_truth_forcing: |
           Questions précédentes et solutions exactes :
           $ground_truth_history
@@ -132,7 +96,6 @@ prompts:
           $current_question
 
           Répondez uniquement à la question $current_question_number.
-
         self_history: |
           Questions précédentes et vos réponses précédentes :
           $self_history
@@ -144,66 +107,3 @@ prompts:
           $current_question
 
           Répondez uniquement à la question $current_question_number.
-
-output:
-  root_directory: "outputs/call1"
-  directory_template: "{mode}/{model}/{language}/{variation}"
-  filename_template: "pc{pc}_q{exercise}_{prompt_type_abbrev}{suffix}"
-  error_report_filename: "error_files.yaml"
-  overwrite_existing: false
-
-ollama:
-  endpoint: "http://localhost:11434/api/generate"
-  timeout_seconds: 600
-
-models:
-  # Small models
-  - id: "tinyllama"
-    provider: "ollama"
-    enabled: true
-    parameters:
-      max_output_tokens: 3000
-
-  - id: "llama3.2:1b"
-    provider: "ollama"
-    enabled: true
-    parameters:
-      max_output_tokens: 3000
-
-  - id: "deepseek-r1:1.5b"
-    provider: "ollama"
-    enabled: true
-    parameters:
-        max_output_tokens: 6000
-
-  - id: "qwen2.5-coder:0.5b"
-    provider: "ollama"
-    enabled: true
-    parameters:
-      max_output_tokens: 3000
-
-  - id: "qwen3:0.6b"
-    provider: "ollama"
-    enabled: true
-    parameters:
-      temperature: 0.1
-      max_output_tokens: 6000
-
-  # Medium models
-  - id: "llama3.1:8b"
-    provider: "ollama"
-    enabled: true
-    parameters:
-      temperature: 0.1
-      max_output_tokens: 3000
-
-  - id: "deepseek-r1:7b"
-    provider: "ollama"
-    enabled: true
-    parameters:
-      temperature: 0.1
-      max_output_tokens: 3000
-
-execution:
-  max_retries: 5
-  retry_delay_seconds: 5

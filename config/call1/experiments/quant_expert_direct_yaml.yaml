@@ -1,0 +1,7 @@
+extends:
+  - "../base.yaml"
+  - "../modes/yaml.yaml"
+  - "../variations/role_quant_expert.yaml"
+experiment:
+  name: "call1_quant_expert_direct_yaml"
+  version: 1

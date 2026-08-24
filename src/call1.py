@@ -30,27 +30,59 @@ PROMPT_TYPE_ABBREVIATIONS = {
 }
 
 
-def load_config(config_path: Path) -> dict:
-    """Load a JSON or YAML configuration file."""
+def merge_config(base: dict, override: dict) -> dict:
+    """Recursively merge mappings; scalar and list values replace their base."""
+    merged = dict(base)
+    for key, value in override.items():
+        if key == "extends":
+            continue
+        if isinstance(value, dict) and isinstance(merged.get(key), dict):
+            merged[key] = merge_config(merged[key], value)
+        else:
+            merged[key] = value
+    return merged
+
+
+def load_config(config_path: Path, loading: tuple[Path, ...] = ()) -> dict:
+    """Load one config and recursively merge files listed by ``extends``."""
+    config_path = config_path.resolve()
     if not config_path.exists():
         raise SystemExit(f"Error: Config file '{config_path}' does not exist.")
+    if config_path in loading:
+        chain = " -> ".join(str(path) for path in (*loading, config_path))
+        raise SystemExit(f"Error: Circular Call 1 config inheritance: {chain}")
 
     text = config_path.read_text(encoding="utf-8")
     if config_path.suffix.lower() == ".json":
-        return json.loads(text)
-
-    try:
-        import yaml
-    except ImportError as exc:
-        raise SystemExit(
-            "Error: YAML config files require PyYAML. Install it with "
-            "`pip install -r requirements.txt`."
-        ) from exc
-
-    loaded = yaml.safe_load(text)
+        loaded = json.loads(text)
+    else:
+        try:
+            import yaml
+        except ImportError as exc:
+            raise SystemExit(
+                "Error: YAML config files require PyYAML. Install it with "
+                "`pip install -r requirements.txt`."
+            ) from exc
+        loaded = yaml.safe_load(text)
     if not isinstance(loaded, dict):
         raise SystemExit(f"Error: Config file '{config_path}' must contain a mapping.")
-    return loaded
+
+    parents = loaded.get("extends", [])
+    if isinstance(parents, str):
+        parents = [parents]
+    if not isinstance(parents, list) or not all(isinstance(path, str) for path in parents):
+        raise SystemExit(f"Error: Config file '{config_path}' extends must be a string or list.")
+
+    merged = {}
+    for parent in parents:
+        parent_path = Path(parent)
+        if not parent_path.is_absolute():
+            parent_path = config_path.parent / parent_path
+        merged = merge_config(
+            merged,
+            load_config(parent_path, (*loading, config_path)),
+        )
+    return merge_config(merged, loaded)
 
 
 def project_path(path_value: str | Path) -> Path:
@@ -68,6 +100,49 @@ def get_nested(config: dict, keys: list[str], default=None):
             return default
         current = current[key]
     return current
+
+
+def configured_variations(config: dict) -> list[str]:
+    """Return the singular variation, with compatibility for legacy lists."""
+    variation = config.get("variation")
+    if isinstance(variation, dict):
+        variation_id = variation.get("id")
+        if not variation_id:
+            raise SystemExit("Error: config.variation.id is required.")
+        return [str(variation_id)]
+    if isinstance(variation, str):
+        return [variation]
+
+    legacy = get_nested(config, ["input", "filters", "variations"])
+    if legacy is None:
+        legacy = get_nested(config, ["input", "filters", "variation"], ["baseline"])
+    if isinstance(legacy, str):
+        legacy = [legacy]
+    if not isinstance(legacy, list) or not legacy:
+        raise SystemExit("Error: Call 1 variation must be a non-empty string or list.")
+    return [str(value) for value in legacy]
+
+
+def variation_instruction(config: dict, variation: str, language: str) -> str:
+    """Return the localized role/instruction text for the active variation."""
+    variation_config = config.get("variation")
+    if not isinstance(variation_config, dict):
+        return ""
+    if str(variation_config.get("id")) != variation:
+        raise SystemExit(
+            f"Error: Active variation '{variation}' does not match config.variation.id."
+        )
+    instruction = variation_config.get("instruction", "")
+    if isinstance(instruction, str):
+        return instruction.strip()
+    if not isinstance(instruction, dict):
+        raise SystemExit("Error: config.variation.instruction must be a string or mapping.")
+    localized = instruction.get(language)
+    if localized is None:
+        raise SystemExit(
+            f"Error: Variation '{variation}' has no instruction for language '{language}'."
+        )
+    return str(localized).strip()
 
 
 def progress(message: str) -> None:
@@ -366,11 +441,13 @@ def build_prompt(
     generated_answers: list[str],
     prompts: dict,
     ground_truth_keys: list[str],
+    active_variation_instruction: str = "",
 ) -> str:
     """Build the user prompt from config templates and strategy variables."""
     empty_value = prompts.get("empty_value", "none")
     labels = prompts.get("labels", {})
     values = {
+        "variation_instruction": active_variation_instruction,
         "context": exercise.get("context") or empty_value,
         "global_assumptions": format_items(
             exercise.get("assumption_global", []), empty_value
@@ -589,6 +666,7 @@ def generate_complete_exercise_answers(
     max_retries: int,
     retry_delay: int,
     progress_prefix: str,
+    active_variation_instruction: str = "",
 ) -> list[dict]:
     subquestions = exercise_data.get("subquestions", [])
     generated_answers = []
@@ -608,6 +686,7 @@ def generate_complete_exercise_answers(
             generated_answers,
             prompts,
             ground_truth_keys,
+            active_variation_instruction,
         )
 
         answer = ""
@@ -649,7 +728,7 @@ def run_call1(config: dict) -> None:
     inputs = discover_inputs(config)
     models = enabled_models(config)
     prompts = require_prompt_templates(config)
-    variations = get_nested(config, ["input", "filters", "variations"], ["baseline"])
+    variations = configured_variations(config)
     prompt_types = get_nested(config, ["input", "filters", "prompt_types"], ["strictly_sequential"])
     output_modes = config.get("output_modes", ["plain_text"])
     ground_truth_keys = get_nested(
@@ -702,6 +781,9 @@ def run_call1(config: dict) -> None:
         exercise_data = load_exercise_file(item["path"])
         item_prompts = prompt_templates_for_language(prompts, item["language"])
         for variation in variations:
+            active_variation_instruction = variation_instruction(
+                config, variation, item["language"]
+            )
             for prompt_type in prompt_types:
                 for output_mode in output_modes:
                     for model in models:
@@ -742,6 +824,7 @@ def run_call1(config: dict) -> None:
                                 max_retries,
                                 retry_delay,
                                 job_label,
+                                active_variation_instruction,
                             )
                             result = {
                                 "pc": item["pc"],
