@@ -26,24 +26,34 @@ expected:
     - "self"
 
 output:
-  # evaluate.py appends with_judge or embedding_only from judge.enabled.
+  # evaluate.py appends {language}/{variation}/{with_judge|embedding_only}.
   root_directory: "outputs/evaluation/direct_yaml"
+  overwrite_existing: false
 
 embedding:
   model: "sentence-transformers/all-MiniLM-L6-v2"
-  threshold: 0.4
+  threshold: 0.375
+  thresholds:
+    en: 0.375
 
 judge:
-  enabled: true
+  enabled: false
   model: "llama3.1:8b"
   endpoint: "http://localhost:11434/api/generate"
   timeout_seconds: 120
   temperature: 0.0
 
-  # Embedding decisions outside this band are automatic.
-  # Scores in [low_threshold, high_threshold] are sent to the LLM judge.
-  low_threshold: 0.375
-  high_threshold: 0.415
+  # Very low embedding scores are rejected automatically. All remaining
+  # candidates are checked by the judge.
+  low_threshold: 0.30
+  high_threshold: 1.0
+  thresholds:
+    en:
+      low: 0.30
+      high: 1.0
+    fr:
+      low: 0.35
+      high: 1.0
 
 prompts:
   judge: |
@@ -69,21 +79,19 @@ prompts:
     Labels:
     - equivalent: the model statement fully expresses the same mathematical content,
       possibly with different wording or notation.
-    - partially_correct: the model statement captures part of the ground-truth content,
-      but misses an important condition, weakens the statement, or is incomplete.
-    - incorrect: the model statement contradicts the ground truth or contains a
-      mathematical error.
+    - related_but_not_equivalent: both statements concern the same mathematical topic,
+      but the model statement is incomplete, weaker, stronger, contradictory, or
+      otherwise mathematically different from the ground truth.
     - unrelated: the model statement is about a different mathematical fact.
 
     Rules:
     - Be conservative. Use equivalent only when the mathematical content is really the same.
     - Do not reward a statement just because it uses similar words.
-    - If the model statement is broader, weaker, or missing a hypothesis, use partially_correct.
-    - If the two statements are close in topic but not equivalent, use partially_correct or incorrect,
-      not equivalent.
+    - If the model statement is broader, weaker, missing a hypothesis, contradictory,
+      or mathematically incorrect but on the same topic, use related_but_not_equivalent.
     - Return only YAML. Do not add prose before or after the YAML.
 
     Return exactly:
-    label: equivalent|partially_correct|incorrect|unrelated
+    label: equivalent|related_but_not_equivalent|unrelated
     confidence: 0.0-1.0
     reason: one short sentence
