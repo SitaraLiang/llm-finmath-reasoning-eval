@@ -32,9 +32,12 @@ output:
 
 embedding:
   model: "sentence-transformers/all-MiniLM-L6-v2"
-  threshold: 0.375
+  # Fallback for a language not listed below.
+  threshold: 0.4
+  # Replace each value with the threshold calibrated on that language's pairs.
   thresholds:
     en: 0.375
+    fr: 0.45
 
 judge:
   enabled: false
