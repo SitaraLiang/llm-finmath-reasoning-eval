@@ -1,0 +1,433 @@
+metadata:
+  language: ch
+  description: Language-specific embedding threshold calibration set.
+  generated_from: data/evaluation/ch/ground_truth_statements.csv
+  labels:
+  - equivalent
+  - related_but_not_equivalent
+  - unrelated
+  concept_count: 12
+  variants_per_label: 2
+selected_statements:
+- id: sem_0001
+  type: semantic
+  concept: pc4_q4_assumption_global_sem_0001
+  field: assumption_global
+  source_file: data/ground_truth/ch/pc4_q4.yaml
+  subquestion_index: ''
+  atom_path: global
+  text: $W_t$ 为布朗运动。
+- id: sem_0002
+  type: semantic
+  concept: pc4_q4_assumptions_sem_0002
+  field: assumptions
+  source_file: data/ground_truth/ch/pc4_q4.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].assumptions
+  text: $\tau$ 为有界停时，
+- id: sem_0003
+  type: semantic
+  concept: pc2_q1_preconditions_sem_0003
+  field: preconditions
+  source_file: data/ground_truth/ch/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[1]/list[1]
+  text: 对于 \(s \leq t\)，将 $X_t$ 分解为 \(X_t = X_s + (X_t - X_s)\)。
+- id: sem_0004
+  type: semantic
+  concept: pc2_q1_arguments_sem_0004
+  field: arguments
+  source_file: data/ground_truth/ch/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[1]/list[1]
+  text: 由 \(X_s\) 与增量 \(X_t - X_s\) 的独立性，
+- id: sem_0005
+  type: semantic
+  concept: pc2_q1_outcomes_sem_0005
+  field: outcomes
+  source_file: data/ground_truth/ch/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[1]/list[1]
+  text: \(\mathrm{Cov}(X_s, X_t) = \min(s,t)\)。
+- id: sem_0006
+  type: semantic
+  concept: pc4_q4_assumptions_sem_0006
+  field: assumptions
+  source_file: data/ground_truth/ch/pc4_q4.yaml
+  subquestion_index: '2'
+  atom_path: subquestions[2].assumptions
+  text: $\tau$ 为有界停时，
+- id: sem_0007
+  type: semantic
+  concept: pc2_q1_preconditions_sem_0007
+  field: preconditions
+  source_file: data/ground_truth/ch/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[1]/list[2]
+  text: 标准布朗运动具有高斯增量（Gaussian increments）且
+- id: sem_0008
+  type: semantic
+  concept: pc2_q1_arguments_sem_0008
+  field: arguments
+  source_file: data/ground_truth/ch/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[1]/list[2]
+  text: 独立高斯增量的线性组合，故其服从高斯分布。
+- id: sem_0009
+  type: semantic
+  concept: pc2_q1_outcomes_sem_0009
+  field: outcomes
+  source_file: data/ground_truth/ch/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[1]/list[2]
+  text: 因此该过程为零均值高斯过程。
+- id: sem_0010
+  type: semantic
+  concept: pc2_q1_preconditions_sem_0010
+  field: preconditions
+  source_file: data/ground_truth/ch/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[1]/list[2]
+  text: \(X_0 = 0\)，
+- id: sem_0011
+  type: semantic
+  concept: pc2_q1_arguments_sem_0011
+  field: arguments
+  source_file: data/ground_truth/ch/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[2]/list[1]
+  text: Calculation
+- id: sem_0012
+  type: semantic
+  concept: pc2_q1_outcomes_sem_0012
+  field: outcomes
+  source_file: data/ground_truth/ch/pc2_q1.yaml
+  subquestion_index: '1'
+  atom_path: subquestions[1].atoms/tuple[2]/list[1]
+  text: 不相交时间段的增量是不不相关的（uncorrelated），进而由于是高斯向量（Gaussian vector）可知其相互独立。
+pair_templates:
+- id: sem_0001_equivalent
+  type: semantic
+  label: equivalent
+  concept: pc4_q4_assumption_global_sem_0001
+  source_statement_id: sem_0001
+  text_a: $W_t$ 为布朗运动。
+  text_b_variants:
+  - '$W=(W_t)_{t\geq 0}$ 是一个标准布朗运动。'
+  - '过程 $W_t$ 服从布朗运动。'
+- id: sem_0001_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: pc4_q4_assumption_global_sem_0001
+  source_statement_id: sem_0001
+  text_a: $W_t$ 为布朗运动。
+  text_b_variants:
+  - '$W_t$ 是一个连续鞅。'
+  - '$W_t$ 是一个具有平稳增量的随机过程。'
+- id: sem_0001_unrelated
+  type: semantic
+  label: unrelated
+  concept: pc4_q4_assumption_global_sem_0001
+  source_statement_id: sem_0001
+  text_a: $W_t$ 为布朗运动。
+  text_b_variants:
+  - '随机变量 $Y$ 服从参数为 $\lambda$ 的泊松分布。'
+  - '函数 $f$ 在区间 $[0,1]$ 上严格凸。'
+- id: sem_0002_equivalent
+  type: semantic
+  label: equivalent
+  concept: pc4_q4_assumptions_sem_0002
+  source_statement_id: sem_0002
+  text_a: $\tau$ 为有界停时，
+  text_b_variants:
+  - '停时 $\tau$ 几乎处处有一个有限的确定上界。'
+  - '存在常数 $T<\infty$，使得 $\tau\leq T$ 几乎处处成立。'
+- id: sem_0002_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: pc4_q4_assumptions_sem_0002
+  source_statement_id: sem_0002
+  text_a: $\tau$ 为有界停时，
+  text_b_variants:
+  - '$\tau$ 是一个几乎处处有限的停时，但不一定有界。'
+  - '$\tau$ 是一个可积停时，即 $\mathbb{E}[\tau]<\infty$。'
+- id: sem_0002_unrelated
+  type: semantic
+  label: unrelated
+  concept: pc4_q4_assumptions_sem_0002
+  source_statement_id: sem_0002
+  text_a: $\tau$ 为有界停时，
+  text_b_variants:
+  - '$X_t$ 的样本路径几乎处处连续。'
+  - '随机变量 $Z$ 的方差等于 1。'
+- id: sem_0003_equivalent
+  type: semantic
+  label: equivalent
+  concept: pc2_q1_preconditions_sem_0003
+  source_statement_id: sem_0003
+  text_a: 对于 \(s \leq t\)，将 $X_t$ 分解为 \(X_t = X_s + (X_t - X_s)\)。
+  text_b_variants:
+  - '当 $s\leq t$ 时，可写成 $X_t=X_s+(X_t-X_s)$。'
+  - '对于先后时刻 $s\leq t$，$X_t$ 等于 $X_s$ 加上从 $s$ 到 $t$ 的增量。'
+- id: sem_0003_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: pc2_q1_preconditions_sem_0003
+  source_statement_id: sem_0003
+  text_a: 对于 \(s \leq t\)，将 $X_t$ 分解为 \(X_t = X_s + (X_t - X_s)\)。
+  text_b_variants:
+  - '对于 $s\leq t$，考虑过程的增量 $X_t-X_s$。'
+  - '将 $X_t$ 表示为初值 $X_0$ 与后续变化之和。'
+- id: sem_0003_unrelated
+  type: semantic
+  label: unrelated
+  concept: pc2_q1_preconditions_sem_0003
+  source_statement_id: sem_0003
+  text_a: 对于 \(s \leq t\)，将 $X_t$ 分解为 \(X_t = X_s + (X_t - X_s)\)。
+  text_b_variants:
+  - '停时 $\tau$ 的期望是有限的。'
+  - '矩阵 $A$ 的所有特征值均为正数。'
+- id: sem_0004_equivalent
+  type: semantic
+  label: equivalent
+  concept: pc2_q1_arguments_sem_0004
+  source_statement_id: sem_0004
+  text_a: 由 \(X_s\) 与增量 \(X_t - X_s\) 的独立性，
+  text_b_variants:
+  - '$X_s$ 独立于从 $s$ 到 $t$ 的增量 $X_t-X_s$。'
+  - '利用过去值 $X_s$ 与未来增量 $X_t-X_s$ 相互独立这一性质。'
+- id: sem_0004_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: pc2_q1_arguments_sem_0004
+  source_statement_id: sem_0004
+  text_a: 由 \(X_s\) 与增量 \(X_t - X_s\) 的独立性，
+  text_b_variants:
+  - '$X_s$ 与 $X_t-X_s$ 不相关。'
+  - '$X_s$ 和 $X_t$ 相互独立。'
+- id: sem_0004_unrelated
+  type: semantic
+  label: unrelated
+  concept: pc2_q1_arguments_sem_0004
+  source_statement_id: sem_0004
+  text_a: 由 \(X_s\) 与增量 \(X_t - X_s\) 的独立性，
+  text_b_variants:
+  - '随机变量 $X_s$ 的期望为零。'
+  - '函数 $g$ 在无穷远处趋于零。'
+- id: sem_0005_equivalent
+  type: semantic
+  label: equivalent
+  concept: pc2_q1_outcomes_sem_0005
+  source_statement_id: sem_0005
+  text_a: \(\mathrm{Cov}(X_s, X_t) = \min(s,t)\)。
+  text_b_variants:
+  - '$X_s$ 与 $X_t$ 的协方差等于两个时刻中的较小者。'
+  - '\(\operatorname{Cov}(X_s,X_t)=s\wedge t\)。'
+- id: sem_0005_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: pc2_q1_outcomes_sem_0005
+  source_statement_id: sem_0005
+  text_a: \(\mathrm{Cov}(X_s, X_t) = \min(s,t)\)。
+  text_b_variants:
+  - '\(\operatorname{Cov}(X_s,X_t)=st\)。'
+  - '过程的协方差只依赖于时间差 $|t-s|$。'
+- id: sem_0005_unrelated
+  type: semantic
+  label: unrelated
+  concept: pc2_q1_outcomes_sem_0005
+  source_statement_id: sem_0005
+  text_a: \(\mathrm{Cov}(X_s, X_t) = \min(s,t)\)。
+  text_b_variants:
+  - '\(\mathbb{E}[\tau]<\infty\)。'
+  - '随机变量 $N$ 服从二项分布。'
+- id: sem_0006_equivalent
+  type: semantic
+  label: equivalent
+  concept: pc4_q4_assumptions_sem_0006
+  source_statement_id: sem_0006
+  text_a: $\tau$ 为有界停时，
+  text_b_variants:
+  - '存在有限常数 $C$，使得停时 $\tau\leq C$ 几乎处处成立。'
+  - '$\tau$ 是具有确定有限上界的停时。'
+- id: sem_0006_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: pc4_q4_assumptions_sem_0006
+  source_statement_id: sem_0006
+  text_a: $\tau$ 为有界停时，
+  text_b_variants:
+  - '$\tau$ 是有限停时，但可能没有统一上界。'
+  - '$\tau$ 是一个平方可积停时。'
+- id: sem_0006_unrelated
+  type: semantic
+  label: unrelated
+  concept: pc4_q4_assumptions_sem_0006
+  source_statement_id: sem_0006
+  text_a: $\tau$ 为有界停时，
+  text_b_variants:
+  - '$W_t$ 的二次变差为 $t$。'
+  - '序列 $(a_n)$ 单调递增。'
+- id: sem_0007_equivalent
+  type: semantic
+  label: equivalent
+  concept: pc2_q1_preconditions_sem_0007
+  source_statement_id: sem_0007
+  text_a: 标准布朗运动具有高斯增量（Gaussian increments）且
+  text_b_variants:
+  - '标准布朗运动在任意时间区间上的增量均服从高斯分布。'
+  - '若 $0\leq s<t$，则 $W_t-W_s$ 是正态随机变量。'
+- id: sem_0007_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: pc2_q1_preconditions_sem_0007
+  source_statement_id: sem_0007
+  text_a: 标准布朗运动具有高斯增量（Gaussian increments）且
+  text_b_variants:
+  - '标准布朗运动具有独立增量。'
+  - '标准布朗运动的每个边际变量 $W_t$ 都服从高斯分布。'
+- id: sem_0007_unrelated
+  type: semantic
+  label: unrelated
+  concept: pc2_q1_preconditions_sem_0007
+  source_statement_id: sem_0007
+  text_a: 标准布朗运动具有高斯增量（Gaussian increments）且
+  text_b_variants:
+  - '泊松过程的增量服从泊松分布。'
+  - '停时 $\tau$ 被某个确定常数控制。'
+- id: sem_0008_equivalent
+  type: semantic
+  label: equivalent
+  concept: pc2_q1_arguments_sem_0008
+  source_statement_id: sem_0008
+  text_a: 独立高斯增量的线性组合，故其服从高斯分布。
+  text_b_variants:
+  - '相互独立的高斯随机变量的线性组合仍然是高斯随机变量。'
+  - '对独立正态增量作线性组合后，所得随机变量依然服从正态分布。'
+- id: sem_0008_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: pc2_q1_arguments_sem_0008
+  source_statement_id: sem_0008
+  text_a: 独立高斯增量的线性组合，故其服从高斯分布。
+  text_b_variants:
+  - '独立随机变量的任意线性组合仍然相互独立。'
+  - '高斯随机变量的非线性函数仍服从高斯分布。'
+- id: sem_0008_unrelated
+  type: semantic
+  label: unrelated
+  concept: pc2_q1_arguments_sem_0008
+  source_statement_id: sem_0008
+  text_a: 独立高斯增量的线性组合，故其服从高斯分布。
+  text_b_variants:
+  - '连续函数在紧集上能够取得最大值。'
+  - '可选停时定理可应用于有界停时。'
+- id: sem_0009_equivalent
+  type: semantic
+  label: equivalent
+  concept: pc2_q1_outcomes_sem_0009
+  source_statement_id: sem_0009
+  text_a: 因此该过程为零均值高斯过程。
+  text_b_variants:
+  - '所以该随机过程是一个中心高斯过程。'
+  - '因此该过程的任意有限维分布均为均值为零的高斯分布。'
+- id: sem_0009_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: pc2_q1_outcomes_sem_0009
+  source_statement_id: sem_0009
+  text_a: 因此该过程为零均值高斯过程。
+  text_b_variants:
+  - '该过程在每个固定时刻的均值都为零。'
+  - '该过程是高斯过程，但其均值函数未必为零。'
+- id: sem_0009_unrelated
+  type: semantic
+  label: unrelated
+  concept: pc2_q1_outcomes_sem_0009
+  source_statement_id: sem_0009
+  text_a: 因此该过程为零均值高斯过程。
+  text_b_variants:
+  - '该停时具有有限期望。'
+  - '资产价格过程满足无套利条件。'
+- id: sem_0010_equivalent
+  type: semantic
+  label: equivalent
+  concept: pc2_q1_preconditions_sem_0010
+  source_statement_id: sem_0010
+  text_a: \(X_0 = 0\)，
+  text_b_variants:
+  - '过程从原点开始，即初始值 $X(0)$ 为零。'
+  - '在时刻零有 $X_0=0$。'
+- id: sem_0010_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: pc2_q1_preconditions_sem_0010
+  source_statement_id: sem_0010
+  text_a: \(X_0 = 0\)，
+  text_b_variants:
+  - '$X_0$ 是一个均值为零的随机变量。'
+  - '过程在某个正时刻 $t$ 满足 $X_t=0$。'
+- id: sem_0010_unrelated
+  type: semantic
+  label: unrelated
+  concept: pc2_q1_preconditions_sem_0010
+  source_statement_id: sem_0010
+  text_a: \(X_0 = 0\)，
+  text_b_variants:
+  - '$\tau$ 是有界停时。'
+  - '$X_t-X_s$ 服从泊松分布。'
+- id: sem_0011_equivalent
+  type: semantic
+  label: equivalent
+  concept: pc2_q1_arguments_sem_0011
+  source_statement_id: sem_0011
+  text_a: Calculation
+  text_b_variants:
+  - '通过直接计算得到。'
+  - '利用代数运算和公式计算。'
+- id: sem_0011_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: pc2_q1_arguments_sem_0011
+  source_statement_id: sem_0011
+  text_a: Calculation
+  text_b_variants:
+  - '应用布朗运动的定义。'
+  - '由一个概率论定理立即可得。'
+- id: sem_0011_unrelated
+  type: semantic
+  label: unrelated
+  concept: pc2_q1_arguments_sem_0011
+  source_statement_id: sem_0011
+  text_a: Calculation
+  text_b_variants:
+  - '该过程的样本路径连续。'
+  - '停时 $\tau$ 几乎处处有限。'
+- id: sem_0012_equivalent
+  type: semantic
+  label: equivalent
+  concept: pc2_q1_outcomes_sem_0012
+  source_statement_id: sem_0012
+  text_a: 不相交时间段的增量是不不相关的（uncorrelated），进而由于是高斯向量（Gaussian vector）可知其相互独立。
+  text_b_variants:
+  - '不重叠区间上的增量协方差为零；由于这些增量联合高斯，它们因此相互独立。'
+  - '互不相交时间区间的高斯增量两两不相关，而联合高斯性进一步推出它们独立。'
+- id: sem_0012_related_but_not_equivalent
+  type: semantic
+  label: related_but_not_equivalent
+  concept: pc2_q1_outcomes_sem_0012
+  source_statement_id: sem_0012
+  text_a: 不相交时间段的增量是不不相关的（uncorrelated），进而由于是高斯向量（Gaussian vector）可知其相互独立。
+  text_b_variants:
+  - '不相交时间段上的增量彼此不相关，但不假设它们联合高斯。'
+  - '重叠时间段上的高斯增量通常具有非零协方差。'
+- id: sem_0012_unrelated
+  type: semantic
+  label: unrelated
+  concept: pc2_q1_outcomes_sem_0012
+  source_statement_id: sem_0012
+  text_a: 不相交时间段的增量是不不相关的（uncorrelated），进而由于是高斯向量（Gaussian vector）可知其相互独立。
+  text_b_variants:
+  - '有界停时 $\tau$ 满足 $\mathbb{E}[W_\tau]=0$。'
+  - '随机变量序列依概率收敛到常数。'
+pairs: []

@@ -1,0 +1,49 @@
+source_file,language,pc,exercise,subquestion_index,field,atom_path,text
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,preconditions,subquestions[1].atoms/tuple[1]/list[1],对于 \(s \leq t\)，将 $X_t$ 分解为 \(X_t = X_s + (X_t - X_s)\)。
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,arguments,subquestions[1].atoms/tuple[1]/list[1],由 \(X_s\) 与增量 \(X_t - X_s\) 的独立性，
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,outcomes,subquestions[1].atoms/tuple[1]/list[1],"\(\mathrm{Cov}(X_s, X_t) = \min(s,t)\)。"
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,preconditions,subquestions[1].atoms/tuple[1]/list[2],标准布朗运动具有高斯增量（Gaussian increments）且
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,preconditions,subquestions[1].atoms/tuple[1]/list[2],\(X_0 = 0\)，
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,arguments,subquestions[1].atoms/tuple[1]/list[2],独立高斯增量的线性组合，故其服从高斯分布。
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,outcomes,subquestions[1].atoms/tuple[1]/list[2],因此该过程为零均值高斯过程。
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[1],"利用性质 ${\rm Cov}(X_s,X_t)=\inf(s,t)$，"
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[1],"对于 \(s < t \leq u < v\)，计算协方差 $\text{Cov}(X_t - X_s, X_v - X_u)$："
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[1],Calculation
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[1],不相交时间段的增量是不不相关的（uncorrelated），进而由于是高斯向量（Gaussian vector）可知其相互独立。
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[2],计算增量 $X_t - X_s$ 的方差：
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[2],因此增量的分布仅依赖于时间差 \(t-s\)。
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[2],这表明增量具有平稳性（stationary），
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[2],"且服从分布 \(\mathcal{N}(0, t-s)\)。"
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[3]/tuple[1],不相交增量相互独立，且
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[3]/tuple[1],"增量服从方差为 $t-s$ 的零均值高斯分布，即 \(\mathcal{N}(0, t-s)\)，"
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[3]/tuple[1],加上轨道连续性（continuity of paths）假设，
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[3]/tuple[1],布朗运动的经典定义。
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[3]/tuple[2],不相交增量相互独立，且
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,preconditions,subquestions[1].atoms/tuple[2]/list[3]/tuple[2],"增量服从方差为 $t-s$ 的零均值高斯分布，即 \(\mathcal{N}(0, t-s)\)，"
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,arguments,subquestions[1].atoms/tuple[2]/list[3]/tuple[2],通过 Kolmogorov 修正定理（Kolmogorov's continuity theorem）取其连续版本，
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,1,outcomes,subquestions[1].atoms/tuple[2]/list[3]/tuple[2],布朗运动的经典定义。
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,2,preconditions,subquestions[2].atoms/tuple[1],计算 $\lim_{t \to 0^+} t W_{1/t}$：
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,2,arguments,subquestions[2].atoms/tuple[1],根据布朗运动的强大数定律（Law of large numbers）：
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,2,outcomes,subquestions[2].atoms/tuple[1],$\lim_{t \to 0^+} t W_{1/t} = 0$ a.s.
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,2,preconditions,subquestions[2].atoms/tuple[2],"对任意给定时刻 \(t_1, \dots, t_n\)，随机向量 \((X_{t_1}, \dots, X_{t_n})\)"
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,2,arguments,subquestions[2].atoms/tuple[2],均为 \(W_{1/t_i}\) 的线性组合，
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,2,outcomes,subquestions[2].atoms/tuple[2],故服从零均值高斯分布。 \\
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,2,arguments,subquestions[2].atoms/tuple[3],Calculation
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,2,outcomes,subquestions[2].atoms/tuple[3],"即 $\mathbb{E}[X_t X_s] = \min(t,s)$。 \\"
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,2,preconditions,subquestions[2].atoms/tuple[4],轨道连续性：$\lim_{t \to 0^+} X_t = 0$ a.s.，
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,2,preconditions,subquestions[2].atoms/tuple[4],"高斯性：对任意时刻集合，向量 \((X_{t_1}, \dots, X_{t_n})\) 均服从零均值高斯分布，"
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,2,preconditions,subquestions[2].atoms/tuple[4],"协方差结构：$\mathbb{E}[X_t X_s] = \min(t,s)$，"
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,2,preconditions,subquestions[2].atoms/tuple[4],结合初始条件 \(X_0 = 0\)，
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,2,arguments,subquestions[2].atoms/tuple[4],由布朗运动的等价判定性质（part a 结论）
+data/ground_truth/ch/pc2_q1.yaml,ch,2,1,2,outcomes,subquestions[2].atoms/tuple[4],可知 \(X\) 亦为布朗运动。
+data/ground_truth/ch/pc4_q4.yaml,ch,4,4,,assumption_global,global,$W_t$ 为布朗运动。
+data/ground_truth/ch/pc4_q4.yaml,ch,4,4,1,assumptions,subquestions[1].assumptions,$\tau$ 为有界停时，
+data/ground_truth/ch/pc4_q4.yaml,ch,4,4,1,preconditions,subquestions[1].atoms/list[1],$(W_t)_{t\geq 0}$ 为鞅。
+data/ground_truth/ch/pc4_q4.yaml,ch,4,4,1,preconditions,subquestions[1].atoms/list[1],$\tau$ 为有界停时。
+data/ground_truth/ch/pc4_q4.yaml,ch,4,4,1,arguments,subquestions[1].atoms/list[1],对 $(W_t)_{t\geq 0}$ 在停时 $\tau$ 处应用 Doob 可选停时定理 (Optional Stopping Theorem)。
+data/ground_truth/ch/pc4_q4.yaml,ch,4,4,1,outcomes,subquestions[1].atoms/list[1],"\[ \mathbb{E}[W_\tau] = 0, \]"
+data/ground_truth/ch/pc4_q4.yaml,ch,4,4,2,assumptions,subquestions[2].assumptions,$\tau$ 为有界停时，
+data/ground_truth/ch/pc4_q4.yaml,ch,4,4,2,preconditions,subquestions[2].atoms/list[1],$(W_t^2-t)_{t\geq 0}$ 为鞅。
+data/ground_truth/ch/pc4_q4.yaml,ch,4,4,2,preconditions,subquestions[2].atoms/list[1],$\tau$ 为有界停时。
+data/ground_truth/ch/pc4_q4.yaml,ch,4,4,2,arguments,subquestions[2].atoms/list[1],对过程 $(W_t^2-t)_{t\geq 0}$ 在时刻 $\tau$ 应用 Doob 可选停时定理 (Optional Stopping Theorem)。
+data/ground_truth/ch/pc4_q4.yaml,ch,4,4,2,outcomes,subquestions[2].atoms/list[1],\[ \mathbb{E}[W_\tau^2] = \mathbb{E}[\tau]。 \]

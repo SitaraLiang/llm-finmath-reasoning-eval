@@ -1,0 +1,78 @@
+\titledquestion{}
+
+% @ASSUMPTION_GLOBAL
+$W_t$ 为布朗运动。
+
+\begin{parts}
+
+% @QUESTION
+\part 当
+
+% @ASSUMPTION
+$\tau$ 为有界停时，
+% @ASSUMPTION_END
+
+计算 $\E(W_\tau)$。
+% @QUESTION_END
+
+\begin{xsolution}
+
+% @LIST_START
+
+% @ATOM
+
+% @PRECOND
+$(W_t)_{t\geq 0}$ 为鞅。
+
+% @PRECOND
+$\tau$ 为有界停时。
+
+% @ARGUMENT
+对 $(W_t)_{t\geq 0}$ 在停时 $\tau$ 处应用 Doob 可选停时定理 (Optional Stopping Theorem)。
+
+% @OUTCOME
+\[
+\mathbb{E}[W_\tau] = 0,
+\]
+
+% @LIST_END
+\end{xsolution}
+
+% @QUESTION
+\part 当
+
+% @ASSUMPTION
+$\tau$ 为有界停时，
+% @ASSUMPTION_END
+
+计算 $\E(W_\tau^2)$。
+% @QUESTION_END
+
+\begin{xsolution}
+
+% @LIST_START
+
+% @ATOM
+
+% @PRECOND
+$(W_t^2-t)_{t\geq 0}$ 为鞅。
+
+% @PRECOND
+$\tau$ 为有界停时。
+
+% @ARGUMENT
+对过程 $(W_t^2-t)_{t\geq 0}$ 在时刻 $\tau$ 应用 Doob 可选停时定理 (Optional Stopping Theorem)。
+
+% @OUTCOME
+\[
+\mathbb{E}[W_\tau^2] = \mathbb{E}[\tau]。
+\]
+
+% @LIST_END
+\end{xsolution}
+
+\begin{intuition}
+注意到 $(W_t^2 - t)_{t \geq 0}$ 为鞅。
+\end{intuition}
+
+\end{parts}

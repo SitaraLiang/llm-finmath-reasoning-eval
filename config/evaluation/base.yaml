@@ -30,6 +30,7 @@ embedding:
   thresholds:
     en: 0.375
     fr: 0.45
+    ch: 0.58
 
 judge:
   enabled: true 
@@ -49,6 +50,9 @@ judge:
       high: 1.0
     fr:
       low: 0.35
+      high: 1.0
+    ch:
+      low: 0.40
       high: 1.0
 
 prompts:

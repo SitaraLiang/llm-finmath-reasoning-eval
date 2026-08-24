@@ -1,0 +1,164 @@
+\titledquestion{布朗运动的等价定义}
+\begin{parts}
+    % @QUESTION
+    \part 证明过程 $(X_t)_{t\in \R^+}$ 为布朗运动（Brownian motion）当且仅当：
+        \begin{itemize}
+        \item[i')] $X_0=0$,
+        \item[ii')] $(X_t)_{t\in \R^+}$ 为零均值高斯过程（centered Gaussian process）,
+        \item[iii')] ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+        \end{itemize}
+    % @QUESTION_END
+    \begin{xsolution}
+    % @SET_START
+    首先证明必要性方向：布朗运动 $\Rightarrow$ 高斯过程。
+    % @LIST_START
+    \begin{enumerate}
+        \item 增量的独立性结构：  
+           % @ATOM
+           % @PRECOND
+           对于 \(s \leq t\)，将 $X_t$ 分解为 \(X_t = X_s + (X_t - X_s)\)。
+           % @ARGUMENT
+           由 \(X_s\) 与增量 \(X_t - X_s\) 的独立性，
+           % @ARGUMENT_END
+           协方差可化简为：  
+           \[
+           \mathrm{Cov}(X_s, X_t) = \mathrm{Cov}(X_s, X_s) + \mathrm{Cov}(X_s, X_t - X_s) = \mathrm{Var}(X_s) + 0 = s
+           \]  
+           直接得出 
+           % @OUTCOME
+           \(\mathrm{Cov}(X_s, X_t) = \min(s,t)\)。
+           % @ATOM_END
+        \item 高斯性质：  
+           % @ATOM
+           % @PRECOND
+           标准布朗运动具有高斯增量（Gaussian increments）且 
+           % @PRECOND
+           \(X_0 = 0\)，
+           % @PRECOND_END
+           因此任意有限维线性组合 \((X_{t_1}, \dots, X_{t_n})\) 均可表示为
+           % @ARGUMENT
+           独立高斯增量的线性组合，故其服从高斯分布。  
+           % @OUTCOME
+           因此该过程为零均值高斯过程。
+           % @ATOM_END
+    \end{enumerate}    
+    % These two points essentially exploit \emph{independence of increments} and \emph{normality} of increments.
+    % @LIST_END
+    其次证明充分性方向：
+    % @LIST_START
+    \begin{enumerate}
+    \item 增量协方差计算：  
+       % @ATOM
+       % @PRECOND
+       利用性质 ${\rm Cov}(X_s,X_t)=\inf(s,t)$，
+       % @PRECOND
+       对于 \(s < t \leq u < v\)，计算协方差 $\text{Cov}(X_t - X_s, X_v - X_u)$：
+       % @ARGUMENT:CALCUL
+       \[
+       \text{Cov}(X_t - X_s, X_v - X_u) = \min(t,v) - \min(t,u) - \min(s,v) + \min(s,u)
+       \]
+       此式恒等于 0，证明了
+       % @OUTCOME
+       不相交时间段的增量是不不相关的（uncorrelated），进而由于是高斯向量（Gaussian vector）可知其相互独立。
+       % @OUTCOME_END
+       % @ATOM_END
+    \item 增量方差计算：  
+       % @ATOM
+       % @PRECOND
+       计算增量 $X_t - X_s$ 的方差：
+       % @PRECOND_END
+       对于 \(s < t\)：
+       \[
+       \text{Var}(X_t - X_s) = t + s - 2s = t - s
+       \]
+       % @ARGUMENT
+       因此增量的分布仅依赖于时间差 \(t-s\)。
+       % @OUTCOME
+       这表明增量具有平稳性（stationary），
+       % @OUTCOME
+       且服从分布 \(\mathcal{N}(0, t-s)\)。
+       % @ATOM_END
+    结合上述两点：
+    % @SET_START
+    % @ATOM
+    % @PRECOND
+    不相交增量相互独立，且
+    % @PRECOND
+    增量服从方差为 $t-s$ 的零均值高斯分布，即 \(\mathcal{N}(0, t-s)\)，
+    % @ARGUMENT
+    加上轨道连续性（continuity of paths）假设，
+    % @ARGUMENT_END
+    即可得到
+    % @OUTCOME 
+    布朗运动的经典定义。
+    % @ATOM
+    % @PRECOND
+    不相交增量相互独立，且
+    % @PRECOND
+    增量服从方差为 $t-s$ 的零均值高斯分布，即 \(\mathcal{N}(0, t-s)\)，
+    % @ARGUMENT
+    通过 Kolmogorov 修正定理（Kolmogorov's continuity theorem）取其连续版本，
+    % @ARGUMENT_END
+    亦可导出
+    % @OUTCOME 
+    布朗运动的经典定义。
+    % @SET_END
+    \end{enumerate}
+    % @LIST_END
+    % @SET_END
+    \end{xsolution}
+
+    % @QUESTION
+    \part 证明：若 $W_t$ 为布朗运动，则 $ \{X_t=t\;W_{\frac
+    1t}, t>0, X_0=0 \}$
+    亦为布朗运动（时间反转/时间反转变换 Time Inversion）。
+    \begin{xsolution}
+    % @SET_START
+    % @ATOM
+    对于在原点 0 处的连续性：
+    % @PRECOND
+    计算 $\lim_{t \to 0^+} t W_{1/t}$：
+    % @PRECOND_END
+    \[
+    \lim_{t \to 0^+} t W_{1/t} = \lim_{s \to \infty} \frac{W_s}{s} = 0 \quad \text{a.s. (几乎必然)}
+    \]
+    % @ARGUMENT
+    根据布朗运动的强大数定律（Law of large numbers）：
+    % @OUTCOME 
+    $\lim_{t \to 0^+} t W_{1/t} = 0$ a.s.
+    % @ATOM
+    \\
+    对于零均值高斯性质：  
+    % @PRECOND
+    对任意给定时刻 \(t_1, \dots, t_n\)，随机向量 \((X_{t_1}, \dots, X_{t_n})\) 
+    % @ARGUMENT
+    均为 \(W_{1/t_i}\) 的线性组合，
+    % @OUTCOME 
+    故服从零均值高斯分布。
+    \\
+    % @ATOM
+    对于协方差结构：  
+    % @ARGUMENT:CALCUL
+    \[
+    \mathbb{E}[X_t X_s] = ts \cdot \min\left(\frac{1}{t}, \frac{1}{s}\right) = \min(t,s),
+    \]
+    % @OUTCOME 
+    即 $\mathbb{E}[X_t X_s] = \min(t,s)$。
+    \\
+    % @ATOM
+    综上所述：
+    % @PRECOND
+    轨道连续性：$\lim_{t \to 0^+} X_t = 0$ a.s.，
+    % @PRECOND
+    高斯性：对任意时刻集合，向量 \((X_{t_1}, \dots, X_{t_n})\) 均服从零均值高斯分布，
+    % @PRECOND
+    协方差结构：$\mathbb{E}[X_t X_s] = \min(t,s)$，
+    % @PRECOND
+    结合初始条件 \(X_0 = 0\)，
+    % @ARGUMENT
+    由布朗运动的等价判定性质（part a 结论）
+    % @OUTCOME
+    可知 \(X\) 亦为布朗运动。
+    % @SET_END
+    \end{xsolution}
+\end{parts}
