@@ -1,0 +1,2744 @@
+94d6e0de2fdfc69f6661b47e986519971cac93e4721141cc10602ae767b7a5bb:
+    label: unrelated
+    confidence: 0.8
+    reason: The model statement describes a property of a stochastic process, while
+        the ground-truth statement is an equation involving covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: The model statement describes a property of a stochastic process,
+        while the ground-truth statement is an equation involving covariance.'
+ef744fe11111d77b476071c7681a0e8522a45c138e541bc49a4a0bd4576151bc:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement describes a stochastic process, while ground-truth statement
+        describes the distribution of a random variable.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement describes a stochastic process, while ground-truth
+        statement describes the distribution of a random variable.'
+e689f125623e7310294ecafaf2ab9d45a7c2291a5a58850895fd882e804d4704:
+    label: equivalent
+    confidence: 1.0
+    reason: Same definition of Brownian motion is given in both statements.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same definition of Brownian motion is given in both statements.'
+f5388cd8eb074b5bca489e43d562f88541c68c6643f8e55174acdef620d61117:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is broader and includes additional properties of Brownian
+        motion, but does not explicitly state the independence of \(X_s\) and \(X_t
+        - X_s\).
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is broader and includes additional properties of Brownian
+        motion, but does not explicitly state the independence of \(X_s\) and \(X_t
+        - X_s\).'
+e8d16a204306b3ca486894ef9312534a791c76ce8a875a454f0b1e1da8d88aaa:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical content with different wording.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical content with different wording.'
+b6128bed9b220568b6adf9e1552fac660b4457165986c696004b53c1b50dfc63:
+    label: equivalent
+    confidence: 1.0
+    reason: Same properties of Brownian motion are listed, including continuity of
+        paths.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same properties of Brownian motion are listed, including continuity
+        of paths.'
+6436c63557452ea5160f2318b6ab866f0992f96095fb526cce2baddff44f4fa6:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical content, just with different wording.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical content, just with different wording.'
+4635277da5662fe0ddd35e6ee5b6bcf1abba1bd5a570185e6c791e4c2f61a2b2:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is weaker and lacks the decomposition hypothesis.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is weaker and lacks the decomposition hypothesis.'
+101c9f3a8d1b0eddcc1f0f3afaf4359e1d18c0fd5c2aa26c0d6b26e4cf06c8b5:
+    label: equivalent
+    confidence: 1.0
+    reason: Same definition of standard Brownian motion.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same definition of standard Brownian motion.'
+8277b482564b4681473bd1ec0e4ff7dfc8be3459be627e366d7f1dc0286d6299:
+    label: equivalent
+    confidence: 1.0
+    reason: Same initial condition and process definition.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same initial condition and process definition.'
+fd69c227361cfe25869be578e688fb52f57d6d5b5e3068e2279b6bddd8339a92:
+    label: equivalent
+    confidence: 1.0
+    reason: Same formula for covariance.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same formula for covariance.'
+6f622adec34427eaa613a726d454c3d00f614071e6ddc9a90512ae6697735407:
+    label: equivalent
+    confidence: 1.0
+    reason: Same covariance expression with different notation.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same covariance expression with different notation.'
+d2c589eb4ca54930ba9c3a00f88be388ce79eb094dc36f25dc1e625841e4267d:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement describes a Gaussian process, while ground-truth statement
+        refers to the law of increments.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement describes a Gaussian process, while ground-truth statement
+        refers to the law of increments.'
+65ecd820c054a9587e95d01d99e271ea0af1b37164f181bee6ec3329824084cf:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement makes a claim about X_t being a Brownian motion, whereas
+        the ground-truth statement concerns the limit of W_{1/t} as t approaches 0
+        from the right.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement makes a claim about X_t being a Brownian motion,
+        whereas the ground-truth statement concerns the limit of W_{1/t} as t approaches
+        0 from the right.'
+3149eab96614f168fe02cbd93898a5219cc69c3d3b116d61b565b443a35e1aac:
+    label: unrelated
+    confidence: 0.8
+    reason: The model statement makes a claim about X_t being a Brownian motion, whereas
+        the ground-truth statement is about the expectation of the product of two
+        random variables at different times.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: The model statement makes a claim about X_t being a Brownian motion,
+        whereas the ground-truth statement is about the expectation of the product
+        of two random variables at different times.'
+8ad0a21d5fd80cce6719eb440ebbed2277e481441adc766fdfa168f567f994e7:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical content with different notation.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical content with different notation.'
+9cd7362fb0ff64be0448ce6fc3c8fe9757912018815cf358248ea207632a1827:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement mentions scaling and time inversion, but the ground-truth
+        statement specifically refers to the law of large numbers for Brownian motion.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement mentions scaling and time inversion, but the ground-truth
+        statement specifically refers to the law of large numbers for Brownian motion.'
+1232be52ed77f603eac407fbed08f354a15dcca0586e7af4e166b4cdfd76b614:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement discusses properties of Brownian motion, while the
+        ground-truth statement refers to a linear combination of weights.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement discusses properties of Brownian motion, while
+        the ground-truth statement refers to a linear combination of weights.'
+b8387d5501e7a9c208cc69d261065ec286029def099dce6c08043aa91a6cf5d1:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement mentions scaling and time inversion, which are not
+        explicitly mentioned in the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement mentions scaling and time inversion, which are
+        not explicitly mentioned in the ground-truth statement.'
+955a8eb8c6204b3e02261d202533e75ddb8147f8a1f7ae5a6e74cdafc7e9e6fe:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes properties of a Brownian motion, while the
+        ground-truth statement calculates covariance between two random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes properties of a Brownian motion, while
+        the ground-truth statement calculates covariance between two random variables.'
+9a30e1ff9b56aca4c287609b86a9bd7f67d1bfd6328f3590c08c92e05014eb51:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a Brownian motion, while the ground-truth
+        statement refers to a centered Gaussian process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a Brownian motion, while the ground-truth
+        statement refers to a centered Gaussian process.'
+9bbe7db90dbd96b2d81a90c30670a7792fa9da97015a1503913c61f838e02d19:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement describes properties of a Brownian motion, while ground-truth
+        statement specifies the law of two random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement describes properties of a Brownian motion, while ground-truth
+        statement specifies the law of two random variables.'
+317182c9d60b5f3f4cf7f19e711952659ee0544a884b9aca13a42a156b0503cd:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement defines a specific process, whereas the ground-truth
+        statement refers to a general concept.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement defines a specific process, whereas the ground-truth
+        statement refers to a general concept.'
+4216013cd18f81756e5fef87b76bce256326baa399b91520d68ebaf5b6b8d6df:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes properties of a Brownian motion, while the
+        ground-truth statement involves a limit and a specific function of W.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes properties of a Brownian motion, while
+        the ground-truth statement involves a limit and a specific function of W.'
+573161bc4cb9810d0139c990398a48e08b3bb1dfd475ee3ffd1542f4fd95311e:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes properties of a Brownian motion, while the
+        ground-truth statement concerns continuity at t=0.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes properties of a Brownian motion, while
+        the ground-truth statement concerns continuity at t=0.'
+4a3e12bf8272a873b487eb51bf4671ca668195d335b3f2c3a4a2bcde7203e3bf:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a Brownian motion, while the ground-truth
+        statement is about covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a Brownian motion, while the ground-truth
+        statement is about covariance.'
+afd3c91b112a56f7e964c4e3fa3d63739feba50c28fd4cbee6f4fbd227b1b0dd:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement describes properties of a Brownian motion, while ground-truth
+        statement is about an initial condition.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement describes properties of a Brownian motion, while ground-truth
+        statement is about an initial condition.'
+def6304783ca4565865af9a1250a68e17b403aec01c8a267266b8ecd45446629:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical content, just different wording and notation.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical content, just different wording and notation.'
+d6ef1b241d4ba37358fd29d9a2b7baf54b8790fd8c3bacc3f5af547a041e6d06:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement mentions "bounded stopping times" which is not present
+        in the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement mentions "bounded stopping times" which is not present
+        in the ground-truth statement.'
+dba94e1394184683568292b581e0c14e80435780ca8f0d00709eec2e79f26633:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement is about a stopping time, while the ground-truth statement
+        describes properties of a Brownian Motion.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement is about a stopping time, while the ground-truth
+        statement describes properties of a Brownian Motion.'
+2a458332fafb7d95b3499bb81c8a4f6565762f8f6d00cfce919a7030b3d6d02b:
+    label: equivalent
+    confidence: 1.0
+    reason: Same wording and notation used.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same wording and notation used.'
+01b6c56cb9a4b8839c7c75391b70e90b4fbab96d663d1630796915b902048e8b:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement is about a stopping time, while the ground-truth statement
+        is about a martingale process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement is about a stopping time, while the ground-truth
+        statement is about a martingale process.'
+98d82c1c8ca8257634a9f44a266bacdd285d5de265d784ae50529a3ed9765a06:
+    label: equivalent
+    confidence: 1.0
+    reason: Same wording and notation.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same wording and notation.'
+79ac2b4d6b51bc9eb59c445691a3d8d04629c1bb4fa321af13e6bd9a335f6850:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical expression with identical notation.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical expression with identical notation.'
+a87316158a8c080b83ebdb176ce19c7af6f2772891818b3a4e05c31bce603cbf:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement lacks explicit mention of applying Doob's theorem to the
+        process at stopping time τ.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement lacks explicit mention of applying Doob''s theorem
+        to the process at stopping time τ.'
+67b11711b90c385b85727aafd39c9b468e6be0beacfd9fd2fbca1035a98e85e1:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement is about a property of τ, while the ground-truth statement
+        is an equation involving Wτ.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement is about a property of τ, while the ground-truth
+        statement is an equation involving Wτ.'
+5eee604fac4e2b5e98656e8e067529fc51c6768a00c6050c55065d60c1a5273f:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement is about a stopping time, while the ground-truth statement
+        concerns a martingale property.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement is about a stopping time, while the ground-truth
+        statement concerns a martingale property.'
+70614dd22fac80ad2c836a3ba98b85b3ef3112a8d3ccdbefdad7949358152570:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement describes a property of W_0, while ground-truth statement
+        is about the expectation of W_tau.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement describes a property of W_0, while ground-truth statement
+        is about the expectation of W_tau.'
+f6e382c15f2bd7da53247c43f79009152de13f5609c81594d6fcbf633015c758:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement lacks explicit mention of Doob's theorem application to
+        (W_t)_{t\geq 0} at τ.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement lacks explicit mention of Doob''s theorem application
+        to (W_t)_{t\geq 0} at τ.'
+c15fc3169c3d4a992bc8815df2e7d6adee1bd15e33c3d75df457357950064d88:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical expression with identical notation.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical expression with identical notation.'
+a619e4109154d65edb08ef6263462103c37bbe31d1d8f2a43cd840fbc6d4e96b:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical content with minor notation differences.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical content with minor notation differences.'
+0158ff6ccc921a2e59f4ef3062d68816943e837fa3e0152a510483a6bc32136b:
+    label: unrelated
+    confidence: 0.8
+    reason: Model statement assumes W_0 = 0, which is not mentioned in the ground-truth
+        statement.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: Model statement assumes W_0 = 0, which is not mentioned in the ground-truth
+        statement.'
+b437a8128adde7100c6718a00df346b3cc02f92d8d6d0c891d508378c839cff4:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement lacks explicit mention of Doob's theorem application to
+        (W_t)_{t\geq 0} at τ.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement lacks explicit mention of Doob''s theorem application
+        to (W_t)_{t\geq 0} at τ.'
+82efcfb45e67c40537fa71acb1b1428ee0e84178351ae1b314b1001653af08b6:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical expression with identical notation.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical expression with identical notation.'
+0cc2764246e85421a7f8c7910fe692067ff850a79a1555e02006534ae553a8c7:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is missing the application of Doob's theorem to (W_t^2-t)
+        at τ, and only states a consequence.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is missing the application of Doob''s theorem to (W_t^2-t)
+        at τ, and only states a consequence.'
+6869b6d554db48d8e0980255fb21746ec2873ba00ce8f47431a648db1ae4338a:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical expression with identical notation.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical expression with identical notation.'
+7f0523a68300f43ea57659e7410306fc722be1a5ef5abd8abf4194a966575368:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a Brownian motion, while the ground-truth
+        statement is about covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a Brownian motion, while the ground-truth
+        statement is about covariance.'
+11232186d6c2528cbc70334f8124d5c8510a1efadcaf6de67b3511ac6df034b5:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical expression, just using inf instead of min.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical expression, just using inf instead of min.'
+2f70dc2f6af1d1bf67d0bb92d2d468757a35121268ab0262dba0eddc6fc10ce0:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a property of the process, while the ground-truth
+        statement gives an explicit formula for covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a property of the process, while the
+        ground-truth statement gives an explicit formula for covariance.'
+ac5551abde3061066285903ed8d19846fad7f0a69eb1480672df1b013e8a3ffa:
+    label: equivalent
+    confidence: 1.0
+    reason: Same stochastic process is described in both statements.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same stochastic process is described in both statements.'
+f8f00eb63c9ed93e89b962e8f3e897a972b3c2772de101cd9a15b3ff149cb861:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical content with different notation.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical content with different notation.'
+e318ae08f127bd4bc28bf2cf44ad9a7c52835d62d216fb5d45f8dc6e7e5bce1f:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement is missing the classical definition of Brownian motion
+        properties.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement is missing the classical definition of Brownian
+        motion properties.'
+85e05bf33e574ba770f949e665425ab9bc6132b363edb6c3cc577588e964a193:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement is a characteristic of Brownian motion, but lacks
+        its classical definition.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement is a characteristic of Brownian motion, but lacks
+        its classical definition.'
+0cad01135d2dc9bd8303281a0ead38613baf0c2c471c8f3f05b91671aa62ff53:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical concept with identical wording.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical concept with identical wording.'
+112adb7fe444fc6112a7569b9a072c7ed953e19d0d07292733f0a10ddec5d8d6:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is broader and lacks the specific condition s ≤ t.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is broader and lacks the specific condition s ≤ t.'
+51acf519058a5823b0aa4edea3b681d273df05302e1bea2d197e1a6dd5a1e4db:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement describes a centered Gaussian process, but does not explicitly
+        decompose the process as in the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement describes a centered Gaussian process, but does not
+        explicitly decompose the process as in the ground-truth statement.'
+f53bee0bfe21f50ba06cae4f2cfdbc4af32ebdcf5900cc100f3e947feb51af98:
+    label: unrelated
+    confidence: 0.8
+    reason: Model statement introduces Brownian motion, while ground-truth focuses
+        on decomposition of a stochastic process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: Model statement introduces Brownian motion, while ground-truth focuses
+        on decomposition of a stochastic process.'
+3aee08f4bae93b2f67d7a03bce9016ace5131d0ccb21409a80db836c402c1611:
+    label: equivalent
+    confidence: 1.0
+    reason: Same definition of standard Brownian motion.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same definition of standard Brownian motion.'
+b2f2147eb373ffda7e90dfc3716ff5f62771ada10e50eb4211c74ac8d6faf7af:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement specifies initial condition X_0=0, which is not present
+        in the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement specifies initial condition X_0=0, which is not
+        present in the ground-truth statement.'
+5ee68fb7f9071a66b00a9503df15fd89e084c87c21749126b6b5654b7c1a3063:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement introduces a stochastic process, while ground-truth statement
+        specifies an initial condition.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement introduces a stochastic process, while ground-truth
+        statement specifies an initial condition.'
+ee4a6c0ddfc0a984e9623d51aedb21ca15f64212f9eb4ea376b983959e8a3361:
+    label: equivalent
+    confidence: 1.0
+    reason: Same initial condition and process definition.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same initial condition and process definition.'
+dcaec03fe121d6df3581174220fcbc834e0e66ff7144d0b5048521b1d21f4a08:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement adds an extra condition that is not present in the ground-truth
+        statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement adds an extra condition that is not present in the
+        ground-truth statement.'
+917ebf3404c89964e65f335f7c71e625b671ac77c9be938a730c7707acd9c908:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement introduces a process without mentioning covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement introduces a process without mentioning covariance.'
+aa30dc4d7a7d49bc7ca0ff509e0781651256423aab57e6c398babd7dc124150f:
+    label: equivalent
+    confidence: 1.0
+    reason: Same covariance property is explicitly stated in both statements.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same covariance property is explicitly stated in both statements.'
+90bbe820f70941d8da5eb00d2e4c625477d269d60b0dfe7155a3bdd21614c382:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement defines a Brownian motion, while the ground-truth
+        statement uses covariance properties.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement defines a Brownian motion, while the ground-truth
+        statement uses covariance properties.'
+756720c7bd533ede2337e9b3970c97678b507cb66d5afb833f1d276197623d2a:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement lacks specific time constraints and variables, making
+        it weaker than the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement lacks specific time constraints and variables, making
+        it weaker than the ground-truth statement.'
+85b29901eae0c43eb7988f48571755dc1e0f05198fb153acf6cf2e5e5ac1f488:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement lacks explicit expression of the covariance formula for
+        differences.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement lacks explicit expression of the covariance formula
+        for differences.'
+dda0e69187c9626810aef92af112c1fc93e36c0e84afd896059733f1a4e63a85:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement defines a Brownian motion, but does not explicitly
+        state the necessary conditions for computing the covariance of increments.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement defines a Brownian motion, but does not explicitly
+        state the necessary conditions for computing the covariance of increments.'
+2d95bb430464a87f0740d77c8b4b9bdf91dd4eafa5e7cb078e9cf720fbb7bb1f:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is broader and does not specify the variance of the process.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is broader and does not specify the variance of the
+        process.'
+d83c1e79344599853922297a9ae641375accb14bd3467b72017b874cc5e093f7:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement defines a Brownian motion, but does not explicitly
+        state that it is centered at zero with variance t-s.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement defines a Brownian motion, but does not explicitly
+        state that it is centered at zero with variance t-s.'
+f37e03f650e44c07a7d9c285f4cc24ea794775f402213663452264a023baf1bb:
+    label: unrelated
+    confidence: 0.8
+    reason: The model statement describes a process, while the ground-truth statement
+        is about a limit property of another process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: The model statement describes a process, while the ground-truth statement
+        is about a limit property of another process.'
+a8c5f408186e62271a5af6551e51beb39eb608cac7358c04626f1025aca4b432:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a stochastic process, while the ground-truth
+        statement is about a limit of a function.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a stochastic process, while the ground-truth
+        statement is about a limit of a function.'
+aff90a40f266f5b0cfa35c7f86c47e6e964385051741535ebe32275e3f1ea868:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a stochastic process with stationary increments,
+        whereas the ground-truth statement concerns the limit of a function involving
+        a Wiener process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a stochastic process with stationary
+        increments, whereas the ground-truth statement concerns the limit of a function
+        involving a Wiener process.'
+c92d06ad8baafa1556d3633725bb5fee3607db8db2851698a2dd815ab37e1a60:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a stochastic process, while the ground-truth
+        statement is about a limit of a function.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a stochastic process, while the ground-truth
+        statement is about a limit of a function.'
+044141304dbd72c0f098821d2879417a4e17a87cb2823b582b9fc4ccab5b145d:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement defines a Brownian motion, while the ground-truth
+        statement describes an expectation of a product of random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement defines a Brownian motion, while the ground-truth
+        statement describes an expectation of a product of random variables.'
+17790b80dbad2f1a4218469840c85e386fc8cd87627e7039486bf155663e8dba:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement describes a stochastic process, while ground-truth statement
+        is about an expectation of a product of random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement describes a stochastic process, while ground-truth
+        statement is about an expectation of a product of random variables.'
+56f0de8b7ddf90d0944a1c8f960b744fd2d2022a5102da82549e1b0390e0dd56:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement discusses stationary increments, while ground-truth statement
+        concerns expectation of product of random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement discusses stationary increments, while ground-truth
+        statement concerns expectation of product of random variables.'
+f19fc19063730bf40f197732e173219af706c41ff3ff98a4b4a44247944fb610:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a stochastic process, while the ground-truth
+        statement is about an expectation of a product of random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a stochastic process, while the ground-truth
+        statement is about an expectation of a product of random variables.'
+98f1c1643279636ad7af85bd11775ce7550c1e02eba5334d58e63a4a940d560d:
+    label: equivalent
+    confidence: 1.0
+    reason: Same stochastic process definition.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same stochastic process definition.'
+3a12ead22d2e38ae08a8e60d8c94fdcb82d0011405f0e4a0ccee28e594aeb67e:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a specific process with independent increments,
+        while the ground-truth statement is a general property of Brownian motion.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a specific process with independent
+        increments, while the ground-truth statement is a general property of Brownian
+        motion.'
+fe50e7ac827486f7a0ede2fd7b257808a2d7d6f812196564d20f5d6f9cfbbc3d:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement describes a specific process with stationary increments,
+        while ground-truth statement is a general definition of Brownian motion.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement describes a specific process with stationary increments,
+        while ground-truth statement is a general definition of Brownian motion.'
+b155a9df68f98fe9b77a4fa07fc0e42feca86c9e6f784a7756e538b79ec4b2a0:
+    label: unrelated
+    confidence: 0.8
+    reason: Model statement describes a specific process, while ground-truth statement
+        is a general property of a stochastic process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: Model statement describes a specific process, while ground-truth statement
+        is a general property of a stochastic process.'
+8cb4be59d82bacec172c30d82a0d066e98fa32fa4b16209940de15e80c15684d:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement describes a property of a stochastic process, while ground-truth
+        statement is an equation for covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement describes a property of a stochastic process, while
+        ground-truth statement is an equation for covariance.'
+a79a86778ba092bae5ebb31abbb8df1c213111a15098e32b50f38fe8154f5fd6:
+    label: unrelated
+    confidence: 0.9
+    reason: Model statement describes a stochastic process, while ground-truth statement
+        is about covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 0.9
+
+        reason: Model statement describes a stochastic process, while ground-truth
+        statement is about covariance.'
+00958885cb305755701180e1fbfbf9f36d762a355a69762d202953213958c755:
+    label: unrelated
+    confidence: 0.9
+    reason: Model statement describes a stochastic process, while ground-truth statement
+        is about covariance between two random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.9
+
+        reason: Model statement describes a stochastic process, while ground-truth
+        statement is about covariance between two random variables.'
+4585e1c938466d587d859b76a94beb4af561486f567a6d6fdf0ddb72d0337dea:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement describes a specific stochastic process, while ground-truth
+        statement gives a general formula for covariance.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement describes a specific stochastic process, while ground-truth
+        statement gives a general formula for covariance.'
+1cad0633bc2312d6c03f6d479747d263fc2159b9cc85e40f3ee6d9ba823c10d9:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a Brownian motion, while the ground-truth
+        statement specifies a centered Gaussian process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a Brownian motion, while the ground-truth
+        statement specifies a centered Gaussian process.'
+e30202c6cbc7ac350db1e9fdb7048f6b98b9c6fb4bb73ace8a7d3d1d3ae36657:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement describes a specific stochastic process, while ground-truth
+        statement is a general property of that process.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement describes a specific stochastic process, while ground-truth
+        statement is a general property of that process.'
+9aaab868dc0c424fd964f18559db7a1665d3b2824db93b52b6923ca9678058b2:
+    label: equivalent
+    confidence: 1.0
+    reason: Same process definition and Gaussian property stated explicitly.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same process definition and Gaussian property stated explicitly.'
+f1dcf87cf1a11a43b46d416983c4e32bcfd68c488930091405c6c7d57403d8d1:
+    label: equivalent
+    confidence: 1.0
+    reason: Same process definition and Gaussian property.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same process definition and Gaussian property.'
+fb68568b9e1498c19b854066903ea97290e9ae4942597d2e96bb96bea9989e91:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is stronger and more specific than the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is stronger and more specific than the ground-truth
+        statement.'
+fd82487878e99af09961515958cec3d25febad0c07618c4d503f19f4c9bf2565:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is stronger and more specific than the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is stronger and more specific than the ground-truth
+        statement.'
+f3b817e147fc322d0795d149b0e5320737a0e0318f03cba15e58584c387c82f4:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is broader and includes additional information about the
+        process being centered Gaussian, but captures the concept of stationary increments.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is broader and includes additional information about
+        the process being centered Gaussian, but captures the concept of stationary
+        increments.'
+4460f1d8fd5895f097571316c756ced9ce53e2a704c354fc0e04104675677933:
+    label: equivalent
+    confidence: 1.0
+    reason: Same law of increments and Gaussian process property.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same law of increments and Gaussian process property.'
+21260b644f42f1bb20c2080b9fb2f847183f3de3edc68f91edf6431c03779cbc:
+    label: equivalent
+    confidence: 1.0
+    reason: Same stochastic process definition.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same stochastic process definition.'
+d68ec01fd657298087190ba9085982762ed8abffe1a237f3a70ad9602daa36f3:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement lacks definition of W_t and its properties.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement lacks definition of W_t and its properties.'
+ec17056a9d7bc3136e3cef0f14b4647a5481eecc59542bc6453c37c863deddc7:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement is missing the classical definition of Brownian motion
+        itself, only describing some of its properties.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement is missing the classical definition of Brownian
+        motion itself, only describing some of its properties.'
+f7d742822ff17d74de1943fe90f24483b7943e02dfef469f68ddc07fca41241c:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is a correct representation of Brownian motion but lacks
+        explicit mention of the classical definition.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is a correct representation of Brownian motion but
+        lacks explicit mention of the classical definition.'
+9fe58ab3f6b8f9930da4689a87da05940bdc7a17559a992109156ae2c2eab963:
+    label: equivalent
+    confidence: 1.0
+    reason: Same stochastic process definition.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same stochastic process definition.'
+0ac80c821cb87de3224f7bbcaad89082d7e230ecb4d9a17944abd6b93f0a0a60:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement describes a property of W_t, but does not directly
+        address the limit computation requested in the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement describes a property of W_t, but does not directly
+        address the limit computation requested in the ground-truth statement.'
+d889990eb04401cceee10bc79777101455a234d27bbdf8d335aa22f63f40f1f4:
+    label: unrelated
+    confidence: 0.8
+    reason: Model statement discusses properties of a stochastic process, while ground-truth
+        statement asks for a limit computation.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: Model statement discusses properties of a stochastic process, while
+        ground-truth statement asks for a limit computation.'
+f9cdf3f34753d569bf7ecf134432884d4092af134dbbf38372c139bbcde7fca6:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement describes a process, but does not directly address the
+        limit computation.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement describes a process, but does not directly address
+        the limit computation.'
+01d804e4c240fe4280ac48583585a5a252d460a64dc748da4f3995502f3db2b0:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement describes a stochastic process, but does not directly
+        address the limit computation.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement describes a stochastic process, but does not directly
+        address the limit computation.'
+239c9c476975fa3ec8d68dfdd51cf311158a6b65ab047db2577ba0a25e804cd2:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is incomplete regarding arbitrary time points, but correctly
+        states independence and Gaussian property.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is incomplete regarding arbitrary time points, but
+        correctly states independence and Gaussian property.'
+45d5a4918d4cbdc9cbec1c2d8434f7885b8bc437249277f56ca7c929bb2e4802:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is incomplete regarding arbitrary time points.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is incomplete regarding arbitrary time points.'
+691dc85baad099c4e393c79bf9915324fa71b405caa3d21318b0e7334ad8e86e:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is stronger and more specific than the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is stronger and more specific than the ground-truth
+        statement.'
+cb4155e2dafa7c1cbf9f3656ec3db4d02a7504a06d7c3feba95c7156e919b00e:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement describes a specific process, while ground-truth statement
+        is about the continuity of X_t at t=0.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement describes a specific process, while ground-truth statement
+        is about the continuity of X_t at t=0.'
+3f52df8d478d143aca923afd50aff079341d0e3e2d15df187d1c2fb776754dd6:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement describes a specific process, while ground-truth statement
+        is about the continuity of a stochastic process in general.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement describes a specific process, while ground-truth statement
+        is about the continuity of a stochastic process in general.'
+e4cbe36af770c91c89a67d191f9662000a846ce5db0bd6f5b5aafa020393be15:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement describes a specific process, while ground-truth focuses
+        on path continuity.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement describes a specific process, while ground-truth focuses
+        on path continuity.'
+90635b6b4fec79b723db8b0f5ac8d4df4a565e4f1172a71239089f46ea81b47a:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement is about a specific stochastic process, while ground-truth
+        statement describes a property of a vector of random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement is about a specific stochastic process, while ground-truth
+        statement describes a property of a vector of random variables.'
+37464700e28a288a53383eddacdee328496edd96a37c232e69c4f4ae560a674a:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is stronger and more specific than the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is stronger and more specific than the ground-truth
+        statement.'
+f8fdd58bc08c0e5c14935fd0208aafba775a79514911cb56469221ef2d97d5c0:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is stronger and more specific than the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is stronger and more specific than the ground-truth
+        statement.'
+34e5d320fa282be897500024c9127e3024e6550b9060a7987f58a98c98649734:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is stronger and more specific than the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is stronger and more specific than the ground-truth
+        statement.'
+759d699e0b44ce7878ece85922a96d5f22e28c4183b0dbd1ad2aaad993af01ec:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a property of W_t, while the ground-truth
+        statement defines covariance between X_t and X_s.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a property of W_t, while the ground-truth
+        statement defines covariance between X_t and X_s.'
+41d1bd26b6bd08390ad59124b80458b552305aa5f543b4d9ddce2cba98fd42be:
+    label: unrelated
+    confidence: 0.9
+    reason: Model statement describes properties of a stochastic process, while ground-truth
+        statement defines covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 0.9
+
+        reason: Model statement describes properties of a stochastic process, while
+        ground-truth statement defines covariance.'
+19e8ba4b9f497b9131b4ac8e6959f3db173c3223af25f95e3d76d65c7ee0cbd8:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement describes a stochastic process, while ground-truth statement
+        defines covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement describes a stochastic process, while ground-truth
+        statement defines covariance.'
+0f8ca8b9f1cd9b471f28542da5f5927db4320254ddc644d845aae62651de224b:
+    label: unrelated
+    confidence: 0.9
+    reason: Model statement describes a stochastic process, while ground-truth statement
+        defines covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 0.9
+
+        reason: Model statement describes a stochastic process, while ground-truth
+        statement defines covariance.'
+f63f54c2e6cc3c8979d5204579bae56f903076c0ef13e98f26754d2d3748f323:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is stronger and more specific than the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is stronger and more specific than the ground-truth
+        statement.'
+6849346969cb987b1c558eee292a86360e896c5c7c5171a3b2a84f12678d9b16:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is broader and includes additional properties (stationary
+        increments, centered Gaussian process) not present in the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is broader and includes additional properties (stationary
+        increments, centered Gaussian process) not present in the ground-truth statement.'
+09045d16469c171ed41702fa2d9f8c75047504d7f21d506e7ed36364514ac6fe:
+    label: equivalent
+    confidence: 1.0
+    reason: Same stochastic process definition.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same stochastic process definition.'
+b89c8f3a98ccb61347a9fc5129abb77ba1a4e021e28f458bb3bf13a07ce99cdf:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a property of a stochastic process, while
+        the ground-truth statement is an equation for covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a property of a stochastic process,
+        while the ground-truth statement is an equation for covariance.'
+75fb01ff4eb0be90b537779cedba8e81a51b6c637445efd0d00ec3c3a059d772:
+    label: equivalent
+    confidence: 1.0
+    reason: Same covariance function definition.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same covariance function definition.'
+2f93ae7b6270dae6bd7e5e834765344d1309903544de058a1db5e691f262140d:
+    label: unrelated
+    confidence: 0.8
+    reason: The model statement describes a stochastic process, but does not mention
+        the distribution of its increments.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: The model statement describes a stochastic process, but does not mention
+        the distribution of its increments.'
+de43553b42734fbb19399a919a7010a626b49932cf0e87c24be875183c2e5469:
+    label: equivalent
+    confidence: 1.0
+    reason: Same process definition and covariance function.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same process definition and covariance function.'
+566bf2e75b39f009da37ef1d2011a9cf6e035ab0ad20614a897366cd89e7e09a:
+    label: equivalent
+    confidence: 1.0
+    reason: Same covariance function implies stationarity and Gaussian increments.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same covariance function implies stationarity and Gaussian increments.'
+a352e7809406269dd2ada46fb12521d3684e827fd486b5f352deaf813acd6f49:
+    label: equivalent
+    confidence: 1.0
+    reason: Same definition of Brownian motion is given.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same definition of Brownian motion is given.'
+7546ea766df2b3b5a5368d36000f473a9402d5820d75fa0a725f96521e7d4ce8:
+    label: equivalent
+    confidence: 1.0
+    reason: Same definition of Brownian motion is given.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same definition of Brownian motion is given.'
+2d52bfabd36d73e39862b4c816ef0e50caf3e7cf599f026fe0bb064f47486de6:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement describes a centered Gaussian process, but does not explicitly
+        decompose the process as in the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement describes a centered Gaussian process, but does not
+        explicitly decompose the process as in the ground-truth statement.'
+c41a454f97af9c9f5d441f32b1d8116a68ed44ab0fc2b52b283029c5661659b5:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement defines a Brownian motion, but does not explicitly
+        decompose it as in the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement defines a Brownian motion, but does not explicitly
+        decompose it as in the ground-truth statement.'
+754c64436e98ef76d282ceea572ae93b8a9de87f1c480db62455d31e0d4aac19:
+    label: equivalent
+    confidence: 1.0
+    reason: Same definition of standard Brownian motion.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same definition of standard Brownian motion.'
+c4d7d24adfb61502d495b9a45a8d100f45bf63670337a8719afc4c31a67b36bd:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement only defines a Brownian motion, but does not mention its
+        increments.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement only defines a Brownian motion, but does not mention
+        its increments.'
+dd910966b0ddf8e3bd499358650f34ec2ff6ba99d0d55b6bd1808151d7fcd0eb:
+    label: equivalent
+    confidence: 1.0
+    reason: Same initial condition and process definition.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same initial condition and process definition.'
+7b2ffc3e61780b496f9e51c1836059aed83569323bdde84f27c2a19579d00b9e:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement defines a stochastic process, while the ground-truth
+        statement specifies an initial condition.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement defines a stochastic process, while the ground-truth
+        statement specifies an initial condition.'
+2d4ac8b8f2f3c1f2e08391d9a6a88412af8c5f9126205d73038ecd26f828732c:
+    label: equivalent
+    confidence: 1.0
+    reason: Same covariance property is explicitly stated in both statements.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same covariance property is explicitly stated in both statements.'
+6291088c65794310026847e5716c22f0889d3a3af68c4ef52250d2bf69db32f5:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a property of a stochastic process, while
+        the ground-truth statement is about covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a property of a stochastic process,
+        while the ground-truth statement is about covariance.'
+f012d7e8d5b244a39709413354f00a3863a620e3b988dd12f98248a8743ce936:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement lacks explicit expression of the covariance formula for
+        the difference of variables.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement lacks explicit expression of the covariance formula
+        for the difference of variables.'
+ecad1963f529886270386571e50d63afc4fef76f7abd68bd3c3488779f60225a:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement defines a property of the process, but does not compute
+        the covariance as requested by the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement defines a property of the process, but does not
+        compute the covariance as requested by the ground-truth statement.'
+e36b5cda16aff97ac426b1544487fa773a803d97dd1b43fbd162ac5665c3bcd2:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement describes a centered Gaussian process with covariance
+        function, but does not explicitly state that the variance is $t-s$.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement describes a centered Gaussian process with covariance
+        function, but does not explicitly state that the variance is $t-s$.'
+f86cb3292589550f8f9bd014cef56e9595bef38cd60d0e8a2a826c272baea4e2:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a Brownian motion, while the ground-truth
+        statement refers to the law of increments.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a Brownian motion, while the ground-truth
+        statement refers to the law of increments.'
+92106a901f81703fe13558b78afa16ea38649a59ba6ef177194f1abd1ae7897f:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement introduces a new process Xt, whereas the ground-truth
+        statement concerns the limit of an expression involving W1/t.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement introduces a new process Xt, whereas the ground-truth
+        statement concerns the limit of an expression involving W1/t.'
+03d69b5ddb26ba5aa3e911d34cf107d033be818ce5ce4901ecf976142525848c:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement discusses a property of Brownian motion, while the
+        ground-truth statement describes an expectation of a product of random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement discusses a property of Brownian motion, while
+        the ground-truth statement describes an expectation of a product of random
+        variables.'
+67bd06f3ae20093eb22816195682d895001f1d1ae401cfdba4cb6abcfa009860:
+    label: unrelated
+    confidence: 0.8
+    reason: The model statement describes a different distribution for the difference
+        of two processes, whereas the ground-truth statement concerns the expectation
+        of their product.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: The model statement describes a different distribution for the difference
+        of two processes, whereas the ground-truth statement concerns the expectation
+        of their product.'
+e4a17b6c883f9a543d06abc0f31084ac508a19578729318d792095dfa00eab38:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a property of the process, while the ground-truth
+        statement is an equation involving expectations.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a property of the process, while the
+        ground-truth statement is an equation involving expectations.'
+b2a33f024525cf6fbf019d74f14b1ab2495e0c6e71c1245189eb1d80e26cd17f:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement specifies a particular process, whereas the ground-truth
+        statement is a general property of a stochastic process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement specifies a particular process, whereas the ground-truth
+        statement is a general property of a stochastic process.'
+b6f8bdf6525a458aae41ba07d4286cd7841cb1d576016001f51e882b1075d1fe:
+    label: unrelated
+    confidence: 0.8
+    reason: The model statement describes a specific distribution of differences,
+        whereas the ground-truth statement is a definition of Brownian motion itself.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: The model statement describes a specific distribution of differences,
+        whereas the ground-truth statement is a definition of Brownian motion itself.'
+d31aab626f09c05cdcf049139a177f4cac704cebbbc01f182a7c78b4ddae7475:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement only describes a property of paths, not that X is
+        a Brownian motion.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement only describes a property of paths, not that X
+        is a Brownian motion.'
+7523292ed1991a71e2cd5091a402a531d9b483d1f658fd69e15b2ec0c07b13e5:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is a property of Brownian motion, but the ground-truth
+        statement specifies the law of large numbers.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is a property of Brownian motion, but the ground-truth
+        statement specifies the law of large numbers.'
+cdb658a8f3e856c789882215a5ecb2844739d6352d2a37e5912752f9db9bf99b:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement defines Brownian motion, while the ground-truth statement
+        refers to a specific application of it (the law of large numbers).
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement defines Brownian motion, while the ground-truth
+        statement refers to a specific application of it (the law of large numbers).'
+0f3a48c9fd0dc44b5ef9b56d9989c98714708018ec15f86992e070caf51f125e:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is a property of Brownian motion, but does not specify
+        the definition.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is a property of Brownian motion, but does not specify
+        the definition.'
+73b738ee663f5dc4a5637b2842196d5a5df820bf85673d2e2e1fd02a66d91c5a:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement lacks specificity about what is being defined.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement lacks specificity about what is being defined.'
+0ed60b35cae933f9e728296ae5ca5e806979ebd96d6d9696fd939903ec93abc8:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement is about a Brownian motion, while the ground-truth
+        statement concerns covariance between two random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement is about a Brownian motion, while the ground-truth
+        statement concerns covariance between two random variables.'
+6ea8537e717dd66cb4d94b856280375ab1c31e9a4361eb321e66086ba817e234:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement discusses properties of a stochastic process, while ground-truth
+        statement describes covariance between two random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement discusses properties of a stochastic process, while
+        ground-truth statement describes covariance between two random variables.'
+65f3d136662c4641c917251b6506dbf3dc14a026adde70f55f6785f569e4f228:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement is about a different mathematical fact, defining initial
+        condition and Brownian motion properties.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement is about a different mathematical fact, defining initial
+        condition and Brownian motion properties.'
+b9d341350e6df3ab91692d0654e8f63e6ceacd44472a2ba21f7111e77d72d992:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a Brownian motion, while the ground-truth
+        statement specifies a centered Gaussian process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a Brownian motion, while the ground-truth
+        statement specifies a centered Gaussian process.'
+4e390d5b2290d2994cc60217e81e11385bb96740bc2e105efa9d995542599ba5:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement discusses properties of increments, while the ground-truth
+        statement describes a distribution type.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement discusses properties of increments, while the
+        ground-truth statement describes a distribution type.'
+f4f8a8e1e9acdab24bcb296eb534be8ad71bb556005b615113639d649820cf4c:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement only specifies a condition for \( W_t \), not the distribution
+        of the process.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement only specifies a condition for \( W_t \), not the
+        distribution of the process.'
+a9bcc1a3e9cb41e3f6675eed844066f57e61893a4dcc25de02396842ecf029c2:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement only mentions stationarity of increments, not uncorrelatedness.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement only mentions stationarity of increments, not uncorrelatedness.'
+648a05392f32fdaba4ef9798915779a41a07f6a45e4da2f52356a06ae7ed4225:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is broader and includes independent increments, which
+        is not mentioned in the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is broader and includes independent increments, which
+        is not mentioned in the ground-truth statement.'
+12f00af26fffd1fd160fb80a93a4b751be9ce1746829a7bbc313dad4b4714595:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement only mentions the Brownian motion property, not the
+        stationarity of increments.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement only mentions the Brownian motion property, not
+        the stationarity of increments.'
+0b4b6d53e249dbf80c8a0b5680ef39db998310a0c94c8867b9884a21546f8654:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is broader and lacks a specific law specification.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is broader and lacks a specific law specification.'
+687378ed2e692c9a87fbf6132b2776e3871a306556cdb817d5fec073fbac2333:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement discusses properties of a stochastic process, while ground-truth
+        statement describes the law of a normal distribution.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement discusses properties of a stochastic process, while
+        ground-truth statement describes the law of a normal distribution.'
+1b1684595d229da0dd957746efce95eef4e8d1246dd150340fb51280c3ca7eb9:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement specifies initial condition, while ground-truth focuses
+        on law of the process.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement specifies initial condition, while ground-truth focuses
+        on law of the process.'
+baaf007e646ece360f2cc1da1295f65e35f06b12076fba778916043f2a78a2d0:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement lacks a definition of what W_t is, making it incomplete
+        compared to the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement lacks a definition of what W_t is, making it incomplete
+        compared to the ground-truth statement.'
+fe4de75937320ec62be6472cad6a49a39cc7bb94a0879bdbde3d309f41a269ca:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement only mentions stationary and independent increments, not
+        the classical definition itself.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement only mentions stationary and independent increments,
+        not the classical definition itself.'
+5ca4b272d0e4aea72c07010acfa8033d04b311775ec522380a1b75248f52dbe2:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement only specifies a single property of Brownian motion,
+        whereas the ground-truth statement refers to its classical definition, which
+        likely encompasses multiple properties.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement only specifies a single property of Brownian motion,
+        whereas the ground-truth statement refers to its classical definition, which
+        likely encompasses multiple properties.'
+aa83428266faf80011ec272cf2c901014ce2270758527a85792f6e9b1b4facda:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement defines a property of Brownian motion, but does not
+        directly address the limit computation.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement defines a property of Brownian motion, but does
+        not directly address the limit computation.'
+71a8462d6d043f4ed8abda8df8a941c2ea0b3c3f7e17f3aa63b1976348202740:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement discusses properties of increments, while the ground-truth
+        statement involves a limit expression.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement discusses properties of increments, while the
+        ground-truth statement involves a limit expression.'
+629ed91b40e71e6864edbafe33bd25e1bda1537014ac1a04512555ee4246cad4:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement defines a Brownian motion, but does not directly address
+        the limit computation.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement defines a Brownian motion, but does not directly address
+        the limit computation.'
+8dc460dc1b9dd8a32a370372d661dc32f666019630c5770da773572ec4546eb3:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a Brownian motion, while the ground-truth
+        statement is about a vector of random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a Brownian motion, while the ground-truth
+        statement is about a vector of random variables.'
+1171866935e2c2ec5a83f904cdfa9a65a769f6784a90fdddc6845c193d616f84:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement discusses properties of \( W_t \), while ground-truth
+        statement concerns arbitrary times and vector \( (X_{t_1}, \dots, X_{t_n})
+        \).
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement discusses properties of \( W_t \), while ground-truth
+        statement concerns arbitrary times and vector \( (X_{t_1}, \dots, X_{t_n})
+        \).'
+f4c382435a2e9e624ce8914eac953f5434f3a5a0a5ec16951fcf2a3ff5b68408:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement only defines a property of \( W_t \), whereas the
+        ground-truth statement describes a vector of random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement only defines a property of \( W_t \), whereas
+        the ground-truth statement describes a vector of random variables.'
+5fb2d182db520d73ce7cde3f6b69590033ce1af678c4664dd7ad4f5dee052ce6:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement only addresses initial condition, not the limit behavior.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement only addresses initial condition, not the limit behavior.'
+4af3f8e00f606d276129e884afc5f39483964aa359412e7ab92d9ceb0973f46b:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement is a specific case of the ground-truth statement,
+        but does not fully cover its mathematical content.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement is a specific case of the ground-truth statement,
+        but does not fully cover its mathematical content.'
+34e87af2b6443acfd76bde4928bcd8105921ed0283f09ea0ce6986c0df48604f:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement only addresses the Brownian motion property, not Gaussianity
+        of the vector.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement only addresses the Brownian motion property, not Gaussianity
+        of the vector.'
+e865fea0c87a89b73344475d0bcfd6d7e40e78a1425a09c6444d92edd4772b23:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a Brownian motion, while the ground-truth
+        statement defines covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a Brownian motion, while the ground-truth
+        statement defines covariance.'
+5ccd98f9472fec9bc15c013d2aed1226daad9fcafe69b908bfeca8d5a7969417:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement is about Brownian motion properties, while ground-truth
+        statement describes covariance of a process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement is about Brownian motion properties, while ground-truth
+        statement describes covariance of a process.'
+52b4a19944bc922c816b81352c69ec5ac997a857b719b8645e832d4bd5e1850c:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement discusses properties of \( W_t \), while ground-truth
+        statement concerns initial condition \( X_0 \).
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement discusses properties of \( W_t \), while ground-truth
+        statement concerns initial condition \( X_0 \).'
+88bc1201dec8d549ea0cf58d91f92f70b5137aba8a58a3ff4b6f012b148bd3de:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical content with identical notation.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical content with identical notation.'
+9d6284cc80b8311e6f5f16c82c2f9f75055e031f7d9dcedf6b7cd142b87c2aa0:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a property of $X_t$, while the ground-truth
+        statement calculates a covariance between two random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a property of $X_t$, while the ground-truth
+        statement calculates a covariance between two random variables.'
+9e8070ac50cabbfa62ddec832524316859a8516d95b32f47ddd057fa2a67a637:
+    label: equivalent
+    confidence: 1.0
+    reason: Same covariance formula with infimum instead of minimum.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same covariance formula with infimum instead of minimum.'
+8c5fb0d7c8ee22e9578027a3452a45e1d53298600d6f9e8072eb3c37a7347ef8:
+    label: unrelated
+    confidence: 0.8
+    reason: Model statement describes a stochastic process, while ground-truth statement
+        refers to the distribution of a random variable.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: Model statement describes a stochastic process, while ground-truth
+        statement refers to the distribution of a random variable.'
+4b6e091361dfb2a3e6a5ece24b8ef5eac1b3cea4670e462bf3747fab69062423:
+    label: equivalent
+    confidence: 1.0
+    reason: Same process definition and covariance function.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same process definition and covariance function.'
+c9f53ca19f3762c3a105470a0e076dd8ae3e6407dc025ab797b781ca0ee4dc3f:
+    label: equivalent
+    confidence: 1.0
+    reason: Same covariance structure implies same distribution of increments.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same covariance structure implies same distribution of increments.'
+aa8efd0dfb8e6b08bd92900cc531d689c909555d3e9caaa6b94a675db95a5bee:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement lacks a description of the properties that define
+        Brownian motion.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement lacks a description of the properties that define
+        Brownian motion.'
+251faf8601b483d2d5439e8532f04feaac4cefbea6c40191fe528ed33497366f:
+    label: equivalent
+    confidence: 1.0
+    reason: Same definition of Brownian motion is given.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same definition of Brownian motion is given.'
+9422c5846929b91debad1985697aa07f151fd17781b496027a7addc7ebfb0a1a:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement describes a centered Gaussian process with specific covariance,
+        but does not explicitly state the independence of \(X_s\) and \(X_t - X_s\).
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement describes a centered Gaussian process with specific
+        covariance, but does not explicitly state the independence of \(X_s\) and
+        \(X_t - X_s\).'
+860874e84417679f706ff99a49db5e8346e0829a462bbbcf30c90ff3a24dcfd7:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical content, just with different notation for covariance.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical content, just with different notation for covariance.'
+1533001bb51a0979c5d757ce1d8e863bbed3e890761501703be4d81b50a98b69:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical content, just different wording and notation.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical content, just different wording and notation.'
+03b6ad1d4833cdedb7e3a303de34cd9ca0c463cb3860b1c295579f9fc0110ff8:
+    label: unrelated
+    confidence: 0.8
+    reason: The model statement defines a Brownian motion, while the ground-truth
+        statement decomposes a stochastic process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: The model statement defines a Brownian motion, while the ground-truth
+        statement decomposes a stochastic process.'
+dfae384c720f084735339b7fae4e35f9d98ac764c9d984b707463e801018c204:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement only defines a process, whereas ground-truth statement
+        describes a property of Brownian motion.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement only defines a process, whereas ground-truth statement
+        describes a property of Brownian motion.'
+3f9205fe10457dd6413fc4734d36eb6248f379e9e44888214c1b5fde543d840f:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a process, while the ground-truth statement
+        provides an expression for covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a process, while the ground-truth statement
+        provides an expression for covariance.'
+e15a5ef98bf29a50909a380123c321065015148e4801790dc1971c72e1b4cd73:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement defines a Brownian motion, but does not address the
+        specific covariance computation requested in the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement defines a Brownian motion, but does not address
+        the specific covariance computation requested in the ground-truth statement.'
+f2ddb03de1445eed52c7650fd1a7eec36cbd46dc5c7556b15a5a504c2bca1c89:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a Brownian motion, while the ground-truth
+        statement refers to the law of increments for Gaussian processes.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a Brownian motion, while the ground-truth
+        statement refers to the law of increments for Gaussian processes.'
+4c88fdc5b5693bcd8f84c0c31510b9414654d3a9d3d60e7a86cf7a4c45cd1315:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a Gaussian process, while the ground-truth
+        statement concerns a limit of a function involving a stochastic process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a Gaussian process, while the ground-truth
+        statement concerns a limit of a function involving a stochastic process.'
+c80c45ec81def00bf1ce26a54315b30bdc13fd800068b70bf68fb076c33e58de:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a property of Brownian motion, while the
+        ground-truth statement is about a limit involving the Wiener process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a property of Brownian motion, while
+        the ground-truth statement is about a limit involving the Wiener process.'
+13ffc444d0de46e73005dfb1ee82d51e650372a92a11f0d91fcf9651c1e042bd:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical content, just different wording and notation.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical content, just different wording and notation.'
+e887ecdbacf8032b3f1d22c2912c0be9cf7a1417676aeadfe44d98205d832e8b:
+    label: equivalent
+    confidence: 1.0
+    reason: Same covariance formula.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same covariance formula.'
+0342417668cf616bd5ae750a0b5e40ea96a9e7c1c92926608a8b452134a516b7:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement is about Brownian motion properties, while the ground-truth
+        statement concerns expectation of a product of random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement is about Brownian motion properties, while the
+        ground-truth statement concerns expectation of a product of random variables.'
+f052d53f4057732b5f92a8be249f3183e7952e33f9a8b026e40ee76a34f16ab3:
+    label: equivalent
+    confidence: 1.0
+    reason: Same definition of Brownian motion.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same definition of Brownian motion.'
+8aeeb9f33015b6078c86d9ec70fcd3f5b1c777da90cab409b80f407df68aec7f:
+    label: equivalent
+    confidence: 1.0
+    reason: Same definition of a Brownian motion.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same definition of a Brownian motion.'
+12b2e01cf29bb92ba3c38c4fdf24d8dacc9875665735d3db81ecd4fa03c41f85:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement introduces a Brownian motion, while the ground-truth
+        statement concerns covariance between two random variables X_s and X_t.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement introduces a Brownian motion, while the ground-truth
+        statement concerns covariance between two random variables X_s and X_t.'
+be450b84791280bbc9bb55023f02e5327f5742604f23ab40edf0c586d4ff3eb7:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical expression for covariance.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical expression for covariance.'
+0d9883c41acea4bcbe34a122c32d69801479cdb9a50d0d06291d3db80bc69f3a:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical concept, just different wording.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical concept, just different wording.'
+fdd1471daaeb2066ee020b808efba72f67bf2fb560c4a60a10c6f0dd2c8900f2:
+    label: equivalent
+    confidence: 1.0
+    reason: Same definition of a centered Gaussian process.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same definition of a centered Gaussian process.'
+0f034cf91b4eb8681127fd6d7a21d467528409b3abb723982b50ee4e11b25e2e:
+    label: equivalent
+    confidence: 1.0
+    reason: Same law and covariance function.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same law and covariance function.'
+2ad71b1338234284114bbc92f49a6f7ebb2687cabe6f1d58f895cdd70a5d8c7d:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement lacks a definition of what it means for $W_t$ to be
+        a Brownian motion.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement lacks a definition of what it means for $W_t$
+        to be a Brownian motion.'
+bbf2ea2672c333f7eacf53258b2bb7033270c8be36e30d77da852fe7154c5d46:
+    label: equivalent
+    confidence: 1.0
+    reason: Same definition of Brownian motion is given in both statements.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same definition of Brownian motion is given in both statements.'
+cd00ee2c71ff2979e60a1e390a83d5a623af49ff2166d2fb0071a8aa2363519e:
+    label: equivalent
+    confidence: 1.0
+    reason: The model statement directly implies the computation of the limit in question.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: The model statement directly implies the computation of the limit
+        in question.'
+43a7ef9f0f8c98fed5c6bd407fdf89fc0c83582fed2781aeb5cee5be697b2ed7:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is broader and does not explicitly mention arbitrary time
+        points.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is broader and does not explicitly mention arbitrary
+        time points.'
+43d86b4093622054061170155fb568db25337c9a62939badf8ef90eb346e44aa:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement introduces a new process W_t, whereas the ground-truth
+        statement discusses X_t.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement introduces a new process W_t, whereas the ground-truth
+        statement discusses X_t.'
+825c767ed71d4bfc9fd761302e006f0ec0c4d5aead334f811369c4b3b5745abd:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement describes a process with specific properties, but does
+        not explicitly state the continuity of X_t at t=0.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement describes a process with specific properties, but
+        does not explicitly state the continuity of X_t at t=0.'
+6491479b3cacb7571c74f59de15428f3ec1c45f969a5e6673d3457fe798b837e:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement specifies a process, while the ground-truth statement
+        describes a property of a vector.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement specifies a process, while the ground-truth statement
+        describes a property of a vector.'
+2dfc79eb950ce8003e12e55cb3ba704b9ee2bebe6a4954e035b2b74699c0a127:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is broader and does not explicitly mention the set of
+        times.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is broader and does not explicitly mention the set
+        of times.'
+098bfcd9e0b3ff64c72cd5303eb5d64fdd9ad5802517e96323fc0b60ea7ac3ce:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement introduces a Brownian motion, while the ground-truth
+        statement describes covariance properties.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement introduces a Brownian motion, while the ground-truth
+        statement describes covariance properties.'
+f6a0b44351cd2e8d9c667c252579363824a972b4aa34e1409d01ddcb8f4e4084:
+    label: equivalent
+    confidence: 1.0
+    reason: Same covariance formula with different notation.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same covariance formula with different notation.'
+135f9460ee87fbdd349a2b497a38997ec21a892906d5747de1778f03c21ff9de:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a process, while the ground-truth statement
+        gives a formula for covariance.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a process, while the ground-truth statement
+        gives a formula for covariance.'
+6a30c0d555086f2d0a91ee97f32a66d8da5f2fefb6358ab2b9d41fe170ed853d:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement describes a specific stochastic process, while ground-truth
+        statement describes the distribution of the process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement describes a specific stochastic process, while ground-truth
+        statement describes the distribution of the process.'
+9e91081e3791b6e77c1a325fae93cd6c24da7d9722ded4f172d1b9d04839686e:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement lacks specificity about the classical definition.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement lacks specificity about the classical definition.'
+db16376c7127112c4dbe1696a8dbbf4798a8ceb49f652dbb79b8d2d3f6eaf8e2:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is missing the hypothesis of independence between \(X_s\)
+        and \(X_t - X_s\).
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is missing the hypothesis of independence between
+        \(X_s\) and \(X_t - X_s\).'
+6625c62561db05e2e065c388d416ced467da260a6e58f939dd4af8cd3d0a0c3c:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is missing the key argument that the increments are independent.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is missing the key argument that the increments are
+        independent.'
+8ff8d184717b427f80fa8b7706d4e772c9cd8f1e455a8e0a923c8b7922fd4d9b:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is broader and does not explicitly mention the dependency
+        on t-s.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is broader and does not explicitly mention the dependency
+        on t-s.'
+0215b7288513feeab8493b0ab2fcfb449d57671efb5bbe33c72d8a27f4404e7f:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is missing Kolmogorov's theorem reference and has a different
+        covariance function expression.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is missing Kolmogorov''s theorem reference and has
+        a different covariance function expression.'
+aad947bdfaa166dc2460ffee48ba4cb6dcbb86a530ad303c03853389f9b33235:
+    label: unrelated
+    confidence: 0.9
+    reason: The model statement introduces a new stochastic process, whereas the ground-truth
+        statement is about a limit property of another process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.9
+
+        reason: The model statement introduces a new stochastic process, whereas the
+        ground-truth statement is about a limit property of another process.'
+3c3037f1dabbf0ca83c40584388c053ea983ecf00120b49745f930b4849227f4:
+    label: unrelated
+    confidence: 0.9
+    reason: The model statement describes a Brownian motion, while the ground-truth
+        statement is about an expectation of a product of random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.9
+
+        reason: The model statement describes a Brownian motion, while the ground-truth
+        statement is about an expectation of a product of random variables.'
+98588c6de36e3290bda5d5ed9e7dcfc055772c69077d354afb65cecf27c35cea:
+    label: equivalent
+    confidence: 1.0
+    reason: Same stochastic process definition.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same stochastic process definition.'
+f90946ff4ae4e916519ca2a96a7179484a1de7ea424fe954bc4d337ce7cd8263:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement only mentions calculation, whereas ground-truth statement
+        refers to the law of large numbers for Brownian motion.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement only mentions calculation, whereas ground-truth statement
+        refers to the law of large numbers for Brownian motion.'
+151229294e88aee756c4debc626ccbae2e5d5c23198a002e9a20dbb56b58a7fd:
+    label: unrelated
+    confidence: 0.8
+    reason: Model statement mentions definition of Brownian motion, which is not present
+        in ground-truth statement.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: Model statement mentions definition of Brownian motion, which is not
+        present in ground-truth statement.'
+e6a84df0403d711f9bff110469e7ff44ed3a3f82ea9689a143a97f152ffdfca1:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement only mentions "Definition of Brownian motion" without
+        specifying the calculation aspect explicitly.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement only mentions "Definition of Brownian motion" without
+        specifying the calculation aspect explicitly.'
+86124f61cc44eca47fe751cd2c0bbd8de0a8844a7526a2d990659020d7768ee0:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement is about a Brownian motion, while the ground-truth
+        statement concerns covariance between two random variables.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement is about a Brownian motion, while the ground-truth
+        statement concerns covariance between two random variables.'
+5c149f6fe1c4f9dad11c6cf995504957dd7ba0852c34b5a80364de79278e0a16:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a Brownian motion, while the ground-truth
+        statement specifies a centered Gaussian process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a Brownian motion, while the ground-truth
+        statement specifies a centered Gaussian process.'
+9d6c428530cca873ec0ae856b0bebe6064563a4380e5d6dae71e214a354506e1:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement lacks a definition of $W_t$, making it incomplete
+        compared to the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement lacks a definition of $W_t$, making it incomplete
+        compared to the ground-truth statement.'
+12f3f24861d293ffdbab1d8445cda8c85647476226f082e26525a4c4eb074554:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement describes a property of $W_t$, but does not directly
+        address the limit computation requested in the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement describes a property of $W_t$, but does not directly
+        address the limit computation requested in the ground-truth statement.'
+0283d03017a6286cd47698de30c7b48f27e79e61f03eaa5ffd7c1ed4f7cc18e5:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a property of Brownian motion, while the
+        ground-truth statement concerns continuity and a limit condition.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a property of Brownian motion, while
+        the ground-truth statement concerns continuity and a limit condition.'
+ce148051e5f64bb530eebfcb21c46bfaa1fffd8c20c32c1f44a20eeebad0af3c:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement is a specific case of the ground-truth statement,
+        but does not fully cover it.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement is a specific case of the ground-truth statement,
+        but does not fully cover it.'
+8372aa6600ffe8884c76d92fc8cf8c7cbf64c79168c14fb37d1b6eee3afb73e9:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement is about a Brownian motion, while the ground-truth
+        statement describes covariance properties.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement is about a Brownian motion, while the ground-truth
+        statement describes covariance properties.'
+f7e1ee55fad923f8301ff3a7ec1d73fa911247750487fc929bf31be7f344c61d:
+    label: unrelated
+    confidence: 0.0
+    reason: Different expectation expressions.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Different expectation expressions.'
+a70336057d63e0cf8fa85c6aad308bad19c49f18228a653de822b0f9a7f6735a:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement lacks specificity about the process and time.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement lacks specificity about the process and time.'
+dfae6543aff72ada5cc339fc2a841b2e79406c9e2043bf8daba0d86b03680046:
+    label: unrelated
+    confidence: 0.0
+    reason: Different variable names.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Different variable names.'
+2047069a7b68eff1a79106cdcdd0e27d119c68d2667ab3fcabccd4f7ab86f157:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement is about a stopping time, while the ground-truth statement
+        is about a martingale process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement is about a stopping time, while the ground-truth
+        statement is about a martingale process.'
+eb0d441f2f2f1ab29ec4a451134e7ea7815f1765633096a5594d61bdcacf0d62:
+    label: unrelated
+    confidence: 0.0
+    reason: Different variable names.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Different variable names.'
+63461573f30343377fa914dbaa57e2ba7a0d99f1596a5fe703bc8f09729de29e:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical expression for E[W_tau^2].
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical expression for E[W_tau^2].'
+6b8424e1f8d59408e63824c51d9736bb47298c67087648eae2de077dbd1ce4c2:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical expression for the expectation of W_tau^2.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical expression for the expectation of W_tau^2.'
+0126d0d03e90404a63d9108ff4470fe8cee926b15b78f3df47dc99c21bac8576:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement is an approximation, not a mathematical equivalence.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement is an approximation, not a mathematical equivalence.'
+f32669b4337ee6dd73a1ef18fcdfae501db4497f913898ea9904ac85f3eef473:
+    label: equivalent
+    confidence: 1.0
+    reason: Same theorem, same application context.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same theorem, same application context.'
+f263774633e08633984f4368cf86e11d22485702f905f50d0f520080b0df6bd2:
+    label: equivalent
+    confidence: 1.0
+    reason: Identical mathematical expressions.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Identical mathematical expressions.'
+2df72bd3d045823494ee84de48503ceba9d02be9ae5aceb95db29ca8c9aef8fb:
+    label: unrelated
+    confidence: 0.8
+    reason: Model statement lacks the term "-t" in the process, which is part of the
+        ground-truth statement.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: Model statement lacks the term "-t" in the process, which is part
+        of the ground-truth statement.'
+7fe3ce076f7cd5b1f3eb590ddac78a9e471c9531663ae5e0a1bdaca0cdad9a92:
+    label: unrelated
+    confidence: 0.8
+    reason: The model statement is about a martingale and a stopping time, while the
+        ground-truth statement describes a Brownian Motion.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: The model statement is about a martingale and a stopping time, while
+        the ground-truth statement describes a Brownian Motion.'
+6a09ff9e78864f149f848472b6d6bfdd2039ec8f6ea45b92b4c3d5bab1daa624:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement is incomplete and only mentions the martingale property
+        of $(W_t)_{t\geq 0}$ without connecting it to $\tau$.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement is incomplete and only mentions the martingale
+        property of $(W_t)_{t\geq 0}$ without connecting it to $\tau$.'
+fec874dc0aed59586ebb620beb9223eb9ad1c8e57153ea8ea59246c8784e6ca9:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: The model statement is weaker because it only mentions that $\tau$ is
+        bounded, not that the expectation of $W_\tau$ is zero.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: The model statement is weaker because it only mentions that $\tau$
+        is bounded, not that the expectation of $W_\tau$ is zero.'
+a6010667ee79e9733ba2da0e24ad2195a351e657b02a902934d650f83966e9c7:
+    label: unrelated
+    confidence: 0.8
+    reason: The model statement only addresses the martingale property of the Brownian
+        motion, not its square.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: The model statement only addresses the martingale property of the
+        Brownian motion, not its square.'
+084b0efb3267d59911fc885d83995e819be42f4f75e97ec800b06e9143b8b41f:
+    label: unrelated
+    confidence: 0.8
+    reason: The model statement introduces a new topic (martingale) unrelated to the
+        ground-truth statement about $\tau$.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: The model statement introduces a new topic (martingale) unrelated
+        to the ground-truth statement about $\tau$.'
+3ef7cf21a99439bced979325412b9af48342fabe44bd261caa3f617d5a333071:
+    label: unrelated
+    confidence: 0.0
+    reason: Different expression for expectation of a random variable.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Different expression for expectation of a random variable.'
+d143d0ed660f70b236a683653f356c8ecda5530e91695424d2b65205cccf0200:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is a concept, but ground-truth statement applies it to
+        a specific process.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is a concept, but ground-truth statement applies it
+        to a specific process.'
+8ea6adfa3b7ef2741bb9badb7747687e400df33a35c0633b8d6512ca37c5064a:
+    label: unrelated
+    confidence: 0.0
+    reason: Different expression for variance of W_tau and expectation of tau.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Different expression for variance of W_tau and expectation of tau.'
+079bca58d8a653d52e23ea183d1eb35de4a127ddeb1e0183d1e293f0640b1ac3:
+    label: unrelated
+    confidence: 0.8
+    reason: Different expectation of squared wealth and time are compared, not equal.
+    raw_response: 'label: unrelated
+
+        confidence: 0.8
+
+        reason: Different expectation of squared wealth and time are compared, not
+        equal.'
+a8bc257f984b67dd3da82de2b9b85477dccc3679ebbb090dc217a125d72d8e37:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is a general concept, while ground-truth statement applies
+        it to a specific process.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is a general concept, while ground-truth statement
+        applies it to a specific process.'
+68b00d52f6f6d94cf106fd2c3e0e31f3927115b5492d24654d492f9c6c9e5e6f:
+    label: unrelated
+    confidence: 0.0
+    reason: The model statement describes a property of the process, while the ground-truth
+        statement applies a theorem to it.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: The model statement describes a property of the process, while the
+        ground-truth statement applies a theorem to it.'
+70bf48128ee0317eb4f8137997b0dbc24b063bcb71e8497b5048886fcdcb0439:
+    label: equivalent
+    confidence: 1.0
+    reason: Same mathematical expression for the expected value of W_tau.
+    raw_response: 'label: equivalent
+
+        confidence: 1.0
+
+        reason: Same mathematical expression for the expected value of W_tau.'
+1c7f01bce2bb55b4e05338864971f096efd77b57f41178161996215cc92dade0:
+    label: unrelated
+    confidence: 0.0
+    reason: Ito's Lemma is a formula for finding the differential of a function of
+        a stochastic process, whereas Doob's optional stopping theorem is a result
+        about the expectation of stopped processes.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Ito''s Lemma is a formula for finding the differential of a function
+        of a stochastic process, whereas Doob''s optional stopping theorem is a result
+        about the expectation of stopped processes.'
+0fb215507c712c9f91256cf55c24506043fdb57f6a37407e82c501198ea09fbf:
+    label: related_but_not_equivalent
+    confidence: 0.8
+    reason: Model statement is a correct expansion, but not directly equivalent to
+        the ground-truth statement.
+    raw_response: 'label: related_but_not_equivalent
+
+        confidence: 0.8
+
+        reason: Model statement is a correct expansion, but not directly equivalent
+        to the ground-truth statement.'
+97169d53859a8831803d9c2b575171a93e4a4f3e135ab0e044fd37b39ed8e9bd:
+    label: unrelated
+    confidence: 0.0
+    reason: Different expectation of squared outcomes and time.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Different expectation of squared outcomes and time.'
+cabe7d74947b0271b14beb17aa617ab7ed38666e93ef937f551a515c587cabd6:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement is about Itô's formula, while ground-truth statement applies
+        a theorem to a process.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement is about Itô''s formula, while ground-truth statement
+        applies a theorem to a process.'
+bf21c8425a417bde816e58c387c5282a9189e5cb54d0c6bef85e89f100e0a9b7:
+    label: unrelated
+    confidence: 0.0
+    reason: Model statement discusses properties of $W_t$ but does not address optional
+        stopping theorem on $(W_t^2-t)_{t\geq 0}$.
+    raw_response: 'label: unrelated
+
+        confidence: 0.0
+
+        reason: Model statement discusses properties of $W_t$ but does not address
+        optional stopping theorem on $(W_t^2-t)_{t\geq 0}$.'

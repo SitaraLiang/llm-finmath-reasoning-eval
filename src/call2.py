@@ -17,7 +17,7 @@ from config_loader import load_config
 
 
 PROJECT_ROOT = Path(__file__).resolve().parents[1]
-DEFAULT_CONFIG = PROJECT_ROOT / "config" / "call2" / "experiment_zeroshot.yaml"
+DEFAULT_CONFIG = PROJECT_ROOT / "config" / "call2" / "experiments" / "baseline_en.yaml"
 PROMPT_TYPE_ABBREVIATIONS = {
     "strictly_sequential": "seq",
     "prompt_accumulation": "acc",
