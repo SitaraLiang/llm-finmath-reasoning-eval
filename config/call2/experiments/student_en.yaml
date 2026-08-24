@@ -1,0 +1,13 @@
+extends:
+  - "../base.yaml"
+
+experiment:
+  name: "call2_student_en"
+  version: 1
+
+input:
+  filters:
+    languages:
+      - "en"
+    variations:
+      - "role_student"

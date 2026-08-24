@@ -1,0 +1,14 @@
+extends:
+  - "../base.yaml"
+  - "../modes/plain_text.yaml"
+
+experiment:
+  name: "evaluation_student_plain_text_en"
+  version: 1
+
+input:
+  filters:
+    languages:
+      - "en"
+    variations:
+      - "role_student"

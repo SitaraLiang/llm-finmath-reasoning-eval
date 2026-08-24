@@ -1,7 +1,0 @@
-extends:
-  - "../base.yaml"
-  - "../modes/yaml.yaml"
-  - "../variations/role_student.yaml"
-experiment:
-  name: "call1_student_direct_yaml"
-  version: 1

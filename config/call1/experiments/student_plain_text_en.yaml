@@ -1,0 +1,11 @@
+extends:
+  - "student_plain_text.yaml"
+
+input:
+  filters:
+    languages:
+      - "en"
+
+experiment:
+  name: "call1_student_direct_yaml"
+  version: 1
