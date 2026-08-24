@@ -1,6 +1,22 @@
 output_modes:
   - "yaml"
 
+# Direct-YAML generation is currently evaluated with the two stronger
+# reasoning models only. This list replaces the broader model list in base.yaml.
+models:
+  - id: "llama3.1:8b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      temperature: 0.0
+      max_output_tokens: 800
+  - id: "deepseek-r1:7b"
+    provider: "ollama"
+    enabled: true
+    parameters:
+      temperature: 0.0
+      max_output_tokens: 800
+
 prompts:
   languages:
     en:
