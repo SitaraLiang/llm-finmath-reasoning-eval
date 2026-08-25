@@ -1,0 +1,7 @@
+subquestion_index,constraint_index,before_gt_atom_index,after_gt_atom_index,before_gt_atom_path,after_gt_atom_path,before_model_atom_index,after_model_atom_index,before_match_score,after_match_score,status,respected
+1,1,1,2,subquestions[1].atoms/set[1]/list[1],subquestions[1].atoms/set[1]/list[2],,1,0.250000,0.608587,unmatched,False
+1,2,3,4,subquestions[1].atoms/set[2]/list[1],subquestions[1].atoms/set[2]/list[2],,,0.100164,0.361699,unmatched,False
+1,3,3,5,subquestions[1].atoms/set[2]/list[1],subquestions[1].atoms/set[2]/list[3]/set[1],,1,0.100164,0.387188,unmatched,False
+1,4,3,6,subquestions[1].atoms/set[2]/list[1],subquestions[1].atoms/set[2]/list[3]/set[2],,1,0.100164,0.500000,unmatched,False
+1,5,4,5,subquestions[1].atoms/set[2]/list[2],subquestions[1].atoms/set[2]/list[3]/set[1],,1,0.361699,0.387188,unmatched,False
+1,6,4,6,subquestions[1].atoms/set[2]/list[2],subquestions[1].atoms/set[2]/list[3]/set[2],,1,0.361699,0.500000,unmatched,False
