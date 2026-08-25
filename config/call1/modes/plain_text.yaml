@@ -107,3 +107,55 @@ prompts:
           $current_question
 
           Répondez uniquement à la question $current_question_number.
+    ch:
+      empty_value: "无"
+      labels:
+        question: "问题"
+        exact_solution: "标准答案"
+        your_answer: "你的回答"
+      common_header: |
+        $variation_instruction
+        你正在解答一道金融数学题。
+        请用中文给出简洁、严谨的数学答案。不要输出隐藏的推理过程或冗长解释。公式请使用 LaTeX。
+
+        题目背景：
+        $context
+
+        全局假设：
+        $global_assumptions
+      strategies:
+        strictly_sequential: |
+          局部假设：
+          $current_assumptions
+
+          第 $current_question_number 问：
+          $current_question
+
+          只回答第 $current_question_number 问。
+        prompt_accumulation: |
+          到目前为止给出的问题：
+          $accumulated_questions
+
+          只回答第 $current_question_number 问。
+        ground_truth_forcing: |
+          前面的问题及其标准答案：
+          $ground_truth_history
+
+          局部假设：
+          $current_assumptions
+
+          当前第 $current_question_number 问：
+          $current_question
+
+          只回答第 $current_question_number 问。
+        self_history: |
+          前面的问题及你之前的回答：
+          $self_history
+
+          局部假设：
+          $current_assumptions
+
+          当前第 $current_question_number 问：
+          $current_question
+
+          只回答第 $current_question_number 问。

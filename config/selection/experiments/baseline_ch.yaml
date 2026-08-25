@@ -1,0 +1,12 @@
+extends:
+  - "../base.yaml"
+
+experiment:
+  name: "selection_baseline_ch"
+  version: 1
+
+filters:
+  languages:
+    - "ch"
+  variations:
+    - "baseline"

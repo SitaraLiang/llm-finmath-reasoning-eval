@@ -220,6 +220,67 @@ prompts:
         Reponse precedente et tache originale :
         $raw_response
 
+    ch:
+      per_question_conversion: |
+        /no_think
+        任务：将下面这一个 Question 块转换为证明原子 YAML 格式。Python 随后会组装 subquestions。
+
+        强制输出规则：
+        - 不要输出分析、思考过程、解释、备注或 <think> 标签。
+        - 只返回一个以 ```yml 开始并以 ``` 结束的 Markdown 代码块，前后不得有其他文字。
+        - 代码块内只能有一个 YAML 文档，不得使用 --- 或 ...。
+        - 第一行非空内容必须恰好为：
+          atoms:
+        - 不要输出 subquestions 字段。
+        - 不要重新解题；只整理“源答案”中已有的内容。
+        - 只能使用 atoms、preconditions、arguments、outcomes，以及可选的 strength。
+
+        格式要求：
+        - atoms 可以是一个原子、一个有序 YAML 列表、表示无序集合的 !!python/tuple，或列表与元组的嵌套。
+        - 每个原子必须是一个完整 mapping，并在同一缩进层级包含 preconditions、arguments 和 outcomes。
+        - 这三个字段必须使用块样式 YAML 列表；非空时不得写成 ["..."]。
+        - atoms 下的每个 “-” 开始一个完整原子，不得把三个字段拆成不同列表项。
+        - 仅当为空时可以使用 preconditions: [] 或 outcomes: []；arguments 必须至少包含一个字符串。
+        - 只有主要内容确实是计算时才使用 "Calculation"；否则写出实际使用的定理、定义、性质或方法。
+        - 仅对无序的替代证明或无序原子组使用 !!python/tuple。
+        - 完整保留源答案中的公式；包含 LaTeX 或 YAML 特殊字符的字符串必须加引号。
+        - 不得添加源答案中没有的事实，也不得重复相同原子。
+
+        元数据：
+        pc: $pc
+        exercise: $exercise
+        language: $language
+        variation: $variation
+        prompt_type: $prompt_type
+        call1_model: $model1
+        question_block_index: $question_block_index
+        question_block_count: $question_block_count
+
+        源答案：
+        $source_answer
+
+        YAML 输出：
+
+      repair: |
+        /no_think
+        任务：修复上一次回答，使其成为有效的证明原子 YAML。
+
+        验证错误：
+        $error_message
+
+        强制规则：
+        - 只返回一个 ```yml ... ``` 代码块，不要输出分析或其他文字。
+        - 保留原任务要求的顶层键：单个 Question 块使用 atoms，完整练习使用 subquestions。
+        - 只输出一个 YAML 文档，不得使用 --- 或 ...。
+        - 每个原子必须包含 preconditions、arguments 和 outcomes。
+        - arguments 不得为空。
+        - 仅对无序数学集合使用 !!python/tuple。
+        - 完整保留公式，并给包含 LaTeX 或 YAML 特殊字符的字符串加引号。
+        - 只修复指出的错误，不得添加新事实。
+
+        上一次回答和原任务：
+        $raw_response
+
 conversion:
   mode: "per_question"
   repair:

@@ -193,6 +193,18 @@ python src/select_responses.py --config config/selection/experiments/quant_exper
 python src/evaluate.py --config config/evaluation/experiments/quant_expert_plain_text_en.yaml
 ```
 
+Run the Chinese baseline plain-text pipeline:
+
+```bash
+python src/call1.py --config config/call1/experiments/baseline_plain_text_ch.yaml
+python src/call2.py --config config/call2/experiments/baseline_ch.yaml
+python src/select_responses.py --config config/selection/experiments/baseline_ch.yaml
+python src/evaluate.py --config config/evaluation/experiments/baseline_plain_text_ch.yaml
+```
+
+The Chinese evaluation currently uses the calibrated all-MiniLM threshold
+`0.58` and the LLM-judge interval `0.40` to `1.00`.
+
 Evaluate the English baseline direct-YAML experiment, which bypasses Call 2
 and selection:
 

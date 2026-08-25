@@ -1,0 +1,13 @@
+extends:
+  - "../base.yaml"
+  - "../modes/plain_text.yaml"
+  - "../variations/baseline.yaml"
+
+experiment:
+  name: "call1_baseline_plain_text_ch"
+  version: 1
+
+input:
+  filters:
+    languages:
+      - "ch"
