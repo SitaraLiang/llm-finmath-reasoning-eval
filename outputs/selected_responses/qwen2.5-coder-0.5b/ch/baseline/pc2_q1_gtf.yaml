@@ -1,0 +1,73 @@
+pc: '2'
+exercise: '1'
+language: ch
+variation: baseline
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: qwen2.5-coder-0.5b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0 = 0
+        - X_t 为零均值高斯过程
+        arguments:
+        - X_t 为零均值高斯过程
+        outcomes:
+        - X_t 为布朗运动
+    -   preconditions:
+        - X_0 = 0
+        - X_t 为零均值高斯过程
+        - Cov(X_s, X_t) = inf(s, t)
+        arguments:
+        - Cov(X_s, X_t) = inf(s, t)
+        outcomes:
+        - X_t 为布朗运动
+-   atoms:
+    -   preconditions:
+        - 对于 $s < t \leq u < v$，计算协方差 $\text{Cov}(X_t - X_s, X_v - X_u)$：
+        arguments:
+        - Calculation
+        outcomes:
+        - 不相交时间段的增量是不不相关的（uncorrelated），进而由于是高斯向量（Gaussian vector）可知其相互独立。
+    -   preconditions:
+        - 计算增量 $X_t - X_s$ 的方差：
+        arguments:
+        - 因此增量的分布仅依赖于时间差 $t-s$。
+        outcomes:
+        - 这表明增量具有平稳性（stationary），
+        - 且服从分布 $\mathcal{N}(0, t-s)$。
+    -   preconditions:
+        - 计算增量 $X_t - X_s$ 的协方差 $\text{Cov}(W_{\frac 1t}, W_{\frac 1u}, W_{\frac 1v})$：
+        arguments:
+        - Calculation
+        outcomes:
+        - 不相交时间段的增量是不相关（uncorrelated），进而由于是高斯向量（Gaussian vector）可知其相互独立。
+    -   preconditions:
+        - 计算增量 $X_t - X_s$ 的协方差 $\text{Cov}(W_{\frac 1t}, W_{\frac {u+1}{2}}, W_{\frac
+            {v+1}{2}})$：
+        arguments:
+        - Calculation
+        outcomes:
+        - 不相交时间段的增量是不相关（uncorrelated），进而由于是高斯向量（Gaussian vector）可知其相互独立。
+    -   preconditions:
+        - 计算增量 $X_t - X_s$ 的协方差 $\text{Cov}(W_{\frac {u+1}{2}}, W_{\frac {v+1}{2}},
+            W_{\frac {w+1}{3}})$：
+        arguments:
+        - Calculation
+        outcomes:
+        - 不相交时间段的增量是不相关（uncorrelated），进而由于是高斯向量（Gaussian vector）可知其相互独立。
+    -   preconditions:
+        - 计算增量 $X_t - X_s$ 的协方差 $\text{Cov}(W_{\frac {v+1}{2}}, W_{\frac {w+1}{3}},
+            W_{\frac {u+1}{4}})$：
+        arguments:
+        - Calculation
+        outcomes:
+        - 不相交时间段的增量是不相关（uncorrelated），进而由于是高斯向量（Gaussian vector）可知其相互独立。
+    -   preconditions:
+        - 计算增量 $X_t - X_s$ 的协方差 $\text{Cov}(W_{\frac {u+1}{4}}, W_{\frac {v+1}{4}},
+            W_{\frac {w+1}{4}})$：
+        arguments:
+        - Calculation
+        outcomes:
+        - 不相交时间段的增量是不相关（uncorrelated），进而由于是高斯向量（Gaussian vector）可知其相互独立。
