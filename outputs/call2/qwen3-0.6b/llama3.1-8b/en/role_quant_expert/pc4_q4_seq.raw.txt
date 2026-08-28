@@ -1,6 +1,0 @@
-### Question block 1
-It seems that I accidentally copied and pasted the same text multiple times into the chat window.
-
-To clarify, I'm trying to understand how to calculate the expected value of a process W_t when it is stopped at a bounded stopping time τ. Specifically, I want to know if there's a way to use the fact that τ is bounded to simplify the calculation or apply some kind of recursive expectation.
-
-Can you please provide guidance on this topic?

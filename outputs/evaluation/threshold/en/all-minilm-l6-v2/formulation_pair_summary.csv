@@ -1,5 +1,0 @@
-language,label,count,mean,median,min,max,selected_threshold,recommended_threshold,selected_balanced_accuracy,accuracy_at_threshold
-en,equivalent,24,0.638830,0.655784,0.211906,0.878210,0.375000,0.375000,0.760417,0.958333
-en,related_but_not_equivalent,24,0.546493,0.567273,0.338361,0.794797,0.375000,0.375000,0.760417,0.125000
-en,unrelated,24,0.043990,0.044722,-0.142936,0.263643,0.375000,0.375000,0.760417,1.000000
-en,overall,72,,,,,0.375000,0.375000,0.760417,0.694444
