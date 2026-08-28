@@ -1,0 +1,37 @@
+### Question block 1
+```yml
+atoms:
+- preconditions:
+  - "A process \( (X_t)_{t \geq 0} \) is given."
+  arguments:
+  - Calculation
+  outcomes:
+  - "The process is a Brownian motion if and only if three conditions hold: 
+    1. \( X_0 = 0 \),
+    2. \( (X_t) \) is a centered Gaussian process,
+    3. The covariance function satisfies \( \text{Cov}(X_s, X_t) = \inf(s, t) \)"
+- preconditions:
+  - "Assume \( (X_t) \) is a Brownian motion."
+  arguments:
+  - Calculation
+  outcomes:
+  - "Condition 1: By definition, \( X_0 = 0 \)."
+- preconditions:
+  - "Assume the three conditions hold."
+  arguments:
+  - Calculation
+  outcomes:
+  - "Condition 1: \( X_0 = 0 \)"
+- preconditions:
+  - "Assume the three conditions hold."
+  arguments:
+  - Calculation
+  outcomes:
+  - "Condition 2: Each \( X_t \) is Gaussian with mean 0"
+- preconditions:
+  - "Assume the three conditions hold."
+  arguments:
+  - Calculation
+  outcomes:
+  - "Condition 3: The covariance structure implies independent increments. For disjoint intervals, the covariance between increments is zero, ensuring independence. Additionally, each increment has variance equal to its time interval."
+```

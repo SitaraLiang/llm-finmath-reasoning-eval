@@ -1,0 +1,24 @@
+### Question block 1
+```yml
+atoms:
+  - preconditions: []
+    arguments:
+      - "τ 为有界停"
+    outcomes:
+      - "计算 \E(W_τ)"
+    strength: null
+  - preconditions: []
+    arguments:
+      - "\frac{1}{2}W_t^2 + W_{t+τ}^2 - W_t^2"
+      - "W_t W_{t+τ}"
+    outcomes:
+      - "\frac{\left(\frac{1}{2} + \frac{1}{2}\right) W_t^2 + (1-\frac{1}{2})W_{t+\tau}^2 - 1}{\frac{1}{2} W_t W_{t+\tau}}"
+    strength: null
+  - preconditions: []
+    arguments:
+      - "\left(1 + \frac{1}{2}\right) W_t^2 + \frac{1}{2} W_{t+\tau}^2"
+      - "\frac{1}{2} W_t W_{t+\tau}"
+    outcomes:
+      - "\frac{3W_t^2 + W_{t+\tau}^2}{2W_t W_{t+\tau}}"
+    strength: null
+```

@@ -1,0 +1,83 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "X_0=0"
+  - "X_t is a centered Gaussian process"
+  - "Cov(X_s,X_t)=inf(s,t)"
+  arguments:
+  - "Show that X_t - X_s has variance |t-s|"
+  outcomes:
+  - "Var(X_t - X_s) = |t-s|"
+- preconditions:
+  - "X_0=0"
+  - "X_t is a centered Gaussian process"
+  - "Cov(X_s,X_t)=inf(s,t)"
+  arguments:
+  - "Show that X_t - X_s is independent of {X_u, u ≤ s}"
+  outcomes:
+  - "X_t - X_s is independent of {X_u, u ≤ s}"
+- preconditions:
+  - "X_0=0"
+  - "X_t is a centered Gaussian process"
+  - "Cov(X_s,X_t)=inf(s,t)"
+  arguments:
+  - "Show that X_t - X_s has normal distribution with mean 0 and variance |t-s|"
+  outcomes:
+  - "X_t - X_s has normal distribution with mean 0 and variance |t-s|"
+- preconditions:
+  - "X_0=0"
+  - "X_t is a centered Gaussian process"
+  - "Cov(X_s,X_t)=inf(s,t)"
+  arguments:
+  - "Show that X_t - X_s is independent of {X_u, u ≤ s}"
+  outcomes:
+  - "X_t - X_s is independent of {X_u, u ≤ s}"
+- preconditions:
+  - "X_0=0"
+  - "X_t is a centered Gaussian process"
+  - "Cov(X_s,X_t)=inf(s,t)"
+  arguments:
+  - "Show that X_t - X_s has variance |t-s|"
+  outcomes:
+  - "Var(X_t - X_s) = |t-s|"
+- preconditions:
+  - "X_0=0"
+  - "X_t is a centered Gaussian process"
+  - "Cov(X_s,X_t)=inf(s,t)"
+  arguments:
+  - "Show that X_t - X_s has normal distribution with mean 0 and variance |t-s|"
+  outcomes:
+  - "X_t - X_s has normal distribution with mean 0 and variance |t-s|"
+- preconditions:
+  - "X_0=0"
+  - "X_t is a centered Gaussian process"
+  - "Cov(X_s,X_t)=inf(s,t)"
+  arguments:
+  - "Show that X_t - X_s is independent of {X_u, u ≤ s}"
+  outcomes:
+  - "X_t - X_s is independent of {X_u, u ≤ s}"
+- preconditions:
+  - "X_0=0"
+  - "X_t is a centered Gaussian process"
+  - "Cov(X_s,X_t)=inf(s,t)"
+  arguments:
+  - "Show that X_t - X_s has variance |t-s|"
+  outcomes:
+  - "Var(X_t - X_s) = |t-s|"
+- preconditions:
+  - "X_0=0"
+  - "X_t is a centered Gaussian process"
+  - "Cov(X_s,X_t)=inf(s,t)"
+  arguments:
+  - "Show that X_t - X_s has normal distribution with mean 0 and variance |t-s|"
+  outcomes:
+  - "X_t - X_s has normal distribution with mean 0 and variance |t-s|"
+- preconditions:
+  - "X_0=0"
+  - "X_t is a centered Gaussian process"
+  - "Cov(X_s,X_t)=inf(s,t

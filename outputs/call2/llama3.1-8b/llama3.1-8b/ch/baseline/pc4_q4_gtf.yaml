@@ -1,0 +1,50 @@
+pc: '4'
+exercise: '4'
+language: ch
+variation: baseline
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: llama3.1-8b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - $\tau$ 为有界停时
+        outcomes:
+        - $\E(W_\tau) = \int_{-\infty}^{\infty} x f_\tau(x) dx$
+    -   preconditions: []
+        arguments:
+        - $\tau$ 为有界停时
+        - 布朗运动是连续过程
+        outcomes:
+        - $\E(W_\tau) = \int_{0}^{\tau} W_s dW_s + \frac{1}{2}\int_{0}^{\tau} 1 ds$
+    -   preconditions: []
+        arguments:
+        - $\tau$ 为有界停时
+        - 伊藤公式
+        outcomes:
+        - $\int_{0}^{\tau} W_s dW_s = \int_{0}^{\tau} W_s \left( \frac{dW_s}{ds} \right)
+            ds$
+    -   preconditions: []
+        arguments:
+        - $\tau$ 为有界停时
+        - 布朗运动的性质
+        outcomes:
+        - $d^2W_s = \frac{1}{ds}$
+    -   preconditions: []
+        arguments:
+        - $\tau$ 为有界停时
+        outcomes:
+        - $\E(W_\tau) = \frac{\tau}{2}$
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - τ 为有界停时
+        outcomes:
+        - \E[W_τ^2] = \frac{τ}{T}
+    -   preconditions: []
+        arguments:
+        - 布朗运动的性质
+        outcomes:
+        - \E[W_τ] = \frac{τ}{T}

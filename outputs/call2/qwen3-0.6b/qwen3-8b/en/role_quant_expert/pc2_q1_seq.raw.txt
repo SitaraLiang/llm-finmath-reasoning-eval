@@ -1,0 +1,34 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "X_0 = 0"
+  - "centered Gaussian process"
+  - "Cov(X_s, X_t) = inf(s, t)"
+  arguments:
+  - "Brownian motion"
+  outcomes:
+  - "if and only if"
+```
+
+### Question block 2
+<think>
+Okay, let's try to figure out why the user is confused about whether the process X_t = t W_{1t} is a Brownian motion. First, I need to recall what a Brownian motion is. Brownian motion, or Wiener process, has several key properties: it starts at zero, has independent increments, each increment is normally distributed with mean zero and variance equal to the time difference, and it's continuous almost surely.
+
+Now, the user is asking about X_t = t W_{1t}. Wait, what does W_{1t} mean here? Maybe it's a typo or notation confusion. Typically, W_t denotes the Brownian motion at time t. If W_{1t} is meant to be W_t, then X_t = t W_t. But that's a process where each value is scaled by time, which isn't a Brownian motion. Let me check that.
+
+If X_t = t W_t, then the increments X_t - X_s = t W_t - s W_s. For Brownian motion, the increments should be independent and normally distributed. However, t W_t - s W_s isn't independent of past values because W_t and W_s are correlated. Also, the variance of X_t would be t² Var(W_t) = t² * t = t³, which doesn't match the variance of a Brownian motion increment, which should be linear in time.
+
+Alternatively, maybe W_{1t} is supposed to be the increment of the Brownian motion from time 0 to t, which is just W_t. So if X_t = t W_t, then as mentioned, it's not a Brownian motion. Another possibility is that the user meant X_t = W_t, but that's just standard Brownian motion. But the question says X_t = t W_{1t}, which seems to be a scaled version.
+
+Wait, maybe there's a misunderstanding in notation. If W_{1t} is the Brownian motion at time 1t, which is the same as W_t. So X_t = t W_t. But that's not a Brownian motion. Alternatively, if W_{1t} is the increment from time 1 to t, which would be W_t - W_1. Then X_t = t (W_t - W_1). But even then, this process would have different properties. For example, the increments would be t(W_t - W_1) - s(W_s - W_1) = t W_t - t W_1 - s W_s + s W_1. This seems complicated and not independent.
+
+Another angle: maybe the user is confused because they think that scaling a Brownian motion by time would still be a Brownian motion. But scaling by time would change the variance. For example, if you have X_t = t W_t, then Var(X_t) = t² Var(W_t) = t² * t = t³, which is not the same as the variance of a Brownian motion, which is t. So that's not a Brownian motion.
+
+Alternatively, if the process is X_t = W_{t}, then it's a standard Brownian motion. But the question says X_t = t W_{1t}, which seems to be a different process. Unless there's a typo, like maybe X_t = W_{t} instead of t W_{1t}.
+
+Given all this, the user might have a typo or misunderstanding in the notation. If the process is indeed X_t = t W_t, then it's not a Brownian motion. However, if there's a different interpretation of W_{1t}, like a different scaling or a different process, that might change things. But based on standard notation, it's likely that the user is referring to a scaled Brownian motion, which isn't

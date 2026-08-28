@@ -1,0 +1,9 @@
+### Question block 1
+```yml
+atoms:
+- preconditions: []
+  arguments:
+    - tau: '"有界停时"'
+  outcomes:
+    - E(W_tau): '"0"'
+```

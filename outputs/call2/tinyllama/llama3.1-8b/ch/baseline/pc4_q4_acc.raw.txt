@@ -1,0 +1,30 @@
+### Question block 1
+```yml
+atoms:
+  - preconditions: [ "τ 为有界停时" ]
+    arguments: [ "布朗运动模型", "无限长度的 W_t ", "有界延长渠行期 (0 < τ < T)" ]
+    outcomes:
+      - "计算停时之后的总体净收益 W_τ"
+  - preconditions: []
+    arguments: [ "熵分布函数 h: [-∞, ∞] → [0, 1]" ]
+    outcomes:
+      - "描述 H(η|dz) 与 D(ξ|dz) 之间的关系"
+  - preconditions: []
+    arguments: [ "常数 C > 0" ]
+    outcomes:
+      - "确保隐藏的推理过程并与假设约定地相连接"
+```
+
+### Question block 2
+```yml
+atoms:
+  -
+    preconditions: 
+      - "$\\tau$ 为有界停时"
+    arguments: 
+      - "$W_\\tau^2$"
+    outcomes: 
+      - "$\\frac14\\E[W_\\tau^2] + 2\\E[W_0]\\int_0^\\infty e^{t\\tau}dt - 2\\E[W_0] - \\sum_{k=1}^\\infty(-1)^k\\Big(\\frac{e^{-(k-1)\\tau}}{k}\\Big)$"
+    strength: 
+      - "简洁、严谨的数学答案"
+```

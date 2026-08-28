@@ -1,0 +1,55 @@
+pc: '2'
+exercise: '1'
+language: ch
+variation: baseline
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: tinyllama
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0 = 0
+        - X_t 是零均值高斯过程
+        - Cov(X_s, X_t) = \inf(s, t)
+        arguments:
+        - 布朗运动的定义要求 X_0 = 0
+        - 高斯过程的性质保证了路径的连续性
+        - 协方差函数 \inf(s, t) 确定了过程的独立增量
+        outcomes:
+        - X_t 是布朗运动
+    -   preconditions:
+        - X_t 是布朗运动
+        arguments:
+        - 布朗运动的定义包含 X_0 = 0
+        - 布朗运动是零均值高斯过程
+        - 布朗运动的协方差函数为 \inf(s, t)
+        outcomes:
+        - X_0 = 0
+        - X_t 是零均值高斯过程
+        - Cov(X_s, X_t) = \inf(s, t)
+-   atoms:
+    -   preconditions:
+        - W_t 为布朗运动
+        arguments:
+        - 利用性质 Cov(X_s, X_t)=inf(s,t)，计算协方差 Co(·,·)
+        outcomes:
+        - 独立高斯增量的线性组合（Gaussian increment），可以求得协方差
+    -   preconditions:
+        - W_t 为布朗运动
+        arguments:
+        - 利用性质 Cov(X_s, X_t)=inf(s,t)，计算协方差 Co(·,·)
+        outcomes:
+        - 独立高斯增量的线性组合（Gaussian increment），可以求得协方差
+    -   preconditions:
+        - W_t 为布朗运动
+        arguments:
+        - 利用性质 Cov(X_s, X_t)=inf(s,t)，计算协方差 Co(·,·)
+        outcomes:
+        - 独立高斯增量的线性组合（Gaussian increment），可以求得协方差
+    -   preconditions:
+        - W_t 为布朗运动
+        arguments:
+        - 利用性质 Cov(X_s, X_t)=inf(s,t)，计算协方差 Co(·,·)
+        outcomes:
+        - 独立高斯增量的线性组合（Gaussian increment），可以求得协方差

@@ -1,0 +1,76 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "τ is a bounded stopping time"
+  arguments:
+  - Calculation
+  outcomes:
+  - "E_τ[W_τ] = ∑_{k=0}^∞ (1/k!) e^{-τ} e^{-(τ+t)}^k e^{-t}"
+```
+
+### Question block 2
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "When $\tau$ is a bounded stopping time"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$\E(W_\tau^2)$"
+- preconditions:
+  - "We start with the statement of the problem as follows: When $W_t$ is a Brownian motion and $\tau$ is a bounded stopping time, compute $\E(W_\tau)$"
+  arguments:
+  - "Definition of probability space and filtration"
+  outcomes:
+  - "Brownian motion with conditional expectation $\E[W_\tau | \mathscr{F}_t] = \int_0^t \xi(s) ds$"
+- preconditions:
+  - "The first step in arriving at the answer is to define a probability space $(\Omega, \mathcal{F}, \mathbb{P})$ and an associated filtration $\mathscr{F}$"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$\E(W_\tau^2 | \mathscr{F}_t) = \int_0^t (\dot{X}(s)^2 + 2 \dot{Y}(\cdot)\dot{X}(\cdot))^2 ds$"
+- preconditions:
+  - "To proceed, we need to derive the formula for the probability of a stopping time"
+  arguments:
+  - "Fundamental theorem of probability"
+  outcomes:
+  - "$P[A \cap \{\tau > t\}] = P[\mathbf{1}_A(t) > F_A(t)] = P(\mathbf{1}_{\{s \in A : s < \tau \}} > F_A(\tau))$"
+- preconditions:
+  - "Using the definition of conditional expectation, we can write:"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$P[A\cap\{t<\tau\} | \mathscr{F}_t] = P[A\cap \{s< \tau\} | \mathscr{F}_s] + P[\mathbf{1}_{\{\tau < t\}}| \mathscr{F}_\tau]$" 
+- preconditions:
+  - "Now, using the Itô calculus identity and the definition of conditional expectation again, we obtain:"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$P[A\cap\{t<\tau\} | \mathscr{F}_t] = - P[\mathbf{1}_{\{\tau< t\}}| \mathscr{F}_\tau] + P[A\cap\{\tau < t\}]$"
+- preconditions:
+  - "We conclude that, for a bounded stopping time $\tau$, we have:"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$P[A\cap\{t<\tau\} | \mathscr{F}_t] = P[\mathbf{1}_{\{\tau< t\}}| \mathscr{F}_\tau] + P[A\cap\{\tau < t\}]$"
+- preconditions:
+  - "Therefore,"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$\E(W_\tau^2 | \mathscr{F}_t) = \int_0^t (\dot{X}(s)^2 + 2 \dot{Y}(\cdot)\dot{X}(\cdot))^2 ds - P[A\cap\{t<\tau\} | \mathscr{F}_t]$"
+- preconditions:
+  - "Finally, we obtain:"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$\E(W_\tau^2 |

@@ -1,0 +1,47 @@
+pc: '4'
+exercise: '4'
+language: ch
+variation: baseline
+prompt_type: strictly_sequential
+call1_output_mode: plain_text
+call1_model: llama3.1-8b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - τ 为有界停时
+        arguments:
+        - W_τ 的取值范围是有限的
+        - 布朗运动的概率密度函数为 f(x, τ) = 1/√(2πτ) e^{-x²/(2τ)}
+        outcomes:
+        - E(W_τ) = ∫_{-∞}^{∞} x f(x, τ) dx
+    -   preconditions:
+        - f(x, τ) = 1/√(2πτ) e^{-x²/(2τ)}
+        arguments:
+        - 积分 ∫_{-∞}^{∞} x (1/√(2πτ)) e^{-x²/(2τ)} dx 可以通过对称性和积分换元法简化
+        outcomes:
+        - E(W_τ) = 0
+-   atoms:
+    -   preconditions:
+        - $\tau$ 为有界停时
+        arguments:
+        - 使用停时定理计算 $\E(W_\tau^2)$
+        outcomes:
+        - $\E(W_\tau^2) = \int_0^\infty \P(\tau \leq t) dt \cdot \E(W_t^2 | \tau \leq
+            t)$
+    -   preconditions:
+        - $\E(W_\tau^2) = \int_0^\infty \P(\tau \leq t) dt \cdot \E(W_t^2 | \tau \leq
+            t)$
+        arguments:
+        - $\P(\tau \leq t) = e^{-\lambda t}$
+        - $\E(W_t^2 | \tau \leq t) = 2t$
+        outcomes:
+        - $\E(W_\tau^2) = \frac{1}{\lambda} \int_0^\infty e^{-\lambda t} \cdot 2t
+            dt$
+    -   preconditions:
+        - $\E(W_\tau^2) = \frac{1}{\lambda} \int_0^\infty e^{-\lambda t} \cdot 2t
+            dt$
+        arguments:
+        - 计算积分 $\int_0^\infty e^{-\lambda t} \cdot 2t dt$
+        outcomes:
+        - $\E(W_\tau^2) = \frac{2}{\lambda^2}$

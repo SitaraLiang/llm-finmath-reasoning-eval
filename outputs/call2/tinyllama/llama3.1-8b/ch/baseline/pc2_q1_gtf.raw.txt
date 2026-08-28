@@ -1,0 +1,7 @@
+### Question block 1
+```yml
+atoms:
+- preconditions: ["$X_0=0$", "$(X_t)_{t\in \R^+}$ 为零均值高斯过程"]
+  arguments: ["$(X_t)_{t\in \R^+}$ 为布朗运动"]
+  outcomes: ["${\\rm Cov}(X_s,X_t)=\\inf(s,t)$"]
+```

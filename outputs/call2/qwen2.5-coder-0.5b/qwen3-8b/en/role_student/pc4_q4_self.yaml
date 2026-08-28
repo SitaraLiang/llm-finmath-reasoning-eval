@@ -1,0 +1,24 @@
+pc: '4'
+exercise: '4'
+language: en
+variation: role_student
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: qwen2.5-coder-0.5b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        - W is a Brownian Motion
+        arguments:
+        - Calculation
+        outcomes:
+        - E(W_τ) = [W_a + W_b]_a^b
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        arguments:
+        - Calculation
+        outcomes:
+        - E(W_τ^2) = ∫_a^b W_s^2 ds

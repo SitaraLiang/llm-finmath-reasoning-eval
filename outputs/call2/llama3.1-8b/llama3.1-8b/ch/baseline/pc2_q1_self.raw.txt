@@ -1,0 +1,10 @@
+### Question block 1
+```yml
+atoms:
+  - preconditions: ["$X_0=0$", "$(X_t)_{t\in \R^+}$ 为零均值高斯过程"]
+    arguments: ["${\rm Cov}(X_s,X_t)=\inf(s,t)$"]
+    outcomes: ["$\begin{cases}{\rm Cov}(X_s,X_t)&amp;=\min(s,t),\\{\rm Var}(X_t)&amp;={\rm Cov}(X_t,X_t)=t.\end{cases}$"]
+  - preconditions: ["$(X_t)_{t\in \R^+}$ 为零均值高斯过程", "${\rm Cov}(X_s,X_t)=\inf(s,t)$"]
+    arguments: []
+    outcomes: ["$(X_t)_{t\in \R^+}$ 为布朗运动（Brownian motion）"]
+```

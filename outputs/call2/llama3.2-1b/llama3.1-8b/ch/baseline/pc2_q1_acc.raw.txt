@@ -1,0 +1,22 @@
+### Question block 1
+```yml
+atoms:
+- preconditions:
+  - X_0=0
+  - "(X_t)_{t\in \R^+} 为零均值高斯过程"
+  arguments:
+  - inf(s,t)
+  outcomes:
+  - "(X_t)_{t\in \R^+} = \\{B_t: t \geq 0\\}"
+```
+
+### Question block 2
+```yml
+atoms:
+  - preconditions: [W_t 为布朗运动]
+    arguments: ["t > 0", "X_0 = 0"]
+    outcomes: ["{X_t=t\;W_{\\frac 1t}, t>0, X_0=0} 亦为布朗运动"]
+  - preconditions: [W_t 为布朗运动]
+    arguments: ["s > 0", "F(p) = \\int_0^\\infty (1-p(u))^ududu"]
+    outcomes: ["P(W_s>s)=F'(s)>0"]
+```

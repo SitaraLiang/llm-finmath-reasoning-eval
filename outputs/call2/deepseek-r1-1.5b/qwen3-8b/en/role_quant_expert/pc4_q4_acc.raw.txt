@@ -1,0 +1,29 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "W_t is a Brownian motion"
+  - "τ is a bounded stopping time"
+  arguments:
+  - "Optional Stopping Theorem"
+  outcomes:
+  - "E(W_τ) = 0"
+```
+
+### Question block 2
+<think>
+Okay, let's try to figure this out. The user is asking about the expected value of the square of a Brownian motion at a stopping time, which is related to the expected value of the stopping time itself. They mentioned using Ito's lemma and derived that E[W_τ²] = E[τ]. But they're confused because in some cases, like hitting times of intervals, the expected stopping time might be infinite, which seems contradictory.
+
+First, I need to recall that Ito's lemma is a tool in stochastic calculus that allows us to find the differential of a function of a stochastic process. When applied to Brownian motion, it can help derive relationships between the process and its stopping times. The key here is that the formula E[W_τ²] = E[τ] comes from applying Ito's lemma to the function f(W_t) = W_t², which gives us the differential d(W_t²) = 2W_t dW_t + dt. Integrating this from 0 to τ, we get W_τ² = 2∫₀^τ W_s dW_s + τ. Taking expectations on both sides, since the stochastic integral ∫₀^τ W_s dW_s is a martingale, its expectation is zero. Therefore, E[W_τ²] = E[τ]. This derivation holds regardless of the specific stopping time τ, as long as τ is a stopping time with finite expectation.
+
+But wait, the user is confused because in some cases, like hitting times of intervals, the expected stopping time might be infinite. However, the formula E[W_τ²] = E[τ] still holds if E[τ] is infinite. For example, if τ is the first passage time to reach +1, then even though E[τ] is infinite, the formula would still hold because both sides would be infinite. However, if the stopping time τ is such that W_τ is finite almost surely, then E[W_τ²] is finite, implying that E[τ] must also be finite. This seems contradictory if τ is a.s. infinite.
+
+Ah, here's the key point: The formula E[W_τ²] = E[τ] holds only if the stopping time τ is such that E[τ] is finite. If τ is a.s. infinite, then the expectation E[τ] might not exist (i.e., be infinite), and the formula would not apply. However, in the case where τ is the first passage time to +1, even though τ is a.s. finite (since Brownian motion almost surely reaches any finite level), the expected value E[τ] is actually infinite. This seems to contradict the formula, but perhaps there's a mistake in assuming that τ is a.s. finite.
+
+Wait, no. For standard Brownian motion, starting at 0, the first passage time to +1 is almost surely finite. Because Brownian motion is recurrent in one dimension, meaning it will almost surely reach any finite level. However, the expected value of this stopping time is actually infinite. This is a known result in stochastic processes. So even though τ is a.s. finite, E[τ] is infinite. Therefore, the formula E[W_τ²] = E[τ] would imply that E[W_τ²] is also infinite, which is true because W_τ is 1 almost surely, so E[W_τ²] = 1, but this contradicts the earlier conclusion that E[τ] is infinite. Wait, this is confusing.
+
+Wait, no. If τ is the first passage time to +1, then W_τ is 1 almost surely, so E[W_τ²] = 1. According to the formula, this should equal E[τ], which would mean E[τ] = 1. But in reality

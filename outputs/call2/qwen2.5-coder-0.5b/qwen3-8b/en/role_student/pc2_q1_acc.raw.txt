@@ -1,0 +1,82 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$"
+  arguments:
+  - "Proof by equivalence"
+  outcomes:
+  - "The process is a Brownian motion if and only if the given conditions hold"
+- preconditions:
+  - "Show that $X_0 = 0$"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "The process is a centered Gaussian process"
+- preconditions:
+  - "Show that $(X_s, X_t)\sim N(0, \sigma^2)$ implies $X_0 = 0$"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "The increments are independent and identically distributed with mean 0"
+- preconditions:
+  - "Show that $X_0 = 0$ implies $(X_s, X_t)\sim N(0, \sigma^2)$"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "The increments are independent random variables with mean 0 and variance $\sigma^2$"
+- preconditions:
+  - "Conclusion"
+  arguments:
+  - "Logical deduction"
+  outcomes:
+  - "The process is a Brownian motion if and only if the given conditions hold"
+```
+
+### Question block 2
+<think>
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "Let's analyze the given questions and provide a concise mathematical answer."
+  - "Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t)$."
+  arguments:
+  - "Central Gaussian Process (CGP)"
+  outcomes:
+  - "A centered Gaussian process is defined as $\{X_t \mid W_{\frac{1}{t}} = W_0\}$, where $W_0$ is the zero mean Wiener process."
+- preconditions:
+  - "Show that a process $\{X_t = t\;W_{\frac 1t}, t > 0, X_0 = 0 \}$ is a Brownian motion too."
+  arguments:
+  - "Brownian Motion Process (BMP)"
+  outcomes:
+  - "A Brownian motion process is defined as $\{X_t = tY + b\}$, where $Y$ and $b$ are random variables."
+- preconditions:
+  - "Show that a process $\{X_t = t\;W_{\frac 1t}, t > 0, X_0 = 0 \}$ is a Brownian motion too."
+  arguments:
+  - "Covariance Structure"
+  outcomes:
+  - "Let's denote the covariance matrix of $X_t = tY + b$ as $\Sigma(t) = Y^T \Sigma Y$. Since $Y$ and $b$ are random variables, we have: $Y^T \Sigma Y = (tW_{\frac{1}{t}})^T \Sigma W_{\frac{1}{t}} = t^2 W_{\frac{1}{t}} T \Sigma W_{\frac{1}{t}}$."
+- preconditions:
+  - "Show that a process $\{X_t = t\;W_{\frac 1t}, t > 0, X_0 = 0 \}$ is a Brownian motion too."
+  arguments:
+  - "Correlation of Covariance"
+  outcomes:
+  - "The correlation coefficient between two random variables $\mathbb{Y}$ and $\mathbb{Z}$ is given by: $\rho(\mathbb{Y}, \mathbb{Z}) = \frac{\mathbb{Cov}(\mathbb{Y}, \mathbb{Z})}{\sigma_Y \sigma_Z}$."
+- preconditions:
+  - "Show that a process $\{X_t = t\;W_{\frac 1t}, t > 0, X_0 = 0 \}$ is a Brownian motion too."
+  arguments:
+  - "Equality of Covariances"
+  outcomes:
+  - "For $X_t = tW_{\frac{1}{t}}$ to be a Brownian motion, the covariance matrix must be equal to $\sigma_W^2 + \sigma_b^2$: $t^2 (\rho(W_{\frac{1}{t}}, t))^2 = (\rho(W_{\frac{1}{t}}, t))^2$."
+- preconditions:
+  - "Show that a process $\{X_t = t\;W_{\frac 1t}, t > 0, X_0 = 0 \}$ is a Brownian motion too."
+  arguments:
+  - "Conclusion"
+  outcomes:
+  - "Therefore, a process $\{X_t = tW_{\frac{1}{t}}\}$ is a Brownian motion if and only if $X_

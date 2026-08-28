@@ -1,0 +1,27 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_student
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: qwen3-0.6b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0 = 0
+        - (X_t)_{t\in \R^+} \text{ is a centered Gaussian process}
+        - \text{Cov}(X_s,X_t) = \inf(s,t)
+        arguments:
+        - Definition of Brownian motion
+        outcomes:
+        - X_t \text{ is a Brownian motion if and only if } X_0 = 0, \text{ } (X_t)_{t\in
+            \R^+} \text{ is a centered Gaussian process}, \text{ and } \text{Cov}(X_s,
+            X_t) = \inf(s, t)
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Definition of Brownian motion
+        outcomes:
+        - X_t is a Brownian motion

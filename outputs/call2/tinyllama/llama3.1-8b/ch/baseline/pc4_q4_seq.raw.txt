@@ -1,0 +1,93 @@
+### Question block 1
+```yml
+atoms:
+  -
+    preconditions: 
+      - $\tau$ 为有界停时
+    arguments: 
+      - $k$
+      - $B_{\tau+k}$
+      - $A_k$
+      - $P(\tau < k)$
+    outcomes: 
+      - $\E(W_\tau) = \sum_{k=0}^\infty (-1)^k \frac{\P(A_k | B_{\tau-k})}{B_{\tau+k} - A_k} P(\tau < k)$
+  -
+    preconditions: 
+      - 使用公式求导
+    arguments: 
+      - $k$
+      - $\P(A_k | B_{\tau-k})$
+      - $B_{\tau+k}$
+      - $A_k$
+      - $\frac{d}{dk}\P(\tau < k)$
+    outcomes: 
+      - $\E(W_\tau) = \sum_{k=0}^\infty (-1)^k \frac{\P(A_k | B_{\tau-k})}{B_{\tau+k} - A_k} \frac{d}{dk}\P(\tau < k)$
+  -
+    preconditions: 
+      - $\tau$ 为有界停时
+    arguments: 
+      - $k$
+      - $\P(A_k | B_{\tau-k})$
+      - $B_{\tau+k}$
+      - $A_k$
+      - $\int_0^\tau d\P(\tau < k)$
+    outcomes: 
+      - $\E(W_\tau) = \sum_{k=0}^\infty (-1)^k \frac{\P(A_k | B_{\tau-k})}{B_{\tau+k} - A_k} \int_0^\tau d\P(\tau < k)$
+  -
+    preconditions: 
+      - $\tau$ 为有界停时
+    arguments: 
+      - $k$
+      - $\P(A_k | B_{\tau-k})$
+      - $B_{\tau+k}$
+      - $A_k$
+      - $\int_0^\infty k P(\tau < k)d\tau $
+    outcomes: 
+      - $\E(W_\tau) = \sum_{k=0}^\infty (-1)^k \frac{\P(A_k | B_{\tau-k})}{B_{\tau+k} - A_k} \int_0^\infty k P(\tau < k)d\tau $
+  -
+    preconditions: 
+      - $\tau$ 为有界停时
+    arguments: 
+      - $k$
+      - $\P(A_k | B_{\tau-k})$
+      - $B_{\tau+k}$
+      - $A_k$
+      - $\sum_{j=0}^{\infty} \int_0^\infty k^j P(\tau < k^j)d\tau$
+    outcomes: 
+      - $\E(W_\tau) = \sum_{k=0}^\infty (-1)^k \frac{\P(A_k | B_{\tau-k})}{B_{\tau+k} - A_k} \sum_{j=0}^{\infty} \int_0^\infty k^j P(\tau < k^j)d\tau$
+  -
+    preconditions: 
+      - $\tau$ 为有界停时
+    arguments: 
+      - $k$
+      - $\P(A_k | B_{\tau-k})$
+      - $B_{\tau+k}$
+      - $A_k$
+      - $\sum_{j=0}^{\infty} j P(\tau < k^j)$
+    outcomes: 
+      - $\E(W_\
+
+### Question block 2
+```yml
+atoms:
+  -
+    preconditions: 
+      - "$\tau$ 为有界停时"
+    arguments: 
+      - "$\E(W_\tau^2)$"
+    outcomes: 
+      - "$r_t = \E[(Y_t - b^k)^2]"
+      - "$r_t = \int_{-\infty}^\infty (Y_s-b^k)^2 dx = \E[(Y_t-b^k)^2]"
+      - "$\sum^\infty_{i=0}r_i = \int^\infty_\infty r_{\tau}d\tau + \int^T_0 (b^k-y_t)ds + b^k(y_T - b^k)$"
+    strength: 
+      - "Calculation"
+  -
+    preconditions: 
+      - "$\tau$ 为有界停时"
+    arguments: 
+      - "$\E(W_\tau^2)$"
+    outcomes: 
+      - "$r_t = \frac{1}{2}\left(\E[r]+\sum^\infty_{i=1}r_i+b^k\E[(y_T-b^k)^2]\right) + b^k(y_T - b^k)$"
+    strength: 
+      - "Calculation"
+```

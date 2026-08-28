@@ -1,0 +1,20 @@
+### Question block 1
+<think>
+</think>
+
+The process $ (X_t)_{t \geq 0} $ is characterized by the following three conditions:
+
+1. **Initial Condition**: $ X_0 = 0 $.
+   - This is a fundamental property of Brownian motion, which starts at zero.
+
+2. **Gaussian Process**: The process is Gaussian.
+   - This implies that all finite-dimensional distributions are multivariate normal, which is a key property of Brownian motion.
+
+3. **Covariance Structure**: For $ s < t $, $ \text{Cov}(X_s, X_t) = \min(s, t) $.
+   - This is the defining covariance structure of Brownian motion. Specifically, for $ s < t $, $ \text{Cov}(X_s, X_t) = s $, and for $ s > t $, $ \text{Cov}(X_s, X_t) = t $, which is equivalent to $ \min(s, t) $.
+
+These three conditions uniquely characterize Brownian motion. The process is centered, has independent increments, and satisfies the covariance structure of Brownian motion. Therefore, the process is:
+
+$$
+\boxed{X(t)}
+$$

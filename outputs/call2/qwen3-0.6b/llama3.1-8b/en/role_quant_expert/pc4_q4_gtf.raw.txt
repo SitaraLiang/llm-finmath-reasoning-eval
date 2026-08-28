@@ -1,0 +1,33 @@
+### Question block 1
+```yml
+atoms:
+- preconditions:
+  - "τ is a bounded stopping time"
+  arguments:
+  - "Brownian motion has some nice properties, such as the expected value of W_t being zero"
+  outcomes:
+  - "E[W_τ] = 0"
+```
+
+### Question block 2
+It seems like you're stuck in an infinite loop of thinking about how to approach this problem.
+
+Let's take a step back and try to simplify the problem. Since $\tau$ is a bounded stopping time, we know that $W_{\tau}$ is a random variable with finite expectation. We also know that $W_t$ is a martingale, which means that its expectation at any time $t$ is equal to its initial value.
+
+One possible approach is to use the optional stopping theorem (OST), which states that if $\tau$ is a bounded stopping time and $X_t$ is a martingale, then $\mathbb{E}[X_{\tau}] = \mathbb{E}[X_0]$. However, this doesn't directly help us with finding the expectation of $W_{\tau}^2$.
+
+Another approach is to use the fact that $W_t$ is a martingale and try to express $W_{\tau}$ in terms of $W_s$ for some earlier time $s$. This might allow us to use properties of martingales, such as the martingale property or the optional stopping theorem.
+
+Let's try to think about this problem in a more concrete way. Suppose we have a specific example where $\tau$ is a bounded stopping time and $W_t$ is a martingale with zero expectation. What can we say about the distribution of $W_{\tau}$? Can we find any properties of $W_{\tau}^2$ that might help us compute its expectation?
+
+If you'd like, I can try to provide more specific suggestions or ideas for how to approach this problem. Just let me know what you think!
+
+To break out of the infinite loop, let's focus on a specific aspect of the problem and try to make progress from there.
+
+Here are some possible next steps:
+
+1.  Try to express $W_{\tau}$ in terms of $W_s$ for some earlier time $s$. This might involve using properties of martingales or the optional stopping theorem.
+2.  Use the fact that $W_t$ is a martingale with zero expectation to derive some properties of $W_{\tau}^2$.
+3.  Consider a specific example where $\tau$ is a bounded stopping time and $W_t$ is a martingale with zero expectation. What can we say about the distribution of $W_{\tau}$? Can we find any properties of $W_{\tau}^2$ that might help us compute its expectation?
+
+Which of these next steps do you think would be most helpful to pursue? Or do you have a different idea for how to approach this problem?

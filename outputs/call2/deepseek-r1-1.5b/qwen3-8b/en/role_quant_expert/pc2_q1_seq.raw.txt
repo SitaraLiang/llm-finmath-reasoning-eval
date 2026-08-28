@@ -1,0 +1,34 @@
+### Question block 1
+<think>
+Okay, let's try to figure out how to answer this question. The user is asking to show that if a process $ X_t $ is a Brownian motion, then it satisfies certain properties, and conversely, if those properties hold, then it's a Brown, motion. The properties mentioned are: $ X_0 = 0 $, the process is Gaussian, and the covariance between $ X_t $ and $ X_s $ is $ \min(t, s) $.
+
+First, I need to recall what defines a standard Brownian motion. From what I remember, a standard Brownian motion (or Wiener process) has the following properties:
+
+1. $ X_0 = 0 $ almost surely.
+2. The increments $ X_t - X_s $ for $ t > s $ are normally distributed with mean 0 and variance $ t - s $.
+3. The increments are independent for non-overlapping intervals.
+4. The paths are continuous almost surely.
+
+Now, the user's question mentions that the covariance between $ X_t $ and $ X_s $ is $ \min(t, s) $. Let me check if this is consistent with the standard Brownian motion.
+
+For standard Brownian motion, the covariance between $ X_t $ and $ X_s $ is indeed $ \min(t, s) $. Because if $ t \leq s $, then $ \text{Cov}(X_t, X_s) = \text{Var}(X_t) = t $, since $ X_t $ is part of the increment up to $ s $. Similarly, if $ s \leq t $, it's $ s $. So yes, $ \text{Cov}(X_t, X_s) = \min(t, s) $.
+
+So, if a process has these properties, it's a Brownian motion. But the user is asking to show that if $ X_t $ is a Brownian motion, then these properties hold, and vice versa.
+
+Let me break it down into two parts:
+
+**Part 1: If $ X_t $ is a Brownian motion, then it satisfies $ X_0 = 0 $, is Gaussian, and has covariance $ \min(t, s) $.**
+
+- $ X_0 = 0 $ is a standard property of Brownian motion.
+- The process is Gaussian because each increment $ X_t - X_s $ is normally distributed, and since the process is built from independent normal increments, the entire process is Gaussian.
+- The covariance between $ X_t $ and $ X_s $ is $ \min(t, s) $, as explained earlier.
+
+**Part 2: If a process satisfies $ X_0 = 0 $, is Gaussian, and has covariance $ \min(t, s) $, then it is a Brownian motion.**
+
+To show this, we need to verify that the process meets all the standard properties of Brownian motion. Let's see:
+
+- $ X_0 = 0 $ is given.
+- The process is Gaussian, as given.
+- The covariance between $ X_t $ and $ X_s $ is $ \min(t, s) $, which implies that for $ t \leq s $, $ \text{Cov}(X_t, X_s) = t $, and for $ s \leq t $, it's $ s $. This suggests that the increments are independent for non-overlapping intervals. Wait, how?
+
+Actually, the covariance being $ \min(t, s) $ implies that for $ t \leq s $, $ \text{Cov}(X_t, X_s) = t $, which is the variance of $ X_t $. This suggests that $ X_t $ is a Gaussian process with mean 0 and variance $ t $, and the covariance between $ X_t $ and $ X_s $ is

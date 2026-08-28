@@ -1,0 +1,44 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_student
+prompt_type: strictly_sequential
+call1_output_mode: plain_text
+call1_model: llama3.1-8b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - A stochastic process $(X_t)_{t\in \R^+}$ is given.
+        arguments:
+        - Brownian motion definition
+        outcomes:
+        - 'The process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$,
+            $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t)$.'
+    -   preconditions:
+        - The process $(X_t)_{t\in \R^+}$ satisfies the properties of Brownian motion.
+        arguments:
+        - Brownian motion definition
+        outcomes:
+        - The process $(X_t)_{t\in \R^+}$ is a centered Gaussian process with covariance
+            function $\inf(s,t)$.
+    -   preconditions:
+        - The process $(X_t)_{t\in \R^+}$ is a centered Gaussian process with covariance
+            function $\inf(s,t)$.
+        arguments:
+        - Gaussian process definition
+        outcomes:
+        - The process $(X_t)_{t\in \R^+}$ has independent increments.
+    -   preconditions:
+        - The process $(X_t)_{t\in \R^+}$ has independent increments.
+        arguments:
+        - Independent increments definition
+        outcomes:
+        - The process $(X_t)_{t\in \R^+}$ is a Brownian motion.
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Brownian motion properties
+        outcomes:
+        - X_t = t W_{\frac 1t} is a Brownian motion too

@@ -1,0 +1,26 @@
+### Question block 1
+## Step 1: Understand the problem
+We are given a process \( (X_t)_{t \geq 0} \) and need to show that it is Brownian motion if it satisfies three conditions: \( X_0 = 0 \), it is a Gaussian process, and the covariance between \( X_s \) and \( X_t \) for \( s < t \) is \( \min(s, t) \).
+
+## Step 2: Recall properties of Brownian motion
+Brownian motion (BM) has several key properties:
+- It starts at zero: \( B_0 = 0 \).
+- It has independent increments: \( B_{t+s} - B_t \sim N(0, s) \) for any \( t \geq 0 \).
+- The covariance structure is \( \text{Cov}(B_s, B_t) = \min(s, t) \).
+
+## Step 3: Link the given conditions to BM properties
+Given that:
+1. \( X_0 = 0 \),
+2. \( X_t \) is a Gaussian process,
+3. For \( s < t \), \( \text{Cov}(X_s, X_t) = \min(s, t) \),
+
+we can see that the covariance structure matches BM's for any \( s < t \). This implies independence because if two random variables have zero covariance, they are independent.
+
+## Step 4: Conclude that the process is Brownian motion
+Given all these properties, we conclude that the given conditions uniquely characterize Brownian motion. Therefore, the process is:
+
+\[
+\boxed{X(t)}
+\]
+
+The final answer is: $\boxed{X(t)}$

@@ -1,0 +1,13 @@
+### Question block 1
+```yml
+atoms:
+  - preconditions: ["$X_0=0$", "$(X_t)_{t\in \R^+}$ 为零均值高斯过程"]
+    arguments: ["$(X_t)_{t\in \R^+}$ 为布朗运动"]
+    outcomes: ["$X_s=\mathcal{N}(0,s)$"]
+  - preconditions: ["$\mathbb{E}[X_0]=0$", "$(X_t)_{t\in \R^+}$ 为零均值高斯过程"]
+    arguments: ["$(X_t)_{t\in \R^+}$ 为布朗运动"]
+    outcomes: ["$d(t_1,t_2)=\inf(s>t: X_s=X_t)$"]
+  - preconditions: ["$\mathbb{E}[X_s] = \frac{s^{1/2}}{\sqrt{2\pi}}$", "$(X_t)_{t\in \R^+}$ 为零均值高斯过程"]
+    arguments: ["$(X_t)_{t\in \R^+}$ 为布朗运动"]
+    outcomes: ["$d(t_1,t_2)=\inf(s>0:\left(\sum_{j=0}^{\frac{n+1-i}{2}}\binom{n+1-i}{i}(t_n)^{i}\right)\left( \sum_{k=0}^{\frac{n-1+i}{2}}\binom{n+1-i}{k}(t_n)^{k}\right)=\inf(s>0:\binom{n+1-i}{n}\sqrt{(s-t_1)^2+(s+t_1)^2})$"]
+```

@@ -1,0 +1,26 @@
+### Question block 1
+```yml
+atoms:
+- preconditions:
+  - "X₀=0"
+  - "(X_t)_{t∈ℝ⁺} is a centered Gaussian process"
+  arguments:
+  - "Cov(X_s,X_t)=inf(s,t)"
+  outcomes:
+  - "Brownian motion"
+```
+
+### Question block 2
+It seems like I got a bit carried away with my previous response. To provide a clearer answer:
+
+The process `X_t = t W_t` is not a Brownian motion because its increments are not independent. A Brownian motion has the property that its increments are independent and identically distributed, but in this case, the increments of `X_t` are correlated with each other due to the linear relationship with `t`.
+
+To show that `X_t = t W_t` is not a Brownian motion, we can consider the following:
+
+1. The process `W_t` has independent and identically distributed increments.
+2. Multiplying `W_t` by a deterministic function `t` does not change the independence of its increments.
+3. However, the resulting process `X_t = t W_t` has correlated increments because the value of each increment depends on the previous one through the linear relationship with `t`.
+
+Therefore, while `X_t = t W_t` may exhibit some characteristics of Brownian motion, such as stationarity and ergodicity, its non-independent increments make it distinct from a true Brownian motion.
+
+I hope this answer is more concise and helpful!

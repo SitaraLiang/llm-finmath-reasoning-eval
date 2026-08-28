@@ -1,0 +1,26 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_student
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: deepseek-r1-1.5b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - A process \( (X_t)_{t \geq 0} \) starts at zero.
+        - The process is centered Gaussian.
+        - The covariance between any two points in time is min(s,t).
+        arguments:
+        - Brownian motion definition and properties
+        outcomes:
+        - \( (X_t)_{t \geq 0} \) is a Brownian motion if and only if it satisfies
+            these three conditions.
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Calculation
+        outcomes:
+        - X_t = t W_{1/t} is not a Brownian motion

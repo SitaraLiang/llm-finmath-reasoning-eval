@@ -1,0 +1,55 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_quant_expert
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: llama3.1-8b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - 'A stochastic process (X_t)_{t\in \R^+} is a Brownian motion if it satisfies
+            the following properties:'
+        - X_0 = 0 almost surely,
+        - For all s,t >= 0, E[X_s] = 0 and E[X_t] = 0,
+        - For all s,t >= 0, Cov(X_s,X_t) = min(s,t),
+        - The increments of the process are independent, i.e., for any t_1 < t_2 <
+            ... < t_n, the random variables X_{t_1}, X_{t_2} - X_{t_1}, ..., X_{t_n}
+            - X_{t_{n-1}} are independent.
+        arguments:
+        - Definition of Brownian motion
+        outcomes:
+        - X_0 = 0
+        - E[X_s] = 0 and E[X_t] = 0 for all s,t >= 0
+        - Cov(X_s,X_t) = min(s,t) for all s,t >= 0
+        - Increments of the process are independent
+    -   preconditions:
+        - 'If (X_t)_{t\in \R^+} is a Brownian motion, then:'
+        arguments:
+        - Definition of Brownian motion
+        outcomes:
+        - X_0 = 0 by definition
+        - E[X_s] = 0 and E[X_t] = 0 by definition
+        - Cov(X_s,X_t) = min(s,t) by definition
+    -   preconditions:
+        - 'If (X_t)_{t\in \R^+} satisfies the given conditions:'
+        arguments:
+        - Definition of Brownian motion
+        outcomes:
+        - X_0 = 0
+        - E[X_s] = 0 and E[X_t] = 0 for all s,t >= 0
+        - Cov(X_s,X_t) = min(s,t) for all s,t >= 0
+    -   preconditions:
+        - (X_t)_{t\in \R^+} is centered Gaussian
+        arguments:
+        - Definition of centered Gaussian process
+        outcomes:
+        - (X_t)_{t\in \R^+} is centered Gaussian
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Brownian motion properties
+        outcomes:
+        - X_t is a Brownian motion too

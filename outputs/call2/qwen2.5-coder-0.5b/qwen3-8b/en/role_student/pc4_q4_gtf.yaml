@@ -1,0 +1,24 @@
+pc: '4'
+exercise: '4'
+language: en
+variation: role_student
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: qwen2.5-coder-0.5b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - $\tau$ is a bounded stopping time
+        arguments:
+        - Calculation
+        outcomes:
+        - $\boxed{\mathbb{E}(W_{\tau})}$
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        - W_t is a Brownian Motion
+        arguments:
+        - Calculation
+        outcomes:
+        - E(W_τ²) = W_t - 2G_w t - 2G²

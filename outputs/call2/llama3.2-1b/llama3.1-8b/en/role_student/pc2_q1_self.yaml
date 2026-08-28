@@ -1,0 +1,23 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_student
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: llama3.2-1b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - A process (X_t)_{t\in \R^+} is given.
+        arguments:
+        - The process (X_t)_{t\in \R^+} satisfies X_0=0 and Cov(X_s,X_t)=inf(s,t).
+        outcomes:
+        - Then the process (X_t)_{t\in \R^+} is a Brownian motion.
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Ito's formula
+        outcomes:
+        - The process (X_t)_{t\in \R^+} is a Brownian motion

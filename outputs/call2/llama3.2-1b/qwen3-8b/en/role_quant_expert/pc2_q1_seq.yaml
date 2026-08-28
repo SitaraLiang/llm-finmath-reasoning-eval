@@ -1,0 +1,54 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_quant_expert
+prompt_type: strictly_sequential
+call1_output_mode: plain_text
+call1_model: llama3.2-1b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0=0
+        - (X_t)_{t\in \R^+} is a centered Gaussian process
+        - Cov(X_s,X_t)=\inf(s,t)
+        arguments:
+        - Calculation
+        outcomes:
+        - Process (X_t)_{t\in \R^+} is a Brownian motion
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        - X_t = t W_{1/t}, t > 0, X_0 = 0
+        arguments:
+        - Verify X_0 = 0
+        - Verify independent increments
+        - Verify X_t - X_s | F_s is normally distributed
+        outcomes:
+        - X_0 = 0
+        - Independent increments
+        - X_t - X_s | F_s is normally distributed
+    -   preconditions:
+        - X_1 = W_{1/t} > 0
+        arguments:
+        - Use properties of Brownian motion increments
+        outcomes:
+        - Increments of X_t are independent and identically distributed
+    -   preconditions:
+        - d/dt X_t = t W_{1/t}
+        arguments:
+        - Compute differential dX_t
+        outcomes:
+        - dX_t = dW_{1/t} + t * 1/2 dW_t^2
+    -   preconditions:
+        - dW_t^2 is a compound Poisson process with rate 1/2
+        arguments:
+        - Show (X_t - X_s)/(t - s) is normally distributed
+        outcomes:
+        - (X_t - X_s)/(t - s) is normally distributed
+    -   preconditions:
+        - Increments of X_t are independent and identically distributed
+        arguments:
+        - Conclude X_t is a Brownian motion
+        outcomes:
+        - X_t = t W_{1/t}, t > 0, X_0 = 0 is a Brownian motion

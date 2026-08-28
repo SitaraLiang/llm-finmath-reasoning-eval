@@ -1,0 +1,13 @@
+### Question block 1
+```yml
+atoms:
+  - preconditions: [X_0 = 0]
+    arguments: ["(X_t)_{t \in \mathbb{R}^+}" ]
+    outcomes: ["(X_t)_{t \in \mathbb{R}^+} 是布朗运动"]
+  - preconditions: ["(X_t)_{t \in \mathbb{R}^+} 是零均值高斯过程"]
+    arguments: ["(X_t)_{t \in \mathbb{R}^+}" ]
+    outcomes: ["Cov(X_s, X_t) = \min(s, t)"]
+  - preconditions: ["Cov(X_s, X_t) = \min(s, t)"]
+    arguments: ["(X_t)_{t \in \mathbb{R}^+}" ]
+    outcomes: ["(X_t)_{t \in \mathbb{R}^+} 是布朗运动"]
+```

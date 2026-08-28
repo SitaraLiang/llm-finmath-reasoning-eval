@@ -1,0 +1,48 @@
+### Question block 1
+```yml
+atoms:
+  - preconditions: 
+      - X_0 = 0
+    arguments: 
+      - (X_t) 是零均值高斯过程
+      - Cov(X_s, X_t) = min(s, t)
+    outcomes: 
+      - (X_t) 是布朗运动
+  - preconditions: 
+      - (X_t) 是布朗运动
+    arguments: 
+      - X_0 = 0
+      - (X_t) 是零均值高斯过程
+      - Cov(X_s, X_t) = min(s, t)
+    outcomes: 
+      - (X_t) 满足以上三个条件
+```
+
+### Question block 2
+```yml
+atoms:
+  - preconditions: []
+    arguments: ["t > 0", "X_0 = 0"]
+    outcomes:
+      - text: ""
+        formula: "$\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$"
+    strength: 
+      text: ""
+      calculation: "时间反转/时间反转变换 Time Inversion"
+  - preconditions: []
+    arguments: ["t > 0", "s > 0"]
+    outcomes:
+      - text: ""
+        formula: "$Cov(X_t, X_s) = min(t,s)$"
+    strength: 
+      text: ""
+      calculation: "高斯过程 Gaussian Process"
+  - preconditions: []
+    arguments: ["t > 0", "s > 0"]
+    outcomes:
+      - text: ""
+        formula: "$Cov(X_t - X_s, W_{1/t}) = 1 - s/t$"
+    strength: 
+      text: ""
+      calculation: "独立增量 Independent Increments"
+```

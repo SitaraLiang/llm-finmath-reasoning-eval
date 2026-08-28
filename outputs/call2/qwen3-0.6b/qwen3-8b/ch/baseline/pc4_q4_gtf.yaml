@@ -1,0 +1,25 @@
+pc: '4'
+exercise: '4'
+language: ch
+variation: baseline
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: qwen3-0.6b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - $\tau$ 为有界停时
+        arguments:
+        - 布朗运动的路径在任意有限时间 $t$ 满足 $\E(W_t) = 0$
+        outcomes:
+        - $\E(W_\tau) = 0$
+-   atoms:
+    -   preconditions:
+        - τ 为有界停时
+        - W_t 为布朗运动
+        arguments:
+        - 根据 Doob 可选停时定理，E(W_τ) = 0
+        - 对于布朗运动，E(W_τ²) = 0
+        outcomes:
+        - E(W_τ²) = 0

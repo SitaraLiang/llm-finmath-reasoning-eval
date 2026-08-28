@@ -1,0 +1,31 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_quant_expert
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: deepseek-r1-7b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - A process \( (X_t)_{t \geq 0} \) is a Brownian motion.
+        arguments:
+        - Calculation
+        outcomes:
+        - \( X_0 = 0 \)
+    -   preconditions:
+        - \( X_0 = 0 \)
+        - \( (X_t) \) is a centered Gaussian process
+        - The covariance function is \( \text{Cov}(X_s, X_t) = \min(s, t) \)
+        arguments:
+        - Calculation
+        outcomes:
+        - \( (X_t) \) is a Brownian motion.
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Scaling property of Brownian motion
+        outcomes:
+        - X_t is a Brownian motion

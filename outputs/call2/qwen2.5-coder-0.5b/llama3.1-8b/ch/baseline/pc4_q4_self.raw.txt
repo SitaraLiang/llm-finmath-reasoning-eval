@@ -1,0 +1,28 @@
+### Question block 1
+```yml
+atoms:
+  - preconditions: []
+    arguments:
+      - "布朗运动是一种随时间的变化现象"
+      - "布朗运动是一种波动性、随机性和有边界的状态"
+    outcomes:
+      - "\E(W_t) = \frac{1}{2} \int_{0}^{t-1} W_t \, dt"
+  - preconditions: []
+    arguments:
+      - "布朗运动不会重复发生"
+    outcomes:
+      - "使用平均值公式计算布朗运动的第 $t$ 天平均值"
+```
+
+### Question block 2
+```yml
+atoms:
+  - preconditions: [ "\tau 为有界停时" ]
+    arguments: [ "布朗运动", "\tau" ]
+    outcomes: [ "\"\E(W_\tau^2)\"" ]
+    strength: Calculation
+  - preconditions: []
+    arguments: ["\tau"]
+    outcomes: []
+    strength: ""
+```

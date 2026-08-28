@@ -1,0 +1,39 @@
+### Question block 1
+```yml
+atoms:
+- preconditions:
+  - "τ is a bounded stopping time"
+  arguments:
+  - "Martingale Stopping Theorem"
+  outcomes:
+  - "E[W_τ] = E[W_0]"
+```
+
+### Question block 2
+## Step 1: Recognize that $W_t$ is a martingale
+$W_t$ is a Brownian motion, which is known to be a martingale.
+
+## Step 2: Apply Ito's lemma on the function $f(t) = t^2$
+For a martingale $M_t$, Ito's lemma gives:
+$d(M_t^2) = 2 M_t dM_t + (dM_t)^2$
+
+## Step 3: Apply Ito's lemma to the Brownian motion $W_t$
+Applying this to $W_t$ gives:
+$d((W_t)^2) = 2 W_t dW_t + (dW_t)^2$
+
+## Step 4: Integrate both sides from 0 to $\tau$
+Integrating both sides from 0 to $\tau$ gives:
+$(W_{\tau})^2 - (W_0)^2 = \int_0^\tau 2 W_s dW_s + \int_0^\tau (dW_s)^2$
+
+## Step 5: Take expectation on both sides
+Taking expectation on both sides, noting that $W_0 = 0$, gives:
+$\mathbb{E}[(W_{\tau})^2] = \mathbb{E}\left[\int_0^\tau (dW_s)^2\right]$
+
+## Step 6: Evaluate the expectation of the integral
+Since each increment of Brownian motion has variance $s$, we have:
+$\mathbb{E}\left[\int_0^\tau (dW_s)^2\right] = \int_0^\tau s ds = \frac{\tau^2}{2}$
+
+## Step 7: Conclude the expected value of $(W_{\tau})^2$
+Thus, the expected value of $(W_{\tau})^2$ is $\boxed{\dfrac{\tau^2}{2}}$
+
+The final answer is: $\boxed{\dfrac{\tau^2}{2}}$

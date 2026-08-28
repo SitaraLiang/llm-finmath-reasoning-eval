@@ -1,0 +1,42 @@
+### Question block 1
+```yml
+atoms:
+  - preconditions: []
+    arguments:
+      - τ 是有界停时
+    outcomes:
+      - E[W_τ] = 0
+  - preconditions: []
+    arguments:
+      - W_t 是连续随机过程
+      - W_t 有独立增量
+      - 每个增量都是正态分布的
+    outcomes:
+      - W_t - W_s服从N(0, t-s) 当t>s的时候
+  - preconditions: []
+    arguments:
+      - τ 是有界停时
+    outcomes:
+      - E[W_τ] = E[W_0]
+  - preconditions: []
+    arguments:
+      - W_t 是鞅
+      - τ 是有界停时
+    outcomes:
+      - E[W_τ] = E[W_0]
+  - preconditions: []
+    arguments:
+      - W_t 是L²可积
+      - τ 是有界停时
+    outcomes:
+      - E[W_τ] = E[W_0]
+```
+
+### Question block 2
+```yml
+atoms:
+  - preconditions: [ "\tau 为有界停时" ]
+    arguments: [ "布朗运动 W_t", "停时 \tau" ]
+    outcomes: [ "E[W_\tau^2] = E[\tau]" ]
+    strength: "根据 optional stopping 定理"
+```

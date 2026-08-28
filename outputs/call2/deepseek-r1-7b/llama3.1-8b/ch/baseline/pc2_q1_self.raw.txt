@@ -1,0 +1,67 @@
+### Question block 1
+```yml
+atoms:
+  - preconditions: 
+      - $X_0 = 0$
+    arguments: 
+      - $(X_t)$ 是零均值高斯过程
+      - 协方差函数 $\text{Cov}(X_s, X_t) = \min(s, t)$
+    outcomes: 
+      - $(X_t)$ 是布朗运动
+  - preconditions: 
+      - $X_0 = 0$
+      - $(X_t)$ 是零均值高斯过程
+      - 协方差函数 $\text{Cov}(X_s, X_t) = \min(s, t)$
+    arguments: 
+      - 增量独立性
+    outcomes: 
+      - 增量不相关
+  - preconditions: 
+      - $X_0 = 0$
+      - $(X_t)$ 是零均值高斯过程
+      - 协方差函数 $\text{Cov}(X_s, X_t) = \min(s, t)$
+    arguments: 
+      - 连续样本路径
+    outcomes: 
+      - 均值连续的样本路径
+```
+
+### Question block 2
+```yml
+atoms:
+  - preconditions: []
+    arguments: ["W_t 为布朗运动"]
+    outcomes:
+      - "根据时间反转变换，证明 X_t = t W_{1/t} 也是布朗运动"
+    strength: "根据时间反转变换，证明 X_t = t W_{1/t} 也是布朗运动"
+  - preconditions: []
+    arguments: ["X_0 = 0"]
+    outcomes:
+      - "初始位置：X_0 = 0"
+    strength: ""
+  - preconditions: []
+    arguments: ["W_t 是高斯过程"]
+    outcomes:
+      - "高斯过程：任何线性变换后的变量仍为高斯分布"
+    strength: ""
+  - preconditions: []
+    arguments: ["E[W_{1/t}] = 0"]
+    outcomes:
+      - "均值函数：E[X_t] = t E[W_{1/t}] = 0"
+    strength: ""
+  - preconditions: []
+    arguments: ["W_t 是布朗运动"]
+    outcomes:
+      - "协方差函数：Cov(X_s, X_t) = s t Cov(W_{1/s}, W_{1/t}) = min(s, t)"
+    strength: ""
+  - preconditions: []
+    arguments: ["0 < s < t"]
+    outcomes:
+      - "独立增量：X_t - X_s 和 X_u - X_v（不重叠区间）的协方差为零"
+    strength: ""
+  - preconditions: []
+    arguments: ["W_t 具有均值连续的样本路径"]
+    outcomes:
+      - "连续性：X_t 也具有类似的连续性"
+    strength: ""
+```
