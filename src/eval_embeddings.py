@@ -13,6 +13,7 @@ DEFAULT_SANITY_MODEL = "answerdotai/ModernBERT-base"
 DEFAULT_PAIRS = Path("data/evaluation")
 DEFAULT_OUTPUT_DIR = Path("outputs/evaluation")
 DEFAULT_THRESHOLD_OUTPUT_DIR = DEFAULT_OUTPUT_DIR / "threshold"
+DEFAULT_CALIBRATION_FILENAME = "calibration.yaml"
 DEFAULT_MATRIX_THRESHOLD = 0.75
 DIMENSIONS = {
     "D1": "outcomes",
@@ -134,6 +135,49 @@ def write_csv(path: Path, rows: list[dict], fieldnames: list[str]) -> None:
         writer.writerows(rows)
 
 
+def update_calibration_registry(path: Path, entries: list[dict], policy: dict) -> None:
+    """Merge generated model/language thresholds into a portable YAML registry."""
+    if path.exists():
+        loaded = yaml.safe_load(path.read_text(encoding="utf-8")) or {}
+        if not isinstance(loaded, dict):
+            raise SystemExit(f"Error: calibration registry '{path}' must be a mapping.")
+    else:
+        loaded = {}
+
+    registry = {
+        "version": 1,
+        "policy": policy,
+        "models": loaded.get("models", {}),
+    }
+    if not isinstance(registry["models"], dict):
+        raise SystemExit(f"Error: calibration registry '{path}' has invalid models data.")
+
+    for entry in entries:
+        model_data = registry["models"].setdefault(entry["model"], {})
+        languages = model_data.setdefault("languages", {})
+        languages[entry["language"]] = {
+            "embedding_threshold": entry["embedding_threshold"],
+            "selected_embedding_threshold": entry["selected_embedding_threshold"],
+            "judge_low_threshold": entry["judge_low_threshold"],
+            "judge_high_threshold": entry["judge_high_threshold"],
+            "pair_count": entry["pair_count"],
+            "balanced_accuracy": entry["balanced_accuracy"],
+        }
+
+    path.parent.mkdir(parents=True, exist_ok=True)
+    temporary = path.with_name(f".{path.name}.tmp")
+    temporary.write_text(
+        yaml.safe_dump(
+            registry,
+            allow_unicode=True,
+            sort_keys=True,
+            default_flow_style=False,
+        ),
+        encoding="utf-8",
+    )
+    temporary.replace(path)
+
+
 def threshold_metrics(rows: list[dict], threshold: float) -> dict[str, float]:
     correct = 0
     equivalent_rows = [row for row in rows if row["expected_match"]]
@@ -208,7 +252,9 @@ def score_statement_pairs(
     threshold: float | None,
     threshold_step: float,
     language: str,
-) -> None:
+    judge_low_margin: float,
+    judge_high_threshold: float,
+) -> dict:
     data = load_yaml(pairs_path)
     embedder = EmbeddingModel(model_name)
     rows = []
@@ -239,6 +285,12 @@ def score_statement_pairs(
     recommended_threshold, sweep_rows = sweep_thresholds(rows, threshold_step)
     selected_threshold = recommended_threshold if threshold is None else threshold
     selected_metrics = threshold_metrics(rows, selected_threshold)
+    recommended_metrics = threshold_metrics(rows, recommended_threshold)
+    generated_judge_low = max(0.0, recommended_threshold - judge_low_margin)
+    if generated_judge_low > judge_high_threshold:
+        raise SystemExit(
+            "Error: generated judge low threshold exceeds --judge-high-threshold."
+        )
 
     output_rows = []
     for row in rows:
@@ -355,6 +407,16 @@ def score_statement_pairs(
     print(f"Wrote pair summary: {summary_path}")
     print(f"Wrote threshold sweep: {sweep_path}")
     print(f"Recommended threshold: {recommended_threshold:.6f}")
+    return {
+        "model": model_name,
+        "language": language,
+        "embedding_threshold": recommended_threshold,
+        "selected_embedding_threshold": round(float(selected_threshold), 6),
+        "judge_low_threshold": round(generated_judge_low, 6),
+        "judge_high_threshold": round(float(judge_high_threshold), 6),
+        "pair_count": len(output_rows),
+        "balanced_accuracy": round(float(recommended_metrics["balanced_accuracy"]), 6),
+    }
 
 
 def is_atom(value) -> bool:
@@ -597,6 +659,27 @@ def build_parser() -> argparse.ArgumentParser:
             "outputs/evaluation/threshold."
         ),
     )
+    pairs.add_argument(
+        "--calibration-file",
+        type=Path,
+        default=None,
+        help=(
+            "Generated threshold registry. Relative paths use --project-root. "
+            "Default: <output-dir>/calibration.yaml."
+        ),
+    )
+    pairs.add_argument(
+        "--judge-low-margin",
+        type=float,
+        default=0.10,
+        help="Set judge low threshold to recommended embedding threshold minus this margin.",
+    )
+    pairs.add_argument(
+        "--judge-high-threshold",
+        type=float,
+        default=1.0,
+        help="Generated conservative judge upper threshold. Default: 1.0.",
+    )
 
     matrix = subparsers.add_parser(
         "matrix",
@@ -618,7 +701,16 @@ def main() -> None:
 
     project_root = args.project_root.resolve()
     if args.command == "pairs":
+        if args.judge_low_margin < 0 or args.judge_low_margin > 1:
+            raise SystemExit("Error: --judge-low-margin must be in [0, 1].")
+        if args.judge_high_threshold < 0 or args.judge_high_threshold > 1:
+            raise SystemExit("Error: --judge-high-threshold must be in [0, 1].")
         output_root = resolve_path(args.output_dir, project_root)
+        calibration_path = (
+            resolve_path(args.calibration_file, project_root)
+            if args.calibration_file
+            else output_root / DEFAULT_CALIBRATION_FILENAME
+        )
         pairs_input = resolve_path(args.input, project_root)
         pair_files = discover_formulation_pair_files(pairs_input)
         model_names = unique_model_names([args.model, *args.models])
@@ -626,6 +718,7 @@ def main() -> None:
             model_names = unique_model_names([*model_names, args.sanity_model])
 
         seen_languages = set()
+        calibration_entries = []
         for pairs_path in pair_files:
             pair_data = load_yaml(pairs_path)
             language = formulation_pairs_language(pairs_path, pair_data)
@@ -635,14 +728,25 @@ def main() -> None:
             for model_name in model_names:
                 output_dir = output_root / language / threshold_model_slug(model_name)
                 print(f"Running embedding model: {model_name} (language={language})")
-                score_statement_pairs(
+                calibration_entries.append(score_statement_pairs(
                     pairs_path,
                     output_dir,
                     model_name,
                     args.threshold,
                     args.threshold_step,
                     language,
-                )
+                    args.judge_low_margin,
+                    args.judge_high_threshold,
+                ))
+        update_calibration_registry(
+            calibration_path,
+            calibration_entries,
+            {
+                "judge_low_margin": round(float(args.judge_low_margin), 6),
+                "judge_high_threshold": round(float(args.judge_high_threshold), 6),
+            },
+        )
+        print(f"Wrote calibration registry: {calibration_path}")
         return
 
     if args.command == "matrix":

@@ -193,17 +193,8 @@ python src/select_responses.py --config config/selection/experiments/quant_exper
 python src/evaluate.py --config config/evaluation/experiments/quant_expert_plain_text_en.yaml
 ```
 
-Run the Chinese baseline plain-text pipeline:
-
-```bash
-python src/call1.py --config config/call1/experiments/baseline_plain_text_ch.yaml
-python src/call2.py --config config/call2/experiments/baseline_ch.yaml
-python src/select_responses.py --config config/selection/experiments/baseline_ch.yaml
-python src/evaluate.py --config config/evaluation/experiments/baseline_plain_text_ch.yaml
-```
-
-The Chinese evaluation currently uses the calibrated all-MiniLM threshold
-`0.58` and the LLM-judge interval `0.40` to `1.00`.
+Thresholds of different languages are loaded automatically from the generated calibration
+registry after running `eval_embeddings.py pairs`.
 
 Evaluate the English baseline direct-YAML experiment, which bypasses Call 2
 and selection:
@@ -273,6 +264,30 @@ outputs/evaluation/threshold/en/all-minilm-l6-v2/
 outputs/evaluation/threshold/fr/all-minilm-l6-v2/
 ```
 
+It also creates or updates:
+
+```text
+outputs/evaluation/threshold/calibration.yaml
+```
+
+The registry is keyed by embedding model and language. It stores the recommended
+embedding threshold and a generated judge interval. By default, the judge lower
+boundary is `recommended_threshold - 0.10` (clamped to zero), and the upper
+boundary is `1.0`. These policies can be changed when calibrating:
+
+```bash
+python src/eval_embeddings.py pairs \
+  --input data/evaluation \
+  --output-dir outputs/evaluation/threshold \
+  --judge-low-margin 0.10 \
+  --judge-high-threshold 1.0
+```
+
+`evaluate.py` loads this registry automatically through
+`config/evaluation/base.yaml`. Command-line threshold options still take
+priority; if the registry or a model/language entry is missing, evaluation uses
+the scalar fallback values from the config.
+
 ### Adding a Downstream Experiment
 
 Call 2, selection, and evaluation use the same inheritance convention as Call
@@ -335,13 +350,8 @@ Evaluation filters are real input filters. Files from other languages or
 variations are not scored, while the expected model and strategy lists still
 make missing outputs visible in coverage reports.
 
-The current judge setup uses all-MiniLM embeddings with an LLM judge for ambiguous cases:
-
-```text
-embedding thresholds: en=0.375, fr=0.45
-judge bands: en=0.30 to 1.0, fr=0.35 to 1.0
-judge model: llama3.1:8b
-```
+The current setup uses all-MiniLM embeddings and `llama3.1:8b` as the judge.
+Language-specific thresholds are read from the generated calibration registry.
 
 Judge-enabled parsed-response results are written to
 `outputs/evaluation/parsed_responses/{lang}/{variation}/with_judge/`. The shared

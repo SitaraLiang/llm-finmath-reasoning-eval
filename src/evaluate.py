@@ -1353,15 +1353,54 @@ def config_path_value(value) -> Path | None:
     return Path(value)
 
 
+def load_calibration_registry(config: dict, project_root: Path) -> tuple[dict, Path | None]:
+    """Load generated thresholds when calibration.use_generated_thresholds is enabled."""
+    if not bool(get_nested(config, ["calibration", "use_generated_thresholds"], False)):
+        return {}, None
+    configured_path = get_nested(
+        config,
+        ["calibration", "file"],
+        "outputs/evaluation/threshold/calibration.yaml",
+    )
+    registry_path = resolve_path(Path(configured_path), project_root)
+    if not registry_path.exists():
+        progress(
+            f"Calibration registry not found: {registry_path}. "
+            "Using thresholds from the evaluation config."
+        )
+        return {}, registry_path
+    loaded = yaml.safe_load(registry_path.read_text(encoding="utf-8")) or {}
+    if not isinstance(loaded, dict) or not isinstance(loaded.get("models", {}), dict):
+        raise SystemExit(f"Error: invalid calibration registry: {registry_path}")
+    return loaded, registry_path
+
+
+def generated_calibration_values(
+    registry: dict,
+    model_name: str,
+    language: str,
+) -> dict:
+    model_data = registry.get("models", {}).get(model_name, {})
+    if not isinstance(model_data, dict):
+        return {}
+    language_data = model_data.get("languages", {}).get(language, {})
+    return language_data if isinstance(language_data, dict) else {}
+
+
 def embedding_threshold_for_language(
     config: dict,
     language: str,
     fallback: float,
+    calibration_registry: dict,
+    model_name: str,
     cli_threshold: float | None = None,
 ) -> float:
-    """Return a language-specific threshold, with CLI and scalar fallbacks."""
+    """Resolve CLI, generated, language-config, then scalar threshold values."""
     if cli_threshold is not None:
         return float(cli_threshold)
+    generated = generated_calibration_values(calibration_registry, model_name, language)
+    if "embedding_threshold" in generated:
+        return float(generated["embedding_threshold"])
     thresholds = get_nested(config, ["embedding", "thresholds"], {}) or {}
     if not isinstance(thresholds, dict):
         raise SystemExit("Error: embedding.thresholds must be a language mapping.")
@@ -1373,6 +1412,8 @@ def judge_thresholds_for_language(
     language: str,
     fallback_low: float,
     fallback_high: float,
+    calibration_registry: dict,
+    model_name: str,
     cli_low: float | None = None,
     cli_high: float | None = None,
 ) -> tuple[float, float]:
@@ -1385,8 +1426,19 @@ def judge_thresholds_for_language(
         raise SystemExit(
             f"Error: judge.thresholds.{language} must contain low and high values."
         )
-    low = float(language_values.get("low", fallback_low))
-    high = float(language_values.get("high", fallback_high))
+    generated = generated_calibration_values(calibration_registry, model_name, language)
+    low = float(
+        generated.get(
+            "judge_low_threshold",
+            language_values.get("low", fallback_low),
+        )
+    )
+    high = float(
+        generated.get(
+            "judge_high_threshold",
+            language_values.get("high", fallback_high),
+        )
+    )
     if cli_low is not None:
         low = float(cli_low)
     if cli_high is not None:
@@ -1544,6 +1596,9 @@ def main() -> None:
 
     embedding_model = cli_or_config(args.model, config, ["embedding", "model"], DEFAULT_MODEL)
     default_threshold = float(get_nested(config, ["embedding", "threshold"], 0.415))
+    calibration_registry, calibration_path = load_calibration_registry(config, project_root)
+    if calibration_registry:
+        progress(f"Loaded generated calibration thresholds: {calibration_path}")
 
     judge_model = cli_or_config(args.judge_model, config, ["judge", "model"], "")
     judge_enabled = bool(get_nested(config, ["judge", "enabled"], False))
@@ -1653,6 +1708,8 @@ def main() -> None:
                 language,
                 judge_low_fallback,
                 judge_high_fallback,
+                calibration_registry,
+                embedding_model,
                 args.judge_low_threshold,
                 args.judge_high_threshold,
             )
@@ -1688,6 +1745,8 @@ def main() -> None:
             config,
             metadata["language"],
             default_threshold,
+            calibration_registry,
+            embedding_model,
             args.threshold,
         )
         item_judge_low, item_judge_high = judge_thresholds_for_language(
@@ -1695,6 +1754,8 @@ def main() -> None:
             metadata["language"],
             judge_low_fallback,
             judge_high_fallback,
+            calibration_registry,
+            embedding_model,
             args.judge_low_threshold,
             args.judge_high_threshold,
         )
