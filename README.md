@@ -193,9 +193,6 @@ python src/select_responses.py --config config/selection/experiments/quant_exper
 python src/evaluate.py --config config/evaluation/experiments/quant_expert_plain_text_en.yaml
 ```
 
-Thresholds of different languages are loaded automatically from the generated calibration
-registry after running `eval_embeddings.py pairs`.
-
 Evaluate the English baseline direct-YAML experiment, which bypasses Call 2
 and selection:
 
