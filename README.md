@@ -386,7 +386,6 @@ still evaluated.
 - `config/call2/`: shared Call 2 settings and thin experiment manifests.
 - `config/selection/`: shared candidate-selection settings and experiment manifests.
 - `config/evaluation/`: shared scoring settings, prediction modes, and experiment manifests.
-- `tests/`: parser and conversion validation tests.
 
 ## Notes
 
