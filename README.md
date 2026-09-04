@@ -55,9 +55,19 @@ This repository was developed as part of my research internship at CMAP, École 
    - `src/extract_statements.py` extracts statements separately to `data/evaluation/{lang}/ground_truth_statements.csv`.
    - `data/evaluation/{lang}/formulation_pairs.yaml` stores independently curated formulation pairs for each language.
    - `src/eval_embeddings.py` scores formulation pairs and writes calibration outputs under `outputs/evaluation/`.
-   - `src/evaluate.py` builds D1/D3/D4 alignment tables, an experimental D2 order report, and aggregate summaries.
+   - `src/evaluate.py` builds D1/D2/D3 alignment tables, a D4 order report, and aggregate summaries.
    - Evaluation can run in embedding-only mode or with an optional second-stage LLM judge for ambiguous embedding matches.
    - Downstream stages use composable `base.yaml` and `experiments/` configurations, matching the Call 1 structure.
+
+### Evaluation Dimensions
+
+- **D1 - Assumption coverage:** measures whether the prediction's preconditions cover the global assumptions, local assumptions, required ground-truth preconditions, and outcomes established by preceding subquestions.
+- **D2 - Argument identification:** measures whether the prediction uses the expected theorem, lemma, property, or calculation method.
+- **D3 - Mathematical correctness:** measures whether the prediction's intermediate and final outcomes match the ground truth.
+- **D4 - Reasoning quality:** measures whether matched proof atoms respect the ordering constraints induced by ordered lists in the ground truth; elements inside tuples are treated as unordered alternatives.
+
+The aggregate `overall_mean_score` averages D1, D2, and D3. The aggregate
+`overall_with_D4_score` additionally includes the strict D4 order score.
 
 ## Setup
 

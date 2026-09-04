@@ -16,9 +16,9 @@ DEFAULT_THRESHOLD_OUTPUT_DIR = DEFAULT_OUTPUT_DIR / "threshold"
 DEFAULT_CALIBRATION_FILENAME = "calibration.yaml"
 DEFAULT_MATRIX_THRESHOLD = 0.75
 DIMENSIONS = {
-    "D1": "outcomes",
-    "D3": "arguments",
-    "D4": "preconditions",
+    "D3": "outcomes",
+    "D2": "arguments",
+    "D1": "preconditions",
 }
 
 
@@ -683,7 +683,7 @@ def build_parser() -> argparse.ArgumentParser:
 
     matrix = subparsers.add_parser(
         "matrix",
-        help="Build D1/D3/D4 atom alignment matrices for one GT YAML and one converted response YAML.",
+        help="Build D1/D2/D3 atom alignment matrices for one GT YAML and one converted response YAML.",
     )
     matrix.add_argument("--ground-truth", type=Path, required=True)
     matrix.add_argument("--prediction", type=Path, required=True)

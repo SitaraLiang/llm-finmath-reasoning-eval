@@ -30,17 +30,20 @@ DEFAULT_PREDICTIONS = Path("outputs/selected_responses")
 DEFAULT_GROUND_TRUTH = Path("data/ground_truth")
 DEFAULT_OUTPUT = Path("outputs/evaluation/parsed_responses")
 DEFAULT_CONFIG = Path("config/evaluation/experiments/baseline_plain_text_en.yaml")
+# Public metric convention:
+# D1 = assumption coverage, D2 = argument identification,
+# D3 = mathematical correctness, D4 = reasoning quality/order.
 ATOM_DIMENSIONS = {
-    "D1": "outcomes",
-    "D3": "arguments",
+    "D2": "arguments",
+    "D3": "outcomes",
 }
-D4_SOURCES = (
+D1_SOURCES = (
     "global_assumption",
     "local_assumption",
     "gt_precondition",
     "previous_outcome",
 )
-D4_SOURCE_METRICS = (
+D1_SOURCE_METRICS = (
     "mean_best_score",
     "recall",
     "precision",
@@ -667,10 +670,10 @@ def collect_gt_outcomes_before_subquestion(gt_data: dict, subquestion_index: int
     return outcomes
 
 
-def collect_d4_targets(gt_data: dict, subquestion_index: int) -> list[dict]:
+def collect_d1_targets(gt_data: dict, subquestion_index: int) -> list[dict]:
     """Collect the GT statements that prediction preconditions should cover.
 
-    D4 is defined as coverage of required hypotheses: global assumptions,
+    D1 is defined as coverage of required hypotheses: global assumptions,
     current subquestion assumptions, current GT atom preconditions, and outcomes
     established by preceding subquestions.
     """
@@ -729,7 +732,7 @@ def collect_d4_targets(gt_data: dict, subquestion_index: int) -> list[dict]:
     return targets
 
 
-def build_d4_rows(
+def build_d1_rows(
     targets: list[dict],
     pred_atoms: list[dict],
     embedder: EmbeddingModel,
@@ -740,7 +743,7 @@ def build_d4_rows(
         if not pred_atoms:
             rows.append(
                 {
-                    "dimension": "D4",
+                    "dimension": "D1",
                     "field": "required_precondition_coverage",
                     "gt_atom_index": target_index,
                     "model_atom_index": "",
@@ -759,7 +762,7 @@ def build_d4_rows(
             score = field_coverage_score([target["text"]], pred_values, embedder)
             rows.append(
                 {
-                    "dimension": "D4",
+                    "dimension": "D1",
                     "field": "required_precondition_coverage",
                     "gt_atom_index": target_index,
                     "model_atom_index": pred_index,
@@ -828,7 +831,7 @@ def summarize_dimension(rows: list[dict]) -> dict:
     }
 
 
-def summarize_d4_sources(rows: list[dict]) -> dict[str, dict]:
+def summarize_d1_sources(rows: list[dict]) -> dict[str, dict]:
     summaries = {}
     for row in rows:
         source = row.get("gt_source") or "unknown"
@@ -839,21 +842,21 @@ def summarize_d4_sources(rows: list[dict]) -> dict[str, dict]:
     }
 
 
-def d4_source_summary_rows(base_metadata: dict, d4_source_summaries: dict[str, dict]) -> list[dict]:
+def d1_source_summary_rows(base_metadata: dict, d1_source_summaries: dict[str, dict]) -> list[dict]:
     rows = []
-    for source, summary in d4_source_summaries.items():
+    for source, summary in d1_source_summaries.items():
         rows.append(
             {
                 **base_metadata,
                 "gt_source": source,
-                "D4_source_mean_best_score": f"{summary['mean_best_score']:.6f}",
-                "D4_source_recall": f"{summary['coverage']:.6f}",
-                "D4_source_precision": f"{summary['precision']:.6f}",
-                "D4_source_f1": f"{summary['f1']:.6f}",
-                "D4_source_gt_items": summary["gt_items"],
-                "D4_source_matched_gt_items": summary["matched_gt_items"],
-                "D4_source_prediction_items": summary["prediction_items"],
-                "D4_source_matched_prediction_items": summary["matched_prediction_items"],
+                "D1_source_mean_best_score": f"{summary['mean_best_score']:.6f}",
+                "D1_source_recall": f"{summary['coverage']:.6f}",
+                "D1_source_precision": f"{summary['precision']:.6f}",
+                "D1_source_f1": f"{summary['f1']:.6f}",
+                "D1_source_gt_items": summary["gt_items"],
+                "D1_source_matched_gt_items": summary["matched_gt_items"],
+                "D1_source_prediction_items": summary["prediction_items"],
+                "D1_source_matched_prediction_items": summary["matched_prediction_items"],
             }
         )
     return rows
@@ -862,7 +865,7 @@ def d4_source_summary_rows(base_metadata: dict, d4_source_summaries: dict[str, d
 def atom_pair_scores(rows: list[dict], subquestion_index: int) -> dict[tuple[int, int], dict[str, float]]:
     pair_scores = {}
     for row in rows:
-        if row["dimension"] not in {"D1", "D3"}:
+        if row["dimension"] not in {"D3", "D2"}:
             continue
         if row["subquestion_index"] != subquestion_index:
             continue
@@ -873,7 +876,7 @@ def atom_pair_scores(rows: list[dict], subquestion_index: int) -> dict[tuple[int
     return pair_scores
 
 
-def best_atom_matches_for_d2(
+def best_atom_matches_for_d4(
     rows: list[dict],
     subquestion_index: int,
     threshold: float,
@@ -881,7 +884,7 @@ def best_atom_matches_for_d2(
     pair_scores = atom_pair_scores(rows, subquestion_index)
     by_gt_atom = {}
     for (gt_atom_index, model_atom_index), scores in pair_scores.items():
-        score_values = [scores[dimension] for dimension in ("D1", "D3") if dimension in scores]
+        score_values = [scores[dimension] for dimension in ("D3", "D2") if dimension in scores]
         if not score_values:
             continue
         combined_score = statistics.fmean(score_values)
@@ -897,18 +900,18 @@ def best_atom_matches_for_d2(
     return by_gt_atom
 
 
-def build_d2_rows(
+def build_d4_rows(
     gt_data: dict,
     all_rows: list[dict],
     subquestion_count: int,
     threshold: float,
 ) -> tuple[list[dict], dict]:
-    d2_rows = []
+    d4_rows = []
     for sub_index in range(1, subquestion_count + 1):
         gt_atoms, constraints = subquestion_order_constraints(gt_data, sub_index)
         if not gt_atoms:
             continue
-        best_matches = best_atom_matches_for_d2(all_rows, sub_index, threshold)
+        best_matches = best_atom_matches_for_d4(all_rows, sub_index, threshold)
         path_by_atom = {
             record["gt_atom_index"]: record["path"]
             for record in gt_atoms
@@ -937,7 +940,7 @@ def build_d2_rows(
             else:
                 status = "violated"
                 respected = False
-            d2_rows.append(
+            d4_rows.append(
                 {
                     "subquestion_index": sub_index,
                     "constraint_index": constraint_index,
@@ -958,10 +961,10 @@ def build_d2_rows(
                 }
             )
 
-    total_constraints = len(d2_rows)
-    respected_constraints = sum(row["status"] == "respected" for row in d2_rows)
-    violated_constraints = sum(row["status"] == "violated" for row in d2_rows)
-    unmatched_constraints = sum(row["status"] == "unmatched" for row in d2_rows)
+    total_constraints = len(d4_rows)
+    respected_constraints = sum(row["status"] == "respected" for row in d4_rows)
+    violated_constraints = sum(row["status"] == "violated" for row in d4_rows)
+    unmatched_constraints = sum(row["status"] == "unmatched" for row in d4_rows)
     matched_constraints = respected_constraints + violated_constraints
     if total_constraints:
         order_score = (
@@ -976,15 +979,15 @@ def build_d2_rows(
         coverage = 1.0
         strict_score = 1.0
     summary = {
-        "D2_order_score": order_score,
-        "D2_order_coverage": coverage,
-        "D2_strict_order_score": strict_score,
-        "D2_total_constraints": total_constraints,
-        "D2_respected_constraints": respected_constraints,
-        "D2_violated_constraints": violated_constraints,
-        "D2_unmatched_constraints": unmatched_constraints,
+        "D4_order_score": order_score,
+        "D4_order_coverage": coverage,
+        "D4_strict_order_score": strict_score,
+        "D4_total_constraints": total_constraints,
+        "D4_respected_constraints": respected_constraints,
+        "D4_violated_constraints": violated_constraints,
+        "D4_unmatched_constraints": unmatched_constraints,
     }
-    return d2_rows, summary
+    return d4_rows, summary
 
 
 def evaluate_one(
@@ -1028,7 +1031,7 @@ def evaluate_one(
 
     all_rows = []
     best_rows = []
-    d4_source_rows = []
+    d1_source_rows = []
     subquestion_count = max(len(gt_subquestions), len(pred_subquestions))
 
     for sub_index in range(1, subquestion_count + 1):
@@ -1071,21 +1074,21 @@ def evaluate_one(
                         }
                     )
 
-        d4_targets = collect_d4_targets(gt_data, sub_index)
-        d4_rows = build_d4_rows(d4_targets, pred_atoms, embedder, threshold)
-        for row in d4_rows:
+        d1_targets = collect_d1_targets(gt_data, sub_index)
+        d1_rows = build_d1_rows(d1_targets, pred_atoms, embedder, threshold)
+        for row in d1_rows:
             row["subquestion_index"] = sub_index
-        apply_judge_to_rows(d4_rows, judge, judge_low_threshold, judge_high_threshold)
-        all_rows.extend(d4_rows)
+        apply_judge_to_rows(d1_rows, judge, judge_low_threshold, judge_high_threshold)
+        all_rows.extend(d1_rows)
 
-        for target_index in range(1, len(d4_targets) + 1):
-            candidates = [row for row in d4_rows if row["gt_atom_index"] == target_index]
+        for target_index in range(1, len(d1_targets) + 1):
+            candidates = [row for row in d1_rows if row["gt_atom_index"] == target_index]
             if candidates:
                 best = max(candidates, key=lambda row: float(row["score"]))
                 best_rows.append(
                     {
                         "subquestion_index": sub_index,
-                        "dimension": "D4",
+                        "dimension": "D1",
                         "field": "required_precondition_coverage",
                         "gt_atom_index": target_index,
                         "gt_source": best["gt_source"],
@@ -1095,11 +1098,11 @@ def evaluate_one(
                     }
                 )
             else:
-                target = d4_targets[target_index - 1]
+                target = d1_targets[target_index - 1]
                 best_rows.append(
                     {
                         "subquestion_index": sub_index,
-                        "dimension": "D4",
+                        "dimension": "D1",
                         "field": "required_precondition_coverage",
                         "gt_atom_index": target_index,
                         "gt_source": target["source"],
@@ -1149,10 +1152,10 @@ def evaluate_one(
             "matched",
         ],
     )
-    d2_rows, d2_summary = build_d2_rows(gt_data, all_rows, subquestion_count, threshold)
+    d4_rows, d4_summary = build_d4_rows(gt_data, all_rows, subquestion_count, threshold)
     write_csv(
-        out_dir / "d2_order_constraints.csv",
-        d2_rows,
+        out_dir / "d4_order_constraints.csv",
+        d4_rows,
         [
             "subquestion_index",
             "constraint_index",
@@ -1171,25 +1174,25 @@ def evaluate_one(
 
     dimension_summaries = {
         dimension: summarize_dimension([row for row in all_rows if row["dimension"] == dimension])
-        for dimension in ("D1", "D3", "D4")
+        for dimension in ("D1", "D2", "D3")
     }
-    d4_source_summaries = summarize_d4_sources([row for row in all_rows if row["dimension"] == "D4"])
-    d4_source_rows.extend(
-        d4_source_summary_rows(
+    d1_source_summaries = summarize_d1_sources([row for row in all_rows if row["dimension"] == "D1"])
+    d1_source_rows.extend(
+        d1_source_summary_rows(
             {
                 **metadata,
                 "prediction_path": str(prediction_path),
                 "ground_truth_path": str(gt_path),
                 "threshold": f"{threshold:.6f}",
             },
-            d4_source_summaries,
+            d1_source_summaries,
         )
     )
     d1 = dimension_summaries["D1"]["mean_best_score"]
+    d2 = dimension_summaries["D2"]["mean_best_score"]
     d3 = dimension_summaries["D3"]["mean_best_score"]
-    d4 = dimension_summaries["D4"]["mean_best_score"]
-    overall = statistics.fmean([d1, d3, d4])
-    overall_with_d2 = statistics.fmean([d1, d3, d4, d2_summary["D2_strict_order_score"]])
+    overall = statistics.fmean([d1, d2, d3])
+    overall_with_d4 = statistics.fmean([d1, d2, d3, d4_summary["D4_strict_order_score"]])
 
     return {
         **base_row,
@@ -1201,24 +1204,24 @@ def evaluate_one(
         "D1_coverage": f"{dimension_summaries['D1']['coverage']:.6f}",
         "D1_precision": f"{dimension_summaries['D1']['precision']:.6f}",
         "D1_f1": f"{dimension_summaries['D1']['f1']:.6f}",
+        "D2_mean_best_score": f"{d2:.6f}",
+        "D2_coverage": f"{dimension_summaries['D2']['coverage']:.6f}",
+        "D2_precision": f"{dimension_summaries['D2']['precision']:.6f}",
+        "D2_f1": f"{dimension_summaries['D2']['f1']:.6f}",
         "D3_mean_best_score": f"{d3:.6f}",
         "D3_coverage": f"{dimension_summaries['D3']['coverage']:.6f}",
         "D3_precision": f"{dimension_summaries['D3']['precision']:.6f}",
         "D3_f1": f"{dimension_summaries['D3']['f1']:.6f}",
-        "D4_mean_best_score": f"{d4:.6f}",
-        "D4_coverage": f"{dimension_summaries['D4']['coverage']:.6f}",
-        "D4_precision": f"{dimension_summaries['D4']['precision']:.6f}",
-        "D4_f1": f"{dimension_summaries['D4']['f1']:.6f}",
-        "D2_order_score": f"{d2_summary['D2_order_score']:.6f}",
-        "D2_order_coverage": f"{d2_summary['D2_order_coverage']:.6f}",
-        "D2_strict_order_score": f"{d2_summary['D2_strict_order_score']:.6f}",
-        "D2_total_constraints": d2_summary["D2_total_constraints"],
-        "D2_respected_constraints": d2_summary["D2_respected_constraints"],
-        "D2_violated_constraints": d2_summary["D2_violated_constraints"],
-        "D2_unmatched_constraints": d2_summary["D2_unmatched_constraints"],
+        "D4_order_score": f"{d4_summary['D4_order_score']:.6f}",
+        "D4_order_coverage": f"{d4_summary['D4_order_coverage']:.6f}",
+        "D4_strict_order_score": f"{d4_summary['D4_strict_order_score']:.6f}",
+        "D4_total_constraints": d4_summary["D4_total_constraints"],
+        "D4_respected_constraints": d4_summary["D4_respected_constraints"],
+        "D4_violated_constraints": d4_summary["D4_violated_constraints"],
+        "D4_unmatched_constraints": d4_summary["D4_unmatched_constraints"],
         "overall_mean_score": f"{overall:.6f}",
-        "overall_with_D2_score": f"{overall_with_d2:.6f}",
-        "_d4_source_rows": d4_source_rows,
+        "overall_with_D4_score": f"{overall_with_d4:.6f}",
+        "_d1_source_rows": d1_source_rows,
     }
 
 
@@ -1236,19 +1239,19 @@ def aggregate_by(rows: list[dict], keys: list[str]) -> list[dict]:
         "D1_coverage",
         "D1_precision",
         "D1_f1",
+        "D2_mean_best_score",
+        "D2_coverage",
+        "D2_precision",
+        "D2_f1",
         "D3_mean_best_score",
         "D3_coverage",
         "D3_precision",
         "D3_f1",
-        "D4_mean_best_score",
-        "D4_coverage",
-        "D4_precision",
-        "D4_f1",
-        "D2_order_score",
-        "D2_order_coverage",
-        "D2_strict_order_score",
+        "D4_order_score",
+        "D4_order_coverage",
+        "D4_strict_order_score",
         "overall_mean_score",
-        "overall_with_D2_score",
+        "overall_with_D4_score",
     ]
     for key, group_rows in sorted(groups.items()):
         row = {name: value for name, value in zip(keys, key)}
@@ -1259,28 +1262,28 @@ def aggregate_by(rows: list[dict], keys: list[str]) -> list[dict]:
     return aggregate_rows
 
 
-def d4_source_column(source: str, metric: str) -> str:
-    return f"D4_{source}_{metric}"
+def d1_source_column(source: str, metric: str) -> str:
+    return f"D1_{source}_{metric}"
 
 
-def add_d4_source_columns(
+def add_d1_source_columns(
     aggregate_rows: list[dict],
-    d4_source_rows: list[dict],
+    d1_source_rows: list[dict],
     keys: list[str],
 ) -> None:
     grouped = {}
-    for row in d4_source_rows:
+    for row in d1_source_rows:
         key = tuple(row[item] for item in keys)
         source = row["gt_source"]
         grouped.setdefault((key, source), []).append(row)
 
     for aggregate_row in aggregate_rows:
         key = tuple(aggregate_row[item] for item in keys)
-        for source in D4_SOURCES:
+        for source in D1_SOURCES:
             source_rows = grouped.get((key, source), [])
-            for metric in D4_SOURCE_METRICS:
-                column = d4_source_column(source, metric)
-                source_metric = f"D4_source_{metric}"
+            for metric in D1_SOURCE_METRICS:
+                column = d1_source_column(source, metric)
+                source_metric = f"D1_source_{metric}"
                 if source_rows:
                     aggregate_row[column] = (
                         f"{statistics.fmean(float(row[source_metric]) for row in source_rows):.6f}"
@@ -1316,19 +1319,19 @@ def add_coverage_columns(
             aggregate_row["end_to_end_overall_mean_score"] = (
                 f"{float(aggregate_row['overall_mean_score']) * generation_coverage:.6f}"
             )
-            aggregate_row["end_to_end_overall_with_D2_score"] = (
-                f"{float(aggregate_row['overall_with_D2_score']) * generation_coverage:.6f}"
+            aggregate_row["end_to_end_overall_with_D4_score"] = (
+                f"{float(aggregate_row['overall_with_D4_score']) * generation_coverage:.6f}"
             )
         else:
             aggregate_row["end_to_end_overall_mean_score"] = ""
-            aggregate_row["end_to_end_overall_with_D2_score"] = ""
+            aggregate_row["end_to_end_overall_with_D4_score"] = ""
 
 
-def d4_source_columns() -> list[str]:
+def d1_source_columns() -> list[str]:
     return [
-        d4_source_column(source, metric)
-        for source in D4_SOURCES
-        for metric in D4_SOURCE_METRICS
+        d1_source_column(source, metric)
+        for source in D1_SOURCES
+        for metric in D1_SOURCE_METRICS
     ]
 
 
@@ -1454,7 +1457,7 @@ def write_evaluation_reports(
     output_root: Path,
     summary_rows: list[dict],
     coverage_rows: list[dict],
-    d4_source_rows: list[dict],
+    d1_source_rows: list[dict],
     summary_fields: list[str],
 ) -> None:
     """Write one complete report bundle for a language/variation pair."""
@@ -1483,27 +1486,27 @@ def write_evaluation_reports(
         "D1_coverage",
         "D1_precision",
         "D1_f1",
+        "D2_mean_best_score",
+        "D2_coverage",
+        "D2_precision",
+        "D2_f1",
         "D3_mean_best_score",
         "D3_coverage",
         "D3_precision",
         "D3_f1",
-        "D4_mean_best_score",
-        "D4_coverage",
-        "D4_precision",
-        "D4_f1",
-        "D2_order_score",
-        "D2_order_coverage",
-        "D2_strict_order_score",
+        "D4_order_score",
+        "D4_order_coverage",
+        "D4_strict_order_score",
         "overall_mean_score",
-        "overall_with_D2_score",
+        "overall_with_D4_score",
         "end_to_end_overall_mean_score",
-        "end_to_end_overall_with_D2_score",
-        *d4_source_columns(),
+        "end_to_end_overall_with_D4_score",
+        *d1_source_columns(),
     ]
 
     by_model = aggregate_by(summary_rows, ["call1_model"])
     add_coverage_columns(by_model, coverage_rows, ["call1_model"])
-    add_d4_source_columns(by_model, d4_source_rows, ["call1_model"])
+    add_d1_source_columns(by_model, d1_source_rows, ["call1_model"])
     write_csv(
         output_root / "evaluation_by_model.csv",
         by_model,
@@ -1512,7 +1515,7 @@ def write_evaluation_reports(
 
     by_model_strategy = aggregate_by(summary_rows, ["call1_model", "strategy"])
     add_coverage_columns(by_model_strategy, coverage_rows, ["call1_model", "strategy"])
-    add_d4_source_columns(by_model_strategy, d4_source_rows, ["call1_model", "strategy"])
+    add_d1_source_columns(by_model_strategy, d1_source_rows, ["call1_model", "strategy"])
     write_csv(
         output_root / "evaluation_by_model_strategy.csv",
         by_model_strategy,
@@ -1723,7 +1726,7 @@ def main() -> None:
 
     embedder = EmbeddingModel(embedding_model)
     summary_rows = []
-    d4_source_rows = []
+    d1_source_rows = []
     for index, prediction_path in enumerate(prediction_files, start=1):
         try:
             metadata = parse_prediction_path(prediction_path, prediction_root)
@@ -1771,7 +1774,7 @@ def main() -> None:
             item_judge_low,
             item_judge_high,
         )
-        d4_source_rows.extend(row.pop("_d4_source_rows", []))
+        d1_source_rows.extend(row.pop("_d1_source_rows", []))
         summary_rows.append(row)
         progress(f"[{index}/{len(prediction_files)}] {label}: {row['status']}")
 
@@ -1794,23 +1797,23 @@ def main() -> None:
         "D1_coverage",
         "D1_precision",
         "D1_f1",
+        "D2_mean_best_score",
+        "D2_coverage",
+        "D2_precision",
+        "D2_f1",
         "D3_mean_best_score",
         "D3_coverage",
         "D3_precision",
         "D3_f1",
-        "D4_mean_best_score",
-        "D4_coverage",
-        "D4_precision",
-        "D4_f1",
-        "D2_order_score",
-        "D2_order_coverage",
-        "D2_strict_order_score",
-        "D2_total_constraints",
-        "D2_respected_constraints",
-        "D2_violated_constraints",
-        "D2_unmatched_constraints",
+        "D4_order_score",
+        "D4_order_coverage",
+        "D4_strict_order_score",
+        "D4_total_constraints",
+        "D4_respected_constraints",
+        "D4_violated_constraints",
+        "D4_unmatched_constraints",
         "overall_mean_score",
-        "overall_with_D2_score",
+        "overall_with_D4_score",
         "prediction_path",
         "ground_truth_path",
         "output_dir",
@@ -1836,16 +1839,16 @@ def main() -> None:
             for row in coverage_rows
             if row["language"] == language and row["variation"] == variation
         ]
-        group_d4_sources = [
+        group_d1_sources = [
             row
-            for row in d4_source_rows
+            for row in d1_source_rows
             if row["language"] == language and row["variation"] == variation
         ]
         write_evaluation_reports(
             group_output_root,
             group_summaries,
             group_coverage,
-            group_d4_sources,
+            group_d1_sources,
             summary_fields,
         )
         progress(

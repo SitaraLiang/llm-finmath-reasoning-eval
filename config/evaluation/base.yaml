@@ -3,6 +3,10 @@ experiment:
   version: 1
   seed: 42
 
+# Evaluation dimensions:
+# D1 = assumption coverage; D2 = argument identification;
+# D3 = mathematical correctness; D4 = reasoning quality/order.
+
 input:
   ground_truth: "data/ground_truth"
   filters:
