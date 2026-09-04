@@ -96,31 +96,133 @@ For Call 2, `llama3.1:8b` is currently the strongest baseline observed for stric
 
 ## Usage
 
-Import downloaded Overleaf files:
+Run commands from the repository root. A complete experiment follows the steps
+below; do not evaluate new data before checking whether the embedding calibration
+dataset also needs to be refreshed.
+
+### Step 1: Import and parse exercises
+
+Import a downloaded Overleaf directory. The Overleaf project remains the source
+of truth and is not stored in this repository:
 
 ```bash
-python src/import.py --source ../overleaf/exercices_en_changed --destination data/raw_tex
+python src/import.py \
+  --source ../overleaf/exercices_en_changed \
+  --destination data/raw_tex
 ```
 
-Parse annotated LaTeX into ground-truth YAML:
+Convert all annotated LaTeX exercises into ground-truth YAML:
 
 ```bash
 python src/parser.py --input data/raw_tex --output data/ground_truth
 ```
 
-Run Call 1:
+This produces one file per language and exercise under
+`data/ground_truth/{lang}/pc{n}_q{m}.yaml`.
+
+### Step 2: Refresh the calibration data when necessary
+
+This step is required after adding exercises that introduce new mathematical
+concepts or substantially new formulations. If the added exercises contain only
+concepts already represented in `formulation_pairs.yaml`, the existing calibrated
+threshold may be reused, although regenerating the statement inventory is still
+recommended.
+
+1. Extract all assumptions, preconditions, arguments, and outcomes from the
+   current ground truth:
+
+   ```bash
+   python src/extract_statements.py
+   ```
+
+   This writes `data/evaluation/{lang}/ground_truth_statements.csv`.
+
+2. Review the statement inventories. If new concepts should participate in
+   calibration, increase `--concept-count` and update the seed without
+   discarding completed variants. For example, to expand an existing 12-concept
+   file to 16 concepts:
+
+   ```bash
+   python src/seed_pairs.py \
+     --input-root data/evaluation \
+     --output-root data/evaluation \
+     --concept-count 16 \
+     --overwrite
+   ```
+
+   Use `--overwrite --reselect` only when you intentionally want to replace the
+   existing concept selection. Otherwise, completed concepts and variants are
+   retained.
+
+3. Manually complete every `TODO` in each
+   `data/evaluation/{lang}/formulation_pairs.yaml`. The variants must be written
+   in the same language as `text_a` and classified using the configured labels,
+   such as `equivalent`, `related_but_not_equivalent`, and `unrelated`.
+
+4. Calibrate the embedding threshold for every available language:
+
+   ```bash
+   python src/eval_embeddings.py pairs \
+     --input data/evaluation \
+     --output-dir outputs/evaluation/threshold
+   ```
+
+   The generated registry is stored at
+   `outputs/evaluation/threshold/calibration.yaml`. `evaluate.py` reads the
+   corresponding model/language threshold automatically.
+
+### Step 3: Generate Call 1 answers
+
+For the plain-text pipeline:
 
 ```bash
 python src/call1.py \
   --config config/call1/experiments/baseline_plain_text.yaml
 ```
 
-Run the baseline direct-YAML pipeline:
+For the direct-YAML experiment, which bypasses Call 2 and response selection:
 
 ```bash
 python src/call1.py \
   --config config/call1/experiments/baseline_direct_yaml.yaml
 ```
+
+### Step 4: Convert and select plain-text answers
+
+For example, process the English baseline outputs with Call 2 and select the
+best valid conversion for each Call 1 response:
+
+```bash
+python src/call2.py --config config/call2/experiments/baseline_en.yaml
+python src/select_responses.py --config config/selection/experiments/baseline_en.yaml
+```
+
+Call 2 converts one question block at a time. The selector excludes missing or
+invalid conversions and ranks the remaining candidates without consulting the
+ground truth.
+
+### Step 5: Evaluate
+
+Evaluate selected plain-text responses:
+
+```bash
+python src/evaluate.py \
+  --config config/evaluation/experiments/baseline_plain_text_en.yaml
+```
+
+Evaluate direct-YAML responses:
+
+```bash
+python src/evaluate.py \
+  --config config/evaluation/experiments/baseline_direct_yaml_en.yaml
+```
+
+Evaluation produces per-case matrices and aggregate reports by model and
+strategy. Depending on the configuration, ambiguous embedding matches can be
+reviewed by an LLM judge. Existing output groups are skipped when
+`output.overwrite_existing` is `false`.
+
+## Detailed Configuration Reference
 
 ### Adding a Call 1 Experiment
 
@@ -187,6 +289,8 @@ When adding a new language, add its ground-truth directory, include it in
 `base.yaml`, provide localized prompts in both mode files, and add the localized
 instruction to every variation that will run in that language.
 
+### Complete Experiment Examples
+
 Run the English baseline plain-text pipeline after Call 1:
 
 ```bash
@@ -214,6 +318,8 @@ The selector first excludes missing or structurally invalid candidates. It then
 ranks valid candidates using source coverage, formula fidelity, a hallucination
 proxy, atom completeness, and duplicate detection. Close rankings are marked
 with `needs_review: true` in the selection report.
+
+### Calibration Command Options
 
 Extract statements for embedding calibration:
 
