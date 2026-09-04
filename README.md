@@ -1,8 +1,25 @@
 # LLM FinMath Reasoning Eval
 
-A structured evaluation framework for analyzing and diagnosing LLM reasoning in quantitative finance and financial mathematics. The framework decomposes human-annotated LaTeX solutions and model-generated reasoning into a common proof-atom representation, enabling step-level evaluation of logical alignment, reasoning chains, and sequential error propagation. It supports multiple reasoning protocols for studying how intermediate context affects downstream performance and combines calibrated embedding-based alignment with selective LLM-as-a-judge adjudication for ambiguous cases.
-
 This repository was developed as part of my research internship at CMAP, École Polytechnique, under the supervision of Charles-Albert Lehalle.
+
+The project introduces a structured evaluation framework for analyzing and diagnosing LLM reasoning in quantitative finance and financial mathematics. The framework decomposes human-annotated LaTeX solutions and model-generated reasoning into a common proof-atom representation, enabling step-level evaluation of logical alignment, reasoning chains, and sequential error propagation. It supports multiple reasoning protocols for studying how intermediate context affects downstream performance and combines calibrated embedding-based alignment with selective LLM-as-a-judge adjudication for ambiguous cases.
+
+
+## Table of Contents
+
+- [Pipeline](#pipeline)
+  - [Evaluation dimensions](#evaluation-dimensions)
+- [Setup](#setup)
+- [Usage](#usage)
+  - [Step 1: Import and parse exercises](#step-1-import-and-parse-exercises)
+  - [Step 2: Refresh calibration data](#step-2-refresh-the-calibration-data-when-necessary)
+  - [Step 3: Generate Call 1 answers](#step-3-generate-call-1-answers)
+  - [Step 4: Convert and select answers](#step-4-convert-and-select-plain-text-answers)
+  - [Step 5: Evaluate](#step-5-evaluate)
+- [Detailed configuration reference](#detailed-configuration-reference)
+  - [Adding a Call 1 experiment](#adding-a-call-1-experiment)
+  - [Adding a downstream experiment](#adding-a-downstream-experiment)
+- [Notes](#notes)
 
 
 ## Pipeline
@@ -64,7 +81,7 @@ This repository was developed as part of my research internship at CMAP, École 
 - **D1 - Assumption coverage:** measures whether the prediction's preconditions cover the global assumptions, local assumptions, required ground-truth preconditions, and outcomes established by preceding subquestions.
 - **D2 - Argument identification:** measures whether the prediction uses the expected theorem, lemma, property, or calculation method.
 - **D3 - Mathematical correctness:** measures whether the prediction's intermediate and final outcomes match the ground truth.
-- **D4 - Reasoning quality:** measures whether matched proof atoms respect the ordering constraints induced by ordered lists in the ground truth; elements inside tuples are treated as unordered alternatives.
+- **D4 - Reasoning Order:** measures whether matched proof atoms respect the ordering constraints induced by ordered lists in the ground truth; elements inside tuples are treated as unordered alternatives.
 
 The aggregate `overall_mean_score` averages D1, D2, and D3. The aggregate
 `overall_with_D4_score` additionally includes the strict D4 order score.
@@ -170,6 +187,21 @@ recommended.
    The generated registry is stored at
    `outputs/evaluation/threshold/calibration.yaml`. `evaluate.py` reads the
    corresponding model/language threshold automatically.
+
+To update only one language, pass `--language` to statement extraction and pair
+seeding, for example:
+
+```bash
+python src/extract_statements.py --language fr
+python src/seed_pairs.py --language fr --concept-count 12
+```
+
+The calibration registry is keyed by embedding model and language. By default,
+the generated judge interval starts at `recommended_threshold - 0.10` (clamped
+to zero) and ends at `1.0`. The policy can be overridden with
+`--judge-low-margin` and `--judge-high-threshold`. Command-line evaluation
+thresholds take priority over the registry; missing registry entries fall back
+to `config/evaluation/base.yaml`.
 
 ### Step 3: Generate Call 1 answers
 
@@ -289,118 +321,6 @@ When adding a new language, add its ground-truth directory, include it in
 `base.yaml`, provide localized prompts in both mode files, and add the localized
 instruction to every variation that will run in that language.
 
-### Complete Experiment Examples
-
-Run the English baseline plain-text pipeline after Call 1:
-
-```bash
-python src/call2.py --config config/call2/experiments/baseline_en.yaml
-python src/select_responses.py --config config/selection/experiments/baseline_en.yaml
-python src/evaluate.py --config config/evaluation/experiments/baseline_plain_text_en.yaml
-```
-
-Run the English quantitative-expert plain-text pipeline:
-
-```bash
-python src/call2.py --config config/call2/experiments/quant_expert_en.yaml
-python src/select_responses.py --config config/selection/experiments/quant_expert_en.yaml
-python src/evaluate.py --config config/evaluation/experiments/quant_expert_plain_text_en.yaml
-```
-
-Evaluate the English baseline direct-YAML experiment, which bypasses Call 2
-and selection:
-
-```bash
-python src/evaluate.py --config config/evaluation/experiments/baseline_direct_yaml_en.yaml
-```
-
-The selector first excludes missing or structurally invalid candidates. It then
-ranks valid candidates using source coverage, formula fidelity, a hallucination
-proxy, atom completeness, and duplicate detection. Close rankings are marked
-with `needs_review: true` in the selection report.
-
-### Calibration Command Options
-
-Extract statements for embedding calibration:
-
-```bash
-python src/extract_statements.py
-```
-
-This reads every `data/ground_truth/{lang}/` directory and writes one statement
-inventory per language. To extract only French, use:
-
-```bash
-python src/extract_statements.py --language fr
-```
-
-Seed 12 formulation-pair concepts for every available language:
-
-```bash
-python src/seed_pairs.py \
-  --input-root data/evaluation \
-  --output-root data/evaluation \
-  --concept-count 12
-```
-
-To seed only English:
-
-```bash
-python src/seed_pairs.py --language en --concept-count 12
-```
-
-Existing `formulation_pairs.yaml` files are preserved by default. Use
-`--overwrite` to update a seed while retaining completed variants, or combine
-`--overwrite --reselect` to discard the previous statement selection and draw
-a new balanced sample:
-
-```bash
-python src/seed_pairs.py --language en --concept-count 12 --overwrite --reselect
-```
-
-After seeding, curate `formulation_pairs.yaml` separately for each language. Pair
-variants must be written in the same language as `text_a`; an English threshold
-must not be reused as a French calibration result without testing it.
-
-Calibrate embedding similarity thresholds:
-
-```bash
-python src/eval_embeddings.py pairs \
-  --input data/evaluation \
-  --output-dir outputs/evaluation/threshold 
-```
-
-This writes one folder per embedding model, for example:
-
-```text
-outputs/evaluation/threshold/en/all-minilm-l6-v2/
-outputs/evaluation/threshold/fr/all-minilm-l6-v2/
-```
-
-It also creates or updates:
-
-```text
-outputs/evaluation/threshold/calibration.yaml
-```
-
-The registry is keyed by embedding model and language. It stores the recommended
-embedding threshold and a generated judge interval. By default, the judge lower
-boundary is `recommended_threshold - 0.10` (clamped to zero), and the upper
-boundary is `1.0`. These policies can be changed when calibrating:
-
-```bash
-python src/eval_embeddings.py pairs \
-  --input data/evaluation \
-  --output-dir outputs/evaluation/threshold \
-  --judge-low-margin 0.10 \
-  --judge-high-threshold 1.0
-```
-
-`evaluate.py` loads this registry automatically through
-`config/evaluation/base.yaml`. Command-line threshold options still take
-priority; if the registry or a model/language entry is missing, evaluation uses
-the scalar fallback values from the config.
-
 ### Adding a Downstream Experiment
 
 Call 2, selection, and evaluation use the same inheritance convention as Call
@@ -495,20 +415,6 @@ variation, then appends `embedding_only` when `judge.enabled` is false or
 With `output.overwrite_existing: false`, an existing non-empty
 language/variation/method directory is left untouched, while missing groups are
 still evaluated.
-
-## Main Directories
-
-- `data/raw_tex/{lang}/`: imported annotated LaTeX exercises.
-- `data/ground_truth/{lang}/`: parsed ground-truth YAML.
-- `data/evaluation/{lang}/`: language-specific statement inventories and formulation-pair calibration datasets.
-- `outputs/call1/`: model-generated exercise answers.
-- `outputs/call2/`: zero-shot per-question Call 2 conversions.
-- `outputs/selected_responses/`: curated Call 2 responses selected for evaluation.
-- `outputs/evaluation/`: evaluation results grouped by prediction source and scoring method, plus embedding-threshold calibration outputs.
-- `config/call1/`: Call 1 experiment configurations.
-- `config/call2/`: shared Call 2 settings and thin experiment manifests.
-- `config/selection/`: shared candidate-selection settings and experiment manifests.
-- `config/evaluation/`: shared scoring settings, prediction modes, and experiment manifests.
 
 ## Notes
 
