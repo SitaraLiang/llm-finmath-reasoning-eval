@@ -8,6 +8,7 @@ The project introduces a structured evaluation framework for analyzing and diagn
 ## Table of Contents
 
 - [Pipeline](#pipeline)
+  - [LaTeX annotation reference](#latex-annotation-reference)
   - [Evaluation dimensions](#evaluation-dimensions)
 - [Setup](#setup)
 - [Usage](#usage)
@@ -75,6 +76,59 @@ The project introduces a structured evaluation framework for analyzing and diagn
    - `src/evaluate.py` builds D1/D2/D3 alignment tables, a D4 order report, and aggregate summaries.
    - Evaluation can run in embedding-only mode or with an optional second-stage LLM judge for ambiguous embedding matches.
    - Downstream stages use composable `base.yaml` and `experiments/` configurations, matching the Call 1 structure.
+
+### LaTeX Annotation Reference
+
+Tags are LaTeX comments written as either `% @TAG` or `%@TAG`. Tag content is
+ordinary, uncommented LaTeX; unrelated comments and trailing comments on tag
+lines are ignored by the parser.
+
+| Tag | Meaning |
+|---|---|
+| `@CONTEXT` | Exercise title or shared context. |
+| `@ASSUMPTION_GLOBAL` | Assumption available to every subquestion. Repeat the tag for multiple assumptions. |
+| `@QUESTION` / `@QUESTION_END` | Start and end of a subquestion statement. |
+| `@ASSUMPTION` / `@ASSUMPTION_END` | Local assumption inside the current question. |
+| `@LIST_START` / `@LIST_END` | Ordered sequence of atoms or nested containers. |
+| `@SET_START` / `@SET_END` | Unordered mathematical set of atoms or nested containers. |
+| `@ATOM` / `@ATOM_END` | One proof step containing preconditions, arguments, and outcomes. |
+| `@PRECOND` / `@PRECOND_END` | Required input of an atom. Repeat `@PRECOND` for multiple values. |
+| `@ARGUMENT` / `@ARGUMENT_END` | The theorem, property, lemma, or method used by an atom. |
+| `@ARGUMENT:CALCUL` | Store the standardized argument `Calculation`. |
+| `@OUTCOME` / `@OUTCOME_END` | Result produced by an atom. Repeat `@OUTCOME` for multiple values. |
+
+There is no generic `@END` tag. An atom must contain at least one argument; its
+preconditions and outcomes may be empty or contain several entries. Lists and
+sets may be nested to any depth. YAML lists preserve proof order, while sets are
+serialized as deterministic Python tuples with `!!python/tuple`; tuple order has
+no mathematical meaning, and exact duplicate set children are removed.
+
+```latex
+\part
+% @QUESTION
+Show that $X_t$ is a martingale.
+% @ASSUMPTION
+$X_t$ is integrable.
+% @ASSUMPTION_END
+% @QUESTION_END
+
+\begin{xsolution}
+% @LIST_START
+% @ATOM
+% @PRECOND
+$X_t$ is integrable.
+% @PRECOND_END
+% @ARGUMENT
+Conditional expectation property.
+% @ARGUMENT_END
+% @OUTCOME
+$\mathbb{E}[X_t\mid\mathcal F_s]=X_s$.
+% @OUTCOME_END
+% @STRENGTH: 1.0
+% @ATOM_END
+% @LIST_END
+\end{xsolution}
+```
 
 ### Evaluation Dimensions
 
