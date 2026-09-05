@@ -1,9 +1,0 @@
-### Question block 1
-```yml
-atoms:
-- preconditions: [X_0=0]
-  arguments: ["\sigma"]
-  outcomes:
-    - "X_t ~ N(0, \sigma^2 t)"
-    - "\text{Cov}(X_s,X_t) = \sigma^2 min(s,t)"
-```
