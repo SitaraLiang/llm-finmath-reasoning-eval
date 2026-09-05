@@ -1,0 +1,15 @@
+### Question block 1
+<think>
+</think>
+
+The process described, where the covariance between two points $ t $ and $ s $ is $ \min(t, s) $, is indeed a **Brownian motion** (Wiener process) **if** the process is a **Gaussian process** with **independent increments**. Here's the breakdown:
+
+### Key Properties of Brownian Motion:
+1. **Gaussian Increments**: The increments $ B(t) - B(s) $ for $ t > s $ are normally distributed with mean 0 and variance $ t - s $.
+2. **Independent Increments**: The increments over disjoint intervals are independent.
+3. **Covariance Structure**: For any $ t, s \geq 0 $, the covariance is $ \text{Cov}(B(t), B(s)) = \min(t, s) $.
+
+### Conclusion:
+A process with covariance $ \min(t, s) $ and Gaussian increments is a **Brownian motion**. Thus, the answer is:
+
+**Yes**, the process described is a **Brownian motion** if it is a **Gaussian process** with **independent increments** and the covariance structure $ \min(t, s) $.

@@ -1,0 +1,105 @@
+Exercise: pc2_q1
+Model: llama3.2:1b
+Variation: role_student
+Prompt type: ground_truth_forcing
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To prove that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if $X_0=0$ and $\mathbb{E}[X_s] = X_s$, $s\geq 0,$ for all $s, t\in \R^+$ and ${\rm Cov}(X_s,X_t)=\inf(s,t)$, we proceed as follows:
+
+First, assume that $(X_t)_{t\in \R^+}$ is a Brownian motion. By definition of the process, $\mathbb{E}[X_0] = 0$ and for all $s<t$, $\mathbb{E}[(X_t - X_s)^2]=t-s$. Let $A=\inf(s,t)$.
+
+We have $\mathbb{E}[(X_t - X_0)^2]-\mathbb{E}[X_0^2] = \int_0^t (s-t)[(X_u-X_0)^2-(u-t)^2]\,du$. Integrating from $0$ to $\infty$, we get
+$\lim_{T\to\infty}\int_0^T (s-T)\mathbb{E}[(X_u-X_0)^2]-\mathbb{E}[X_0^2]\,d(u) = \inf(s,t)$.
+
+Taking the limit superior on both sides and using Fubini's theorem to interchange integration order, we get $\lim_{T\to\infty}\int_0^T [s-T][(X_u-X_0)^2-(u-t)^2]\,du - 0 = \inf(s,t)$.
+
+Since $s$ and $t$ are fixed, $\lim_{T\to\infty} T[s-u] \geq u - s$ for all $u$. Therefore,
+$\int_0^{\infty} (s-T)[(X_u-X_0)^2-(u-t)^2]\,du - 0 = \inf(s,t)$.
+
+This implies $\mathbb{E}[(X_t-X_0)^2] - \mathbb{E}[X_0^2] = \inf(s,t)$. Since $s$ and $t$ are fixed, $\lim_{T\to\infty}\int_0^T [s-T][(X_u-X_0)^2-(u-t)^2]\,du - 0 = \inf(s,t)$.
+
+By Fatou's lemma,
+$\mathbb{E}[X_t] - \mathbb{E}[X_0] = \lim_{T\to\infty}\int_0^T [(X_u-X_0)^2-(u-t)^2]\,du$.
+
+Since $s=t=0$, we have $\mathbb{E}[(X_t-X_0)^2]-\mathbb{E}[X_0^2]=\lim_{T\to\infty}\int_0^{T}(t-T)^2\,dt$. Therefore,
+$\mathbb{E}[X_t] = \mathbb{E}[(X_t-X_0)^2]$.
+
+Secondly, assume that $X_0=0$ and $\mathbb{E}[X_s] = X_s$, $s\geq 0,$ for all $s, t\in \R^+$ and ${\rm Cov}(X_s,X_t)=\inf(s,t)$. We need to show that $(X_t)_{t\in \R^+}$ is a centered Gaussian process.
+
+Using the properties of covariance,
+$\mathbb{E}[X_s X_t] = s + t$ for $s, t\geq 0.$ Therefore, $X_0=0$, and
+$\mathbb{E}[X_s]=s$ for $s\geq 0.$
+
+Now we need to show that $\mathbb{E}[(X_u-X_v)^2] = \inf(u,v)$.
+
+Using the properties of covariance,
+${\rm Cov}(X_u,X_v) = u-v$ for all $u, v\in [0,\infty).$
+
+Therefore, $\mathbb{E}[(X_u-X_v)^2]=\int_0^\infty (u-v)(u-v)\,dv=u^2-v^2+uv|_{v=0}.$
+
+Since $u$ and $v$ are fixed, $\lim_{(u,v)\to(\infty,\infty)} u^2-v^2 = 0$. Therefore,
+$\mathbb{E}[X_u] - \mathbb{E}[X_v] = u - v.$
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+## Step 1: Establish the decomposition of $X_t$
+Given that $(X_t)_{t\in \R^+}$ is a centered Gaussian process with $\mathrm{Cov}(X_s,X_t)=\inf(s,t)$, we decompose $X_t$ into two independent components:
+
+$$
+X_t = X_s + (X_t - X_s)
+$$
+
+## Step 2: Show that $(X_t)_{t\in \R^+}$ is a Brownian motion
+Since $(X_t)_{t\in \R^+}$ has Gaussian increments and satisfies the continuity of paths assumption, we can apply Kolmogorov's theorem to show that it is a Brownian motion.
+
+## Step 3: Verify the initial condition $X_0=0$
+By definition, $X_0 = 0$ since $(X_t)_{t\in \R^+}$ starts at time zero.
+
+## Step 4: Show that $\mathrm{Cov}(X_s,X_t)=\inf(s,t)$
+We can calculate the covariance between two disjoint increments using the property of centered Gaussian processes:
+
+$$
+\begin{align*}
+{\rm Cov}(X_s, X_t) &= \mathrm{Cov}(X_s + (X_t - X_s), X_u + (X_v - X_u))\\
+&= {\rm Cov}(X_s, X_u) + {\rm Cov}(X_t - X_s, X_v - X_u)\\
+&=\inf(s,t) + \inf(t-u,s-v)
+\end{align*}
+$$
+
+## Step 5: Verify that the increments are independent and have a stationary law
+Since $(X_t)_{t\in \R^+}$ has Gaussian increments, they are uncorrelated. Moreover, since disjoint increments are independent, we can show that the increments also have a stationary law.
+
+## Step 6: Show that the law of increments is $\mathcal{N}(0,t-s)$
+We can calculate the variance of an increment using:
+
+$$
+\begin{align*}
+{\rm Var}((X_t - X_s), (X_v - X_u)) &= {\rm Var}(X_v)\\
+&= t-s
+\end{align*}
+$$
+
+Since the increments have a stationary law $\mathcal{N}(0,t-s)$, we can conclude that they are Gaussian centered of variance $t-s$.
+
+## Step 7: Apply Kolmogorov's theorem to show that $(X_t)_{t\in \R^+}$ is a Brownian motion
+By applying Kolmogorov's theorem, we can conclude that $(X_t)_{t\in \R^+}$ has Gaussian increments and satisfies the continuity of paths assumption. Therefore, it is a Brownian motion.
+
+## Step 8: Show that $W_t$ is a Brownian motion when $X_t = tW_{1/t}, t>0$
+Since $(X_t)_{t\in \R^+}$ is a centered Gaussian process with $\mathrm{Cov}(X_s,X_t)=\inf(s,t)$, we can apply the result from Question 2 to conclude that:
+
+$$
+\begin{align*}
+(W_t)_s &= X_s + (W_t - W_s)\\
+&= t(W_{1/s}, W_{1/s^2}, \ldots, W_{1/t}).
+\end{align*}
+$$
+
+## Step 9: Verify the initial condition $W_0$
+By definition, $W_0 = 0$ since $(X_t)_{t\in \R^+}$ starts at time zero.
+
+The final answer is: $\boxed{0}$

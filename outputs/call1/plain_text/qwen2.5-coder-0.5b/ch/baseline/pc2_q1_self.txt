@@ -1,0 +1,38 @@
+Exercise: pc2_q1
+Model: qwen2.5-coder:0.5b
+Variation: baseline
+Prompt type: self_history
+
+Question 1:
+证明过程 $(X_t)_{t\in \R^+}$ 为布朗运动（Brownian motion）当且仅当： $X_0=0$, $(X_t)_{t\in \R^+}$ 为零均值高斯过程（centered Gaussian process）, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+证明过程 $(X_t)_{t\in \R^+}$ 为布朗运动当且仅当： $X_0=0$, $(X_t)_{t\in \R^+}$ 为零均值高斯过程，${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+根据题目背景、全局假设和前面的回答，证明过程 $\mathbb{P}(X_t = s|X_0 = 0)$ 必须是恒等式。这表明了 $X_t$ 和 $X_0$ 必须在相同的时间间隔内进行随机变化，从而满足布朗运动的定义。因此，我们有：
+\[
+\mathbb{P}(X_t = s|X_0 = 0) = \frac{\int_{s=0}^t X_s \, ds}{\int_{0}^t dx} = \frac{1}{\int_{0}^t 1 \, dx} = 1
+\]
+即 $X_t$ 和 $X_0$ 必须在相同的时间间隔内进行随机变化，从而满足布朗运动的定义。
+
+Question 2:
+证明：若 $W_t$ 为布朗运动，则 $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ 亦为布朗运动（时间反转/时间反转变换 Time Inversion）。
+
+Answer:
+在第 2 问中，我们假设 $W_t$ 是布朗运动。根据题目背景和全局假设，证明过程 $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ 亦为布朗运动（时间反转/时间反转变换 Time Inversion）。
+
+由于 $X_0 = 0$ 是条件给定的，因此可以假设 $W_0 = t$. 这表示 $W_t$ 在每个时间间隔 $t > 0$ 和 $X_0 = 0$ 的变化是相同的。同时，由于 $W_t$ 是布朗运动，它满足以下条件：
+1. $\int_{0}^t W_t \, ds = \frac{1}{\int_{0}^t 1 \, dx}$。
+2. $\int_{0}^t X_t \cdot W_t \, dt = 0$。
+
+因此，我们可以将 $W_t$ 代入第二个等式中：
+\[
+\int_{0}^t X_t t \cdot W_t \, dt = 0
+\]
+由于 $X_0 = 0$，我们有：
+\[
+\int_{0}^t X_t t \cdot W_t \, dt = 0
+\]
+这与第二个等式相同。因此，证明过程 $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ 亦为布朗运动（时间反转/时间反转变换 Time Inversion）。
+
+通过在第 2 问中假设 $W_0 = t$，我们可以得出结论：若 $W_t$ 是布朗运动，那么 $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ 亦为布朗运动（时间反转/时间反转变换 Time Inversion）。

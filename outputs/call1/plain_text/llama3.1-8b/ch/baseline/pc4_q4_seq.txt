@@ -1,0 +1,32 @@
+Exercise: pc4_q4
+Model: llama3.1:8b
+Variation: baseline
+Prompt type: strictly_sequential
+
+Question 1:
+当 $\tau$ 为有界停时， 计算 $\E(W_\tau)$。
+
+Answer:
+$\E(W_\tau) = \int_{-\infty}^{\infty} x f(x, \tau) dx$
+
+其中 $f(x, \tau)$ 是布朗运动的概率密度函数。
+
+由于 $\tau$ 为有界停时，$W_\tau$ 的取值范围是有限的。因此，我们可以将其视为一个随机变量，其期望值存在。
+
+利用布朗运动的性质，我们知道 $f(x, \tau) = \frac{1}{\sqrt{2\pi\tau}}e^{-\frac{x^2}{2\tau}}$。
+
+将其代入上式，我们得到：
+
+$\E(W_\tau) = \int_{-\infty}^{\infty} x \frac{1}{\sqrt{2\pi\tau}}e^{-\frac{x^2}{2\tau}} dx$
+
+利用对称性和积分换元法，我们可以将其简化为：
+
+$\E(W_\tau) = 0$
+
+Question 2:
+当 $\tau$ 为有界停时， 计算 $\E(W_\tau^2)$。
+
+Answer:
+$\E(W_\tau^2) = \int_0^\infty \P(\tau \leq t) dt \cdot \E(W_t^2 | \tau \leq t)$
+$= \frac{1}{\lambda} \int_0^\infty e^{-\lambda t} \cdot 2t dt$
+$= \frac{2}{\lambda^2}$

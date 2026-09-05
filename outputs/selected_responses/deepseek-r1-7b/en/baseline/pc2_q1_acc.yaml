@@ -1,0 +1,95 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: baseline
+prompt_type: prompt_accumulation
+call1_output_mode: plain_text
+call1_model: deepseek-r1-7b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - A process (X_t)_{t\in \R^+} is given.
+        arguments:
+        - Calculation
+        outcomes:
+        - The process is a Brownian motion.
+    -   preconditions:
+        - X_0 = 0
+        - (X_t)_{t\in \R^+} is a centered Gaussian process
+        - Cov(X_s,X_t)=min(s,t)
+        arguments:
+        - Calculation
+        outcomes:
+        - The process is a Brownian motion.
+    -   preconditions:
+        - A process (X_t)_{t\in \R^+} is given.
+        - X_0 = 0
+        - (X_t)_{t\in \R^+} is a centered Gaussian process
+        - Cov(X_s,X_t)=min(s,t)
+        arguments:
+        - Calculation
+        outcomes:
+        - The process is a Brownian motion.
+    -   preconditions:
+        - A process (X_t)_{t\in \R^+} is given.
+        - X_0 = 0
+        - (X_t)_{t\in \R^+} is a centered Gaussian process
+        - Cov(X_s,X_t)=min(s,t)
+        arguments:
+        - Calculation
+        outcomes:
+        - The process has independent and identically distributed increments that
+            are Gaussian.
+    -   preconditions:
+        - A process (X_t)_{t\in \R^+} is given.
+        - X_0 = 0
+        - (X_t)_{t\in \R^+} is a centered Gaussian process
+        - Cov(X_s,X_t)=min(s,t)
+        arguments:
+        - Calculation
+        outcomes:
+        - The covariance between X_s and X_t for Brownian motion is min(s, t).
+    -   preconditions:
+        - A process (X_t)_{t\in \R^+} is given.
+        - X_0 = 0
+        - (X_t)_{t\in \R^+} is a centered Gaussian process
+        - Cov(X_s,X_t)=min(s,t)
+        arguments:
+        - Calculation
+        outcomes:
+        - The increments are uncorrelated and hence independent.
+    -   preconditions:
+        - A process (X_t)_{t\in \R^+} is given.
+        - X_0 = 0
+        - (X_t)_{t\in \R^+} is a centered Gaussian process
+        - Cov(X_s,X_t)=min(s,t)
+        arguments:
+        - Calculation
+        outcomes:
+        - Each increment X_t - X_s has variance t - s.
+    -   preconditions:
+        - A process (X_t)_{t\in \R^+} is given.
+        - X_0 = 0
+        - (X_t)_{t\in \R^+} is a centered Gaussian process
+        - Cov(X_s,X_t)=min(s,t)
+        arguments:
+        - Calculation
+        outcomes:
+        - The process has stationary and independent increments.
+    -   preconditions:
+        - A process (X_t)_{t\in \R^+} is given.
+        - X_0 = 0
+        - (X_t)_{t\in \R^+} is a centered Gaussian process
+        - Cov(X_s,X_t)=min(s,t)
+        arguments:
+        - Calculation
+        outcomes:
+        - The process is a Brownian motion.
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Scaling and properties of Brownian motion
+        outcomes:
+        - X_t = t W_{1/t} is a Brownian motion

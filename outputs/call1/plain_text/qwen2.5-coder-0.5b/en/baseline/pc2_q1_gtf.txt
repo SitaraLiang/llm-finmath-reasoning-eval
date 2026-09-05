@@ -1,0 +1,138 @@
+Exercise: pc2_q1
+Model: qwen2.5-coder:0.5b
+Variation: baseline
+Prompt type: ground_truth_forcing
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To show that a process $(X_t)_{t\in \mathbb{R}^+$) is a Brownian motion if and only if $X_0 = 0$, $(X_t)_{t\in \mathbb{R}^+}$ is a centered Gaussian process, ${\rm Cov}(X_s, X_t) = \inf(s, t)$, we need to follow these steps:
+
+### Step 1: Understanding Brownian Motion
+A process $(X_t)$ is a Brownian motion if and only if it satisfies the following properties:
+1. $X_0 = 0$ for all $t > 0$.
+2. $\sqrt{2}\mathbf{i} \cdot X_t = \boldsymbol{\nu}$, where $\boldsymbol{\nu} = (\mu, \sigma^2)$ is a centered Gaussian process.
+
+### Step 2: Understanding Centered Gaussian Process
+A centered Gaussian process $(\mathbf{x}, \Sigma_x)$ satisfies the following properties:
+1. $\mathbf{x}_0 = \mu$.
+2. $\mathbf{x} \sim N(\mu, \Sigma_x^2)$ for all $x \in \mathbb{R}$.
+
+### Step 3: Expressing Covariance in Terms of Centered Gaussian Process
+The covariance between two centered Gaussian processes $(\mathbf{x}, \Sigma_x)$ and $(\mathbf{x'}, \Sigma_x')$ can be expressed as:
+\[
+\text{Cov}(\mathbf{x}, \mathbf{x'}) = (\sigma_x^2 + \Sigma_x'^2)^{-1} \Sigma_x \Sigma_x'
+\]
+where $\mathbf{x'} = \frac{\mathbf{x} - \mathbf{x}_0}{\sqrt{\Sigma_x'^2}}$.
+
+### Step 4: Substituting the Properties
+Substitute $X_0 = 0$, $\sigma_x^2 = 1$, and $\Sigma_x' = \frac{1}{2}\Sigma_x^2$ into the expression for covariance:
+\[
+\text{Cov}(\mathbf{x}, \mathbf{x'}) = \left(1 + \frac{1}{2}\right)^{-1} \cdot 1 \cdot \frac{1}{2}\Sigma_x^2 = \frac{3}{4}\Sigma_x^2
+\]
+This means that for a centered Gaussian process, the covariance between two random variables is always positive and equal to $\frac{3}{4}\sigma_x^2$.
+
+### Step 5: Checking Conditions for Brownian Motion
+Given that $X_0 = 0$, the properties of the centered Gaussian process imply:
+1. The initial condition $X_0 = 0$ holds.
+2. The covariance property is satisfied: $\sqrt{2}\mathbf{i} \cdot X_t = \boldsymbol{\nu}$, where $\boldsymbol{\nu} = (\mu, \sigma^2)$.
+
+### Conclusion
+By combining the properties of centered Gaussian processes and Brownian motion, we see that a process $(X_t)_{t\in \mathbb{R}^+}$ is a Brownian motion if and only if $X_0 = 0$, $(X_t)_{t\in \mathbb{R}^+}$ is a centered Gaussian process, and ${\rm Cov}(X_s, X_t) = \frac{3}{4}\sigma_x^2$.
+
+Thus, the final answer to Question 1 is:
+\[
+\boxed{\text{A Brownian motion if and only if } X_0 = 0, (X_t)_{t\in \mathbb{R}^+} \text{ is a centered Gaussian process, and } \text{${\rm Cov}(X_s, X_t) = \frac{3}{4}\sigma_x^2}}
+\]
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+To solve the problem of showing that if \( W_t \) is a Brownian motion, then \( \{X_t=t\;W_{\frac{1t}, t>0, X_0=0}\} \) is also a Brownian motion, we need to analyze the properties of Brownian motion and conditional probability.
+
+### Step 1: Analyze the given properties
+Given:
+- A process \( (X_t)_{t \in \mathbb{R}^+} \) is a Brownian motion.
+- \( X_0 = 0 \).
+- We need to show that \( \{X_t=t\;W_{\frac{1t}, t>0, X_0=0}\} \) is also a Brownian motion.
+
+### Step 2: Show the independence of \( W_t \)
+We start with the given properties:
+1. **Independence of \( X_s \) and \( X_t - X_s \):**
+   Since \( W_t \) is a Brownian motion, the increments \( W_{\frac{1t}, t>0, X_0=0} \) are independent of each other.
+
+2. **Standard Brownian motion has Gaussian increments:**
+   By definition, the standard Brownian motion has a Gaussian increment distribution with mean 0 and variance \(\sigma^2\). Given that \( W_t \) is a Brownian motion, we have:
+   \[
+   \mathbb{E}(W_{\frac{1t}, t>0, X_0=0}) = 0.
+   \]
+   Since the increments are independent and standard, the mean of the increments must also be zero. Therefore:
+   \[
+   \mathbb{E}\left(\sum_{s < t} (W_t - W_s)\right) = 2 \mathbb{E}(W_t).
+   \]
+   Using the independence property of Brownian motion:
+   \[
+   \mathbb{E}(\sum_{s < t} (W_t - W_s)) = \sum_{s < t} \mathbb{E}(W_t) = 2 \cdot 0 = 0.
+   \]
+   This implies:
+   \[
+   \mathbb{E}\left(\sum_{s < t} (W_t - W_s)\right) = 0.
+   \]
+
+3. **Independence of the law of increments:**
+   The law of increments for \( W_t \), denoted as \(\text{Cov}(X_t, X_t - X_s)\), is given by:
+   \[
+   \text{Cov}(X_t, X_t - X_s) = \min(s,t).
+   \]
+   Since \( \mathbb{E}(W_{\frac{1t}, t>0, X_0=0}) = 0 \):
+   \[
+   \text{Cov}\left(\sum_{s < t} (X_t - W_s)\right) = \min(s,t) \cdot \min(s,t) = 0.
+   \]
+   This implies:
+   \[
+   \text{Cov}\left(\sum_{s < t} (W_t - W_s)\right) = 0.
+   \]
+
+### Step 3: Show the law of increments is centered of variance \( t-s \)
+We need to show that the increment of \( X \) is stationary, i.e., it has a constant mean. This is because the law of Brownian motion is centered of variance.
+
+1. **Centralize of variance:**
+   By definition, the law of Brownian motion is centered of variance \( t-s \). Given:
+   \[
+   \mathbb{E}(X_t) = 0,
+   \]
+   we have:
+   \[
+   \text{Cov}(X_t, X_t - X_s) = \mathbb{E}((X_t - X_s)^2).
+   \]
+   Using the independence property of Brownian motion:
+   \[
+   \text{Cov}(X_t - X_s)^2 = \min(s,t)^2.
+   \]
+   This implies:
+   \[
+   \text{Cov}(X_t - X_s)^2 = 0.
+   \]
+
+2. **Stationarity:**
+   The increments of \( X \) are stationary if the law of Brownian motion is constant, i.e., it has a constant mean. Since we have already shown:
+   \[
+   \mathbb{E}(X_t) = 0,
+   \]
+   the law of Brownian motion must also be constant. Therefore, the increments are stationary.
+
+### Step 4: Show that \( \{X_t=t\;W_{\frac{1t}, t>0, X_0=0}\} \) is a Brownian motion
+Since \( X_t = t\;W_{\frac{1t}, t>0, X_0=0} \), we have:
+\[
+\{
+X_t=t\;W_{\frac{1t}, t>0, X_0=0}\}
+\]
+is simply the increments of \( W_{\frac{1t}, t>0, X_0=0} \). Therefore, it is a Brownian motion.
+
+### Conclusion
+Since we have shown that if \( W_t \) is a Brownian motion, then \( \{X_t=t\;W_{\frac{1t}, t>0, X_0=0}\} \) is also a Brownian motion, the final answer is:
+\[
+\boxed{\{X_t=t\;W_{\frac{1t}, t>0, X_0=0}\}}
+\]

@@ -1,0 +1,254 @@
+Exercise: pc2_q1
+Model: deepseek-r1:7b
+Variation: role_quant_expert
+Prompt type: prompt_accumulation
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+<think>
+Okay, so I need to show that a process \( (X_t)_{t \geq 0} \) is a Brownian motion if and only if three conditions hold: 
+
+1. \( X_0 = 0 \),
+2. \( (X_t) \) is a centered Gaussian process,
+3. The covariance function is \( \text{Cov}(X_s, X_t) = \inf(s, t) \).
+
+Hmm, let's break this down into two parts: the "if" direction and the "only if" direction.
+
+Starting with the forward direction: assuming that \( (X_t) \) is a Brownian motion, I need to verify each condition. 
+
+Firstly, for any Brownian motion, it starts at zero almost surely, so \( X_0 = 0 \). That's straightforward.
+
+Secondly, Brownian motion has independent and identically distributed increments that are Gaussian. Specifically, for any fixed time \( t \), the random variable \( X_t \) is normally distributed with mean 0 (since it's centered) and variance \( t \). Therefore, each \( X_t \) follows a Gaussian distribution, making the entire process a Gaussian process.
+
+Thirdly, the covariance between \( X_s \) and \( X_t \) for any two times \( s \) and \( t \) is known to be the minimum of \( s \) and \( t \). This comes from the fact that Brownian motion has independent increments, so if \( s \leq t \), then \( \text{Cov}(X_s, X_t) = \text{Var}(X_s) = s \), which is indeed \( \inf(s, t) \).
+
+So, all three conditions are satisfied for a Brownian motion.
+
+Now, the converse: assuming that \( (X_t) \) satisfies these three conditions, I need to show it's a Brownian motion. 
+
+Firstly, since \( X_0 = 0 \), we have the starting point correct.
+
+Secondly, being a centered Gaussian process means each \( X_t \) is normally distributed with mean zero. Moreover, for any fixed \( t > 0 \), \( X_t \) has variance \( t \). This comes from setting \( s = t \) in the covariance function: \( \text{Cov}(X_t, X_t) = t \).
+
+Thirdly, to establish that it's a Brownian motion, we need to show that the process has independent increments. 
+
+Let me consider two times \( 0 \leq s < t \). The increment \( X_t - X_s \) should be independent of all previous increments and have variance \( t - s \).
+
+Since \( (X_t) \) is a Gaussian process, any linear combination of \( X_{t_1}, ..., X_{t_n} \) is multivariate normal. Therefore, the increment \( X_t - X_s \) is normally distributed with mean 0 and variance \( t - s \). 
+
+To show independence from past increments, consider that for any \( u < s \), the covariance between \( X_u \) and \( X_t - X_s \) can be computed. Using bilinearity of covariance:
+
+\( \text{Cov}(X_u, X_t - X_s) = \text{Cov}(X_u, X_t) - \text{Cov}(X_u, X_s) = \min(u, t) - \min(u, s) \).
+
+Since \( u < s \leq t \), this simplifies to \( u - u = 0 \). Therefore, the covariance is zero, implying independence because jointly Gaussian variables with zero covariance are independent.
+
+Thus, all increments are independent and normally distributed with mean zero and variance equal to the time difference. Hence, \( (X_t) \) satisfies all properties of a Brownian motion.
+
+I think that covers both directions. So, the process is a Brownian motion if and only if those three conditions hold.
+</think>
+
+A process \( (X_t)_{t \geq 0} \) is a Brownian motion if and only if:
+
+1. \( X_0 = 0 \),
+2. \( (X_t) \) is a centered Gaussian process,
+3. The covariance function satisfies \( \text{Cov}(X_s, X_t) = \min(s, t) \).
+
+**Proof:**
+
+**(⇒)** If \( (X_t) \) is a Brownian motion:
+- \( X_0 = 0 \).
+- Each \( X_t \) is Gaussian with mean 0 and variance \( t \), making it a centered Gaussian process.
+- The covariance function is \( \text{Cov}(X_s, X_t) = \min(s, t) \).
+
+**(⇐)** If \( (X_t) \) satisfies the three conditions:
+- \( X_0 = 0 \).
+- Each \( X_t \) has mean 0 and variance \( t \), hence is Gaussian.
+- Increments are independent: For \( s < t \), \( X_t - X_s \) is normal with mean 0 and variance \( t - s \). Independence from past increments follows from zero covariance, implying independence.
+
+Thus, all properties of a Brownian motion are satisfied. 
+
+\boxed{X}
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+<think>
+Okay, so I have this problem where I need to show that if \( W_t \) is a Brownian motion, then the process defined by \( X_t = t\;W_{1/t} \) for \( t > 0 \) and \( X_0 = 0 \) is also a Brownian motion. Hmm, let me think about how to approach this.
+
+First, I remember that a standard Brownian motion has four main properties: it starts at zero almost surely, has independent increments, Gaussian increments with mean zero and variance equal to the time difference, and continuous sample paths. So, since \( X_t \) is defined in terms of \( W_t \), which is a Brownian motion, I need to check if \( X_t \) satisfies all these properties.
+
+Starting with \( X_0 = 0 \). Well, according to the definition, \( X_0 = 0 \), so that's already satisfied. Good start.
+
+Next, let me consider the increments of \( X_t \). For two times \( s \) and \( t \) where \( s < t \), I need to compute \( X_t - X_s \). Substituting the definition, this becomes:
+
+\( X_t - X_s = t\;W_{1/t} - s\;W_{1/s} \).
+
+Hmm, that looks a bit complicated. Maybe I can rewrite it in terms of increments of \( W \). Let me see.
+
+Wait, perhaps instead of looking at the difference directly, I should consider the covariance structure because Brownian motion has independent and Gaussian increments with specific covariances. The covariance between \( X_s \) and \( X_t \) for \( s < t \) is:
+
+\( \text{Cov}(X_s, X_t) = \text{Cov}\left(s\;W_{1/s}, t\;W_{1/t}\right) \).
+
+Since \( W \) is a Brownian motion, the covariance between \( W_a \) and \( W_b \) is \( \min(a,b) \). So,
+
+\( \text{Cov}(s\;W_{1/s}, t\;W_{1/t}) = s t \cdot \text{Cov}\left(W_{1/s}, W_{1/t}\right) \).
+
+Since \( 1/s > 1/t \) when \( s < t \), the covariance becomes:
+
+\( s t \cdot (1/t) ) = s t / t = s \).
+
+Wait, hold on. Let me compute that again.
+
+Actually,
+
+\( \text{Cov}(W_{1/s}, W_{1/t}) = \min(1/s, 1/t) \). Since \( s < t \), then \( 1/s > 1/t \), so the minimum is \( 1/t \).
+
+Therefore,
+
+\( \text{Cov}(X_s, X_t) = s t \cdot (1/t) ) = s \times 1 = s \).
+
+But wait, for Brownian motion, we need the covariance to be equal to the minimum of \( s \) and \( t \). So here, it's giving me \( s \), which is indeed \( \min(s,t) \) because \( s < t \). That seems correct.
+
+So that part checks out. The covariance structure matches that of a Brownian motion.
+
+Next, I need to check if the increments are independent. Since \( W_t \) has independent increments, does this carry over to \( X_t \)?
+
+Let me consider two time points \( s < t \). Then,
+
+\( X_t - X_s = t\;W_{1/t} - s\;W_{1/s} \).
+
+I can rewrite this as:
+
+\( (t - s) W_{1/t} + s (W_{1/t} - W_{1/s}) \).
+
+Wait, is that right? Let me check.
+
+No, actually,
+
+\( t W_{1/t} = (s + (t - s)) W_{1/t} = s W_{1/t} + (t - s) W_{1/t} \).
+
+But \( X_s = s W_{1/s} \), so:
+
+\( X_t - X_s = s W_{1/t} + (t - s) W_{1/t} - s W_{1/s} \).
+
+Hmm, that's a bit messy. Maybe another approach.
+
+Alternatively, since \( W \) has independent increments over intervals of the form \( [a, b] \), can I express \( X_t - X_s \) in terms of such increments?
+
+Wait, perhaps it's better to consider the process \( Y_u = u W_{1/u} \). Then, for each fixed \( u > 0 \), as \( u \) increases from 0 to infinity, \( Y_u \) is defined. So when we look at \( X_t = t W_{1/t} \), it's similar.
+
+But I'm not sure if that helps directly with independence of increments.
+
+Alternatively, maybe consider the process in terms of time inversion or scaling.
+
+Wait, another thought: Brownian motion has stationary independent increments. If I can show that \( X_t \) also has stationary and independent increments, then combined with the covariance structure, it would be a Brownian motion.
+
+So let's check stationarity first. For fixed \( h > 0 \), is \( X_{t+h} - X_t \) equal in distribution to \( X_h \)?
+
+Compute:
+
+\( X_{t+h} - X_t = (t + h) W_{1/(t+h)} - t W_{1/t} \).
+
+Hmm, that doesn't look like a scaled version of \( X_h = h W_{1/h} \). Wait, maybe I can manipulate it.
+
+Alternatively, perhaps consider the process in terms of scaling time. Let me define \( u = 1/t \), so when \( t \) approaches zero, \( u \) goes to infinity, and vice versa.
+
+But not sure if that helps directly.
+
+Wait, another approach: Maybe use the fact that Brownian motion is self-similar with exponent 1/2. So scaling time by a factor affects the process in a certain way.
+
+Alternatively, perhaps consider the quadratic variation of \( X_t \). For a Brownian motion, the quadratic variation over [0,t] is t. Let's compute the quadratic variation for \( X_t \).
+
+Quadratic variation of \( X_t \) would be:
+
+\( \lim_{n \to \infty} \sum_{i=1}^n (X_{t_i^n} - X_{t_{i-1}^n})^2 \),
+
+where \( t_i^n \) is a partition of [0,t] with mesh going to zero.
+
+But since \( X_t = t W_{1/t} \), each increment would be:
+
+\( X_{t_i} - X_{t_{i-1}}} = t_i W_{1/t_i} - t_{i-1} W_{1/t_{i-1}}} \).
+
+Hmm, computing the square of this and summing over partitions might get complicated.
+
+Wait, maybe instead consider that \( X_t \) is a time-changed Brownian motion. Specifically, if we let \( Y_u = u W_{1/u} \), then perhaps \( Y_u \) has some properties similar to Brownian motion.
+
+Alternatively, think about the process in terms of scaling: Let me define \( s = 1/t \). Then as \( t \to 0^+ \), \( s \to +\infty \), and vice versa. So maybe this is a kind of reciprocal time change.
+
+But I'm not sure if that's helpful here.
+
+Wait, another idea: Maybe compute the expectation and variance of \( X_t - X_s \) for \( t > s \).
+
+We already computed the covariance earlier as \( \min(s,t) \), which matches Brownian motion. But to check independence, we need more than just covariance; we need that the joint distribution is multivariate normal with independent components.
+
+Alternatively, perhaps consider increments over disjoint intervals are uncorrelated and hence independent because they're jointly Gaussian.
+
+Wait, yes! Since \( X_t \) has independent increments if its increments over disjoint time intervals are uncorrelated. And since Brownian motion is a Gaussian process, having uncorrelated increments implies independence.
+
+So let's check the covariance between \( X_{t} - X_{s} \) and \( X_{u} - X_{v} \) where these intervals are non-overlapping.
+
+Suppose we have two time intervals [a,b] and [c,d], which don't overlap. Then, to show that \( X_b - X_a \) is independent of \( X_d - X_c \), it's sufficient to compute their covariance and see if it's zero.
+
+Compute:
+
+\( \text{Cov}(X_b - X_a, X_d - X_c) = \text{Cov}(b W_{1/b} - a W_{1/a}, d W_{1/d} - c W_{1/c}) \).
+
+Expanding this covariance, since all terms are products of independent variables (because \( W \) has independent increments), the cross-covariance will be zero unless there is overlap in their time indices.
+
+But wait, if [a,b] and [c,d] don't overlap, then 1/a > 1/b and 1/c > 1/d. So unless one interval contains the other or they are nested, but since they're disjoint, I think all cross terms will have zero covariance because \( W \) has independent increments.
+
+Wait, more precisely, if [a,b] and [c,d] don't overlap, then their corresponding time intervals for \( W \) also don't overlap. So the increments of \( W \) over these intervals are independent, hence scaling them by constants (b,a etc.) preserves independence because linear transformations of independent variables remain independent.
+
+Therefore, \( X_b - X_a \) and \( X_d - X_c \) are uncorrelated, and since they're jointly Gaussian (as all finite-dimensional distributions of \( X_t \) are multivariate normal), this implies independence.
+
+Thus, the increments of \( X_t \) are independent. So that's another property satisfied.
+
+Next, we need to check if the process has continuous sample paths. Since \( W_t \) is a Brownian motion with continuous paths almost surely, and scaling by t doesn't affect continuity (as multiplication by a finite number preserves continuity), then \( X_t = t W_{1/t} \) should also have continuous paths.
+
+Wait, let me verify that. For each fixed ω where \( W_{\cdot}(\omega) \) is continuous, define \( X_t(\omega) = t W_{1/t}(\omega) \). As \( t \to 0^+ \), \( 1/t \to +\infty \), so we need to check the limit of \( X_t(\omega) \) as \( t \to 0^+ \).
+
+Compute:
+
+\( \lim_{t \to 0^+} X_t = \lim_{t \to 0^+} t W_{1/t} \).
+
+Let me set \( u = 1/t \), so as \( t \to 0^+ \), \( u \to +\infty \). Then,
+
+\( \lim_{u \to +\infty} (1/u) W_u \).
+
+But for Brownian motion, we know that \( W_u / \sqrt{u} \) converges to zero in probability as \( u \to \infty \), but does \( W_u / u \) converge?
+
+Actually, using the law of iterated logarithm, \( |W_u| \leq C \sqrt{u \log \log (1/u)} } \) for some constant C and large u. So,
+
+\( |X_t| = |t W_{1/t}| = |(1/u) W_u| \leq C \frac{\sqrt{u \log \log u}}{u} = C \frac{\sqrt{\log \log u}}{\sqrt{u}} } \).
+
+As \( u \to \infty \), this goes to zero. Therefore, \( X_t(\omega) \) tends to zero as \( t \to 0^+ \). So the limit exists and is equal to zero, which matches \( X_0 = 0 \). Hence, the sample paths are continuous.
+
+Finally, we need to check that each increment \( X_t - X_s \) has a normal distribution with mean zero and variance \( t - s \).
+
+Wait, actually, earlier when computing covariance, I found that Cov\( (X_s, X_t) = \min(s,t) \), which is the same as for Brownian motion. Since all finite-dimensional distributions are multivariate normal due to \( W \)'s properties, and we've already checked mean, covariance, independence of increments, it should follow that each increment has the correct distribution.
+
+But let me verify the variance:
+
+For a fixed t > 0,
+
+\( X_t = t W_{1/t} \).
+
+So Var\( (X_t) = t^2 \cdot \text{Var}(W_{1/t}) = t^2 \cdot (1/t) ) = t \).
+
+Which is exactly the variance of a Brownian motion at time t.
+
+Similarly, for increments:
+
+Var\( (X_t - X_s) = \text{Cov}(X_t - X_s, X_t - X_s) = Cov(X_t,X_t) + Cov(X_s,X_s) - 2 Cov(X_t,X_s) = t + s - 2 \min(s,t) \).
+
+If \( t > s \), then this is \( t + s - 2s = t - s \). Which matches the variance of a Brownian motion increment over [s,t].
+
+Therefore, all properties are satisfied: starts at zero, independent increments (which are also Gaussian with mean zero and variance equal to time difference), continuous paths.
+
+Hence, \( X_t \) is indeed a Brownian motion.
+</think>
+
+To

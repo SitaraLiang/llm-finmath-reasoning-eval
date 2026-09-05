@@ -1,0 +1,91 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_student
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: llama3.2-1b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0=0
+        - X_t is a centered Gaussian process
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Calculation
+        outcomes:
+        - X_t is a Brownian motion
+    -   preconditions:
+        - X_0=0
+        - E[X_s] = X_s
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Calculation
+        outcomes:
+        - X_t is a centered Gaussian process
+-   atoms:
+    -   preconditions:
+        - Given that $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0
+            \}$ is a Brownian motion too.
+        arguments:
+        - Establish the decomposition of $X_t$
+        outcomes:
+        - 'Decompose $X_t$ into two independent components: $X_t = X_s + (X_t - X_s)$'
+    -   preconditions:
+        - 'Decompose $X_t$ into two independent components: $X_t = X_s + (X_t - X_s)$'
+        arguments:
+        - Show that $(X_t)_{t\in \R^+}$ is a Brownian motion
+        outcomes:
+        - Apply Kolmogorov's theorem to show that $(X_t)_{t\in \R^+}$ is a Brownian
+            motion
+    -   preconditions:
+        - Apply Kolmogorov's theorem to show that $(X_t)_{t\in \R^+}$ is a Brownian
+            motion
+        arguments:
+        - Verify the initial condition $X_0=0$
+        outcomes:
+        - Confirm $X_0 = 0$ by definition
+    -   preconditions:
+        - Confirm $X_0 = 0$ by definition
+        arguments:
+        - Show that $\mathrm{Cov}(X_s,X_t)=\inf(s,t)$
+        outcomes:
+        - Calculate the covariance between two disjoint increments using the property
+            of centered Gaussian processes
+    -   preconditions:
+        - Calculate the covariance between two disjoint increments using the property
+            of centered Gaussian processes
+        arguments:
+        - Verify that the increments are independent and have a stationary law
+        outcomes:
+        - Show that the increments are uncorrelated and have a stationary law
+    -   preconditions:
+        - Show that the increments are uncorrelated and have a stationary law
+        arguments:
+        - Show that the law of increments is $\mathcal{N}(0,t-s)$
+        outcomes:
+        - Calculate the variance of an increment to show it has a stationary law $\mathcal{N}(0,t-s)$
+    -   preconditions:
+        - Calculate the variance of an increment to show it has a stationary law $\mathcal{N}(0,t-s)$
+        arguments:
+        - Apply Kolmogorov's theorem to show that $(X_t)_{t\in \R^+}$ is a Brownian
+            motion
+        outcomes:
+        - Conclude that $(X_t)_{t\in \R^+}$ has Gaussian increments and satisfies
+            the continuity of paths assumption
+    -   preconditions:
+        - Conclude that $(X_t)_{t\in \R^+}$ has Gaussian increments and satisfies
+            the continuity of paths assumption
+        arguments:
+        - Show that $W_t$ is a Brownian motion when $X_t = tW_{1/t}, t>0$
+        outcomes:
+        - Apply the result from Question 2 to conclude that $(W_t)_s = t(W_{1/s},
+            W_{1/s^2}, \ldots, W_{1/t})$
+    -   preconditions:
+        - Apply the result from Question 2 to conclude that $(W_t)_s = t(W_{1/s},
+            W_{1/s^2}, \ldots, W_{1/t})$
+        arguments:
+        - Verify the initial condition $W_0$
+        outcomes:
+        - Confirm $W_0 = 0$ by definition

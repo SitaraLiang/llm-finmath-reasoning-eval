@@ -1,0 +1,15 @@
+### Question block 1
+```yml
+atoms:
+- preconditions: []
+  arguments: ["X_0 = 0", "Cov(X_s, X_t) = inf(s, t)"]
+  outcomes: ["X_t is a Brownian motion if and only if X_0 = 0 and Cov(X_s, X_t) = inf(s, t)"]
+```
+
+### Question block 2
+```yml
+atoms:
+  - preconditions: [W_t 为布朗运动]
+    arguments: ["时间反转/时间反转变换 Time Inversion", "\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}"]
+    outcomes: ["\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \} 亦为布朗运动"]
+```

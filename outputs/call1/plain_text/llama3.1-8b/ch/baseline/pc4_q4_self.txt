@@ -1,0 +1,16 @@
+Exercise: pc4_q4
+Model: llama3.1:8b
+Variation: baseline
+Prompt type: self_history
+
+Question 1:
+当 $\tau$ 为有界停时， 计算 $\E(W_\tau)$。
+
+Answer:
+$\E(W_\tau) = \E\left(\int_0^\tau dW_t\right) = \int_0^{\tau} \E(dW_t) = \int_0^{\tau} 0 = 0$
+
+Question 2:
+当 $\tau$ 为有界停时， 计算 $\E(W_\tau^2)$。
+
+Answer:
+$\E(W_\tau^2) = \E\left(\int_0^\tau dW_t^2\right) = \int_0^{\tau} \E(dW_t^2) = \int_0^{\tau} 1 = \tau$

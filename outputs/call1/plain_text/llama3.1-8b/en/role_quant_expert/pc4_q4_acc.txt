@@ -1,0 +1,68 @@
+Exercise: pc4_q4
+Model: llama3.1:8b
+Variation: role_quant_expert
+Prompt type: prompt_accumulation
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+## Step 1: Recall the properties of Brownian motion
+Brownian motion has the property that its expected value at any time $t$ is zero, i.e., $\E(W_t) = 0$ for all $t \geq 0$.
+
+## Step 2: Apply the property to a bounded stopping time
+Since $\tau$ is a bounded stopping time, there exists a constant $T > 0$ such that $\tau \leq T$. Therefore, we can write:
+
+$\E(W_\tau) = \E(W_{\tau \wedge T})$
+
+## Step 3: Use the fact that Brownian motion has independent increments
+Since $W_t$ is a Brownian motion, its increments are independent. Therefore, for any bounded stopping time $\tau$, we have:
+
+$\E(W_{\tau \wedge T}) = \E(\E(W_{\tau \wedge T} | \mathcal{F}_T))$
+
+## Step 4: Apply the law of iterated expectations
+Using the law of iterated expectations, we can simplify the expression as follows:
+
+$\E(W_{\tau \wedge T} | \mathcal{F}_T) = W_T$
+
+## Step 5: Take the expectation
+Taking the expectation of both sides, we get:
+
+$\E(W_\tau) = \E(W_T)$
+
+## Step 6: Use the property that Brownian motion has zero mean
+Since $W_t$ is a Brownian motion, its expected value at any time $t$ is zero. Therefore, we have:
+
+$\E(W_T) = 0$
+
+The final answer is: $\boxed{0}$
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+## Step 1: Recall the definition of a Brownian Motion
+A Brownian motion $W_t$ has the following properties:
+- $W_0 = 0$
+- $W_t - W_s \sim \mathcal{N}(0, t-s)$ for $t > s$
+- The increments are independent
+
+## Step 2: Recall the definition of a stopping time
+A stopping time $\tau$ is a random variable such that:
+- $\{\tau \leq t\} \in \mathcal{F}_t$ for all $t$
+
+## Step 3: Apply the Optional Stopping Theorem
+The Optional Stopping Theorem states that if $\tau$ is a bounded stopping time, then:
+$\E[W_\tau] = \E[W_0]$
+and
+$\E[W_\tau^2] = \E[W_0^2 + (\int_0^\tau dW_s)^2]$
+
+## Step 4: Compute the expectation of $W_\tau^2$
+Using the properties of Brownian motion, we have:
+$\E[(\int_0^\tau dW_s)^2] = \E[\int_0^\tau (dW_s)^2] = \E[\int_0^\tau ds] = \E[\tau]$
+
+## Step 5: Simplify the expression
+Since $W_0 = 0$, we have:
+$\E[W_\tau^2] = \E[W_0^2 + (\int_0^\tau dW_s)^2] = 0 + \E[\tau]$
+
+The final answer is: $\boxed{\tau}$

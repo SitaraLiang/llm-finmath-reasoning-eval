@@ -1,0 +1,24 @@
+pc: '4'
+exercise: '4'
+language: en
+variation: role_student
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: deepseek-r1-1.5b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - Brownian motion is a martingale
+        - $\tau$ is a bounded stopping time
+        arguments:
+        - Optional Stopping Theorem for Martingales
+        outcomes:
+        - Expected value of Brownian motion at $\tau$ is zero
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        arguments:
+        - Itô's lemma for f(w) = w^2
+        outcomes:
+        - E[W_τ^2] = 2τ

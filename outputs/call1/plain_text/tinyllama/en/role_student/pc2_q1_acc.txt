@@ -1,0 +1,40 @@
+Exercise: pc2_q1
+Model: tinyllama
+Variation: role_student
+Prompt type: prompt_accumulation
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+Given:
+A process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if it satisfies the following conditions:
+- $X_0=0$,
+- for all $t\in \R^+$ and $\epsilon > 0$, there exists an $s_\epsilon>0$ such that $s<s_\epsilon$ implies $(X_{s+t}-X_s)(\sigma(X_t))^\top \geq \epsilon^2$,
+- for all $s, t\in \R^+$ and $\tau > 0$, there exists an $a>0$ such that $|X_{\tau+t}-X_\tau| \leq a|X_t|$ for all $(x,t)\in \R^2$.
+
+If these conditions hold for all $(X_t)_{t\in \R^+}$, then the process is a Brownian motion.
+
+Proof:
+Let us show that $X_0=0$ implies $X_t(\sigma(X_t))^\top \geq 0$, i.e., $s<s_\epsilon$ satisfies the first condition. Suppose for contradiction that there exist an $s$ such that $(X_{s+t}-X_s)(\sigma(X_t))^\top < 0$. Then, by triangle inequality:
+$$
+\begin{aligned}
+	|X_t|^2(\sigma(X_t))^\top
+	&= |X_t|^2 \int_\R (1+|x|^2)^2 \sigma^2(dx) + 2\int_\R (1+|x|^2)(1+|y|^2)(\sigma(dx)\wedge dY_t) \\
+	&\geq |X_t|^2 |X_t| \int_{\R^+} (1+s)^2 \sigma^2(ds) + 2\int_\R (1+s)(1+|y|^2)(\sigma(dx)\wedge dY_t) \\
+	&= 0 < 0.
+\end{aligned}
+$$
+Hence, $X_t$ is not a Brownian motion for any $t$. By the second condition, for all $(x,t)\in \R^2$, there exists an $a>0$ such that $|X_{\tau+t}-X_\tau| \leq a|X_t|$ for all $(x,t)\in \R^2$. Consequently, $(X_{s+\cdot},s)\in \sigma(X_t)$ for all $s\in[0,\tau]$ and $\tau > 0$, which implies that $(X_\tau)_{t\in \R^+}$ is a centered Gaussian process. Thus, $s<s_\epsilon$ satisfies the first condition, and we can conclude that $(X_t)_{t\in \R^+}$ is a Brownian motion by taking the limits as $\epsilon\to 0$. Hence, the process $(X_t)_{t\in \R^+}$ is a Brownian motion.
+
+Therefore, the process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if it satisfies the given conditions.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+Based on the given assumptions, it can be concluded that any process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is centered Gaussian with covariance function ${\rm Cov}(X_s,X_t)=\inf(s,t)$, where $\inf(s,t)$ denotes the infimum over all $s$ and $t$ such that $s<t$.
+
+The proof relies on the law of total variance in stochastic calculus, which states that for any random variable $X$ with covariance function ${\rm Cov}(X_s,X_t)=\inf(s,t)$, its infimum over all $s$ and $t$ such that $s<t$ is equal to the infimum of the covariance function itself:
+$${\rm Var}(X) = \mathbb{E}[(X-\E[X])^2] = \mathbb{E}\left[\inf_{\substack{\begin{array}s\\ (s,t)\in\R^+ \times [0,\infty)\\ s< t \end{array}}}(X_s - \E[X])(X_t-\E[X]) + (X_s-X_0)^2\right] = \mathbb{E}[({\rm Cov}(X_s,X_t))^2]$$
+Therefore, $(X_t)_{t\in\R^+}$ is a Brownian motion if and only if the law of total variance is satisfied. This means that $X_0=0$ and $(X_t)_{t\in\R^+}$ is centered Gaussian with covariance function ${\rm Cov}(X_s,X_t)=\inf(s,t)$ for all $s$ and $t$.

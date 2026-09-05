@@ -1,0 +1,87 @@
+pc: '2'
+exercise: '1'
+language: ch
+variation: baseline
+prompt_type: prompt_accumulation
+call1_output_mode: plain_text
+call1_model: llama3.2-1b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0 = 0
+        - X_t 是零均值高斯过程
+        - Cov(X_s, X_t) = inf(s, t)
+        arguments:
+        - 高斯过程的协方差函数唯一确定其分布
+        outcomes:
+        - X_t 是布朗运动
+    -   preconditions:
+        - X_t 是布朗运动
+        arguments:
+        - 布朗运动的定义包含 X_0 = 0, 零均值高斯过程, 协方差函数为 inf(s, t)
+        outcomes:
+        - X_0 = 0
+        - X_t 是零均值高斯过程
+        - Cov(X_s, X_t) = inf(s, t)
+-   atoms:
+    -   preconditions:
+        - W_t 为布朗运动
+        arguments:
+        - X_t = t W_{1/t}, t > 0, X_0 = 0
+        outcomes:
+        - X_t 为布朗运动
+    -   preconditions:
+        - P(X_s = s W_{1/s}, s > 0) = P(min(W_t, t))
+        arguments:
+        - P(min(W_t, t)) = ∫₀^t P(min(W_u, u)) du
+        outcomes:
+        - P(X_s = s W_{1/s}, s > 0) = ∫₀^t P(min(W_u, u)) du
+    -   preconditions:
+        - min(W_t, t) = 0
+        arguments:
+        - ∫₀^t P(min(W_u, u)) du > 0
+        outcomes:
+        - P(min(W_t, t) = 0) = P(W_t > 0)
+    -   preconditions:
+        - W_t 为布朗运动
+        arguments:
+        - P(W_t > 0) = ∫₀^∞ P(W_s > s) ds
+        outcomes:
+        - 1 - ∫₋^0 P(W_s = s) ds = ∫₀^s (1 - p(s))^u du
+    -   preconditions:
+        - p(t) ≥ 0
+        arguments:
+        - d/dt s = p(s)
+        outcomes:
+        - (1 - p(t)) = 0
+    -   preconditions:
+        - F(p) = ∫₀^∞ (1 - p(u))^u du
+        arguments:
+        - P(W_s > s) = F'(s) > 0
+        outcomes:
+        - F'(s) = lim_{h→0^+} (F(s + h) - F(s)) / h
+    -   preconditions:
+        - min(W_t, t) > 0
+        arguments:
+        - F'(s) = lim_{h→0^+} (-h/2)^h
+        outcomes:
+        - F'(s) = lim_{h→0^+} e^{-h/2}
+    -   preconditions:
+        - F'(s) > 0
+        arguments:
+        - F(s) = 0
+        outcomes:
+        - p(s) = F'(s) = 0
+    -   preconditions:
+        - P(W_s > 0) = F(s), s ∈ [0, ∞)
+        arguments:
+        - lim_{s→0^+} P(W_s > 0) = 1/2
+        outcomes:
+        - F(1) = 1/2
+    -   preconditions:
+        - P(min(W_u, u)) = ∫₀^∞ p(s) ds
+        arguments:
+        - ∫₀^∞ P(min(W_u, u)) du = ∫₀^{1/2} (1 - p(u))^u du + ∫_{1/2}^∞ p(u) du
+        outcomes:
+        - ∫₀^∞ P(min(W_u, u)) du = 1/4

@@ -1,0 +1,23 @@
+pc: '4'
+exercise: '4'
+language: en
+variation: role_student
+prompt_type: prompt_accumulation
+call1_output_mode: plain_text
+call1_model: tinyllama
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        arguments:
+        - Calculation
+        outcomes:
+        - E(W_τ)
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        arguments:
+        - Calculation
+        outcomes:
+        - E(W_τ^2)

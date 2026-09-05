@@ -1,0 +1,29 @@
+models:
+  sentence-transformers/all-MiniLM-L6-v2:
+    languages:
+      ch:
+        balanced_accuracy: 0.708333
+        embedding_threshold: 0.58
+        judge_high_threshold: 0.68
+        judge_low_threshold: 0.48
+        pair_count: 72
+        selected_embedding_threshold: 0.58
+      en:
+        balanced_accuracy: 0.760417
+        embedding_threshold: 0.375
+        judge_high_threshold: 0.475
+        judge_low_threshold: 0.275
+        pair_count: 72
+        selected_embedding_threshold: 0.375
+      fr:
+        balanced_accuracy: 0.78125
+        embedding_threshold: 0.45
+        judge_high_threshold: 0.55
+        judge_low_threshold: 0.35
+        pair_count: 72
+        selected_embedding_threshold: 0.45
+policy:
+  judge_high_threshold: 1.0
+  judge_low_margin: 0.1
+version: 1
+

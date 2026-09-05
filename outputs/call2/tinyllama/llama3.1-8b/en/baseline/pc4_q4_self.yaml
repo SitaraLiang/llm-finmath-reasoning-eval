@@ -1,0 +1,23 @@
+pc: '4'
+exercise: '4'
+language: en
+variation: baseline
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: tinyllama
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        arguments:
+        - stochastic integration
+        outcomes:
+        - E(W_τ) = ∫₀^τ P(Xₜ < x) dt + ∫₀^τ 1_{x > τ} d(P(τ < x))
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        arguments:
+        - Stochastic Integration Formula
+        outcomes:
+        - Expected Quadratic Variation (EV) of $W_τ$

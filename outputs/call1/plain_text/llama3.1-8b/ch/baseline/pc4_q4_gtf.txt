@@ -1,0 +1,42 @@
+Exercise: pc4_q4
+Model: llama3.1:8b
+Variation: baseline
+Prompt type: ground_truth_forcing
+
+Question 1:
+当 $\tau$ 为有界停时， 计算 $\E(W_\tau)$。
+
+Answer:
+$\E(W_\tau) = \int_{-\infty}^{\infty} x f_\tau(x) dx,$
+其中 $f_\tau(x)$ 是 $\tau$ 条件下的布朗运动的概率密度函数。
+
+由于 $\tau$ 为有界停时，且布朗运动是连续过程，因此我们可以将其写为：
+$\E(W_\tau) = \int_{0}^{\tau} W_s dW_s + \frac{1}{2}\int_{0}^{\tau} 1 ds.$
+
+利用伊藤公式，我们得到：
+$\int_{0}^{\tau} W_s dW_s = \int_{0}^{\tau} W_s \left( \frac{dW_s}{ds} \right) ds = \int_{0}^{\tau} W_s \left( \frac{1}{2}\frac{d^2W_s}{ds^2} + \frac{1}{2} \right) ds.$
+
+将其代入上式中，我们得到：
+$\E(W_\tau) = \frac{1}{2}\int_{0}^{\tau} W_s d^2W_s + \frac{1}{4}\int_{0}^{\tau} 1 ds.$
+
+利用布朗运动的性质，我们知道 $d^2W_s$ 是一个常数，等于 $\frac{1}{ds}$。因此，我们可以将其写为：
+$\E(W_\tau) = \frac{1}{4}\int_{0}^{\tau} 1 ds.$
+
+最后，我们得到：
+$\boxed{\E(W_\tau) = \frac{\tau}{2}.}$
+
+Question 2:
+当 $\tau$ 为有界停时， 计算 $\E(W_\tau^2)$。
+
+Answer:
+\开始{对齐*}
+\E[W_\tau^2] &amp;= \E[(W_\tau)^2]\\
+&amp;= \E[\mathrm{Var}(W_\tau) + (\E[W_\tau])^2]\\
+&amp;\qquad\text{(由 $\mathrm{Var}(X) = \E[X^2] - (\E[X])^2$ 给出)}\\
+&amp;= \E[\mathrm{Var}(W_\tau)] + 0^2\\
+&amp;\qquad\text{(由前面问题的答案给出)}\\
+&amp;= \E[W_\tau]\\
+&amp;\qquad\text{(由 $\mathrm{Var}(X) = \E[X^2] - (\E[X])^2$ 给出)}\\
+&amp;= \frac{\tau}{T}\\
+&amp;\qquad\text{(由布朗运动的性质给出)}
+\结束{对齐*}

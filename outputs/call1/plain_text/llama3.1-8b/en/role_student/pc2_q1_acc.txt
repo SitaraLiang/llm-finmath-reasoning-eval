@@ -1,0 +1,59 @@
+Exercise: pc2_q1
+Model: llama3.1:8b
+Variation: role_student
+Prompt type: prompt_accumulation
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+## Step 1: Recall the definition of Brownian motion
+A stochastic process $(X_t)_{t\in \R^+}$ is a Brownian motion if it satisfies the following properties:
+- $X_0 = 0$
+- For any $s, t \geq 0$, $\mathbb{E}[X_t] = 0$ and $\text{Cov}(X_s,X_t) = \min(s,t)$
+- The process has continuous paths
+
+## Step 2: Prove the "if" part
+Assume that $(X_t)_{t\in \R^+}$ satisfies the given conditions:
+- $X_0=0$
+- $(X_t)_{t\in \R^+}$ is a centered Gaussian process
+- $\text{Cov}(X_s,X_t)=\inf(s,t)$
+
+We need to show that this implies the properties of Brownian motion.
+
+## Step 3: Show that the process has continuous paths
+Since $(X_t)_{t\in \R^+}$ is a centered Gaussian process, it suffices to show that $\mathbb{E}[|X_s - X_t|^2] = |s-t|$ for all $s,t \geq 0$. This follows from the fact that $\text{Cov}(X_s,X_t)=\inf(s,t)$ and the properties of covariance.
+
+## Step 4: Prove the "only if" part
+Assume that $(X_t)_{t\in \R^+}$ is a Brownian motion. Then:
+- $X_0 = 0$ by definition
+- Since $(X_t)_{t\in \R^+}$ is Gaussian, it suffices to show that $\text{Cov}(X_s,X_t)=\inf(s,t)$ for all $s,t \geq 0$. This follows from the properties of Brownian motion.
+
+## Step 5: Write down the final answer
+$\boxed{\text{The process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if } X_0=0, (X_t)_{t\in \R^+} \text{ is a centered Gaussian process, and } \text{Cov}(X_s,X_t)=\inf(s,t).}$
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+## Step 1: Recall the definition of a Brownian motion
+A process $(X_t)_{t\in \R^+}$ is a Brownian motion if it satisfies the following properties:
+- $X_0 = 0$
+- $(X_t)_{t\in \R^+}$ is a centered Gaussian process
+- ${\rm Cov}(X_s,X_t) = \inf(s,t)$ for all $s, t \geq 0$
+
+## Step 2: Verify the first property of Brownian motion
+We are given that $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$. Since we have $X_0 = 0$, this satisfies the first property.
+
+## Step 3: Verify the second property of Brownian motion
+To show that $(X_t)_{t\in \R^+}$ is a centered Gaussian process, note that for any fixed time $t > 0$, $X_t$ is a linear combination of normally distributed random variables (since it's a multiple of a Brownian motion), and hence is normally distributed. Since the mean of $W_{\frac{1}{t}}$ is zero, the mean of $X_t = t \cdot W_{\frac 1t}$ is also zero.
+
+## Step 4: Verify the third property of Brownian motion
+We need to show that ${\rm Cov}(X_s,X_t) = \inf(s,t)$ for all $s, t > 0$. We have:
+\[{\rm Cov}(X_s,X_t) = {\rm Cov}\left(tW_{\frac{1}{t}}, sW_{\frac{1}{s}}\right)\]
+Since the covariance of two independent Gaussian random variables is zero, and since $W_{\frac 1t}$ and $W_{\frac 1s}$ are independent (because they correspond to different times), we have:
+\[{\rm Cov}(X_s,X_t) = {\rm Cov}\left(tW_{\frac{1}{t}}, sW_{\frac{1}{s}}\right) = ts \cdot {\rm Cov}\left(W_{\frac 1t}, W_{\frac 1s} \right)\]
+Since $W$ is a Brownian motion, we have:
+\[{\rm Cov}(X_s,X_t) = ts \cdot \inf\left(\frac{1}{t}, \frac{1}{s}\right) = \inf(s,t)\]
+
+The final answer is: $\boxed{1}$

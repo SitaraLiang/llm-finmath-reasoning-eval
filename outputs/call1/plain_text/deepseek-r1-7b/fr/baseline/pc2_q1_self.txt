@@ -1,0 +1,100 @@
+Exercise: pc2_q1
+Model: deepseek-r1:7b
+Variation: baseline
+Prompt type: self_history
+
+Question 1:
+Montrer qu'un processus $(X_t)_{t\in \R^+}$ est un mouvement brownien si et seulement si: $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien centr\'e, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+<think>
+Pour démontrer qu'un processus $(X_t)_{t \geq 0}$ est un mouvement brownien si et seulement si $X_0 = 0$, $(X_t)$ est un processus gaussien centré et ${\rm Cov}(X_s, X_t) = \inf(s, t)$, je commence par montrer que les conditions données impliquent que $(X_t)$ est un mouvement brownien.
+
+D'abord, sachant que $X_0 = 0$, $(X_t)$ est centré et gaussien, donc chaque incrémentation $X_t - X_s$ suit une loi normale $\mathcal{N}(0, t - s)$. Cela implique que les accroissements sont indépendants et stationnaires.
+
+Ensuite, en vérifiant la covariance ${\rm Cov}(X_s, X_t) = \inf(s, t)$, je montre que les accroissements sont non corrélés pour $s \neq t$, ce qui confirme l'indépendance des accroissements sur un intervalle de temps.
+
+Enfin, en combinant ces résultats, je conclu que $(X_t)$ satisfait toutes les propriétés caractéristiques d'un mouvement brownien.
+</think>
+
+Pour montrer qu'un processus $(X_t)_{t \geq 0}$ est un mouvement brownien si et seulement si $X_0 = 0$, $(X_t)$ est un processus gaussien centré et ${\rm Cov}(X_s, X_t) = \inf(s, t)$, nous procédons en deux étapes :
+
+**1. Si $(X_t)$ est un mouvement brownien :**
+
+- **Condition initiale :** Par définition, $X_0 = 0$.
+  
+- **Processus gaussien centré :** Les accroissements browniens sont gaussiens et centrés, donc $(X_t)$ est un processus gaussien centré.
+
+- **Covariance :** Les accroissements browniens sont non corrélés pour $s \neq t$, ce qui implique que ${\rm Cov}(X_s, X_t) = \inf(s, t)$.
+
+**2. Si $X_0 = 0$, $(X_t)$ est un processus gaussien centré et ${\rm Cov}(X_s, X_t) = \inf(s, t)$ :**
+
+- **Condition initiale :** $X_0 = 0$.
+  
+- **Processus gaussien centré :** Les accroissements $X_t - X_s$ sont gaussiens et centrés.
+
+- **Covariance :** ${\rm Cov}(X_s, X_t) = \inf(s, t)$ implique que les accroissements sont non corrélés pour $s \neq t$, ce qui signifie qu'ils sont indépendants.
+
+Ainsi, $(X_t)$ satisfait toutes les propriétés caractéristiques d'un mouvement brownien.
+
+$\boxed{(X_t) \text{ est un mouvement brownien si et seulement si } X_0 = 0,\ (X_t)\text{ est gaussien centré et } {\rm Cov}(X_s, X_t) = \inf(s,t).}$
+
+Question 2:
+Montrer que si $W_t$ est un mouvement brownien, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ l'est aussi.
+
+Answer:
+<think>
+Pour démontrer que $X_t = t W_{1/t}$ est un mouvement brownien, je vérifie les trois conditions principales d'un mouvement brownien : $X_0 = 0$, $(X_t)$ est un processus gaussien centré et ${\rm Cov}(X_s, X_t) = \inf(s, t)$.
+
+**1. Condition initiale :**
+
+$X_0 = 0 \times W_{1/0}$. Cependant, $W_{1/0}$ n'est pas défini. Pour contourner cela, je considère que lorsque $t$ tend vers zéro, $W_{1/t}$ suit une loi normale centrée avec un grand écart-type, ce qui permet de définir $X_0 = 0$.
+
+**2. Processus gaussien centré :**
+
+Comme $W_t$ est un mouvement brownien, il est gaussien et centré. Donc, pour tout $t > 0$, $X_t = t W_{1/t}$ suit une loi normale centrée avec une variance $t^2 \times (1/t) = t$. Ainsi, $(X_t)$ est un processus gaussien centré.
+
+**3. Covariance :**
+
+Calculons la covariance entre $X_s$ et $X_t$ pour $s < t$ :
+\[
+{\rm Cov}(X_s, X_t) = {\rm Cov}\left(s W_{1/s}, t W_{1/t}\right) = s t \times {\rm Cov}\left(W_{1/s}, W_{1/t}\right)
+\]
+Comme les accroissements browniens sont non corrélés pour $1/s \neq 1/t$, ${\rm Cov}(W_{1/s}, W_{1/t}) = 0$ si $s \neq t$. Par conséquent, ${\rm Cov}(X_s, X_t) = 0$ si $s \neq t$, et ${\rm Var}(X_t) = t$ si $s = t$. Ainsi, ${\rm Cov}(X_s, X_t) = \inf(s, t)$.
+
+En conclusion, toutes les conditions sont remplies, donc $X_t$ est un mouvement brownien.
+</think>
+
+Pour démontrer que $X_t = t W_{1/t}$ est un mouvement brownien, nous vérifions les trois conditions principales d'un mouvement brownien :
+
+**1. Condition initiale :**
+
+\[
+X_0 = 0 \times W_{+\infty} = 0
+\]
+
+**2. Processus gaussien centré :**
+
+Comme $W_t$ est un mouvement brownien, il suit une loi normale centrée. Donc, pour tout $t > 0$, $X_t = t W_{1/t}$ suit une loi normale centrée avec une variance $t^2 \times (1/t) = t$. Ainsi, $(X_t)$ est un processus gaussien centré.
+
+**3. Covariance :**
+
+Pour $s < t$,
+
+\[
+{\rm Cov}(X_s, X_t) = {\rm Cov}\left(s W_{1/s}, t W_{1/t}\right) = s t \times {\rm Cov}\left(W_{1/s}, W_{1/t}\right)
+\]
+
+Comme les accroissements browniens sont non corrélés pour $1/s \neq 1/t$, ${\rm Cov}(W_{1/s}, W_{1/t}) = 0$ si $s \neq t$. Par conséquent,
+
+\[
+{\rm Cov}(X_s, X_t) = 
+\begin{cases}
+t & \text{si } s = t \\
+0 & \text{sinon}
+\end{cases} = \inf(s, t)
+\]
+
+Ainsi, toutes les conditions sont remplies.
+
+$\boxed{X_t \text{ est un mouvement brownien.}}$

@@ -1,0 +1,69 @@
+Exercise: pc4_q4
+Model: tinyllama
+Variation: role_quant_expert
+Prompt type: prompt_accumulation
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+Formula:
+The expected value of the first integral in question 1 is given by:
+
+\begin{align*}
+    \E(W_{\tau}) &= \int_{0}^{\infty} W_t \, dt = \int_{0}^\tau W_s \, ds \\
+                  &= \int_0^\tau W_s \, d \left( \int_0^s dt \right) \\
+                  &= \int_0^\tau W_s \, ds + \int_0^\tau \int_s^t W_r \, dr \\
+                  &= \int_0^\infty W_s \, ds + \int_0^\tau \mathbb{P}(\omega, s) \, d\omega \\
+                  &= \int_0^\infty W_\tau \, dt + \int_0^\infty \mathbb{P}(\omega,\cdot) \, d\omega \\
+                  &= \int_0^1 W_t \, dt + \int_{-\infty}^0 \mathbb{P}(\cdot, -1) \, dX_t
+\end{align*}
+
+The first integral is the sum of a continuous integral and a discrete integral over time intervals. The second integral corresponds to the initial value $X_0$ in question 1. The final step involves integrating the final integral (with respect to $X$) along $\tau$. This completes the proof for the expected value of the first integral, which can be computed as the sum of two integrals: one over the interval $[0,\infty)$ and another over $(-\infty, 0]$. Therefore, we obtain:
+
+\begin{align*}
+    \E(W_{\tau}) &= \int_{0}^\infty W_s \, ds + \int_{-\infty}^0 \mathbb{P}(\cdot, -1) \, dX_t \\
+                  &= \int_0^\infty W_s \, ds + \sum_{n=1}^\infty \int_{-\infty}^0 \mathbb{P}_n(\cdot) \, dX_t
+\end{align*}
+
+Here, the sum is taken over all stopping times $\tau$ and initial states $x_0$. Since Brownian motion is a Gaussian process, we can use a formula for the conditional expectation in the first integral:
+
+\begin{equation}
+    \E(W_\tau | \sigma(\omega)) = \int_{-\infty}^0 \mathbb{P}(\cdot) \, dX_t
+\end{equation}
+
+Combining these two formulas, we obtain:
+
+\begin{align*}
+    \E(W_{\tau}) &= \int_0^\infty W_s \, ds + \sum_{n=1}^\infty \int_{-\infty}^0 \mathbb{P}_n(\cdot) \, dX_t \\
+                  &= \int_0^1 W_s \, ds + \int_0^\tau W_s \, ds + \sum_{n=1}^\infty \int_{-\infty}^0 \mathbb{P}(\cdot, n) \, dX_t
+\end{align*}
+
+Therefore, we obtain the formula for the expected value of the first integral in question 1 as:
+
+\begin{equation}
+    E[W_\tau] = \int_0^1 W_s \, ds + \sum_{n=1}^\infty \mathbb{P}(\cdot, n) \, dX_t
+\end{equation}
+
+This completes the proof.
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+In this financial mathematics exercise, we are solving the question when the Brownian Motion $W_t$ is stopped at some finite time $\tau\in[0,\infty)$, i.e., after which point does the process $W_\tau^2$ reach a maximum?
+
+Firstly, we recall that the law of $W_\tau^2$ is given by
+$$\PP(W_\tau^2>y) = \frac1{2\tau} \E[(e^{-\tau y/2}) - 1] + \PP(W_\tau >0)\;,\qquad y\geq 0,$$
+where the first term corresponds to the probability that $W_\tau$ stays positive, and the second one represents the probability that $W_\tau$ is greater than zero at time $\tau$.
+
+Next, we prove that for all $t > \tau$,
+$$e^{-\tau(y+1)/2} = e^{-ty/2}\frac{y^2}{2t}-\frac 12\frac{y}{(2t)^2} + O\left(\frac1{t^3}\right)\;,$$
+which implies that
+$$\PP(W_\tau>0) = \frac{\PP(W_{\tau+1}>0)}{\PP(W_0>0)}=\frac{e^{-\tau/2}}{\E[W_{\tau}]} + O\left(\frac1{\E[W_{\tau}^2]}\right)\;,$$
+where the second equality holds by the law of total probability.
+
+Therefore, we have
+$$\E(W_\tau^2) = \frac{\E(W_\tau)}{\E[W_0]} + O\left(\frac1{\E[W_{\tau}^2]}\right)\;.$$
+
+By the Central Limit Theorem, this converges to a Gaussian random variable with mean zero and variance $\sigma^2 = 2/\E(e^{-\tau/2})\E[W_\tau]/(1+\E[W_0])>0$. This completes the proof.

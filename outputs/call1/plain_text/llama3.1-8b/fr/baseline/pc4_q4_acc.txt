@@ -1,0 +1,54 @@
+Exercise: pc4_q4
+Model: llama3.1:8b
+Variation: baseline
+Prompt type: prompt_accumulation
+
+Question 1:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau)$.
+
+Answer:
+## Étape 1 : Définition du mouvement brownien
+Le mouvement brownien $W_t$ satisfait l'équation différentielle suivante : $$\frac{dW_t}{dt} = \sigma B_t$$ où $\sigma$ est une constante de volatilité.
+
+## Étape 2 : Utilisation du théorème de la moyenne
+Puisque $W_\tau$ est une fonction continue de $\tau$, nous pouvons utiliser le théorème de la moyenne pour calculer sa valeur attendue : $$\E(W_\tau) = \int_{-\infty}^{\infty} W_\tau f(\tau) d\tau$$ où $f(\tau)$ est la densité de probabilité de $\tau$.
+
+## Étape 3 : Utilisation de la propriété du mouvement brownien
+Puisque le mouvement brownien est un processus gaussien, nous savons que $$W_\tau \sim \mathcal{N}(0, \sigma^2\tau)$$
+
+## Étape 4 : Calcul de l'espérance
+En utilisant la propriété du mouvement brownien, on peut calculer l'espérance de $W_\tau$ : $$\E(W_\tau) = \int_{-\infty}^{\infty} W_\tau f(\tau) d\tau = 0$$
+
+La réponse finale est : $\boxed{0}$
+
+Question 2:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau^2)$.
+
+Answer:
+## Étape 1 : Définition du mouvement brownien
+Le mouvement brownien $W_t$ satisfait l'équation différentielle suivante : $$\frac{dW_t}{dt} = \sigma B_t$$ où $\sigma$ est une constante de volatilité.
+
+## Étape 2 : Définition du temps d'arrêt
+Le temps d'arrêt $\tau$ est un événement aléatoire qui satisfait la condition suivante : $$\tau = \inf\{t \geq 0, W_t \in A\}$$ où $A$ est un ensemble de valeurs possibles pour le mouvement brownien.
+
+## Étape 3 : Calcul de l'espérance de $W_\tau^2$
+En utilisant la propriété du mouvement brownien qui dit que $\E(W_t) = 0$, nous pouvons écrire : $$\E(W_\tau^2) = \int_0^\infty W_\tau^2 f_{W_\tau}(w) dw$$ où $f_{W_\tau}$ est la densité de probabilité du mouvement brownien à temps $\tau$.
+
+## Étape 4 : Utilisation de la propriété de l'espérance
+En utilisant la propriété de l'espérance qui dit que $\E(W_t^2) = t$, nous pouvons écrire : $$\E(W_\tau^2) = \int_0^\infty w^2 f_{W_\tau}(w) dw$$
+
+## Étape 5 : Utilisation de la densité de probabilité du mouvement brownien
+La densité de probabilité du mouvement brownien à temps $\tau$ est donnée par : $$f_{W_\tau}(w) = \frac{1}{\sqrt{2\pi\sigma^2\tau}} e^{-\frac{(w-\mu)^2}{2\sigma^2\tau}}$$ où $\mu$ est la moyenne du mouvement brownien.
+
+## Étape 6 : Remplacement de la densité de probabilité dans l'intégrale
+En remplaçant la densité de probabilité dans l'intégrale, nous obtenons : $$\E(W_\tau^2) = \int_0^\infty w^2 \frac{1}{\sqrt{2\pi\sigma^2\tau}} e^{-\frac{(w-\mu)^2}{2\sigma^2\tau}} dw$$
+
+## Étape 7 : Utilisation de la propriété de l'intégrale
+En utilisant la propriété de l'intégrale qui dit que $\int_0^\infty w^2 e^{-aw} dw = \frac{2}{a^3}$, nous pouvons écrire : $$\E(W_\tau^2) = \frac{\sigma^2\tau}{1}$$
+
+## Étape 8 : Simplification de l'expression
+En simplifiant l'expression, on obtient : $$\E(W_\tau^2) = \sigma^2\tau$$
+
+La réponse finale est :
+
+$\boxed{\sigma^2\tau}$

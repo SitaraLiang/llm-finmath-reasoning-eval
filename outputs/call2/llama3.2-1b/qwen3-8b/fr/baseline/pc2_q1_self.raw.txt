@@ -1,0 +1,51 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien"
+  arguments:
+  - "Vérifier que $X_0=0$"
+  outcomes:
+  - "Le processus est défini pour tous $s,t\in \R^+$"
+- preconditions:
+  - "Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien"
+  arguments:
+  - "Vérifier que le processus est gaussien centré"
+  outcomes:
+  - "Le vecteur de covariance $\mathbf{C} = (C_{ij})$ satisfait les propriétés suivantes : $C_{11}= \inf(s,t)$, $C_{12}= 0$, $C_{21}=\sup(s,t)$, $C_{22}= \inf(s,t)$"
+- preconditions:
+  - "Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien"
+  arguments:
+  - "Vérifier que ${\rm Cov}(X_s,X_t)=\inf(s,t)$"
+  outcomes:
+  - "La propriété du processus brownien est la suivante : $\mathbf{E}\left[(X_t)_{t\in \R^+}| X_0 = 0 \right] = X_t$"
+```
+
+### Question block 2
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "W_t est un mouvement brownien"
+  - "t > 0"
+  - "X_0 = 0"
+  arguments:
+  - "Calculer l'espérance conditionnelle de (X_s,t)W_{s/t} sachant X_0 = 0"
+  outcomes:
+  - "E[(X_s,t)W_{s/t}| X_0 = 0] = ∫₀¹ W_s dF(t) = W_s/s"
+  strength: "Calculation"
+- preconditions:
+  - "E[(X_s,t)W_{s/t}| X_0 = 0] = W_s/s"
+  arguments:
+  - "Montrer que X_t satisfait les propriétés d'un mouvement brownien"
+  outcomes:
+  - "X_t = t W_{1/t} est un mouvement brownien"
+  strength: "Theorem"
+```

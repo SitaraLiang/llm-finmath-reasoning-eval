@@ -1,0 +1,74 @@
+Exercise: pc2_q1
+Model: tinyllama
+Variation: baseline
+Prompt type: self_history
+
+Question 1:
+证明过程 $(X_t)_{t\in \R^+}$ 为布朗运动（Brownian motion）当且仅当： $X_0=0$, $(X_t)_{t\in \R^+}$ 为零均值高斯过程（centered Gaussian process）, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+答案：
+1. 证明过程：
+- 根据定义，$(X_t)_{t\in \R^+}$ 为 Brownian motion，且均分滴水方程中有$P(x)=\exp(\int_0^x f(s)ds)$，可使用该公式将约瑟夫-赫尔蒂系统转换成了零均值高斯过程：
+  - $$X_{t} = \frac{1}{\sqrt{n}}\sum_{k=0}^{n-1}\alpha_kZ_k$$
+  - $P(X_0=0) = P(\frac{1}{\sqrt{n}} = 0|{\rm dist}(0,D)) = {\rm Cov}(Z_{0},Z_{N})$
+- $(X_t)_{t\in \R^+}$ 为 centered Gaussian process，满足：
+  - ${\rm Cov}(X_s,X_t)=\inf(s,t)$
+  - $P(X_{s+h}=x|X_s=y) = P(\bar{Y}_{s+h} + h\cdot y = x)$
+- 根据定义，$${\rm Cov}(X_s,X_t)=\inf(s,t)$$
+  显然，满足这个条件。
+
+2. 局部假设：
+- 由于零均值高斯过程的定义，$(X_t)_{t\in \R^+}$ 是 centered Gaussian process，根据费马普拉森范围法则：
+  - $${\rm Var}(X_{s+h}) = {\rm Cov}^2(X_s,X_{s+h})$$
+  - $P(\bar{Y}_{s+h} + h\cdot x = y|X_s=x) = P(\bar{Y}_h + h\cdot x = y)$
+  可以得到：
+  - $${\rm Cov}(X_{s+h},X_{(h+t)^+})= {\rm Var}(X_s + (h+t)\cdot Z)$$
+  - $P(X_{s+h}=x|X_s=(h+t))$ = 在$[0,h)$内的概率分布（预期值），根据定义：
+  - $$P(X_{s+h}=x) = P(Z_n\le (h+t))$$
+  
+3. 后验贝叶斯算法：
+- 在满足上面的条件的基准模型时，${\rm E}[X_s|X_{<s}] = 0$，因为观测到的概率不是零。这样，我们可以使用后验贝叶斯算法：
+  1. 对当前状态$s$进行假设驱动回归估计：
+      - 根据定义：$$\hat{\alpha}_n(s) = n^{-1/2} \sum_{k=0}^{n-1} \hat{f}_k(s)$$
+  2. 对前验概率分布假设较高的状态$t$进行回归估计：
+      - 根据定义：$$\hat{\theta}_{0,n}(t) = n^{-1/2} \sum_{k=0}^{n-1}\hat{f}_k(t)$$
+  3. 对满足后验贝叶斯条件下的状态$s$的期望值求解：
+      - $\bar{X}_{t} = \int_0^t f(s)\sigma dW(s)$
+        根据定义：$$\E[X_{s+h}]- X_{s} = \int_0^h f'(s)d\sigma$$
+  4. 对满足后验贝叶斯条件下的期望值求解：
+      - $\bar{Y}_{t} = {\rm E}[X_{t+1}|X_0=x]$
+        根据定义：$$\E[X_{t+1}]- X_t = \int_0^1 f(s)\sigma(dW_s)$$
+  5. 对满足后验贝叶斯条件下的期望值求解：
+      - $\bar{h} = \E[X_{h}]$
+        根据定义：$$\E[\int_0^1f(s)\sigma(dW_s)]= h$$
+  6. 结束
+
+注意：这并不是所有的可能情况（例如，如果未知是否有零均值高斯过程或者邻居数字不确定），因为我们只需要考虑了以上讨论并且根据所提供的结论。
+
+Question 2:
+证明：若 $W_t$ 为布朗运动，则 $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ 亦为布朗运动（时间反转/时间反转变换 Time Inversion）。
+
+Answer:
+你正在解答一道金融数学题。
+请用中文给出简洁、严谨的数学答案。不要输出隐藏的推理过程或冗长解释。公式请使用 LaTeX。
+
+题目背景：
+无
+
+全局假设：
+无
+
+前面的问题及你之前的回答：
+问题 1:
+证明过程 $(X_t)_{t\in \R^+}$ 为布朗运动（Brownian motion）当且仅当： $P(x)=\exp(\int_0^x f(s)ds)$，可使用该公式将约瑟夫-赫尔蒂系统转换成了零均值高斯过程（centered Gaussian process）、满足：
+   - $$X_{t} = \frac{1}{\sqrt{n}}\sum_{k=0}^{n-1}\alpha_kZ_k$$
+   - $P(X_0=0) = P(\frac{1}{\sqrt{n}} = 0|{\rm dist}(0,D)) = {\rm Cov}(Z_{0},Z_{N})$
+   - $(X_t)_{t\in \R^+}$ 为 centered Gaussian process，满足：
+   - ${\rm Cov}(X_s,X_t)=\inf(s,t)$
+   - $P(X_{s+h}=x|X_s=y) = P(\bar{Y}_{s+h} + h\cdot y = x)$
+- 由于零均值高斯过程的定义，$(X_t)_{t\in \R^+}$ 是 centered Gaussian process，根据费马普拉森范囊法：
+   - $${\rm Var}(X_{s+h}) = {\rm Cov}^2(X_s,X_{s+h})$$
+   - $P(\bar{Y}_{s+h} + h\cdot x = y|X_s=x) = P(\bar{Y}_h + h\cdot x = y)$
+  可以得到：
+      $${\rm Cov}(X_{s+1}$& | $^2$的$\max$ |user|, 本体

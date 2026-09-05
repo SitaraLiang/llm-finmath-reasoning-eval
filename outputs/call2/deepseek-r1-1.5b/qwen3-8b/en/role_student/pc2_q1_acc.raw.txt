@@ -1,0 +1,34 @@
+### Question block 1
+<think>
+
+```yml
+atoms:
+- preconditions:
+  - "X_0 = 0"
+  - "(X_t)_{t \in \mathbb{R}^+} is a centered Gaussian process"
+  - "\text{Cov}(X_s, X_t) = s \wedge t"
+  arguments:
+  - "Brownian motion characterization"
+  outcomes:
+  - "X_t is a Brownian motion"
+```
+
+### Question block 2
+<think>
+Okay, let's see. The user is asking about the process $ X_t = t W_{1/t} $ and whether it's a Brownian motion. They mentioned some calculations and confusion about covariance between increments. I need to verify if this process indeed satisfies all the properties of a Brownian motion.
+
+First, I remember that a standard Brownian motion (BM) has independent increments, Gaussian increments with mean 0 and variance equal to the time difference, and continuous paths. So, I need to check these properties for $ X_t $.
+
+Starting with $ X_0 $: Plugging t=0 into $ X_t $, we get $ 0 \times W_{\infty} $. Wait, but $ W_{\infty} $ isn't defined. However, as t approaches 0 from the right, $ 1/t $ approaches infinity. But the Brownian motion $ W_t $ is defined for t ≥ 0, but $ W_{\infty} $ isn't a standard term. Maybe there's a misunderstanding here. Wait, actually, the process $ X_t $ is defined for t > 0, and at t=0, it's 0 by continuity? Or is there a different definition?
+
+Wait, the user might have defined $ X_t $ for t > 0, and at t=0, it's 0. So that's okay. So $ X_0 = 0 $.
+
+Next, the increments. For any t > 0, the increment $ X_{t + h} - X_t $ should be Gaussian. Let's see. $ X_{t + h} = (t + h) W_{1/(t + h)} $, and $ X_t = t W_{1/t} $. The difference would be $ (t + h) W_{1/(t + h)} - t W_{1/t} $. Is this Gaussian? Well, since $ W_{1/(t + h)} $ and $ W_{1/t} $ are both Brownian motions at different times, their linear combination would be Gaussian. So yes, the increment is Gaussian.
+
+Now, the variance of the increment. Earlier, the user computed that Var(X_{s + h} - X_s) = h. Let me verify that again. Let's take s and h such that s + h = t. Then, Var(X_t - X_s) = Var( t W_{1/t} - s W_{1/s} ). Expanding this, it's Var(t W_{1/t}) + Var(s W_{1/s}) - 2 Cov(t W_{1/t}, s W_{1/s} ). 
+
+But since $ W_{1/t} $ and $ W_{1/s} $ are Brownian motions at different times. For example, if t > s, then 1/t < 1/s. So, the covariance between $ W_{1/t} $ and $ W_{1/s} $ is min(1/t, 1/s) = 1/t. Therefore, Cov(t W_{1/t}, s W_{1/s}) = t * s * Cov(W_{1/t}, W_{1/s}) = t s * (1/t) = s. 
+
+So, Var(X_t - X_s) = t^2 * Var(W_{1/t}) + s^2 * Var(W_{1/s}) - 2 * s. Since Var(W_{1/t}) = 1/t, so:
+
+= t^2 * (1/t) + s^2 * (1/s) - 2s = t + s - 2s = t - s. Wait, but t = s + h, so t - s = h. So Var(X_{s + h} - X_s) = h. That matches the variance of a standard

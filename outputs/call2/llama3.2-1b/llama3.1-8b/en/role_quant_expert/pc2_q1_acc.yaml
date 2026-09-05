@@ -1,0 +1,51 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_quant_expert
+prompt_type: prompt_accumulation
+call1_output_mode: plain_text
+call1_model: llama3.2-1b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - A process $(X_t)_{t\in \R^+}$ is a Brownian motion
+        arguments:
+        - 'It starts at zero: $X_0=0$.'
+        outcomes:
+        - $X_0=0$
+    -   preconditions:
+        - A process $(X_t)_{t\in \R^+}$ is a Brownian motion
+        arguments:
+        - 'It has stationary increments: $\lim_{s\to t}\sigma(X_s,X_t)=0$ for all
+            $s<t$.'
+        outcomes:
+        - $\lim_{s\to t}\sigma(X_s,X_t)=0$ for all $s<t$
+    -   preconditions:
+        - A process $(X_t)_{t\in \R^+}$ is a Brownian motion
+        arguments:
+        - 'It has independent increments: $\forall s<t$, $\mathbb{E}(X_u-X_v) = 0$
+            for all $u<v$.'
+        outcomes:
+        - $\forall s<t$, $\mathbb{E}(X_u-X_v) = 0$ for all $u<v$
+    -   preconditions:
+        - A process $(X_t)_{t\in \R^+}$ is a Brownian motion
+        arguments:
+        - It is continuous in each variable.
+        outcomes:
+        - It is continuous in each variable
+    -   preconditions:
+        - $X_0=0$
+        - $(X_t)_{t\in \R^+}$ is a centered Gaussian process
+        arguments:
+        - ${\rm Cov}(X_s,X_t)=\inf(s,t)$
+        outcomes:
+        - ${\rm Cov}(X_s,X_t)=\inf(s,t)$
+-   atoms:
+    -   preconditions:
+        - Given that (X_t)_{t∈ ℝ⁺} is a centered Gaussian process with covariance
+            matrix Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Ito isometry
+        outcomes:
+        - Var(X_s-X_0)=s(0)-[X_0]^2=s-0=s

@@ -1,0 +1,23 @@
+pc: '4'
+exercise: '4'
+language: en
+variation: baseline
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: deepseek-r1-7b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - $\tau$ is a bounded stopping time
+        arguments:
+        - Optional Stopping Theorem applied to Brownian motion, which is a martingale
+        outcomes:
+        - $\E(W_\tau) = \E(W_0) = 0$
+-   atoms:
+    -   preconditions:
+        - $\tau$ is a bounded stopping time
+        arguments:
+        - Calculation
+        outcomes:
+        - $\E[W_\tau^2] = \E[\tau]$

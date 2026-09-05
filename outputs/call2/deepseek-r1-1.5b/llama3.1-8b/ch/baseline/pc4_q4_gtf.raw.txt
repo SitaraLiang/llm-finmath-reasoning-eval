@@ -1,0 +1,21 @@
+### Question block 1
+```yml
+atoms:
+- preconditions: []
+  arguments:
+    - tau: 有界停时
+  outcomes:
+    - E[W_tau] = W_0
+- preconditions: []
+  arguments:
+    - W_t: "标准布朗运动"
+    - tau: 可预测（有界）随机变量
+  outcomes:
+    - E[W_tau] = W_0
+- preconditions: []
+  arguments:
+    - W_t: 零均值过程
+    - tau: 有界停时
+  outcomes:
+    - E[W_tau] = 0
+```

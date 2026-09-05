@@ -1,0 +1,26 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_student
+prompt_type: prompt_accumulation
+call1_output_mode: plain_text
+call1_model: qwen3-0.6b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X₀ = 0
+        - (X_t) is a centered Gaussian process
+        - Cov(X_s, X_t) = inf(s, t)
+        arguments:
+        - Brownian motion definition and properties
+        outcomes:
+        - Process (X_t)_{t∈ℝ⁺} is Brownian motion if and only if the given conditions
+            hold
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Calculation of increments and covariance
+        outcomes:
+        - '{X_t = t W_{1t}, t > 0, X_0 = 0} is a Brownian motion too'

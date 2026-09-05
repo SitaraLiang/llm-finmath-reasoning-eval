@@ -1,0 +1,43 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_quant_expert
+prompt_type: strictly_sequential
+call1_output_mode: plain_text
+call1_model: qwen2.5-coder-0.5b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - A process $\{X_t\}_{t\in \mathbb{R}^+}$ is given.
+        arguments:
+        - Brownian motion
+        outcomes:
+        - The process satisfies the conditions of a Brownian motion.
+    -   preconditions:
+        - The process has a common expectation, which can be expressed as $\mu_X =
+            0$.
+        - The process is centered, meaning that there exists a mean $\mu$ and a standard
+            deviation $\sigma$ such that $X_t = \mu + \sigma Z$, where $Z$ is a normal
+            random variable.
+        arguments:
+        - Covariance matrix
+        outcomes:
+        - The covariance matrix is zero.
+    -   preconditions:
+        - The process has a common expectation, which can be expressed as $\mu_X =
+            0$.
+        - The process is centered, meaning that there exists a mean $\mu$ and a standard
+            deviation $\sigma$ such that $X_t = \mu + \sigma Z$, where $Z$ is a normal
+            random variable.
+        arguments:
+        - Covariance function
+        outcomes:
+        - The covariance function is constant for all $X_t$ and all time $t$.
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Transformation of the process using u = 1/t
+        outcomes:
+        - The transformed process satisfies the properties of Brownian motion

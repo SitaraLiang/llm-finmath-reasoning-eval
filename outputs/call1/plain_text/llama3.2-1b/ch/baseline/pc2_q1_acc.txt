@@ -1,0 +1,162 @@
+Exercise: pc2_q1
+Model: llama3.2:1b
+Variation: baseline
+Prompt type: prompt_accumulation
+
+Question 1:
+证明过程 $(X_t)_{t\in \R^+}$ 为布朗运动（Brownian motion）当且仅当： $X_0=0$, $(X_t)_{t\in \R^+}$ 为零均值高斯过程（centered Gaussian process）, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+$\boxed{(X_t)_{t\in \R^+} = \{B_t: t \geq 0\}}$
+
+Question 2:
+证明：若 $W_t$ 为布朗运动，则 $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ 亦为布朗运动（时间反转/时间反转变换 Time Inversion）。
+
+Answer:
+$\begin{aligned}
+P(X_s=\frac s{\frac 12}\;W_{\frac s}{\frac 32},s>0)&=P(\min(W_t,t))\\
+&=\int_0^t P(\min(W_u,u))du。
+\end{aligned}$ 
+
+注意：当且仅当 $\min(W_t,t)=0$ 时，$\int_0^t P(\min(W_u,u))du>0.$
+
+因为 $W_t$ 为布朗运动，当且仅当时间序列所有元素都有相同的分布时，它是零均值高斯过程。 
+
+因此，$P(X_s=\frac s{\frac 12}\;W_{\frac 1t},s>0)=P(\min(W_u,u))= \int_0^u P(\min(W_v,v))dv$当且仅当$\min(W_t,t)=0$时。
+
+$$P(\min(W_t,t)=0)=P(W_t>0)=1-\int_{-}^{0}P(W_s=s)ds=\int_0^s(1-p(s))^uds.$$
+
+现在，由于时间序列 $W_t$ 为布朗运动，我们有： 
+
+$$P(W_t>0)=\int_0^\infty P(W_s>s)ds,$$
+这意味着
+$$1-\int_{-}^{0}P(W_s=s)ds=\int_0^s(1-p(s))^uds.$$
+
+由于 $p(t)\geq 0$，因此当且仅当 $(1-p(t))=0$ 时，$\frac d{dt}s=p(s)$。设 $F(p)=\int_0^\infty (1-p(u))^ududu$，则 $$P(W_s>s)=F'(s)>0.$$ 
+
+但是，由于 $W_t>0$ 且 $t>0$，因此 $\min(W_t,t)>0$ . 因此，
+$$\begin{aligned}
+F'(s)&=\lim_{h \to 0^+} \frac F(s+h) - F(s) \\
+&= \lim_{h \to 0^+} \left(1-\int_0^\infty (1-p(u))du\right)^h\\
+&=\lim_{h \to 0^+} \left(\int_0^\infty (1-p(u)-1)du\right)^h \\
+&= \lim_{h \to 0^+} (-\frac{h}{2})^h\\
+&=\lim_{h \to 0^+} e^{-\frac h2}.
+\end{aligned}$$ 
+
+由于 $F'(s)>0$，因此当且仅当 $F(s)=0$ 时，$\frac d{dt}s=1-p(s)$。我们有 $p(s) = F'(s)=0$，并且由于 $P(W_s>0)=F(s), s \in [0,\infty),$ 且 $\lim_{s \to 0^+} P(W_s>0)=\frac 12,$ 我们必须有 $F(1)=\frac 12.$ 
+
+然后，我们可以求解 $p(t)$，得到 $$P(\min(W_u,u)) = \int_0^\infty p(s) ds.$$ 
+
+现在，由于 $\min(W_t,t)>0$，我们有：$$\begin{aligned}
+\int_0^\infty P(\min(W_u,u))du=\int_0^{\frac 12} (1-p(u))^udu + \int_{\frac 12}^\infty p(u) du &amp;= \left. [u - u(1-u)]\right|_{0}^{1/2} + \left. u\right|_{1/2}^{\infty}\\
+&amp;=\frac 14。
+\end{aligned}$$
+
+$\begin{aligned}
+P(\min(W_u,u))&amp;=P(W_s=s)\\
+\Rightarrow P(s)&amp;=\int_0^\infty p(u)du = \frac 14.
+\end{aligned}$
+
+因此，$$1-\int_{-}^{0}P(W_s=s)ds=\int_0^s(1-p(s))^uds.$$
+
+现在，由于 $p(t)\geq 0$，因此当且仅当 $(1-p(t))=0$ 时，$\frac d{dt}s=p(s)$。设 $F(p)=\int_0^\infty (1-p(u))^ududu$，则 $$P(W_s>s)=F'(s)>0.$$ 
+
+但是，由于 $W_t>0$ 且 $t>0$，因此 $\min(W_t,t)>0$ . 因此，
+
+$$\begin{aligned}
+F'(s)&=\lim_{h \to 0^+} \frac F(s+h) - F(s) \\
+&= \lim_{h \to 0^+} \left(1-\int_0^\infty (1-p(u))du\right)^h\\
+&=\lim_{h \to 0^+} \left(\int_0^\infty (1-p(u)-1)du\right)^h \\
+&= \lim_{h \to 0^+} (-\frac{h}{2})^h\\
+&=\lim_{h \to 0^+} e^{-\frac h2}.
+\end{aligned}$$ 
+
+由于 $F'(s)>0$，因此当且仅当 $F(s)=0$ 时，$\frac d{dt}s=1-p(s)$。我们有 $p(s) = F'(s)=0$，并且由于 $P(W_s>0)=F(s), s \in [0,\infty),$ 且 $\lim_{s \to 0^+} P(W_s>0)=\frac 12,$ 我们必须有 $F(1)=\frac 12.$ 
+
+然后，我们可以求解 $p(t)$，得到 $$P(\min(W_u,u)) = \int_0^\infty p(s) ds.$$ 
+
+现在，由于 $\min(W_t,t)>0$，我们有：$$\begin{aligned}
+\int_0^\infty P(\min(W_u,u))du=\int_0^{\frac 12} (1-p(u))^udu + \int_{\frac 12}^\infty p(u) du &amp;= \left. [u - u(1-u)]\right|_{0}^{1/2} + \left. u\right|_{1/2}^{\infty}\\
+&amp;=\frac 14。
+\end{aligned}$$
+
+$\begin{aligned}
+P(\min(W_u,u))&amp;=P(W_s=s)\\
+\Rightarrow P(s)&amp;=\int_0^\infty p(u)du = \frac 14.
+\end{aligned}$
+
+因此，
+
+$$1-\int_{-}^{0}P(W_s=s)ds=-\left(1-P(\min(W_u,u))\right).$$ 
+
+由于 $W_t>0$ 和 $t>0$，则 $\min(W_t,t)>0$。因为这等同于$\inf(s,t)$ 且当且仅当 $s=t$ 时才满足这一事实，因此
+
+$$1-\int_{-}^{0}P(W_s=s)ds=-\left(1-P(\min(W_u,u))\right).$$ 
+
+现在，由于 $p(t)\geq 0$，因此当且仅当 $(1-p(t))=0$ 时，$\frac d{dt}s=p(s)$。设 $F(p)=\int_0^\infty (1-p(u))^ududu$，则 $$P(W_s>s)=F'(s)>0.$$ 
+
+但是，由于 $W_t>0$ 且 $t>0$，因此 $\min(W_t,t)>0$ . 因此，
+
+$$\begin{aligned}
+F'(s)&=\lim_{h \to 0^+} \frac F(s+h) - F(s) \\
+&= \lim_{h \to 0^+} \left(1-\int_0^\infty (1-p(u))du\right)^h\\
+&=\lim_{h \to 0^+} \left(\int_0^\infty (1-p(u)-1)du\right)^h \\
+&= \lim_{h \to 0^+} (-\frac{h}{2})^h\\
+&=\lim_{h \to 0^+} e^{-\frac h2}.
+\end{aligned}$$ 
+
+由于 $F'(s)>0$，因此当且仅当 $F(s)=0$ 时，$\frac d{dt}s=1-p(s)$。我们有 $p(s) = F'(s)=0$，并且由于 $P(W_s>0)=F(s), s \in [0,\infty),$ 且 $\lim_{s \to 0^+} P(W_s>0)=\frac 12,$ 我们必须有 $F(1)=\frac 12.$ 
+
+然后，我们可以求解 $p(t)$，得到 $$P(\min(W_u,u)) = \int_0^\infty p(s) ds.$$ 
+
+现在，由于 $\min(W_t,t)>0$，我们有：$$\begin{aligned}
+\int_0^\infty P(\min(W_u,u))du=\int_0^{\frac 12} (1-p(u))^udu + \int_{\frac 12}^\infty p(u) du &amp;= \left. [u - u(1-u)]\right|_{0}^{1/2} + \left. u\right|_{1/2}^{\infty}\\
+&amp;=\frac 14。
+\end{aligned}$$
+
+$\begin{aligned}
+P(\min(W_u,u))&amp;=P(W_s=s)\\
+\Rightarrow P(s)&amp;=\int_0^\infty p(u)du = \frac 14.
+\end{aligned}$
+
+因此，
+
+$$1-\int_{-}^{0}P(W_s=s)ds=-\left(1-P(\min(W_u,u))\right).$$ 
+
+由于 $W_t>0$ 和 $t>0$，则 $\min(W_t,t)>0$。因为这等同于$\inf(s,t)$ 且当且仅当 $s=t$ 时才满足这一事实，因此
+
+$$1-\int_{-}^{0}P(W_s=s)ds=-\left(1-P(\min(W_u,u))\right).$$ 
+
+现在，由于 $p(t)\geq 0$，因此当且仅当 $(1-p(t))=0$ 时，$\frac d{dt}s=p(s)$。设 $F(p)=\int_0^\infty (1-p(u))^ududu$，则 $$P(W_s>s)=F'(s)>0.$$ 
+
+但是，由于 $W_t>0$ 且 $t>0$，因此 $\min(W_t,t)>0$ . 因此，
+
+$$\begin{aligned}
+F'(s)&=\lim_{h \to 0^+} \frac F(s+h) - F(s) \\
+&= \lim_{h \to 0^+} \left(1-\int_0^\infty (1-p(u))du\right)^h\\
+&=\lim_{h \to 0^+} \left(\int_0^\infty (1-p(u)-1)du\right)^h \\
+&= \lim_{h \to 0^+} (-\frac{h}{2})^h\\
+&=\lim_{h \to 0^+} e^{-\frac h2}.
+\end{aligned}$$ 
+
+由于 $F'(s)>0$，因此当且仅当 $F(s)=0$ 时，$\frac d{dt}s=1-p(s)$。我们有 $p(s) = F'(s)=0$，并且由于 $P(W_s>0)=F(s), s \in [0,\infty),$ 且 $\lim_{s \to 0^+} P(W_s>0)=\frac 12,$ 我们必须有 $F(1)=\frac 12.$ 
+
+然后，我们可以求解 $p(t)$，得到 $$P(\min(W_u,u)) = \int_0^\infty p(s) ds.$$ 
+
+现在，由于 $\min(W_t,t)>0$，我们有：$$\begin{aligned}
+\int_0^\infty P(\min(W_u,u))du=\int_0^{\frac 12} (1-p(u))^udu + \int_{\frac 12}^\infty p(u) du &amp;= \left. [u - u(1-u)]\right|_{0}^{1/2} + \left. u\right|_{1/2}^{\infty}\\
+&amp;=\frac 14。
+\end{aligned}$$
+
+$\begin{aligned}
+P(\min(W_u,u))&amp;=P(W_s=s)\\
+\Rightarrow P(s)&amp;=\int_0^\infty p(u)du = \frac 14.
+\end{aligned}$
+
+因此，
+
+$$1-\int_{-}^{0}P(W_s=s)ds=-\left(1-P(\min(W_u,u))\right).$$ 
+
+由于 $W_t>0$ 和 $t>0$，则 $\min(W_t,t)>0$。因为这等同于$\inf(s,t)$ 且当且仅当 $s=t$ 时才满足这一事实，因此
+
+$$1-\int_{-}^{0}P(W_s=s)ds=-

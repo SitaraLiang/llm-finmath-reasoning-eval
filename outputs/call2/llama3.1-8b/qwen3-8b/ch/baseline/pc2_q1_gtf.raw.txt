@@ -1,0 +1,38 @@
+### Question block 1
+<think>
+</think>
+
+```yml
+atoms:
+  - preconditions:
+      - "X_0=0"
+      - "(X_t)_{t\in \R^+} 为零均值高斯过程"
+      - "Cov(X_s,X_t)=\inf(s,t)"
+    arguments:
+      - "Cov(X_s,X_t)=\inf(s,t) \Leftrightarrow \forall s<t, Cov(X_s,X_t)={s}"
+    outcomes:
+      - "Cov(X_s,X_t)=\inf(s,t) \Leftrightarrow \forall s<t, E(X_s X_t) = {s}"
+  - preconditions:
+      - "Cov(X_s,X_t)=\inf(s,t)"
+    arguments:
+      - "E(X_s X_t) = {s} \Leftrightarrow \forall s<t, E((X_t - X_s)^2) = t-s"
+    outcomes:
+      - "Cov(X_s,X_t)=\inf(s,t) \Leftrightarrow \forall s<t, E((X_t - X_s)^2) = t-s"
+  - preconditions:
+      - "E((X_t - X_s)^2) = t-s"
+    arguments:
+      - "E((X_t - X_s)^2) = t-s \Leftrightarrow \frac{1}{t-s}\int_{s}^{t}E((X_u - X_s)^2)\mathrm{d}u= 1"
+    outcomes:
+      - "E((X_t - X_s)^2) = t-s \Leftrightarrow \frac{1}{t-s}\int_{s}^{t}E((X_u - X_s)^2)\mathrm{d}u= 1"
+  - preconditions:
+      - "\frac{1}{t-s}\int_{s}^{t}E((X_u - X_s)^2)\mathrm{d}u= 1"
+    arguments:
+      - "\frac{1}{t-s}\int_{s}^{t}E((X_u - X_s)^2)\mathrm{d}u= 1 \Leftrightarrow E\left(\frac{1}{t-s}\int_{s}^{t}(X_u - X_s)^2\mathrm{d}u\right)= 1"
+    outcomes:
+      - "\frac{1}{t-s}\int_{s}^{t}E((X_u - X_s)^2)\mathrm{d}u= 1 \Leftrightarrow E\left(\frac{1}{t-s}\int_{s}^{t}(X_u - X_s)^2\mathrm{d}u\right)= 1"
+  - preconditions:
+      - "E\left(\frac{1}{t-s}\int_{s}^{t}(X_u - X_s)^2\mathrm{d}u\right)= 1"
+    arguments:
+      - "E\left(\frac{1}{t-s}\int_{s}^{t}(X_u - X_s)^2\mathrm{d}u\right)= 1 \Leftrightarrow E\left(\lim_{n\to\infty}\sum_{i=0}^{n-1}(X_{s+\frac{i(t-s)}{n}}^2 + X_{s+\frac{(i+1)(t-s)}{n}}^2 - 2X_{s+\frac{i(t-s)}{n}}X_{s+\frac{(i+1)(t-s)}{n}})\cdot \frac{(t-s)}{n}\right)= 1"
+    outcomes:
+      - "E\left(\frac{1}{t-s}\int_{s}^{t}(X

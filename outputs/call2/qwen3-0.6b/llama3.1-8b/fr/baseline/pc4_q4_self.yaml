@@ -1,0 +1,57 @@
+pc: '4'
+exercise: '4'
+language: fr
+variation: baseline
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: qwen3-0.6b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - tau est un temps d'arrêt borné
+        outcomes:
+        - E(W_tau) = E(W_t)
+    -   preconditions: []
+        arguments:
+        - W_t est un mouvement brownien
+        outcomes:
+        - E(W_tau) = 0
+    -   preconditions: []
+        arguments:
+        - tau est un temps d'arrêt borné
+        - W_t est un mouvement brownien continu
+        outcomes:
+        - E(W_tau) = E(W_t)
+    -   preconditions: []
+        arguments:
+        - E(W_t) = 0 pour tout t
+        outcomes:
+        - E(W_tau) = 0
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - tau est un temps d'arrêt borné
+        outcomes:
+        - E(W_tau^2) = 0
+    -   preconditions: []
+        arguments:
+        - W_t est une marche aléatoire
+        outcomes:
+        - E[W_t] = 0
+    -   preconditions: []
+        arguments:
+        - tau est un temps d'arrêt borné
+        outcomes:
+        - E(W_tau^2) = E[W_tau]^2 + Var(W_tau)
+    -   preconditions: []
+        arguments:
+        - Var(W_tau) = E[W_tau^2] - (E[W_tau])^2
+        outcomes:
+        - E(W_tau^2) = E[W_tau]^2 + Var(W_tau)
+    -   preconditions: []
+        arguments:
+        - tau est un temps d'arrêt borné
+        outcomes:
+        - E(W_tau^2) = 0

@@ -1,0 +1,115 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_student
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: llama3.2-1b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0=0
+        - X is a centered Gaussian process
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Induction on n
+        outcomes:
+        - X is a Brownian motion
+    -   preconditions:
+        - X_0=0
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Ito's formula
+        outcomes:
+        - X is a centered Gaussian process
+    -   preconditions:
+        - X_0=0
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Ito's formula
+        outcomes:
+        - Cov(X_t,Y_t)=inf(t,t)
+    -   preconditions:
+        - X_0=0
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Strong Markov property
+        outcomes:
+        - X is a Brownian motion
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        - X_t = t W_{1/t}, t > 0, X_0 = 0
+        arguments:
+        - Calculation
+        outcomes:
+        - X_t is a Brownian motion
+    -   preconditions:
+        - dX_t = d(X_t) + 1/2 σ² (X_t - X_0)² dt
+        - dX_t = d(X_t) + σ² X_t dt
+        arguments:
+        - Calculation
+        outcomes:
+        - Cov(X_s, X_t) = inf(s, t)
+    -   preconditions:
+        - W_{s-t} is a standard Brownian motion
+        arguments:
+        - Calculation
+        outcomes:
+        - dW_{s-t} = d(W_{s-t}) = W_{s-t} dt + σ² (W_{s-t} - X_0)² ds
+    -   preconditions:
+        - dW_s = d(W_s) = W_s dt + 2σ² W_s (W_s - X_0)
+        arguments:
+        - Calculation
+        outcomes:
+        - dW_s = d(W_s) = W_s dt + σ² (W_s)² ds
+    -   preconditions:
+        - X_0 = 0
+        arguments:
+        - Calculation
+        outcomes:
+        - dW_s = d(W_s) = W_s dt + σ² (W_s)² ds
+    -   preconditions:
+        - dX_t = X_t d(W_t)
+        arguments:
+        - Calculation
+        outcomes:
+        - dX_t = X_t (W_t dt + 1/2 σ² (W_t)² dt - t dt)
+    -   preconditions:
+        - (X_t)_{t ∈ ℝ^+} is a centered Gaussian process
+        arguments:
+        - Calculation
+        outcomes:
+        - dY_t = d(Y_t) = Y_t (Var X_t) dt + 2σ² Y_t (W_t)² ds
+    -   preconditions:
+        - Cov(X_s, Y_t) = s
+        arguments:
+        - Calculation
+        outcomes:
+        - dY_t = d(Y_t) = Y_t (Var X_t) dt + 2σ² Y_t (W_t)² ds
+    -   preconditions:
+        - X_0 = 0
+        arguments:
+        - Calculation
+        outcomes:
+        - Y_0 = 0, dY_0 = d(Y_0) = Y_0 (Var X_t) dt + σ² Y_0 (W_t)² ds - t dt
+    -   preconditions:
+        - dY_t = d(Y_t)
+        arguments:
+        - Calculation
+        outcomes:
+        - dX_t = X_t (W_t dt + σ² (W_t)² dt - t dt) = X_t Y_t dt + 2σ² X_t Y_t (W_t)²
+            ds
+    -   preconditions:
+        - dX_t = X_t (W_t dt + σ² (W_t)² dt - t dt)
+        arguments:
+        - Calculation
+        outcomes:
+        - (X_t)_{t ∈ ℝ^+} is a Brownian motion
+    -   preconditions:
+        - (X_t)_{t ∈ ℝ^+} is a Brownian motion
+        arguments:
+        - Calculation
+        outcomes:
+        - The process (X_t / t W_{1/t}, t > 0, X_0 = 0) is a Brownian motion

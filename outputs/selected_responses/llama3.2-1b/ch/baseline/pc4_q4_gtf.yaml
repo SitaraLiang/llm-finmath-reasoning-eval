@@ -1,0 +1,24 @@
+pc: '4'
+exercise: '4'
+language: ch
+variation: baseline
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: llama3.2-1b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - τ 为有界停时
+        arguments:
+        - 使用期望的线性性质和布朗运动的独立性
+        outcomes:
+        - E(W_τ) = (3W_t² + W_{t+τ}²) / (2W_t W_{t+τ})
+-   atoms:
+    -   preconditions:
+        - τ 是有界停时
+        arguments:
+        - 根据停时的定义，τ 是一个随机变量，满足 τ < ∞ 几乎必然
+        - W_τ 是布朗运动在停时 τ 处的值
+        outcomes:
+        - E(W_τ^2) = ∫₀^∞ (W_τ(t))² · P({W_τ(t) ≤ x}) dt

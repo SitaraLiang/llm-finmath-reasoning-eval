@@ -1,0 +1,73 @@
+Exercise: pc2_q1
+Model: llama3.2:1b
+Variation: role_quant_expert
+Prompt type: prompt_accumulation
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, and ${\rm Cov}(X_s,X_t)=\inf(s,t)$, we can proceed as follows:
+
+If $(X_t)_{t\in \R^+}$ is a Brownian motion, then it satisfies the following properties:
+- It starts at zero: $X_0=0$.
+- It has stationary increments: $\lim_{s\to t}\sigma(X_s,X_t)=0$ for all $s<t$.
+- It has independent increments: $\forall s<t$, $\mathbb{E}(X_u-X_v) = 0$ for all $u<v$.
+- It is continuous in each variable.
+
+Since $(X_t)_{t\in \R^+}$ is centered Gaussian, we have that:
+$$
+\begin{aligned}
+X_0 &= 0 \\
+X_t - X_s & \sim \mathcal{N}(0,t-s), \text{ for all } s < t,
+\end{aligned}
+$$
+
+and
+$$
+\begin{aligned}
+{\rm Cov}(X_s,X_t) &= \inf(s,t) \\
+&= \sup_{u,v} (u-v)(X_u-X_v).
+\end{aligned}
+$$
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+Let's tackle the second question.
+
+Given that $(X_t)_{t\in \R^+}$ is a centered Gaussian process with covariance matrix $\mathbb{C}\text{ov}(X_s,X_t)=\inf(s,t)$, we want to show that it is a Brownian motion.
+
+First, note that since $X_0=0$ and $(X_t)_{t\in \R^+}$ is centered Gaussian, the increments $X_{t+s}-X_t$ are independent and normally distributed with mean 0 and variance $\inf(s,t)$.
+
+Next, we use the Ito isometry to verify that the quadratic variation of $(X_t)_{t\in \R^+}$ is equal to 1. By definition,
+
+$$
+\text{Var}(X_{t+s}-X_t)=E((X_{t+s}-X_t)^2)-[E(X_{t+s})-E(X_t)]^2.
+$$
+
+Since $X_s$ is Gaussian, we have that $(X_{t+s}-X_t)^2=\inf(s,t)$ and hence
+
+\begin{align*}
+\text{Var}(X_{t+s}-X_t)&=E(\inf(s,t))-\left[E(X_{t+s})-E(X_t)\right]^2\\
+&=(1)[0]-[E(X_{t+s})-E(X_t)]^2.
+\end{align*}
+
+Now, using the Ito isometry formula for quadratic variation,
+
+$$
+\text{Var}(X_{t+s}-X_t)=s(t-s)-\left[E(X_{t+s})-E(X_t)\right]^2,
+$$
+
+which simplifies to $\inf(s,t)$ since $[E(X_{t+s})-E(X_t)]^2=0$.
+
+Therefore, the quadratic variation of $(X_t)_{t\in \R^+}$ is equal to 1, and by the definition of a Brownian motion,
+
+$$
+\text{Var}(X_s-X_0)=s(0)-[X_0]^2=s-0=s.
+$$
+
+This implies that $X_s$ has mean 0 and variance $s$. Therefore, $(X_t)_{t\in \R^+}$ is a Brownian motion.
+
+Note that this result can also be proved using the quadratic variation of increments.

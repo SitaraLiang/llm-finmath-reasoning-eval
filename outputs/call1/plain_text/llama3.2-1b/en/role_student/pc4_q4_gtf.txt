@@ -1,0 +1,41 @@
+Exercise: pc4_q4
+Model: llama3.2:1b
+Variation: role_student
+Prompt type: ground_truth_forcing
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+$\E(W_\tau) = \frac{1}{\sigma^2} E\left[\exp\left(-\frac{\left(\tau - \mathbb{T}_0 W_\tau\right)^2}{2\sigma^2}\right)\right]$
+
+where $T_0$ is the initial time, $\sigma > 0$, and $\mathbb{T}_0 = \inf \{t \geq 0: W_t \in [W_{\mathbb{T}_0}, W_{\tau}] \text{ for some } t \geq \mathbb{T}_0\}$.
+
+In other words, the expectation of $W_\tau$ can be computed as follows:
+
+$$
+\begin{aligned}
+\E(W_\tau) &= \frac{1}{\sigma^2} E\left[\exp\left(-\frac{\left(\tau - \mathbb{T}_0 W_\tau\right)^2}{2\sigma^2}\right)\right] \\
+&= \frac{1}{\sigma^2} \int_{W_0}^\infty e^{-x^2/2\sigma^2} dx
+\end{aligned}
+$$
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+To compute $\E(W_\tau^2)$ for a Brownian motion $W_t$, we use the properties of quadratic variations and the fact that $(\cdot)^2$ is convex.
+
+
+\begin{align*}
+\mathbb{E}(W_\tau^2) &= \mathbb{E}((W_{\tau - 1})^2 + (W_\tau)^2 - W_{\tau-1}^2) \\
+&= \mathbb{E}\left(\int_0^\tau W_s^2 ds + \int_0^\tau W_\tau^2 ds\right) \\
+&= \mathbb{E}\left(\int_0^\tau (W_s - W_{\tau-1})^2 ds + 2\int_0^\tau W_s W_\tau ds\right)
+\end{align*}
+
+Using the properties of quadratic variations and the fact that $W_t$ is a martingale, we can simplify this expression.
+
+\begin{align*}
+\mathbb{E}(W_\tau^2) &= \int_0^\tau (W_s - W_{\tau-1})^2 ds + 2\int_0^\tau W_s W_\tau ds \\
+&= \int_0^\tau (W_s)^2 ds
+\end{align*}

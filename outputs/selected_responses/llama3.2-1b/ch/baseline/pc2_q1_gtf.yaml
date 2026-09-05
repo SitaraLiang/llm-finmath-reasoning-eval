@@ -1,0 +1,36 @@
+pc: '2'
+exercise: '1'
+language: ch
+variation: baseline
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: llama3.2-1b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0 = 0
+        - X_t 是零均值高斯过程
+        - Cov(X_s, X_t) = inf(s, t)
+        arguments:
+        - X_t 是高斯过程
+        - X_t 的协方差函数满足 Cov(X_s, X_t) = inf(s, t)
+        outcomes:
+        - X_t 是布朗运动
+    -   preconditions:
+        - X_t 是布朗运动
+        arguments:
+        - X_t 的初始值 X_0 = 0
+        - X_t 是高斯过程
+        - X_t 的协方差函数满足 Cov(X_s, X_t) = inf(s, t)
+        outcomes:
+        - X_0 = 0
+        - X_t 是零均值高斯过程
+        - Cov(X_s, X_t) = inf(s, t)
+-   atoms:
+    -   preconditions:
+        - $W_t$ 为布朗运动
+        arguments:
+        - $X_t = t\;W_{\frac{1}{t}}, t > 0, X_0 = 0$
+        outcomes:
+        - $\mathrm{Cov}(X_s,X_t) = \min(s,t)$

@@ -1,0 +1,45 @@
+Exercise: pc2_q1
+Model: tinyllama
+Variation: role_quant_expert
+Prompt type: prompt_accumulation
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+Propositional Implication:
+
+Suppose a process $(X_t)_{t\in \R^+}$ is a Brownian motion under the assumption that $X_0=0$, then it follows that $(X_t)_{t\in \R^+}$ is also a Brownian motion. This holds because, given any two positive real numbers $s$ and $t$, we have that
+
+$${\rm Cov}(X_s,X_t)=\inf(s,t)\enspace(\text{by definition})+\sup(0,t) \inf(s,0) = {\rm Cov}(X_{s-},X_t)+{\rm Cov}(X_0,X_0).$$
+
+Therefore, $(X_t)_{t\in \R^+}$ is a centered Gaussian process and satisfies the required conditions.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+Let us solve the first question in Question 1 and prove that a process $(X_t)_{t\in\R^+}$ is a Brownian motion.
+
+First, we need to define some notations:
+- $B$ is the standard Brownian motion on $\mathbb{R}^+$.
+- $(W_t)_{t\in \R^+}$ denotes a centered Gaussian process with covariance function $g(t)=\frac12 \int_{0}^{t}u^2du$.
+
+Consider the following stochastic integral:
+$$I := \int_0^\infty u X_t dW_t,$$
+which satisfies:
+- $dI = X_tdB$ and hence:
+$$I(s) = sX_s + s^2/2g(s)$$
+for all $s\in\R^+$.
+
+So the process $(X_t)_{t\in\R^+}$ is a Brownian motion.
+
+For Question 2, we first define the process:
+$$\{W_t\}_{t>0} := \sup_{t>0}\{W_{\frac1t}, W_0=0\}$$
+which has covariance function $g(t) = \inf(\frac1t, t)$. Then it satisfies the same stochastic integral as the Brownian motion:
+$$d\{X_t=t\,W_{\frac 1t}\}_{t>0} = \{X_t=t\,W_{\frac 1t}, X_0=0\}.$$
+By definition, $(W_t)_{t>0}$ is a Gaussian process.
+
+Therefore, by applying the same argument in Question 1, we obtain that if $W_t$ is a Brownian motion, then $ \{X_t=t\,W_{\frac 1t}, X_0=0 \}$ is also a Brownian motion.
+
+So the first question is proven and we conclude: Showing that $W_t$ is a Brownian motion implies showing that $ \{X_t=t\,W_{\frac 1t}, X_0=0 \}$ is also a Brownian motion.

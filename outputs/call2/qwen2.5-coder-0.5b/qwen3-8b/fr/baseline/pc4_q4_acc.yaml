@@ -1,0 +1,37 @@
+pc: '4'
+exercise: '4'
+language: fr
+variation: baseline
+prompt_type: prompt_accumulation
+call1_output_mode: plain_text
+call1_model: qwen2.5-coder-0.5b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - τ est un temps d'arrêt borné
+        arguments:
+        - Utilisation de l'équation de Brownien
+        outcomes:
+        - E(W_τ) = w_0 / (√(1 - e^{it_t}) + 1)
+        strength: 1
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - Lorsque $\tau$ est un temps d'arr\^et born\'e
+        outcomes:
+        - Calculer $\E(W_\tau^2)$
+        strength: 1
+    -   preconditions: []
+        arguments:
+        - Utiliser l'équation du mouvement brownien et les propriétés de la variance
+            en temps réel (Var[W(t)])
+        outcomes:
+        - 'Pour $\tau = t$, on a: $\var[W(t)] = \mu^2$'
+        strength: 1
+    -   preconditions: []
+        arguments:
+        - Résultat
+        outcomes:
+        - $\boxed{\mu^2}$
+        strength: 1

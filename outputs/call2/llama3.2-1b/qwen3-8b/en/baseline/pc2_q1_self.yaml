@@ -1,0 +1,90 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: baseline
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: llama3.2-1b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0=0
+        - X_t is a centered Gaussian process
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Use Optional Stopping Theorem
+        outcomes:
+        - E[sup_{s<=t} Cov(X_s,X_t)] = 0
+    -   preconditions:
+        - X_0=0
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Martingale property
+        outcomes:
+        - E[X_t] = 0
+    -   preconditions:
+        - X_0=0
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Strong Markov property
+        outcomes:
+        - Integral of Cov(X_u,X_t) du = 0
+    -   preconditions:
+        - X_0=0
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Martingale property
+        outcomes:
+        - Local time exists
+    -   preconditions:
+        - X_0=0
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Existence of local time
+        outcomes:
+        - X_t is a Brownian motion
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        - X_t = t W_{1/t}, t > 0, X_0 = 0
+        arguments:
+        - Recall the definition of a Brownian motion
+        outcomes:
+        - X_t is a Brownian motion
+    -   preconditions:
+        - X_t is a Brownian motion
+        arguments:
+        - Use the strong Markov property
+        outcomes:
+        - X_t satisfies the martingale property
+    -   preconditions:
+        - X_t satisfies the martingale property
+        arguments:
+        - Show that X_t is a martingale
+        outcomes:
+        - E[X_t | W_s] = X_s for all s < t
+    -   preconditions:
+        - E[X_t | W_s] = X_s for all s < t
+        arguments:
+        - Show that X_t satisfies the martingale property
+        outcomes:
+        - E[X_t] = E[X_s]
+    -   preconditions:
+        - E[X_t] = E[X_s]
+        arguments:
+        - Show that Cov(X_t, X_u) = inf(t, u)
+        outcomes:
+        - Cov(X_t, X_u) = inf(t, u)
+    -   preconditions:
+        - Cov(X_t, X_u) = inf(t, u)
+        arguments:
+        - Show that sup_{s ≤ t} X_s = X_t
+        outcomes:
+        - sup_{s ≤ t} X_s = X_t
+    -   preconditions:
+        - sup_{s ≤ t} X_s = X_t
+        arguments:
+        - Show that X_t is a Brownian motion
+        outcomes:
+        - X_t is a Brownian motion

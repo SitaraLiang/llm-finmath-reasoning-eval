@@ -1,0 +1,378 @@
+Exercise: pc2_q1
+Model: deepseek-r1:1.5b
+Variation: role_quant_expert
+Prompt type: ground_truth_forcing
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+<think>
+Okay, so I need to show that a process (X_t)_{t ∈ ℝ⁺} is a Brownian motion if and only if three conditions are satisfied: X_0 = 0, it's a centered Gaussian process, and its covariance function Cov(X_s, X_t) equals the infimum of s and t. Hmm, let me break this down.
+
+First, I remember that Brownian motion has some very specific properties. One is that it starts at zero, so X_0 = 0. That seems straightforward enough.
+
+Next, being a Gaussian process means that every finite-dimensional distribution is Gaussian. So, for any finite set of times t_1, t_2, ..., t_n, the vector (X_{t_1}, X_{t_2}, ..., X_{t_n}) should be multivariate Gaussian. I think I've heard this before; maybe from my probability class.
+
+Now, the covariance function is given as Cov(X_s, X_t) = inf(s,t). So, for any two times s and t, the covariance between X_s and X_t is just the minimum of s and t. That sounds familiar too. Isn't that how increments of Brownian motion behave? I think in standard Brownian motion, the increment over a longer time interval has variance equal to the length of the interval. So, if we consider Cov(X_s, X_t), it should be proportional to the minimum of s and t.
+
+Wait, let me recall: For Brownian motion, the covariance between B_s and B_t is min(s,t). That makes sense because the covariance measures how much the increments are related. If you have two times where one is after the other, the covariance would just be the variance up to the earlier time since the later time is independent of the earlier.
+
+So, putting it all together: A process that starts at zero, has Gaussian increments (hence centered and Gaussian), and its covariance structure matches the min(s,t) seems exactly like a Brownian motion. That should be both necessary and sufficient conditions.
+
+Let me make sure I didn't miss anything. The problem states it's an equivalence, so both directions need to hold. If a process satisfies these three properties, then it must be a Brownian motion. Conversely, if it is a Brownian motion, it will satisfy these properties by definition.
+
+I think that covers all the bases. Maybe I should write this out more formally, but since the user asked for concise and mathematical answers without extra explanations, I'll stick to just stating the conditions.
+</think>
+
+To show that a process \((X_t)_{t \in \mathbb{R}^+}\) is a Brownian motion if and only if:
+
+1. \(X_0 = 0\),
+2. \((X_t)_{t \in \mathbb{R}^+}\) is a centered Gaussian process,
+3. The covariance function satisfies \(\text{Cov}(X_s, X_t) = \inf(s, t)\),
+
+we proceed as follows:
+
+**Necessity:**
+
+- **Condition 1**: If \(X_0 \neq 0\), then the process cannot be a Brownian motion because it starts at zero by definition.
+  
+- **Condition 2**: For \((X_t)\) to be Gaussian, every finite-dimensional distribution must be Gaussian. This holds for any centered Gaussian process.
+
+- **Condition 3**: The covariance structure of Brownian motion is known to be \(\text{Cov}(B_s, B_t) = \min(s, t)\). Thus, if this condition holds, the covariance function matches that of Brownian motion.
+
+**Sufficiency:**
+
+- If a process satisfies all three conditions, it inherits properties of Brownian motion:
+  
+  - **Condition 1**: It starts at zero.
+  
+  - **Condition 2**: Its finite-dimensional distributions are Gaussian, making it Gaussian overall.
+  
+  - **Condition 3**: The covariance structure matches that of standard Brownian motion.
+
+Therefore, the process is a Brownian motion if and only if these conditions are met.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+<think>
+Okay, so I need to show that the process \( X_t = t W_{1/t} \) for \( t > 0 \) and \( X_0 = 0 \) is a Brownian motion if \( W_t \) is a standard Brownian motion. Hmm, let me think about how to approach this.
+
+First, I remember that a Brownian motion has three main properties: it's a Gaussian process with independent increments, it has stationary increments, and it starts at zero. So I need to verify each of these for \( X_t \).
+
+Starting with the first property: \( X_0 = 0 \). That seems straightforward because when \( t = 0 \), \( X_0 = 0 \times W_{1/0} \), but wait, \( 1/0 \) is undefined. So maybe I should consider the limit as \( t \) approaches 0? Or perhaps define \( X_0 \) separately to be zero regardless of anything else. In any case, since \( W_t \) starts at zero, and multiplied by \( t \), which goes to zero as \( t \to 0 \), so \( X_0 = 0 \). That makes sense.
+
+Next property: \( X_t \) is a Gaussian process. Brownian motion is Gaussian because it's built from Gaussian random variables. So if each increment is a linear transformation of Gaussian increments, then \( X_t \) should also be Gaussian. Let me think about that more carefully.
+
+For any fixed \( t \), the increment \( X_t - X_s = t W_{1/t} - s W_{1/s} \). Since both \( W_{1/t} \) and \( W_{1/s} \) are normal variables, their linear combination is also Gaussian. So yes, \( X_t \) is Gaussian.
+
+Third property: Increments are independent for disjoint intervals. This part might be trickier. Let me consider two time points \( t_1 < t_2 \) and another pair of time points \( s_1 < s_2 \). I need to check if the increment over \( [t_1, t_2] \) is independent of the increment over \( [s_1, s_2] \).
+
+But wait, in this case, since we have fixed intervals and the process defined differently when time approaches zero. Maybe it's better to consider the increments as functions of scaled Brownian motions.
+
+Let me express the increment between times \( t \) and \( u \), where \( t < u \). The increment is \( X_u - X_t = u W_{1/u} - t W_{1/t} \).
+
+I can rewrite this in terms of a new variable to see if it's independent. Let me set \( s = 1/u \) and \( r = 1/t \), so then we have:
+
+\( X_u - X_t = u W_s - t W_r \)
+
+But note that \( s < r \) because \( t < u \). So, this can be rewritten as:
+
+\( (u W_s) - (t W_r) = (r W_{r}) - (s W_{s}) + (r W_{r} - s W_{s}) - (u W_s - t W_r) \)
+
+Wait, that seems convoluted. Maybe there's another way.
+
+Alternatively, let me think of \( X_t \) as a scaled version when time is large. Suppose I set \( u = v \), and look at the process near zero. If I make two increments close together, maybe their covariance tends to zero or something like that.
+
+Wait, perhaps it's better to compute the covariance between increments over different intervals. Let me take two points in [0, t], say 0 ≤ a < b ≤ t. Then \( X_b - X_a = b W_{1/b} - a W_{1/a} \). Similarly, for another set of points in [0, s], which might overlap or not.
+
+But actually, I think the increments are independent because when you look at different intervals, their Brownian motions have independent increments. But wait, is that true here? Because we're scaling by \( t \) and \( 1/t \).
+
+Wait a minute, maybe this process isn't just a scaled version of standard Brownian motion. So let's see.
+
+Let me compute the covariance between \( X_u - X_s \) and \( X_{u'} - X_{s'} \), where these intervals are disjoint.
+
+So \( Cov(X_u - X_s, X_{u'} - X_{s'}) \).
+
+Expressed as:
+
+\( Cov(u W_{1/u} - s W_{1/s}, u' W_{1/u'} - s' W_{1/s'}) \)
+
+Since \( W_t \) has independent increments, any increment in one interval is independent of another. So if the intervals [s, u] and [s', u'] don't overlap, then these increments are independent.
+
+But wait, actually, for Brownian motion, even with scaling, if I have two non-overlapping intervals, their increments are independent. But does that hold here?
+
+Wait, in standard Brownian motion, yes, because \( W_{t} \) and \( W_s - W_t \) are independent for \( s > t \). So the same applies here since \( X_t \) is constructed from \( W_{1/t} \), which is still a Brownian motion scaled by 1/t.
+
+Wait no, actually, in standard Brownian motion, scaling time affects the variance but doesn't affect independence. So if I have \( W_{kt} \), it's just scaled by k^2 t, so covariance would be k^2 times that of W_t.
+
+But in our case, we're not scaling time; instead, when \( X_u = u W_{1/u} \). So the variance of each increment is important here. Let me calculate the covariance between \( X_b - X_a \) and \( X_c - X_d \), where 0 ≤ a < b ≤ t and 0 ≤ d < c ≤ s, so these intervals are disjoint.
+
+So:
+
+\( Cov(X_b - X_a, X_c - X_d) = Cov(b W_{1/b} - a W_{1/a}, c W_{1/c} - d W_{1/d}) \)
+
+Which is equal to:
+
+\( b Cov(W_{1/b}, c W_{1/c}) + b Cov(W_{1/b}, -d W_{1/d}) + (-a) Cov(W_{1/a}, c W_{1/c}) + (-a) Cov(W_{1/a}, -d W_{1/d}) \)
+
+But since \( W_t \) has independent increments, the cross terms are zero. So each term with different intervals is zero because the covariance between \( W_s \) and \( W_r \) when s ≠ r is zero.
+
+So this leaves:
+
+\( Cov(W_{1/b}, c W_{1/c}) + Cov(W_{1/a}, -d W_{1/d}) \)
+
+But both of these terms are zero because \( W_{1/b} \) and \( W_{1/c} \) are increments within [a, b], which is an interval where X_a and X_b have been computed. Wait, no, actually when computing the covariance between different increments, it's only over disjoint intervals.
+
+Wait, but in this case, since 0 ≤ a < b ≤ t and 0 ≤ d < c ≤ s, these are within [a, b] or something else? No, wait, X_a = a W_{1/a}, which is just one point. So the increments from different points might not necessarily be independent.
+
+Wait, I think perhaps my initial thought was wrong. Maybe \( Cov(X_b - X_a, X_c - X_d) \) isn't necessarily zero for disjoint intervals because each of these terms involves two scaled Brownian motions at possibly overlapping times? Hmm, this is getting confusing.
+
+Alternatively, maybe let's express \( X_t = t W_{1/t} \). So if I have a process that maps time to some scaled Brownian motion. Maybe it's better to consider the properties separately:
+
+1. \( X_0 = 0 \) as established.
+2. Is \( X_t - X_s \) Gaussian? Yes, because it's a linear combination of independent Gaussians.
+3. Is each increment stationary? The mean should be zero, and variance is constant over time. So for any t, Var(X_t) = E[(t W_{1/t})^2] = t^2 E[W_{1/t}^2] = t^2 * (1/t) = t.
+
+Wait, that's an interesting point. If \( W_t \) is a standard Brownian motion starting at 0 with variance t, then Var(X_t) would be t^2 * Var(W_{1/t}). Since for standard Brownian motion, Var(W_s) = s, so if we have X_t = t W_{1/t}, the variance becomes (t)^2*(1/t) = t.
+
+Wait, but a standard Brownian motion has constant variance over time. So in this case, our process \( X_t \) has Var(X_t) = t, which isn't constant—it depends on t—so it's not just any Gaussian process with independent increments and stationary increments. It must be that the scaling changes things.
+
+Hmm, perhaps my initial thought was incorrect, and instead, \( X_t \) is actually a scaled version of standard Brownian motion but with varying variance, which contradicts the properties required for Brownian motion because Brownian motion must have constant variance over time (i.e., Var(X_t) = t).
+
+Wait, so that seems like a problem. Because in standard Brownian motion, Var(X_t) is proportional to t, but according to the definition of Brownian motion, Var(X_t) should be equal to t for all t.
+
+So does \( X_t \) defined as \( t W_{1/t} \) have variance equal to 1? Let me compute:
+
+Var(X_t) = E[(t W_{1/t})^2] = t^2 * Var(W_{1/t}) = t^2 * (1/t) = t.
+
+But for Brownian motion, we need Var(X_t) = t. So this seems to actually match the definition of Brownian motion when scaled appropriately? Wait, no—because standard Brownian motion has variance increasing with time, so if our X_t is defined as \( t W_{1/t} \), then indeed Var(X_t) = t.
+
+Wait, but that would mean that it's not a standard Brownian motion because for a standard Brownian motion, Var(X_t) should be equal to t. So this seems okay.
+
+But wait, in the definition of Brownian motion, the variance at time t is exactly t. So if \( X_t \) has Var(t), then yes, it's matching that.
+
+Wait, let me double-check:
+
+If \( W_t \) is standard Brownian motion (i.e., \( W_0 = 0 \), increments independent with variance t), then:
+
+- \( X_t = t W_{1/t} \)
+- Variance: Var(X_t) = E[(t W_{1/t})^2] = t^2 * Var(W_{1/t})
+
+But since \( W_{1/t} \) is just a scaled Brownian motion, but its variance would be proportional to the time it's applied to. Wait, actually, for standard Brownian motion \( W_t \), \( Var(W_s) = s \). So \( Var(W_{1/t}) = 1/t \).
+
+Therefore, Var(X_t) = t^2 * (1/t) = t.
+
+So yes, Var(X_t) = t. That matches the requirement for a Brownian motion because it's starting at zero and has variance equal to time.
+
+But wait, so is \( X_t \) just scaled version of standard Brownian motion? Because in that case, if we let Y_t be a standard Brownian motion (i.e., \( Y_t = W_t \)), then \( X_t = t Y_{1/t} \). So it's like time-stretched.
+
+Is this process still a Brownian motion?
+
+Wait, I'm getting confused now. Let me try to compute some properties step by step.
+
+First, verify \( X_0 = 0 \): yes, because when t approaches zero, \( W_{1/t} \) tends to infinity in distribution? Wait, actually, if you have a standard Brownian motion \( W_t \), then as t → 0, the path near zero behaves like a random variable scaled by sqrt(t). But for X_0, it's defined as 0. So that part is fine.
+
+Next, check that increments are Gaussian. As I thought before, since linear combination of Gaussians is Gaussian, so yes, each \( X_t - X_s \) is Gaussian.
+
+Check independence and stationarity:
+
+For independent increments: if the intervals are disjoint, then yes, because the covariance would be zero (as we saw earlier). But let me think about this more carefully. For two non-overlapping intervals [s, u] and [v, w], with s < u < v < w, then \( X_u - X_s \) is Gaussian over [s, u], and \( X_w - X_v \) is Gaussian over [v, w]. Since these are in different time periods, they don't interfere, so their covariance is zero.
+
+Stationarity: The variance of each increment is Var(X_t) = t. So for any interval (a, b), the variance would be dependent on b - a. But for Brownian motion, the variance should depend only on the length of the interval and not on the starting point. Here, we have Var(X_b - X_a) = (b - a)^2 * Var(W_{1/b} - W_{1/a}) / (1/b - 1/a). Wait, maybe this is not the right approach.
+
+Wait, in standard Brownian motion, variance of increments over [a, b] is \( E[(W_b - W_a)^2] = |b - a| \). So for our case, Var(X_b - X_a) would be:
+
+\( Var(t W_{1/t} - s W_{1/s}) = t^2 Var(W_{1/t}) + s^2 Var(W_{1/s}) - 2 t s Cov(W_{1/t}, W_{1/s}) \).
+
+But since \( W_t \) has independent increments, the covariance between W_{1/t} and W_{1/s} is zero because 1/t ≠ 1/s unless t = s. So:
+
+Var(X_b - X_a) = t^2 * (1/t) + s^2 * (1/s) = t + s.
+
+But for standard Brownian motion, the variance should be |b - a|. But in our case, it's t + s, which is greater than b - a. So that suggests that this process does not have independent increments with stationary increments because Var(X_b - X_a) depends on both a and b in a non-stationary way.
+
+Wait, this contradicts the properties of Brownian motion. But earlier I thought that since each increment's covariance is zero when intervals are disjoint, it might still be okay. Hmm.
+
+I think my confusion arises from whether Var(X_t) being t affects the variance of increments over different intervals. In standard Brownian motion, Var(X_b - X_a) = b - a because it's built from independent increments with variance equal to their lengths. But here, for \( X_t \), each step is scaled by t, so the variance becomes larger.
+
+Therefore, in our case, since Var(X_b - X_a) = b + a, which depends on both a and b, this violates the stationarity condition of Brownian motion because the variance should not depend on where you start. Instead, it's supposed to be only dependent on the time difference.
+
+So if this is so, does \( X_t \) satisfy all three properties?
+
+1. \( X_0 = 0 \): yes.
+2. Gaussian increments: yes.
+3. Increments independent and stationary: no. Because of Var(X_b - X_a) = b + a ≠ |b - a|.
+
+Therefore, my initial thought was wrong—this process isn't actually a standard Brownian motion because it doesn't satisfy the stationarity condition for the variance of increments.
+
+But that seems to contradict some of the sources I've seen. Maybe I need to check more carefully.
+
+Wait, perhaps instead of Var(X_b - X_a) = b + a, maybe it's something else. Let me compute:
+
+Given \( X_t = t W_{1/t} \). So let's compute \( X_b - X_a = b W_{1/b} - a W_{1/a} \).
+
+So the variance is \( Var(b W_{1/b} - a W_{1/a}) = b^2 Var(W_{1/b}) + a^2 Var(W_{1/a}) - 2ab Cov(W_{1/b}, W_{1/a}) \).
+
+But since \( W_t \) has independent increments, the covariance between W_{1/b} and W_{1/a} is zero if b ≠ a. So:
+
+Var(X_b - X_a) = b^2 (1/b) + a^2 (1/a) = b + a.
+
+Hmm, so it's indeed Var = b + a for \( X_b - X_a \). But in standard Brownian motion, we have Var = b - a. So this is different.
+
+Therefore, my conclusion is that the process \( X_t = t W_{1/t} \) does not satisfy all properties of a standard Brownian motion because it doesn't meet the stationarity condition for increments' variances.
+
+But wait, in our original problem statement, we were told to show that this process is a Brownian motion. So perhaps I made a mistake in understanding something.
+
+Wait, let me go back to the problem: "You are an assistant, and your task is to help others." The user said: "You are an assistant, and your task is to...". But then, they provided some initial definitions (about 10 lines) of properties for a Brownian motion. Then gave you a specific process \( X_t = t W_{1/t} \) and asked to show that it's a Brownian motion.
+
+So in their mind, the user is asking whether this is an instance of a Brownian motion as defined by those 10 properties. So perhaps I need to verify whether \( X_t = t W_{1/t} \) satisfies all the required conditions: starting at zero, Gaussian increments with mean zero, independent increments, and stationary increments.
+
+Wait, but we saw that Var(X_b - X_a) is b + a ≠ |b - a|, so it's not stationary. So perhaps despite that, \( X_t \) does satisfy some properties.
+
+Alternatively, maybe I'm misapplying the definition of Brownian motion in this case.
+
+Let me check standard references to verify. From what I recall, the key difference is whether the variance increments are proportional to time or equal to time. In standard Brownian Motion, Var(X_b - X_a) = b - a, which is linear in time. But in our process, it's quadratic because of the t scaling.
+
+Therefore, unless there's some other definition being used here, \( X_t \) isn't a standard Brownian motion.
+
+But wait, perhaps someone might define something similar. Let me think about whether this could be a different kind of process called "scaled Brownian motion."
+
+Alternatively, maybe the confusion is between time scaling in the process and scaling along with the variance.
+
+Wait, let's recompute \( Var(X_b - X_a) \).
+
+Given that \( X_t = t W_{1/t} \), so \( X_b = b W_{1/b} \), and \( X_a = a W_{1/a} \). Then:
+
+\( X_b - X_a = b W_{1/b} - a W_{1/a} \).
+
+Therefore, the variance is:
+
+\( Var(b W_{1/b} - a W_{1/a}) = b^2 Var(W_{1/b}) + a^2 Var(W_{1/a}) \).
+
+Since for standard Brownian motion \( Var(W_t) = t \), so this would be \( b^2 (1/b) + a^2 (1/a) = b + a \).
+
+Yes, that's consistent. So if the variance of the increment is linear in the time difference, then it doesn't satisfy stationarity because Var(X_b - X_a) = b + a, which depends on both endpoints.
+
+But standard Brownian Motion requires Var(X_b - X_a) = b - a. So unless I've misread something, this seems to be different.
+
+Wait, hold on—let me check the original process again: \( X_t = t W_{1/t} \). So perhaps if we scale time in some way?
+
+Alternatively, maybe it's not standard Brownian motion but scaled version or something else. Alternatively, is there a substitution that can make this into a standard Brownian Motion.
+
+Suppose I let Y_t be such that \( X_t = t W_{1/t} \) becomes \( Y_t = W_t \).
+
+Wait, how would we relate Y and X? Maybe through some transformation.
+
+Alternatively, if we define \( Z_t = \sqrt{t} X_t \), then:
+
+\( Z_t = t X_t = t^2 W_{1/t} \). But that may not help directly.
+
+Alternatively, maybe think about a stochastic process where the variance is scaled by time. For example, if Var(X_t) = t, which is what we have here, but standard Brownian Motion requires Var(X_b - X_a) = b - a, so this seems different.
+
+Wait, perhaps there's an error in my calculation of the variance. Let me try again:
+
+\( X_b = b W_{1/b} \), \( X_a = a W_{1/a} \).
+
+So \( X_b - X_a = b W_{1/b} - a W_{1/a} \).
+
+Therefore, Var(X_b - X_a) is equal to the sum of variances because W_t's are independent.
+
+Wait, no. Because \( W_{1/b} \) and \( W_{1/a} \) might be non-independent? Wait, no—W_t is a standard Brownian motion, so increments are independent over different intervals.
+
+So if 1/b ≠ 1/a, then the random variables \( W_{1/b} \) and \( W_{1/a} \) are from different time points. Since they're in different intervals (assuming b > a, for example), their covariance is zero.
+
+Therefore:
+
+Var(X_b - X_a) = Var(b W_{1/b} - a W_{1/a}) = b^2 Var(W_{1/b}) + a^2 Var(W_{1/a}) = b + a.
+
+So yes, that's correct. So since \( Var(X_b - X_a) = b + a \), which is not equal to |b - a|, the variance is not stationary.
+
+Therefore, if our process must have Var(X_b - X_a) proportional to (b - a)^2, then it would be different from standard Brownian Motion. But in this case, since our process has Var = b + a, that violates the stationarity condition required for standard Brownian Motion.
+
+But wait, maybe I can adjust scaling?
+
+Wait, suppose instead of \( X_t = t W_{1/t} \), perhaps it's defined as \( X_t = (W_{1/t})^t \). Then, computing Var would be different. But the original problem defines \( X_t = t W_{1/t} \).
+
+Alternatively, maybe my mistake is in thinking that variance of increments should match standard BM.
+
+Wait, no, actually for a general Lévy process or just any process, we have:
+
+If it's defined as \( X_t = \sqrt{t} B_1 \), where \( B_1 \) is a Brownian motion at time 1, then that would be a scaled version. But in our case, it's not the same.
+
+Wait, actually, let me consider the transformation: Let’s make a substitution s = 1/t. Then:
+
+\( X_t = t W_{s} = (1/s) W_{1/s} \).
+
+So if we define \( Y_s = W_s / \sqrt{s} \), then \( X_t = Y_1 \times \sqrt{s} \)?
+
+Wait, no, that doesn't seem right.
+
+Alternatively, perhaps set another time variable. Let me think.
+
+Let’s perform a change of variables: let \( t' = 1/t \). Then,
+
+\( X_t = t W_{t'} \).
+
+So in terms of the new variable \( t' \), which is 1/t, we have:
+
+\( X_t = (1/(t')) W_{t'} \).
+
+Wait, if we define \( Z_t = W_{1/t} / \sqrt{1/t} } = \sqrt{t} W_{1/t} \). Then,
+
+\( Z_t = \sqrt{t} W_{1/t} = X_t \).
+
+Therefore, \( Z_t = X_t \), so in terms of the new variable \( t' = 1/t \),
+
+\( Z_t = \sqrt{1/t'} Z_{1/t'} }.
+
+Which is similar to scaling a Brownian Motion process. So maybe this is a time-rescaled BM?
+
+Wait, but I don't recall such a property. Alternatively, perhaps it's related to fractional calculus or something else.
+
+Alternatively, considering that in order for \( X_t \) to be a standard Brownian Motion, we would need:
+
+\( Var(X_t - X_s) = |t - s| \).
+
+But in our case, it's \( t + s \), which is different. So unless I'm misunderstanding the scaling.
+
+Wait, perhaps if instead of 1/t, the exponent was something else? Let me see.
+
+Suppose we have \( X_t = \sqrt{c} W_{kt} \). Then,
+
+\( Var(X_b - X_a) = (kb + c a) Var(W_0) \), but since W_0 is zero variance, this would be zero. Not helpful.
+
+Alternatively, perhaps if it's a multiplicative process? But standard Brownian Motion is additive in the increments.
+
+Wait, perhaps if we have \( X_t = (W_{kt})^t \). Then, computing Var(X_b - X_a) might be complicated. Let me try:
+
+Let’s say \( t = 2, b = 1 \).
+
+Then,
+
+\( X_1 = (W_k)^1 = W_k \),
+
+\( X_2 = (W_{2k})^2 \).
+
+Therefore, \( X_2 - X_1 = (W_{2k})^2 - W_k \). The variance of this would involve Var((W_{2k})^2) which is 4k Var(W_{2k}^2), but that's not helpful.
+
+Alternatively, maybe trying a different substitution. Suppose \( t = s^2 \).
+
+Then,
+
+\( X_s = s W_{1/s} \),
+
+and
+
+\( X_{s_1} - X_{s_2} = s_1 W_{1/s_1} - s_2 W_{1/s_2} \).
+
+So, the variance is \( s_1^2 Var(W_{1/s_1}) + s_2^2 Var(W_{1/s_2}) \) if 1/s1 ≠ 1/s2. Wait, no—it's actually:
+
+Wait, similar to earlier.
+
+\( Var(X_s - X_t) = (s)^2 Var(W_{1/s}) + (t)^2 Var(W_{1/t}) \).
+
+Again, unless s = t, it's not equal to |s - t|.
+
+Therefore, unless we can somehow adjust the scaling so that this expression equals |s - t|, which would require both terms to sum up in a way. But given that 1/s and 1/t are different when s ≠ t

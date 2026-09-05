@@ -1,0 +1,83 @@
+### Question block 1
+```yml
+atoms:
+  - preconditions: []
+    arguments:
+      - "X_0=0"
+      - "(X_t)_{t\in \R^+} est un processus gaussien centré"
+      - "{\rm Cov}(X_s,X_t)=\inf(s,t)"
+    outcomes:
+      - "Un mouvement brownien"
+  - preconditions: []
+    arguments:
+      - "X_0=0"
+      - "(X_t)_{t\in \R^+} est un processus gaussien centré"
+      - "{\rm Cov}(X_s,X_t)=\inf(s,t)"
+    outcomes:
+      - "Un mouvement brownien"
+  - preconditions: []
+    arguments:
+      - "X_0=0"
+      - "(X_t)_{t\in \R^+} est un processus gaussien centré"
+      - "{\rm Cov}(X_s,X_t)=\inf(s,t)"
+    outcomes:
+      - "Un mouvement brownien"
+  - preconditions: []
+    arguments:
+      - "X_0=0"
+      - "(X_t)_{t\in \R^+} est un processus gaussien centré"
+      - "{\rm Cov}(X_s,X_t)=\inf(s,t)"
+    outcomes:
+      - "Un mouvement brownien"
+  - preconditions: []
+    arguments:
+      - "X_0=0"
+      - "(X_t)_{t\in \R^+} est un processus gaussien centré"
+      - "{\rm Cov}(X_s,X_t)=\inf(s,t)"
+    outcomes:
+      - "Un mouvement brownien"
+  - preconditions: []
+    arguments:
+      - "X_0=0"
+      - "(X_t)_{t\in \R^+} est un processus gaussien centré"
+      - "{\rm Cov}(X_s,X_t)=\inf(s,t)"
+    outcomes:
+      - "Un mouvement brownien"
+  - preconditions: []
+    arguments:
+      - "X_0=0"
+      - "(X_t)_{t\in \R^+} est un processus gaussien centré"
+      - "{\rm Cov}(X_s,X_t)=\inf(s,t)"
+    outcomes:
+      - "Un mouvement brownien"
+  - preconditions: []
+    arguments:
+      - "X_0=0"
+      - "(X_t)_{t\in \R^+} est un processus gaussien centré"
+      - "{\rm Cov}(X_s,X_t)=\inf(s,t)"
+    outcomes:
+      - "Un mouvement brownien"
+  - preconditions: []
+    arguments:
+      - "X_0=0"
+      - "(X_t)_{t\in \R^+} est un processus gaussien centré"
+      - "{\rm Cov}(X_s,X_t)=\inf(s,t)"
+    outcomes:
+      - "Un mouvement brownien"
+  - preconditions: []
+    arguments:
+      - "X_0=0"
+      - "(X_t)_{t\in \R^+} est un processus gaussien centré"
+      - "{\rm Cov}(X_s,X_t)=\inf(s,t)"
+    outcomes:
+      - "Un mouvement brownien"
+  - preconditions: []
+    arguments:
+      - "X_0=0"
+      - "(X_t)_{t\in \R^+} est un processus gaussien centré"
+      - "{\rm Cov}(X_s,X_t)=\inf(s,t)"
+    outcomes:
+      - "Un mouvement brownien"
+  - preconditions: []
+    arguments:
+      - "X

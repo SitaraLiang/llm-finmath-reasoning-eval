@@ -1,0 +1,52 @@
+Exercise: pc4_q4
+Model: llama3.2:1b
+Variation: role_quant_expert
+Prompt type: strictly_sequential
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+$\E(W_\tau) = \int_0^\infty W_s dW_s$
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+$\E(W_\tau^2) = \int_0^\infty (1 - e^{-2s})\sigma^2 ds$
+
+where $\sigma^2$ is the quadratic variation of $W_t$. 
+
+Proof:
+
+Since $W_t$ is a Brownian Motion, we know that $W_{\tau + h} - W_\tau = \int_0^\tau (W_s - W_\tau) dW_s + \int_{\tau}^{h} B_u dB_u$, where $B_u$ is the increment of the Brownian motion at time $u$. 
+
+Taking expectations on both sides, we get:
+
+$$
+\E(W_{\tau+h}^2) - \E(W_\tau^2) = \int_0^\infty (W_s - W_\tau)\sigma^2 ds + \int_0^\tau B_u dB_u + \int_{\tau}^{h} (\E(B_u))^2 du
+$$
+
+Since $B_t$ is a Gaussian Process with covariance function $\Cov(B_s, B_t) = \min(s,t)$, we have:
+
+$$
+\int_0^\infty (W_s - W_\tau)\sigma^2 ds + \int_{\tau}^{h} (\E(B_u))^2 du = \frac{1}{2}\sigma^2 h + \E(B_h) h
+$$
+
+Using the Optional Stopping Theorem, we can stop at $\tau$ and get:
+
+$$
+\int_0^\infty (W_s - W_\tau)\sigma^2 ds = \frac{1}{2}\sigma^2 (\tau-h) + h \E(B_h)
+$$
+
+Since $B_t$ is a Gaussian Process, we know that $\E(B_h) = 0$. Therefore:
+
+$$
+\int_0^\infty (W_s - W_\tau)\sigma^2 ds = \frac{1}{2}\sigma^2 (\tau-h)
+$$
+
+Substituting this back into the original equation, we get:
+
+$$
+\E(W_\tau^2) = \frac{1}{2}\sigma^2 (\tau-\infty) + h \E(B_h)
+$$

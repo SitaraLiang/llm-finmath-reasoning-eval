@@ -1,0 +1,20 @@
+### Question block 1
+```yml
+atoms:
+- preconditions: []
+  arguments:
+    - τ 是有界停时
+  outcomes:
+    - E(W_τ) = 0
+```
+
+### Question block 2
+```yml
+atoms:
+- preconditions:
+  - "tau 是一个有界的停时"
+  arguments:
+  - tau: 有界停时
+  outcomes:
+  - E(W_tau^2) = T
+```

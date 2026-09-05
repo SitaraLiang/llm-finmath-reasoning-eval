@@ -1,0 +1,97 @@
+Exercise: pc2_q1
+Model: qwen2.5-coder:0.5b
+Variation: role_student
+Prompt type: prompt_accumulation
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To show that a process \((X_t)_{t \in \mathbb{R}^+}\) is a Brownian motion if and only if \(X_0 = 0\) and \(\left(X_s, X_t\right)\sim N(0, \sigma^2)\), we will proceed step by step.
+
+### Step 1: Show that \(X_0 = 0\)
+A process is a Brownian motion if and only if it is either stationary or has no increments. Since \(X_0 = 0\) is not stationary because the initial condition does not contribute to the variance, we have:
+\[ \left(X_s, X_t\right) \sim N(0, \sigma^2). \]
+This shows that \(X_0\) is a centered Gaussian process.
+
+### Step 2: Show that \(\left(X_s, X_t\right)\sim N(0, \sigma^2)\) implies \(X_0 = 0\)
+The fact that \((X_s, X_t)\sim N(0, \sigma^2)\) implies that \(X_s\) and \(X_t\) are independent Gaussian random variables. Since the increments of a centered Gaussian process are independent and identically distributed (except possibly with zero mean), we can conclude:
+\[ X_0 = 0. \]
+
+### Step 3: Show that \(X_0 = 0\) implies \(\left(X_s, X_t\right)\sim N(0, \sigma^2)\)
+The fact that \(X_0 = 0\) means that the increments of a centered Gaussian process are zero. This is because the increment can be considered to be an independent random variable with mean 0 and variance \(\sigma^2\). Therefore, we have:
+\[ X_0 = 0. \]
+
+### Conclusion
+We have shown that \(X_0 = 0\) implies both \((X_s, X_t) \sim N(0, \sigma^2)\) and \(\left(X_s, X_t\right) \sim N(0, \sigma^2)\). Therefore, the process is a Brownian motion.
+
+The final answer is:
+\[ \boxed{\text{Yes}}. \]
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+Let's analyze the given questions and provide a concise mathematical answer.
+
+### Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t)$.
+
+To show that a process $\{X_t = tW_{\frac{1}{t}}, t > 0, X_0 = 0\}$ is a Brownian motion, we need to use properties of brownian motion processes and their covariance structure. Here's a step-by-step reasoning:
+
+1. **Central Gaussian Process (CGP):**
+   - A centered Gaussian process is defined as $\{X_t \mid W_{\frac{1}{t}} = W_0\}$, where $W_0$ is the zero mean Wiener process.
+   - In this case, $W_0 = 0$, so $\{X_t \mid W_{\frac{1}{t}} = 0\} = X_t$.
+
+2. **Brownian Motion Process (BMP):**
+   - A Brownian motion process is defined as $\{X_t = tY + b\}$, where $Y$ and $b$ are random variables.
+   - In this case, we need to show that $X_t = tW_{\frac{1}{t}}$ is a Brownian motion.
+
+3. **Covariance Structure:**
+   - Let's denote the covariance matrix of $X_t = tY + b$ as $\Sigma(t) = Y^T \Sigma Y$. Since $Y$ and $b$ are random variables, we have:
+     \[
+     Y^T \Sigma Y = (tW_{\frac{1}{t}})^T \Sigma W_{\frac{1}{t}} = t^2 W_{\frac{1}{t}} T \Sigma W_{\frac{1}{t}}
+     \]
+   - Comparing this with the covariance matrix of a centered Gaussian process, we see that:
+     \[
+     t^2 W_{\frac{1}{t}} T \Sigma W_{\frac{1}{t}} = \frac{\sigma_W^2 + \sigma_b^2}{\sigma_Y^2}
+     \]
+   - Therefore, the covariance matrix of $X_t = tW_{\frac{1}{t}}$ is:
+     \[
+     \Sigma(t) = \frac{\sigma_W^2 + \sigma_b^2}{\sigma_Y^2} \cdot W_{\frac{1}{t}}
+     \]
+   - Since $W_{\frac{1}{t}} = 0$, we have:
+     \[
+     \Sigma(t) = t^2 \Sigma Y
+     \]
+
+4. **Correlation of Covariance:**
+   - The correlation coefficient between two random variables $\mathbb{Y}$ and $\mathbb{Z}$ is given by:
+     \[
+     \rho(\mathbb{Y}, \mathbb{Z}) = \frac{\mathbb{Cov}(\mathbb{Y}, \mathbb{Z})}{\sigma_Y \sigma_Z}
+     \]
+   - For our process $X_t = tW_{\frac{1}{t}}$, we have:
+     \[
+     \rho(X_t, tW_{\frac{1}{t}}) = \rho(tW_{\frac{1}{t}}, 0) = \rho(W_{\frac{1}{t}}, t)
+     \]
+   - From the result from Step 4, we have:
+     \[
+     \sigma_W^2 + \sigma_b^2 = (\rho(W_{\frac{1}{t}}, t))^2
+     \]
+
+5. **Equality of Covariances:**
+   - For $X_t = tW_{\frac{1}{t}}$ to be a Brownian motion, the covariance matrix must be equal to $\sigma_W^2 + \sigma_b^2$:
+     \[
+     t^2 (\rho(W_{\frac{1}{t}}, t))^2 = (\rho(W_{\frac{1}{t}}, t))^2
+     \]
+   - This implies:
+     \[
+     t^2 \rho(W_{\frac{1}{t}}, t) = (\rho(W_{\frac{1}{t}}, t))^2
+     \]
+
+6. **Conclusion:**
+   - Therefore, a process $\{X_t = tW_{\frac{1}{t}}\}$ is a Brownian motion if and only if $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, and the covariance matrix of this process is equal to $\sigma_W^2 + \sigma_b^2$.
+
+\[
+\boxed{Question 1: (X_0 = 0), (X_t\) is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t)}}
+\]

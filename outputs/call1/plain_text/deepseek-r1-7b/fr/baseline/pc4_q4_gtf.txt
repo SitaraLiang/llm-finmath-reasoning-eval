@@ -1,0 +1,46 @@
+Exercise: pc4_q4
+Model: deepseek-r1:7b
+Variation: baseline
+Prompt type: ground_truth_forcing
+
+Question 1:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau)$.
+
+Answer:
+<think>
+Okay, I need to figure out how to calculate the expected value of a stopped Brownian motion, specifically E[W_τ], where τ is a bounded stopping time. Hmm, I remember that Brownian motion has some nice properties, especially regarding martingales.
+
+Wait, W_t is a standard Brownian motion, which is a martingale. That's important because if we have a stopping time τ, and certain conditions are met, the stopped process remains a martingale. The Optional Stopping Theorem comes to mind here. 
+
+Right, the theorem says that if τ is a bounded stopping time, then E[W_τ] = E[W_0]. Since W_0 is 0 because Brownian motion starts at zero, this should simplify things.
+
+So putting it all together: since W_t is a martingale and τ is bounded, applying the Optional Stopping Theorem gives us that the expectation of W at time τ is equal to the expectation at time 0, which is 0. Therefore, E[W_τ] must be 0.
+</think>
+
+$\boxed{0}$
+
+Question 2:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau^2)$.
+
+Answer:
+<think>
+Pour répondre à la question 2, je me souviens que le mouvement brownien \( W_t \) est une martingale et que son carré \( W_t^2 - t \) est une martingale too. En appliquant le théorème d'arrêt optionnel de Doob au temps d'arrêt borné \( \tau \), je peux écrire \( \mathbb{E}[W_\tau^2] = \mathbb{E}[\tau] \). Donc, la valeur attendue de \( W_\tau^2 \) est égale à l'espérance du temps d'arrêt \( \tau \).
+</think>
+
+Pour calculer \( \mathbb{E}[W_\tau^2] \), nous pouvons utiliser les propriétés du mouvement brownien et le théorème d'arrêt optionnel de Doob.
+
+**Solution :**
+
+1. **Mouvement Brownien et Martingales :**
+   - Le processus \( W_t \) est une martingale.
+   - Le processus \( W_t^2 - t \) est également une martingale.
+
+2. **Théorème d'Arret Optionnel de Doob :**
+   - Étant donné que \( \tau \) est un temps d'arrêt borné, nous pouvons appliquer le théorème d'arrêt optionnel.
+   - Donc, \( \mathbb{E}[W_\tau^2] = \mathbb{E}[\tau] \).
+
+**Réponse finale :**
+
+\[
+\boxed{\mathbb{E}\left[W_{\tau}^{2}\right] = \mathbb{E}[\tau]}
+\]

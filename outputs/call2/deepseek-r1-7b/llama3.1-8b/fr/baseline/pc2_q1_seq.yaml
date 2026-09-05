@@ -1,0 +1,57 @@
+pc: '2'
+exercise: '1'
+language: fr
+variation: baseline
+prompt_type: strictly_sequential
+call1_output_mode: plain_text
+call1_model: deepseek-r1-7b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - X_0 = 0
+        - (X_t) est gaussien centré
+        - Cov(X_s, X_t) = min(s, t)
+        outcomes:
+        - Le processus (X_t) est un mouvement brownien
+    -   preconditions: []
+        arguments:
+        - X_0 = 0
+        - (X_t) est gaussien centré
+        - Cov(X_s, X_t) = min(s, t)
+        outcomes:
+        - Le processus (X_t) satisfait les conditions d'un mouvement brownien
+    -   preconditions: []
+        arguments:
+        - X_0 = 0
+        - (X_t) est gaussien centré
+        - Cov(X_s, X_t) = min(s, t)
+        outcomes:
+        - Le processus (X_t) est un mouvement brownien si et seulement si les conditions
+            sont satisfaites
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - W_t est un mouvement brownien
+        outcomes:
+        - X_t = t W_{1/t} est un mouvement brownien
+    -   preconditions: []
+        arguments:
+        - t > 0, X_0 = 0
+        outcomes:
+        - 'X_t = t W_{1/t} satisfait les quatre propriétés d''un mouvement brownien
+            : il commence à zéro, a des increments indépendants, a des increments
+            gaussiens avec moyenne nulle et variance égale au temps increment, et
+            il a des trajectoires continues presque sûrement'
+    -   preconditions: []
+        arguments:
+        - t > 0, s > t > 0
+        outcomes:
+        - X_s - X_t = s W_{1/s} - t W_{1/t} est un increment normal avec moyenne nulle
+            et variance égale à la différence de temps
+    -   preconditions: []
+        arguments:
+        - t > 0, s > t > 0
+        outcomes:
+        - Les increments de X_t sont indépendants

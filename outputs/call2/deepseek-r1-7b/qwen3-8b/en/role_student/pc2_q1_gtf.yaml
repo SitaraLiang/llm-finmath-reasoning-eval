@@ -1,0 +1,33 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_student
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: deepseek-r1-7b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - Assume $ (X_t)_{t \in \R^+} $ is a Brownian motion.
+        arguments:
+        - Verify $ X_0 = 0 $, $ (X_t) $ is a centered Gaussian process, and $ \text{Cov}(X_s,
+            X_t) = \inf(s, t) $.
+        outcomes:
+        - Show that $ X_0 = 0 $, $ (X_t) $ is a centered Gaussian process, and $ \text{Cov}(X_s,
+            X_t) = \inf(s, t) $.
+    -   preconditions:
+        - Assume $ X_0 = 0 $, $ (X_t) $ is a centered Gaussian process, and $ \text{Cov}(X_s,
+            X_t) = \inf(s, t) $.
+        arguments:
+        - Show that $ (X_t)_{t \in \R^+} $ is a Brownian motion.
+        outcomes:
+        - Prove that $ (X_t)_{t \in \R^+} $ is a Brownian motion.
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        - X_t = t W_{1/t} for t > 0 and X_0 = 0
+        arguments:
+        - Verification of Brownian motion properties
+        outcomes:
+        - X_t is a Brownian motion

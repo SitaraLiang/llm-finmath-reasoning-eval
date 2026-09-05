@@ -1,0 +1,43 @@
+Exercise: pc2_q1
+Model: llama3.2:1b
+Variation: baseline
+Prompt type: self_history
+
+Question 1:
+Montrer qu'un processus $(X_t)_{t\in \R^+}$ est un mouvement brownien si et seulement si: $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien centr\'e, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+Il n'y a pas de problème spécifique à résoudre ici, mais je peux vous fournir une réponse concise et rigoureuse en utilisant LaTeX.
+
+Puisque le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien si et seulement que $X_0=0$, il suffit de vérifier que les propriétés suivantes sont respectées :
+
+- Le processus est défini pour tous $s,t\in \R^+$.
+
+- Il a une moyenne à la fin de chaque intervalle de durée inférieure ou égale à 0. 
+
+- Le processus est gaussien centré, ce qui implique que le vecteur de covariance $\mathbf{C} = (C_{ij})$ satisfait les propriétés suivantes :
+
+$$
+\begin{aligner*}
+C_{11}&amp;= \inf(s,t)\\
+C_{12}&amp;= 0,\\
+C_{21}&amp;=\sup(s,t) \\
+C_{22}&amp;= \inf(s,t).
+\fin{aligner*}
+$$
+
+La propriété du processus brownien est donc la suivante :
+
+\begin{aligner*}
+\mathbf{E}\left[(X_t)_{t\in \R^+}| X_0 = 0 \right] &amp;= X_t
+\end{align*}
+
+Cette équation représente l'équation de Brownien et est la propriété définitive pour un processus brownien.
+
+Question 2:
+Montrer que si $W_t$ est un mouvement brownien, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ l'est aussi.
+
+Answer:
+$\begin{aligner*}
+\mathbf{E}\left[(X_s,t)W_{s/t}| X_0 = 0\right] &amp;= \int_{0}^1 W_s dF(t)=\frac{W_s}{s}.
+\end{align*}$

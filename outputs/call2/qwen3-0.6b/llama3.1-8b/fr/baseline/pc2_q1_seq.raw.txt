@@ -1,0 +1,6 @@
+### Question block 1
+You're correct that I provided a repetitive response instead of a concise one.
+
+To address the original question: The standard definition of Brownian motion has a covariance function of \(Cov(X_s, X_t) = \min(s,t)\), not \(\inf(s,t)\). This discrepancy suggests that the process with covariance \(Cov(X_s, X_t) = \inf(s,t)\) might not be a standard Brownian motion.
+
+To determine if this process is indeed a Brownian motion, you would need to define what it means for your process to be a "Brownian motion" in this context and then show that it satisfies all the properties of a Brownian motion (e.g., stationarity, independence, Gaussian distribution). Without further information or clarification on how your process is defined beyond its covariance function, it's challenging to provide a definitive answer.

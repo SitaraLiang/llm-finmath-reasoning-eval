@@ -1,0 +1,40 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_student
+prompt_type: prompt_accumulation
+call1_output_mode: plain_text
+call1_model: llama3.2-1b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - A process (X_t)_{t\in \R^+} is a Brownian motion
+        arguments:
+        - X_0=0, (X_t)_{t\in \R^+} is a centered Gaussian process, Cov(X_s,X_t)=inf(s,t)
+        outcomes:
+        - A process (X_t)_{t\in \R^+} is a Brownian motion
+    -   preconditions:
+        - (X_t)_{t\in \R^+} is a Brownian motion
+        arguments:
+        - X_0=0, (X_t)_{t\in \R^+} is a centered Gaussian process, Cov(X_s,X_t)=inf(s,t)
+        outcomes:
+        - (X_t)_{t\in \R^+} is a Brownian motion
+    -   preconditions:
+        - (X_t)_{t\in \R^+} is a centered Gaussian process
+        arguments:
+        - Cov(X_s,X_t)=0
+        outcomes:
+        - (X_t)_{t\in \R^+} is a centered Gaussian process
+-   atoms:
+    -   preconditions:
+        - 'A stochastic process (X_t)_{t\in \R^+} is called a Brownian motion if it
+            satisfies the following properties:'
+        - It starts at zero, i.e., X_0=0.
+        - It has continuous paths.
+        - For any s < t, the increment X_t - X_s is normally distributed with mean
+            0 and variance t-s.
+        arguments:
+        - Definition of a Brownian Motion
+        outcomes:
+        - The process (X_t)_{t\in \R^+} is a Brownian motion too.

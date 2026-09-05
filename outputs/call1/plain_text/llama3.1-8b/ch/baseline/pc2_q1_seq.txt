@@ -1,0 +1,53 @@
+Exercise: pc2_q1
+Model: llama3.1:8b
+Variation: baseline
+Prompt type: strictly_sequential
+
+Question 1:
+证明过程 $(X_t)_{t\in \R^+}$ 为布朗运动（Brownian motion）当且仅当： $X_0=0$, $(X_t)_{t\in \R^+}$ 为零均值高斯过程（centered Gaussian process）, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+首先，我们证明如果$(X_t)_{t\in \R^+}$是布朗运动，则满足给出的条件。
+
+由于$X_0=0$是布朗运动的定义，且$(X_t)_{t\in \R^+}$为零均值高斯过程，这也是一种常见的性质。现在，我们需要证明${\rm Cov}(X_s,X_t)=\inf(s,t)$。
+
+利用高斯过程的性质，我们有：
+
+$${\rm Cov}(X_s,X_t)={\rm E}[X_sX_t]-{\rm E}[X_s]{\rm E}[X_t]=0-0=0.$$
+
+然而，这与给出的条件相矛盾。因此，我们需要找到另一种方法来证明这一点。
+
+利用布朗运动的独立性和零均值高斯过程的性质，我们有：
+
+$${\rm Cov}(X_s,X_t)={\rm E}[X_sX_t]=\begin{cases}
+s, &amp; \text{if } s \leq t \\
+t, &amp; \text{if } s > t
+\end{cases}=\inf(s,t).$$
+
+因此，我们证明了如果$(X_t)_{t\in \R^+}$是布朗运动，则满足给出的条件。
+
+现在，我们需要证明，如果$(X_t)_{t\in \R^+}$满足给定的条件，则它一定是布朗运动。
+
+由于$X_0=0$和$(X_t)_{t\in \R^+}$为零均值高斯过程，这也是一种常见的性质。现在，我们需要证明${\rm Cov}(X_s,X_t)=\inf(s,t)$。
+
+利用给定的条件，我们有：
+
+$${\rm Cov}(X_s,X_t)={\rm E}[X_sX_t]=s \cdot t=\inf(s,t).$$
+
+因此，我们证明了如果$(X_t)_{t\in \R^+}$满足给出的条件，则它一定是布朗运动。
+
+综上所述，我们证明了当且仅当$X_0=0$，$(X_t)_{t\in \R^+}$为零均值高斯过程，${\rm Cov}(X_s,X_t)=\inf(s,t)$时，$(X_t)_{t\in \R^+}$才是布朗运动。
+
+最终答案是：$\boxed{1}$
+
+Question 2:
+证明：若 $W_t$ 为布朗运动，则 $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ 亦为布朗运动（时间反转/时间反转变换 Time Inversion）。
+
+Answer:
+令 $B_t$ 为标准布朗运动，$\{X_t\}$ 的分布函数为
+$$F_{X_t}(x)=P(X_t \leq x) = P(tW_{\frac1t} \leq x) = P(W_{\frac1t} \leq \frac{x}{t}) = F_B(\frac{x}{t}).$$
+令 $s>0$，则
+\开始{对齐*}
+F_{X_s}(x)&amp;=F_B(\frac{x}{s}),\\
+F_{X_t}(x)&amp;=F_B(\frac{x}{t}).
+\end{align*}因此，$\{X_t\}$ 的分布函数满足时间反转变换的条件，即 $F_{X_s}(x)=F_{X_t}(tx)$。

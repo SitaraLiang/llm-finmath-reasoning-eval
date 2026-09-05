@@ -1,0 +1,64 @@
+Exercise: pc4_q4
+Model: qwen2.5-coder:0.5b
+Variation: role_student
+Prompt type: ground_truth_forcing
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+\[
+\boxed{\mathbb{E}(W_{\tau})}
+\]
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+To solve the problem of computing \(\E(W_\tau^2)\) given that \(W_t\) is a Brownian Motion and \(\tau\) is a bounded stopping time, we can follow these steps:
+
+1. **Use Doob's Optional Stopping Theorem**: Apply Doob's optional stopping theorem to the process \((W_t)_{t\geq 0}\). This theorem allows us to find an approximation for the expected value of the process at time \(t\) given that we have a conditional probability distribution.
+
+2. **Calculate the Conditional Probability Distribution**: Define \(G(t)\) as a Gaussian random variable on \(\mathbb{R}^+\) such that \(W_t = G(t)\). Then, use Doob's theorem to find an approximation for:
+   \[
+   \E(G(t)^2)
+   \]
+   where \(\E(G(t)) = G(t)\).
+
+3. **Combine the Results**: Combine the results from steps 1 and 2 to get \(\E(W_\tau^2)\).
+
+The formula for \(\E(G(t)^2)\) is:
+\[
+E(G(t)^2) = E((W_t - G(t))^2) = E[(W_t - G(t))^2 + (G(t) - W_t)^2] = 2E[W_t^2 - 2GW_t + G^2]
+\]
+
+Using Doob's theorem, we have:
+\[
+E(W_t^2 - 2GW_t + G^2) = \mathbb{E}[W_t^2] - 2\mathbb{E}[G_w t + G^2]
+\]
+
+Since \(W_t\) is a Brownian Motion, we know that:
+\[
+W_t^2 = E[(W_t)^2 - 2GW_t + G^2]
+\]
+where \(\mathbb{E}[W_t] = W_t\).
+
+Also, using the optional stopping theorem for \(W_t\), we have:
+\[
+G(t) - W_t = \mathbb{E}[\mathbb{D}(W_t)] = \mathbb{E}\left[\frac{\partial W_t}{\partial t}\right] = 0
+\]
+
+Therefore:
+\[
+2\mathbb{E}[G_w t + G^2] = 2\mathbb{E}\left[0\right] = 0
+\]
+
+Combining this with the result from step 1, we get:
+\[
+E(W_\tau^2) = \mathbb{E}[W_t] - 2\mathbb{E}[G_w t + G^2] = W_t - 2G_w t - 2G^2
+\]
+
+Thus, the value of \(\E(W_\tau^2)\) is:
+\[
+\boxed{W_t - 2G_w t - 2G^2}
+\]

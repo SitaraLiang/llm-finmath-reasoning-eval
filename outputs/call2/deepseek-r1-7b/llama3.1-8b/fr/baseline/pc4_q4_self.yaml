@@ -1,0 +1,61 @@
+pc: '4'
+exercise: '4'
+language: fr
+variation: baseline
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: deepseek-r1-7b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - tau est un temps d'arrêt borné
+        outcomes:
+        - E(W_tau) = E(W_T)
+    -   preconditions: []
+        arguments:
+        - W_t est une martingale
+        outcomes:
+        - E[W_tau] = E[W_T]
+    -   preconditions: []
+        arguments:
+        - tau <= T presque partout
+        outcomes:
+        - E[W_tau] = E[W_T]
+    -   preconditions: []
+        arguments:
+        - W_t a des accroissements indépendants avec espérance nulle
+        outcomes:
+        - E[W_T] = 0
+    -   preconditions: []
+        arguments:
+        - tau est un temps d'arrêt borné
+        outcomes:
+        - E[W_tau] = 0
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - tau est un temps d'arrêt borné
+        outcomes:
+        - calcule E(W_tau^2)
+    -   preconditions: []
+        arguments:
+        - W_t est une martingale
+        outcomes:
+        - applique le théorème de continuité forte de Doob
+    -   preconditions: []
+        arguments:
+        - tau <= T presque partout
+        outcomes:
+        - E[W_tau^2] = E[W_T^2]
+    -   preconditions: []
+        arguments:
+        - W_T suit une loi normale N(0,T)
+        outcomes:
+        - E[W_T^2] = T
+    -   preconditions: []
+        arguments:
+        - combinez les résultats précédents
+        outcomes:
+        - concluez que E[W_tau^2] = E[T]

@@ -1,0 +1,72 @@
+Exercise: pc2_q1
+Model: qwen3:0.6b
+Variation: baseline
+Prompt type: self_history
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To show that a process $(X_t)_{t \in \mathbb{R}^+}$ is a **Brownian motion** if and only if the conditions $X_0 = 0$ and $\text{Cov}(X_s, X_t) = \inf(s, t)$ hold, we proceed as follows:
+
+---
+
+### **1. If the process satisfies $X_0 = 0$ and $\text{Cov}(X_s, X_t) = \inf(s, t)$, then it is a Brownian motion**
+
+- **Step 1:** The process has a Gaussian covariance matrix. Specifically, for all $s, t \in \mathbb{R}^+$, we have:
+  $$
+  \text{Cov}(X_s, X_t) = \inf(s, t).
+  $$
+- **Step 2:** This implies that the process is a **Gaussian process** with covariance matrix given by the infimum of $s$ and $t$. In standard Brownian motion, the covariance matrix is:
+  $$
+  \text{Cov}(X_s, X_t) = \begin{cases} 
+  s - t & \text{if } s < t, \\
+  0 & \text{if } s = t, \\
+  t - s & \text{if } t < s.
+  \end{cases}
+  $$
+- **Step 3:** Since the given covariance matrix matches the standard Brownian motion structure, the process
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+To show that the process $ X_t = t W_{\frac{1}{t}} $ is a Brownian motion, we proceed as follows:
+
+---
+
+### **1. If $ W_t $ is a Brownian motion, then $ X_t = t W_{\frac{1}{t}} $ is a Brownian motion**
+
+- **Step 1:** Let $ W_t $ be a standard Brownian motion. Then, $ W_{\frac{1}{t}} $ is a standard Brownian motion at time $ \frac{1}{t} $.
+
+- **Step 2:** The process $ X_t = t W_{\frac{1}{t}} $ is a scaled and shifted version of the standard Brownian motion. Specifically, $ X_t = t \cdot W_{\frac{1}{t}} $.
+
+- **Step 3:** Consider the increment $ X_{t+1} - X_t $. Using the definition of Brownian motion, we have:
+
+  $$
+  X_{t+1} = (t+1) W_{1(t+1)}, \quad X_t = t W_{1t}.
+  $$
+
+  Therefore:
+
+  $$
+  X_{t+1} - X_t = (t+1) W_{1(t+1)} - t W_{1t}.
+  $$
+
+  Since $ W_{1(t+1)} = W_{1t} + (W_{1t+1} - W_{1t}) $, and $ W_{1t+1} - W_{1t} $ is a standard Brownian increment, this becomes:
+
+  $$
+  X_{t+1} - X_t = W_{1t} + (t+1)(W_{1t+1} - W_{1t}).
+  $$
+
+  Since $ W_{1t} $ is a standard Brownian motion, and $ W_{1t+1} - W_{1t} $ is also a standard Brownian increment, the entire expression is a standard Brownian motion.
+
+- **Conclusion:** The process $ X_t = t W_{\frac{1}{t}} $ is a Brownian motion.
+
+---
+
+### **Final Answer**
+
+$$
+\boxed{X_t = t W_{\frac{1}{t}} \text{ is a Brownian motion}}
+$$

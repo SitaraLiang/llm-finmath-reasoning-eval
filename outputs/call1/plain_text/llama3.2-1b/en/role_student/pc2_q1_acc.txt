@@ -1,0 +1,94 @@
+Exercise: pc2_q1
+Model: llama3.2:1b
+Variation: role_student
+Prompt type: prompt_accumulation
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, and ${\rm Cov}(X_s,X_t)=\inf(s,t)$, we need to prove two directions:
+
+\begin{align*}
+& \text{(i) If }(X_t)_{t\in \R^+}\text{ is a Brownian motion, then } X_0=0\\
+& \Rightarrow & (X_0)_{t\in \R^+} = 0 \\
+& \text{ and } \\ 
+& \text{(ii) If }(X_t)_{t\in \R^+}\text{ is a centered Gaussian process, then ${\rm Cov}(X_s,X_t)=\inf(s,t)}\\
+& \Rightarrow & {\rm Cov}(X_s,X_t) = 0
+\end{align*}
+
+Since $(X_t)_{t\in \R^+}$ is a Brownian motion, we have that $X_0=X_1=X_2=\cdots$ and ${\rm Var}(X_t)=t$. We also know that ${\rm Cov}(X_s,X_t)={\rm Var}(X_s-{\rm E}(X_s))$, where ${\rm E}(X_s)$ is the mean of $X_s$. For a Brownian motion, we have:
+
+$$
+\begin{aligned}
+& \text{(i) If }(X_t)_{t\in \R^+}\text{ is a Brownian motion, then } X_0=0\\
+& \Rightarrow & {\rm Cov}(X_s,X_t)={\rm Var}(X_s) \\
+& = s
+\end{aligned}
+$$
+
+Since $s=t$, we have that ${\rm Cov}(X_s,X_t)=s=s=t$. This implies that ${\rm Cov}(X_s,X_t)=0$.
+
+Conversely, suppose $(X_t)_{t\in \R^+}$ is a centered Gaussian process. Then for any $s,t>0$, we have:
+
+$$
+\begin{aligned}
+& \text{(ii) If }(X_t)_{t\in \R^+}\text{ is a centered Gaussian process, then ${\rm Cov}(X_s,X_t)=0}\\
+& \Rightarrow & {\rm Cov}(X_s,X_t) = 0 \\
+& \end{aligned}
+$$
+
+This implies that ${\rm Var}(X_s-{\rm E}(X_s))=0$. Since $s$ and $t$ are arbitrary, we can conclude that ${\rm Var}(X_s)={\rm Var}(X_t)=0$. This implies that $(X_t)_{t\in \R^+}$ is a centered Gaussian process.
+
+Now, suppose that $(X_t)_{t\in \R^+}$ is a Brownian motion. Then we have:
+
+$$
+\begin{aligned}
+& \text{(i) If }(X_t)_{t\in \R^+}\text{ is a Brownian motion, then } X_0=0\\
+& \Rightarrow & {\rm Cov}(X_s,X_t)={\rm Var}(X_s-{\rm E}(X_s)) = s - {\rm E}(X_s)^2 \\
+& \Rightarrow & 0=s-s \\
+& \end{aligned}
+$$
+
+This implies that ${\rm Cov}(X_s,X_t)=s$. On the other hand, we have:
+
+$$
+\begin{aligned}
+& \text{(ii) If }(X_t)_{t\in \R^+}\text{ is a centered Gaussian process, then ${\rm Cov}(X_s,X_t)=0}\\
+& \Rightarrow & {\rm Cov}(X_s,X_t) = 0 \\
+& \end{aligned}
+$$
+
+This implies that ${\rm Var}(X_s-{\rm E}(X_s))=s-s={\rm Var}(X_s).$
+
+Therefore, we have shown that $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, and ${\rm Cov}(X_s,X_t)=\inf(s,t)$.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+## Step 1: Definition of a Brownian Motion
+A stochastic process $(X_t)_{t\in \R^+}$ is called a Brownian motion if it satisfies the following properties:
+- It starts at zero, i.e., $X_0=0$.
+- It has continuous paths.
+- For any $s < t$, the increment $X_t - X_s$ is normally distributed with mean 0 and variance $t-s$.
+
+## Step 2: Standard Brownian Motion
+The standard Brownian motion $(B_t)_{t\in \R^+}$ can be defined as:
+\[ B_0 = 0, \quad B_t = tW_{\frac{1}{t}}, \quad t > 0, \]
+where $W_t$ is a standard Brownian motion.
+
+## Step 3: Central Limit Theorem
+By the central limit theorem (CLT), we have:
+\[ \sqrt{T}(\bar{X}_T - \mu) \stackrel{\text{d}}{\rightarrow}\mathcal{N}(0, T)\quad\forall T>0. \]
+
+## Step 4: Convergence of Increments
+For any $s < t$, we have:
+\[ E[\sqrt{T}(\bar{X}_T - \mu)|\mathcal{F}_s] = 0, \]
+since $\bar{X}_T$ is a constant and $\mathbb{E}[\sqrt{T}]=0$. Hence, by the strong law of large numbers (SLLN), we have:
+\[ X_t - \int_s^t\sqrt{\tau}\,dW_\tau = 0, \quad t > s. \]
+
+## Step 5: Convergence of the Process
+By Steps 3 and 4, we conclude that $(X_t)_{t\in \R^+}$ converges to zero in probability.
+
+The final answer is: $\boxed{X_0=0,\; (X_t)_{t\in \R^+}=\left\{\begin{matrix}\int_0^s \sqrt{s'} dW_{s'}, &s<s<T\\ 0, &T\le s<+\infty. \end{matrix}\right.}$

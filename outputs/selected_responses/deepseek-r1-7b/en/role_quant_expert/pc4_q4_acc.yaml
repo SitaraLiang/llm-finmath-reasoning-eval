@@ -1,0 +1,25 @@
+pc: '4'
+exercise: '4'
+language: en
+variation: role_quant_expert
+prompt_type: prompt_accumulation
+call1_output_mode: plain_text
+call1_model: deepseek-r1-7b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        - W_t is a Brownian motion (martingale)
+        arguments:
+        - Optional Stopping Theorem
+        outcomes:
+        - E(W_τ) = 0
+-   atoms:
+    -   preconditions:
+        - tau is a bounded stopping time
+        - W_t is a standard Brownian motion
+        arguments:
+        - Martingale property of W_t^2 - t
+        outcomes:
+        - E[W_tau^2] = E[tau]

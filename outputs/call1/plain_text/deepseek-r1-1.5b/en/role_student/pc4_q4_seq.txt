@@ -1,0 +1,419 @@
+Exercise: pc4_q4
+Model: deepseek-r1:1.5b
+Variation: role_student
+Prompt type: strictly_sequential
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+<think>
+Okay, so I'm trying to figure out this problem where we need to compute the expected value of a Brownian Motion at a bounded stopping time τ, which is denoted as E(W_τ). Hmm, let me break this down step by step.
+
+First off, what do I remember about Brownian motion? It's a continuous-time stochastic process that's often used in financial mathematics. The key properties are that it's a martingale, meaning the expected value of the future price is equal to the current price. Also, increments are independent and normally distributed. So, W_t has some kind of symmetry around its starting point.
+
+Now, τ is given as a bounded stopping time. I think that means τ is a random variable that stops the process at a certain time which doesn't go on forever; it's almost surely less than or equal to some constant. So, without loss of generality, we can say that there exists some T such that τ ≤ T almost surely.
+
+Given this stopping time τ, I need to compute E(W_τ). Since W_t is a martingale, does that help? Well, in general, for any stopping time τ, the expected value E[W_τ] should be equal to the initial condition. But wait, Brownian Motion starts at zero, right? So W_0 = 0.
+
+Is there a theorem or property that states this? I remember something called the Martingale Stopping Theorem. Let me recall: if we have a martingale M_t and a stopping time τ such that E[|M_τ|] < ∞, then E[M_τ] = E[M_0]. Since M_0 is W_0 which is 0, this would imply that E[W_τ] = 0.
+
+But let me think through it without invoking the theorem to make sure. Suppose τ is bounded by T. Then, can I write W_τ as an integral of its increments? Yes, because Brownian Motion is a sum (or integral) of independent normals. So,
+
+W_τ = W_{T} - W_{\tau - 1} + ... Wait, no, actually it's the sum from s=0 to τ-1 of dW_s. But since τ is bounded by T, this sum goes up to time T.
+
+But how does that help me compute E[W_τ]? Hmm, maybe I can express W_τ as W_{\tau - 1} + (W_{\tau} - W_{\tau - 1}). Wait, no, actually for each increment between times s and s+1? Maybe a Riemann sum approach.
+
+Alternatively, let me consider that because τ is bounded, we can represent τ as T' where T' ≤ T. So E[W_τ] = E[lim_{n→∞} W_{T'}]. But since the process is continuous in probability, if it converges almost surely and uniformly, then expectation commutes.
+
+Wait, I'm not sure about that part. Maybe another approach: use the property that increments are independent of the past. So for each s < τ, dW_s is independent of W_τ - W_s, right? But actually, since τ is a stopping time, W_τ can be written as sum_{k=1}^\tau dW_k.
+
+But I'm getting confused here. Maybe it's simpler to just apply the Martingale Stopping Theorem directly because Brownian Motion is a martingale and τ is bounded, so the theorem applies, which gives E[W_τ] = 0.
+
+Alternatively, without invoking the theorem: since W_t has independent increments and each increment has mean zero. If I consider that from time 0 to τ, the process goes through several increments, each of which is a normal random variable with mean zero. Therefore, the total expectation should also be zero because all the terms cancel out.
+
+Yes, that makes sense. Each dW_k has E[dW_k] = 0, so summing them up from k=1 to τ gives an expected value of zero. Thus, E[W_τ] must be zero.
+
+Wait a second, does this hold even when τ is random? I think in the theorem, it's assumed that E[|M_τ|] < ∞, which should hold here because W_t is bounded in variation for any stopping time on a bounded interval. So yeah, all conditions are satisfied.
+
+So putting it all together: since W_t is a martingale with τ being a bounded stopping time, the expected value E[W_τ] must be zero.
+</think>
+
+When $\tau$ is a bounded stopping time, we can apply the Martingale Stopping Theorem. Since Brownian Motion $W_t$ is a martingale and $\tau$ is a bounded stopping time (there exists an $T$ such that $\tau \leq T$ almost surely), it follows that $E[W_\tau] = E[W_0] = 0$.
+
+Answer: \boxed{0}
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+<think>
+Okay, so I have to find the expected value of $W_{\tau}^2$, where $\tau$ is a bounded stopping time and $W_t$ is a Brownian motion. Hmm, let's break this down step by step.
+
+First off, Brownian motion has some nice properties. It's a martingale, which means that the expected value of the future position given the current position is the current position itself. That might come in handy later. Also, it satisfies the property that $W_t$ and $t$ are independent for any stopping time $\tau$, right? So, maybe I can use that independence somehow.
+
+Since $\tau$ is a bounded stopping time, it means that almost surely, it's less than or equal to some fixed number, let's say $T$. That boundedness might help in integrating over the finite interval. Hmm, but I'm not sure if that's directly applicable here.
+
+Wait, the question is about computing $\E(W_{\tau}^2)$. Let me recall some properties of Brownian motion. For a standard Brownian motion starting at 0, we know that $W_t$ has increments that are normal distributions with mean 0 and variance $t$. But in this case, since it's a stopping time $\tau$, maybe I need to consider the quadratic variation or something else.
+
+Hold on, maybe there is a theorem related to square of Brownian motion at a stopping time. I think for any stopping time $\tau$, the process $W_t^2$ has some nice properties. In particular, in stochastic calculus, we have tools like Itô's lemma that involve quadratic terms. Maybe using Itô's formula here.
+
+Wait, let me try to compute $\E(W_{\tau}^2)$ directly. Since Brownian motion is a martingale, maybe I can use the optional stopping theorem? But for that, do I know anything about $W_t$ and $\tau$?
+
+Alternatively, since $W_t$ is a martingale, then for any bounded stopping time $\tau$, we have $\E(W_{\tau}) = \E(0) = 0$. That's because the expected value of the stopped process at a stopping time that ends almost surely at 0.
+
+But I need the expectation of $W_{\tau}^2$, not just the expectation. Hmm, maybe I can use the fact that for martingales, there are relationships involving their increments or variances.
+
+Wait another thought: For any bounded stopping time $\tau$, by the optional stopping theorem applied to a martingale squared? Let me think about $W_t^2$. Since it's a square of a martingale, is it also a submartingale?
+
+I know that for $t \geq s$, $W_t^2 - W_s^2 = (W_{t} - W_{s})(W_{t} + W_{s})$. But since $\tau$ is a stopping time, we can write the expectation as:
+
+$\E(W_{\tau}^2) = \E(\E((W_{\tau}^2 - W_s^2)| \mathcal{F}_s))$ for $s < \tau$, but if I set $s=0$, then that gives $\E(W_{\tau}^2) = \E(\E(W_{\tau}^2 | \mathcal{F}_0)) - \E(W_0^2)$. Since $W_0 = 0$, this simplifies to $\E(W_{\tau}^2)$.
+
+But wait, that doesn't help much. Maybe I need a different approach.
+
+Alternatively, since Brownian motion has quadratic variation equal to its time increment, and if $\tau$ is bounded, then maybe we can express $W_{\tau}$ as the integral of its increments over [0, τ], which is a Riemann sum approximation. So perhaps:
+
+$W_{\tau} = \lim_{n \to \infty} \sum_{i=1}^n W_{t_i} - W_{t_{i-1}}}$
+
+Then, $W_{\tau}^2$ would be the square of this sum. Taking expectations might give me some term involving variance.
+
+Wait, maybe it's better to use Ito's lemma on $f(t) = t$. Since if we apply Itô's formula to $f(t) = t$, which is a simple function, the differential would involve the derivative and the second derivative.
+
+Wait no, actually, for $f(W_t)$, applying Ito's lemma would give:
+
+$d(f(W_t)) = f'(W_t)dW_t + \frac{1}{2}f''(W_t)(dW_t)^2$
+
+Since $f(t) = t$, this becomes:
+
+$d(W_{\tau}) = dW_{\tau} + \frac{1}{2}(dW_{\tau})^2$
+
+But integrating over [0, τ], we get:
+
+$W_{\tau} - W_0 = W_{\tau} = \int_0^{\tau} dW_t + \frac{1}{2}\int_0^{\tau} (dW_t)^2$
+
+Squaring both sides:
+
+$(W_{\tau})^2 = (\int_0^{\tau} dW_t + \frac{1}{2}\int_0^{\tau} (dW_t)^2)^2$
+
+Expanding this, we get:
+
+$= (\int_0^{\tau} dW_t)^2 + 2\left(\int_0^{\tau} dW_t\right)\left( \frac{1}{2}\int_0^{\tau} (dW_t)^2 \right) + \left( \frac{1}{2}\int_0^{\tau} (dW_t)^2 \right)^2$
+
+Taking expectation on both sides:
+
+$\E[(W_{\tau})^2] = \E[\left(\int_0^{\tau} dW_t\right)^2] + 2\E\left[ \int_0^{\tau} dW_t \cdot \frac{1}{2}\int_0^{\tau} (dW_t)^2 \right] + \E\left[\left( \frac{1}{2}\int_0^{\tau} (dW_t)^2 \right)^2 \right]$
+
+Simplify each term:
+
+First term: $\E[\left(\int_0^{\tau} dW_t\right)^2]$. Since $W_t$ is a martingale, the expectation of its quadratic variation over [0, τ] is just τ. So this first term is τ.
+
+Second term: 2 * (1/2) = 1 multiplied by E[∫₀^τ dW_t * ∫₀^τ (dW_t)^2 ] = E[∫₀^τ dW_t * ∫₀^τ (dW_t)^2 ]
+
+Wait, but these are stochastic integrals. Maybe we can swap the expectation and the integral? Since it's a bounded stopping time, I think Fubini's theorem applies here because of the square.
+
+So:
+
+= E[∫₀^τ dW_t * ∫₀^τ (dW_t)^2 ] = ∫₀^T E[W_{t'} * W_{t'}^2] dt' ?
+
+Wait, no. Wait, actually, it's a double integral over s and t: E[∫₀^τ W_s dW_s * ∫₀^τ W_t dt]
+
+Hmm, perhaps another approach is needed here because directly integrating might be tricky.
+
+Alternatively, maybe using the properties of Brownian motion increments:
+
+Since $dW_t$ is independent of all previous increments, we can write that expectation as zero. Wait, actually, if s < t, then E[W_s W_t] = 0? No, wait: for a Brownian motion, $E[W_s W_t] = \min(s, t)$.
+
+Wait, but in our case, the integrals are over [0, τ]. So perhaps writing E[∫₀^τ dW_t * ∫₀^τ (dW_t)^2 ] as something involving double integrals of expectation terms?
+
+Alternatively, maybe I can represent it as:
+
+E[∫₀^τ dW_t * ∫₀^τ W_s ds] = E[∫₀^τ (∫₀^s dW_u) W_s ds]
+
+Using the Fubini-Tonelli theorem because everything is adapted and measurable.
+
+Then switching the order of integration, we get:
+
+E[∫₀^τ ∫_0^s dW_u * W_s ds] = E[∫₀^τ (∫_u^τ dW_u) W_s ds]
+
+Because s goes from u to τ. So now it becomes:
+
+= E[∫₀^τ (∫_u^τ dW_u) W_s ds ]
+
+But since dW_u is independent of W_s for s > u, we can write:
+
+= ∫₀^τ E[∫_u^τ dW_u] * E[W_s | W_u] * (s - u) du
+
+Wait, maybe not exactly. Let me clarify.
+
+Since for each fixed u in [0, τ], the integral ∫_u^τ dW_v is a normal random variable with mean 0 and variance τ - u. And given that, E[W_s | W_u] = W_u if s ≥ u.
+
+Wait, but here, I have an extra (s - u) factor because of the integration over s. So perhaps:
+
+E[∫₀^τ (∫_u^τ dW_v) * W_s ds ] = ∫₀^τ E[(∫_u^τ dW_v) * W_s] du
+
+But since for each v in [u, τ], dW_v is independent of W_u but not necessarily independent from W_s where s ≥ u.
+
+Wait, perhaps I should compute E[∫₀^τ (∫_u^τ dW_v) * W_s ds ] = ∫₀^τ E[∫_u^τ dW_v] * E[W_s | W_u] du
+
+But I'm not sure if that's correct because W_u and W_v are not independent for v > u.
+
+Wait, no. Actually, given W_u and W_v with v > u, they are independent in the increments of Brownian motion. So maybe:
+
+E[∫_u^τ dW_v * W_s] = E[∫_u^τ E[dW_v | W_u] * W_s]
+
+But since dW_v is a normal variable with mean 0 and variance v - u, given W_u, then E[dW_v] = 0.
+
+Wait, perhaps this approach isn't working. Maybe another way.
+
+Alternatively, let me compute the expectation term by term:
+
+The first term in $\E[(W_{\tau})^2]$ is τ, as we established earlier.
+
+Now, moving to the second term: 2 * E[∫₀^τ dW_t * ∫₀^τ (dW_t)^2 / 2 ]
+
+Wait, no, actually, it's:
+
+$\E[(W_{\tau})^2] = \tau + 2 * \E[\int_0^\tau W_t dW_t \cdot \int_0^\tau (dW_s)^2 ] + \E[ (\frac{1}{2} \int_0^\tau (dW_s)^2 )^2 ]$
+
+But this seems complicated. Maybe another approach is better.
+
+Wait, perhaps using Ito's formula on $f(t) = t$, we have:
+
+$d(W_{\tau}) = dW_{\tau}$
+
+And from Ito's lemma,
+
+$d(W_{\tau}) = W_{\tau} d\tau + \frac{1}{2}(dW_{\tau})^2$
+
+But integrating both sides over [0, τ], we get:
+
+$W_{\tau} - W_0 = \int_0^\tau W_{\tau} d\tau + \frac{1}{2}\int_0^\tau (dW_t)^2$
+
+Which rearranged gives:
+
+$\int_0^\tau (dW_t)^2 = 2(W_{\tau} - W_0) - \int_0^\tau W_{\tau} d\tau$
+
+Since $W_0 = 0$, this simplifies to:
+
+$\int_0^\tau (dW_t)^2 = 2W_{\tau} - \int_0^\tau W_{\tau} d\tau$
+
+Now, taking expectations on both sides:
+
+$\E[\int_0^\tau (dW_t)^2] = 2\E[W_{\tau}] - \E[ \int_0^\tau W_{\tau} d\tau ]$
+
+But $W_{\tau}$ is a stopping time variable. Since $\tau$ is bounded, and $W_t$ is integrable, we have:
+
+$\E[\int_0^\tau W_{\tau} d\tau] = \E[ \int_0^{\infty} W_t \mathbf{1}_{\{\tau > t\}} dt ]$
+
+Since $\tau$ is bounded by some T, this becomes:
+
+= $\E[ \int_0^T W_t \mathbf{1}_{\{\tau > t\}} dt ] = \int_0^T E[W_t | \tau > t] \cdot 1_{\{ \tau > t \}} dt$
+
+But integrating over $t$ from 0 to T, this might not necessarily be equal to $\E[ W_{\tau} ]$, unless certain conditions hold.
+
+Wait, perhaps applying Fubini's theorem here:
+
+$\int_0^T E[W_t | \tau > t] \cdot 1_{\{ \tau > t \}} dt = \E[ \int_0^{\infty} W_t \mathbf{1}_{\{\tau > t\}} dt ] = \E[ \int_0^\tau W_t dt ]$
+
+Because when we take the expectation, it's equivalent to integrating over all $t$.
+
+But wait, that seems confusing. Let me think again:
+
+Actually, by Tonelli's theorem (since everything is non-negative), we have:
+
+$\E[ \int_0^{\infty} W_t \mathbf{1}_{\{\tau > t\}} dt ] = \int_0^\infty \E[W_t \mathbf{1}_{\{\tau > t\}}] dt$
+
+Which is equal to $\int_0^\tau E[W_t | \tau > t] dt$.
+
+But since for $t > \tau$, the indicator function is zero, so:
+
+= $\int_0^T E[W_t | \tau > t] dt = \E[ \int_0^{\infty} W_t \mathbf{1}_{\{\tau > t\}} dt ]$
+
+But I'm not sure if that's helpful. Maybe another approach is better.
+
+Alternatively, perhaps we can recall that for a martingale $M_t$, $\E[M_{t \wedge T}] = M_0$ and $\E[(M_T - M_{t \wedge T})^2] = \E[M_T^2] - \E[M_{t \wedge T}^2]$.
+
+But in our case, $W_t$ is a martingale. So if we let $M_t = W_t$, then for any stopping time $\tau$, taking expectation,
+
+$\E[W_{\tau}] = 0$
+
+And also,
+
+$\E[(W_T - W_{t \wedge T})^2] = \E[W_T^2] - \E[W_{t \wedge T}^2]$
+
+But we can write this as:
+
+$T - \E[W_{t \wedge T}]^2 + (t \wedge T) - \E[ W_{t \wedge T} ]^2 = \E[W_T^2] - \E[W_{t \wedge T}^2]$
+
+Wait, no. Actually,
+
+$\E[(W_T - W_{t \wedge T})^2] = \E[W_T^2 - 2 W_{t \wedge T} W_T + W_{t \wedge T}^2 ] = \E[W_T^2] - 2 \E[ W_{t \wedge T} W_T ] + \E[W_{t \wedge T}^2 ]$
+
+But $W_T$ is a function of the stopping time $\tau$, so $W_{t \wedge T}$ and $W_T$ are not independent. Hmm, perhaps I'm overcomplicating.
+
+Wait, let's try this way:
+
+Since $M_t = W_t$ is a martingale, then by the optional stopping theorem,
+
+$\E[M_{\tau}] = \E[0] = 0$
+
+And also,
+
+$\E[M_T^2 - M_{t \wedge T}^2] = \E[W_T^2 - (W_{t \wedge T})^2] = \E[(W_{T \wedge t})^2 - W_{t \wedge T}^2]$
+
+But actually, $M_T$ is a bounded stopping time, so:
+
+$\E[M_T^2 - M_{t \wedge T}^2] = 0 + ...$ Wait, no.
+
+Wait, hold on. For any martingale $M_t$, we have $\E[M_T^2] = \E[(M_0)^2] + \E[\int_0^T M'_t dM_t]$ but I might be getting into more advanced stuff here.
+
+Alternatively, considering that for a simple function like $f(t) = t$, the lemma says:
+
+$d(f(M_t)) = f'(M_t) dM_t + (1/2)f''(M_t)(dM_t)^2$
+
+Since $f$ is smooth, this should hold. So,
+
+$d((W_t)^2) = 2 W_t dW_t + (1/2)(2) (dW_t)^2 = 2 W_t dW_t + (dW_t)^2$
+
+Integrating both sides over [0, τ]:
+
+$(W_{\tau})^2 - (W_0)^2 = \int_0^\tau 2 W_s dW_s + \int_0^\tau (dW_s)^2$
+
+Taking expectation on both sides:
+
+$\E[(W_{\tau})^2] - 0 = 0 + \E[ \int_0^\tau (dW_s)^2 ]$
+
+So,
+
+$\E[(W_{\tau})^2] = \E[ \int_0^\tau (dW_s)^2 ]$
+
+Now, the term $\E[ \int_0^\tau (dW_s)^2 ]$ is the expected integral of the quadratic variation. For a Brownian motion, the quadratic variation over [0, τ] is τ almost surely, but here we have an expectation.
+
+But in general, for a stopping time $\tau$, I think that:
+
+$\E[ \int_0^\tau (dW_s)^2 ] = \tau - \E[W_{\tau}^2]$
+
+Wait, let's check: For each $s \leq \tau$, $(dW_s)^2$ is the variance of $W_s$, which is s. So,
+
+$\E[ \int_0^\tau (dW_s)^2 ] = \int_0^\tau \E[(dW_s)^2] ds = \int_0^\tau s ds = \frac{\tau^2}{2}$
+
+But if we have:
+
+$\E[(W_{\tau})^2] = \frac{\tau^2}{2} - \E[W_{\tau}]$
+
+Wait, no. Wait, going back.
+
+From the above steps,
+
+$(W_{\tau})^2 = \int_0^\tau 2 W_s dW_s + \int_0^\tau (dW_s)^2$
+
+Taking expectation:
+
+$\E[(W_{\tau})^2] = 0 + \E[ \int_0^\tau (dW_s)^2 ]$
+
+So,
+
+$\E[(W_{\tau})^2] = \E[ \int_0^\tau (dW_s)^2 ]$
+
+But $\E[ \int_0^\tau s ds ] = \frac{\tau^2}{2}$
+
+Wait, but also, $(W_{\tau})^2$ is equal to $ \int_0^\tau 2 W_s dW_s + \int_0^\tau (dW_s)^2 $
+
+So taking expectation on both sides:
+
+$\E[(W_{\tau})^2] = 0 + \E[ \int_0^\tau (dW_s)^2 ]$
+
+But also, from the earlier step,
+
+$\E[(W_{\tau})^2] = \frac{\tau^2}{2} - \E[W_{\tau}]$
+
+Wait, this seems conflicting. Maybe another approach.
+
+Alternatively, note that for each $s$, $(dW_s)^2$ is a random variable, so taking expectation,
+
+$\E[ (dW_s)^2 ] = E[(W_s - W_0)^2] = s$
+
+Hence, integrating over [0, τ], we have:
+
+$\E[ \int_0^\tau (dW_s)^2 ] = \int_0^\tau E[(W_s - W_0)^2] ds = \int_0^\tau s ds = \frac{\tau^2}{2}$
+
+Therefore,
+
+$\E[ (W_{\tau})^2 ] = \frac{\tau^2}{2}$
+
+So, the expected value of $(W_{\tau})^2$ is $\tau^2 / 2$
+
+Wait, but hold on. Let me verify this with another approach.
+
+Suppose I use the fact that $E[(W_{\tau})^2] = E[\int_0^\tau W_t dW_t + \int_0^\tau (dW_s)^2 ]$?
+
+No, wait, earlier we had:
+
+$(W_{\tau})^2 = 2 \int_0^\tau W_s dW_s + \int_0^\tau (dW_s)^2$
+
+So taking expectation,
+
+$\E[(W_{\tau})^2] = 0 + \E[ \int_0^\tau (dW_s)^2 ]$
+
+Which is $\frac{\tau^2}{2}$ as we saw.
+
+Alternatively, if I consider the process $X_t = W_t$, then since $X_t$ is a martingale, we have:
+
+$\E[X_{\tau}] = 0$
+
+And for any stopping time with finite expectation,
+
+$\E[X_{\tau}^2] = \E[ (X_0)^2 ] + \text{variance term}$
+
+Wait, no. For general martingales, there is the formula:
+
+$\E[X_{\tau}] = X_0$
+
+and
+
+$\E[(X_{\tau})^2] = \E[ \int_0^\tau (\nabla X_s)^2 ds ] + (X_0)^2$
+
+But in this case, since $X_t$ is a martingale with jumps? Wait, no. Brownian motion is continuous.
+
+Wait, for Brownian motion,
+
+$\E[X_{\tau}^2] = \E[ \int_0^\tau (\nabla X_s)^2 ds ] + (X_0)^2$
+
+But $X_0 = 0$, so:
+
+$\E[X_{\tau}^2] = \E[ \int_0^\tau s ds ] = \frac{\tau^2}{2}$
+
+Hence, same result.
+
+Therefore, the expected value is $\boxed{ \dfrac{\tau^2}{2} }$
+
+**Final Answer**
+The expected value of $(W_{\tau})^2$ is $\boxed{\dfrac{\tau^2}{2}}$.
+</think>
+
+Given a bounded stopping time \(\tau\) for a Brownian motion \(W_t\), we need to find the expected value of \((W_{\tau})^2\).
+
+1. Recognize that \(W_t\) is a martingale, meaning it has the property that \(\mathbb{E}[W_{\tau} \mid \mathcal{F}_t] = W_t\) for all \(t \leq \tau\).
+2. Use Ito's lemma on the function \(f(t) = t^2\). For a martingale \(M_t\), this gives:
+   \[
+   d(M_t^2) = 2 M_t dM_t + (dM_t)^2
+   \]
+3. Applying this to the Brownian motion \(W_t\), we get:
+   \[
+   d((W_t)^2) = 2 W_t dW_t + (dW_t)^2
+   \]
+4. Integrate both sides from 0 to \(\tau\):
+   \[
+   (W_{\tau})^2 - (W_0)^2 = \int_0^\tau 2 W_s dW_s + \int_0^\tau (dW_s)^2
+   \]
+5. Taking expectation on both sides, we note that \(W_0 = 0\) and using the property of martingales:
+   \[
+   \mathbb{E}[(W_{\tau})^2] = \mathbb{E}\left[\int_0^\tau (dW_s)^2\right]
+   \]
+6. Since each increment of Brownian motion has variance \(s\), we have:
+   \[
+   \mathbb{E}\left[\int_0^\tau (dW_s)^2\right] = \int_0^\tau s ds = \frac{\tau^2}{2}
+   \]
+
+Thus, the expected value of \((W_{\tau})^2\) is \(\boxed{\dfrac{\tau^2}{2}}\).

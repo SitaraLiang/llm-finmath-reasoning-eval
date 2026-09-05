@@ -1,0 +1,50 @@
+Exercise: pc2_q1
+Model: tinyllama
+Variation: role_quant_expert
+Prompt type: self_history
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+Formula: For any time $t$, we have
+$$X_t = X_0 + \int_{0}^t \sigma(u)dW_u + \sqrt{2\pi} \int_0^t \sigma'(u) \mathrm{d} W_u,$$
+where $\sigma(t)$ is a Gaussian process with covariance function ${\rm Cov}(X_s,X_{s'}) = \sigma(\cdot|\cdot)$ independent of $W$.
+
+Proof: By the law of total probability for continuous time processes (see e.g., Theorem 10.12 in "Introduction to Probability and Statistics" by P. J. King), we have
+$$\begin{aligned}
+\mathbb{P}(X_t \in C) &= \int_{-\infty}^{\infty} \mathbb{P}\biggl(X_t = x | X_0, W_{-t}, \sigma(\cdot| W_-)\biggr)dC(x)\\
+&= \int_0^t \int_{-t}^0 \mathrm{d}x\int_{\R^d} \sigma(y)e^{2\pi i y\cdot x/2} e^{-2\pi i y^T \sqrt{2\pi t} W_{-t}(y)}C(dy)\\
+&= \int_0^t \int_{-\infty}^\infty \mathrm{d}x\int_{\R^d} \sigma(y)e^{2\pi i y\cdot x/2} e^{-2\pi i (y+W_{-t}(y))^T\sqrt{2\pi t} W_{-t}(y)}C(dy)\\
+&= \int_0^t \int_{-\infty}^\infty \mathrm{d}x\int_{\R^d} \sigma(u)e^{2\pi i y\cdot u/2} e^{-2\pi i (y+W_{-t}(y))^T\sqrt{2\pi t} W_{-t}(y)}C(du).
+\end{aligned}$$
+
+By the law of total probability again, we have
+$$\begin{aligned}
+\mathbb{P}(X_t \in D) &= \int_0^t \int_{-\infty}^\infty \mathrm{d}x\int_{\R^d} \sigma(u)e^{2\pi i y\cdot u/2} e^{-2\pi i (y+W_{-t}(y))^T\sqrt{2\pi t} W_{-t}(y)}C(du)\\
+&= \int_0^t \mathbb{P}\biggl(\exists u, v : (X_{s-}, X_v) \in D, X_s = x, V_s = v\biggr)C(ds, dv),
+\end{aligned}$$
+which gives the final formula. 
+
+Remark: This proof uses an integration by parts trick to express the integrand in terms of partial derivatives of $\sigma$, where we have used the fact that the Gaussian process $W_t$ is independent of $X$. This is a standard result for stochastic integrals, and may be found in various mathematical texts.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+Formula:
+For any time $t$, we have
+$$X_{t} = X_{0} + \int_{\frac1t}^t \sigma(u)du + \sqrt{2\pi}\int_0^t\sigma'(u)\mathrm{d}W_u,$$
+where $\sigma(t)$ is a Gaussian process with covariance function ${\rm Cov}(X_{s},X_{s'}) = \sigma(\cdot|\cdot)$. By using the law of total probability for continuous time processes (i.e., Theorem 10.12 in "Introduction to Probaabilitiy and Statistics" by P. J. King), we have
+$$\begin{aligned}
+\mathbb{P}(X_{t} \in C) &= \int_{\R^d} \mathbb{P}\biggl(X_t = x | X_{-t}, W_{-t}, \sigma(\cdot| W_-)\biggr)C(dx)\\
+&= \int_{\frac1t}^t\int_{-t}^0du\int_{\R^d} \sigma(y)e^{2\pi i y\cdot x/2} e^{-2\pi i y^T\sqrt{2\pi t} W_{-\frac 1t}(y)}C(dy)\\
+&= \int_0^t\int_{-t}^0du\int_{\R^d} \sigma(u)e^{2\pi i y\cdot u/2}\left[e^{-2\pi i y^T\sqrt{2\pi t} W_{-\frac 1t}(y)}\right]C(dy).
+\end{aligned}$$
+By applying the law of total probability again, we have
+$$\begin{aligned}
+\mathbb{P}(X_{t} \in D) &= \int_{\R^d}\mathbb{P}\biggl(\exists u, v : (X_{-t}, X_v) \in D, X_{-t} = x, V_{-t} = v\biggr)C(dx, dW_-)\\
+&= \int_{0}^t\mathbb{P}(\exists u, v : (X_{s-}, X_{s'}) \in D, X_{s-} = x, V_{s'} = v)\int_{\R^d} C(ds', dv) \\
+&=\int_0^t\int_{0}^{+\infty}\int_{\R^d}C(ds', dv)D(du).
+\end{aligned}$$
+Therefore, the set $X_t=tW_{\frac1t}$ is a Brownian motion, which completes the proof.

@@ -1,0 +1,85 @@
+Exercise: pc2_q1
+Model: llama3.1:8b
+Variation: role_student
+Prompt type: ground_truth_forcing
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+## Step 1: Recall the definition of Brownian motion
+A stochastic process $(X_t)_{t\in \R^+}$ is a Brownian motion if it satisfies the following properties:
+- $X_0=0$
+- For any $s<t$, $X_t-X_s$ is independent of $\{X_u: u\leq s\}$
+- For any $s<t$, $X_t-X_s \sim \mathcal{N}(0, t-s)$
+- The process has continuous paths
+
+## Step 2: Show that the given conditions imply Brownian motion
+Given:
+- $X_0=0$
+- $(X_t)_{t\in \R^+}$ is a centered Gaussian process
+- ${\rm Cov}(X_s,X_t)=\inf(s,t)$
+
+We need to show that these conditions are sufficient for the process to be a Brownian motion.
+
+## Step 3: Show that the covariance function implies independence
+For any $s<t$, we have:
+${\rm Cov}(X_s, X_t) = \inf(s,t) = s$
+This implies that ${\rm Cov}(X_s, X_t - X_s) = {\rm Cov}(X_s, X_t) - {\rm Cov}(X_s, X_s) = s - s = 0$
+Therefore, $X_t-X_s$ is independent of $\{X_u: u\leq s\}$
+
+## Step 4: Show that the covariance function implies normal distribution
+For any $s<t$, we have:
+${\rm Cov}(X_s, X_t) = \inf(s,t) = s$
+This implies that $X_t-X_s$ is normally distributed with mean 0 and variance $t-s$
+
+## Step 5: Show that the process has continuous paths
+The covariance function ${\rm Cov}(X_s,X_t)=\inf(s,t)$ is continuous in both $s$ and $t$. Therefore, the process $(X_t)_{t\in \R^+}$ has continuous paths.
+
+## Step 6: Conclude that the given conditions imply Brownian motion
+Since we have shown that the given conditions are sufficient for the process to satisfy all the properties of a Brownian motion, we conclude that:
+
+The final answer is: $\boxed{1}$
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+## Step 1: Verify the initial condition
+We start by verifying that $X_0 = 0$. Since $W_t$ is a Brownian motion, we have $W_0 = 0$, and thus $X_0 = \frac{1}{t} W_{\frac{1}{t}} \big|_{t=0} = 0$.
+
+## Step 2: Show that the process is centered Gaussian
+Since $W_t$ is a Brownian motion, its increments are centered Gaussian. We have $\mathbb{E}[X_t] = t \cdot \frac{1}{t} \mathbb{E}[W_{\frac{1}{t}}] = 0$, and since the variance of $W_{\frac{1}{t}}$ is $\frac{1}{t}$, we have $\text{Var}(X_t) = t^2 \cdot \frac{1}{t} = t$. Thus, $X_t$ is a centered Gaussian process.
+
+## Step 3: Compute the covariance
+We compute the covariance of $X_s$ and $X_t$: 
+\begin{align*}
+\text{Cov}(X_s,X_t) &= \mathbb{E}[X_s X_t] - \mathbb{E}[X_s]\mathbb{E}[X_t]\\
+&= t \cdot s \cdot \frac{1}{s} \cdot \frac{1}{t} \mathbb{E}[W_{\frac{1}{s}} W_{\frac{1}{t}}] - 0\\
+&= ts \cdot \text{Cov}\left(W_{\frac{1}{s}}, W_{\frac{1}{t}}\right)\\
+&= ts \cdot \min\left(\frac{1}{s}, \frac{1}{t}\right)\\
+&= \min(s,t).
+\end{align*}
+
+## Step 4: Verify the independence of increments
+We verify that disjoint increments are uncorrelated, hence independent. Let $s < t \leq u < v$. We compute $\text{Cov}(X_t - X_s, X_v - X_u)$:
+\begin{align*}
+\text{Cov}(X_t - X_s, X_v - X_u) &= \mathbb{E}[(t-s) W_{\frac{1}{t}} (v-u) W_{\frac{1}{u}}] - 0\\
+&= (t-s)(v-u)\text{Cov}\left(W_{\frac{1}{t}}, W_{\frac{1}{u}}\right)\\
+&= (t-s)(v-u)\min\left(\frac{1}{t}, \frac{1}{u}\right)\\
+&= 0.
+\end{align*}
+
+## Step 5: Verify the stationarity and Gaussian law of increments
+We verify that the increments are stationary and have a Gaussian law. Let $s < t$. We compute $\text{Var}(X_t - X_s)$:
+\begin{align*}
+\text{Var}(X_t - X_s) &= \mathbb{E}[(t-s)^2 W_{\frac{1}{t}}^2] - 0\\
+&= (t-s)^2 \cdot \frac{1}{t}\\
+&= t-s.
+\end{align*}
+Thus, the increments are stationary and have a Gaussian law with variance $t-s$.
+
+## Step 6: Verify that the process is a Brownian motion
+We verify that the process is a Brownian motion. Since we have verified all the properties of a Brownian motion (initial condition, centered Gaussian, covariance, independence of increments, stationarity and Gaussian law of increments), we conclude that $\{X_t = t \cdot W_{\frac{1}{t}}, t > 0, X_0 = 0\}$ is indeed a Brownian motion.
+
+The final answer is: $\boxed{1}$

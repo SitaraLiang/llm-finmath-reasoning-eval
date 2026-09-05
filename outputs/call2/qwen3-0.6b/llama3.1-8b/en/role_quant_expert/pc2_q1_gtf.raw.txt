@@ -1,0 +1,21 @@
+### Question block 1
+It seems like there was a bit of a copy-paste issue!
+
+To answer your original question: To prove that a process is a Brownian motion given the conditions:
+
+1. Cov(Xs, Xt) = inf(s,t)
+2. X0 = 0
+
+You need to show that it satisfies the following properties:
+
+* **Stationary increments**: The distribution of the increment X(t) - X(s) depends only on the time difference t-s, not on the starting point s.
+* **Independent increments**: The increments X(t) - X(s) and X(u) - X(v) are independent for any t > u > s > v.
+* **Continuous paths**: The sample paths of the process are continuous functions of time.
+* **Normal distribution**: The increment X(t) - X(s) has a normal distribution with mean 0 and variance equal to the time difference t-s.
+
+To show these properties, you can use the given conditions and some mathematical manipulations. For example:
+
+* From Cov(Xs, Xt) = inf(s,t), we can deduce that the covariance between any two increments is zero, which implies independence.
+* The condition X0 = 0 implies that the process starts at zero, which helps to establish stationarity.
+
+If you'd like more details on how to prove these properties, feel free to ask!

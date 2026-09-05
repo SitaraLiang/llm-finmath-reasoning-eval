@@ -1,0 +1,35 @@
+### Question block 1
+<think>
+Okay, let's try to figure out how to show that the given process is a Brownian motion. The problem states that we have a centered Gaussian process with X₀ = 0 and covariance Cov(X_s, X_t) = min(s, t). We need to show that this process satisfies all the properties of Brownian motion.
+
+First, I remember that Brownian motion has independent increments, is continuous almost surely, and has Gaussian increments with mean zero and variance equal to the time difference. Also, the covariance between X_s and X_t is min(s, t). So maybe the given process already satisfies these properties?
+
+Let me start by checking the variance. For any t ≥ 0, Var(X_t) = Cov(X_t, X_t) = t. That's good because Brownian motion has Var(X_t) = t. So that's one property satisfied.
+
+Next, the covariance between X_s and X_t is min(s, t). For s < t, this is s. But in Brownian motion, the covariance between X_s and X_t is s, which matches. So that's consistent.
+
+Now, the key property is independent increments. How can I show that? For independent increments, the covariance between X_t - X_s and X_r should be zero if r ≤ s. Wait, but how do I relate that to the given covariance?
+
+Let me think. Suppose we have two time points, say s and t with s < t. Then, the increment X_t - X_s should be independent of X_s. Since the process is Gaussian, if two random variables are uncorrelated, they are independent. So if I can show that Cov(X_t - X_s, X_s) = 0, then they are independent.
+
+Let's compute Cov(X_t - X_s, X_s). This is equal to Cov(X_t, X_s) - Cov(X_s, X_s) = min(s, t) - Var(X_s) = s - s = 0. So yes, the covariance is zero. Therefore, X_t - X_s is independent of X_s. That's one increment.
+
+But what about more general increments? For example, if I have two intervals [a, b] and [c, d], with c > b, then the increment on [a, b] and [c, d] should be independent. Since the process is Gaussian, if their covariance is zero, they are independent. Let's check that.
+
+Take two intervals [a, b] and [c, d] where c > b. Then, the covariance between X_d - X_c and X_b - X_a would be Cov(X_d - X_c, X_b - X_a). Since X_d - X_c is independent of X_b - X_a because they are on non-overlapping intervals, their covariance should be zero. Wait, but how do I compute that?
+
+Alternatively, since the process is Gaussian, any finite-dimensional distribution is multivariate normal. So if I can show that for any two disjoint intervals, the corresponding increments are uncorrelated, hence independent.
+
+But maybe it's easier to use the fact that for any s < t, the increment X_t - X_s is independent of X_s. Then, by induction, any increment on [a, b] is independent of the past up to a. Therefore, the process has independent increments.
+
+So, putting it all together:
+
+- The process is Gaussian.
+- It has independent increments.
+- X₀ = 0.
+- Var(X_t) = t.
+- Cov(X_s, X_t) = min(s, t).
+
+Therefore, this process satisfies all the properties of Brownian motion. Hence, it is a Brownian motion.
+
+Wait, but I need to make sure that the increments are independent for any number of intervals. For example, if I have multiple non-overlapping intervals, the increments should

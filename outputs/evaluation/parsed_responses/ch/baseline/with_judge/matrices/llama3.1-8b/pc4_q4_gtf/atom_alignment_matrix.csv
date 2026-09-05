@@ -1,0 +1,45 @@
+subquestion_index,dimension,field,gt_atom_index,model_atom_index,gt_atom_path,model_atom_path,gt_source,embedding_score,score,matched,judge_used,judge_label,judge_confidence,judge_reason,judge_cache_key,judge_cache_hit,judge_error,gt_text,model_text
+1,D2,arguments,1,1,subquestions[1].atoms/list[1],subquestions[1].atoms/list[1],gt_atom,0.325958,0.325958,False,False,,,,,,,对 $(W_t)_{t\geq 0}$ 在停时 $\tau$ 处应用 Doob 可选停时定理 (Optional Stopping Theorem)。,$\tau$ 为有界停时
+1,D2,arguments,1,2,subquestions[1].atoms/list[1],subquestions[1].atoms/list[2],gt_atom,0.325958,0.325958,False,False,,,,,,,对 $(W_t)_{t\geq 0}$ 在停时 $\tau$ 处应用 Doob 可选停时定理 (Optional Stopping Theorem)。,$\tau$ 为有界停时 | 布朗运动是连续过程
+1,D2,arguments,1,3,subquestions[1].atoms/list[1],subquestions[1].atoms/list[3],gt_atom,0.325958,0.325958,False,False,,,,,,,对 $(W_t)_{t\geq 0}$ 在停时 $\tau$ 处应用 Doob 可选停时定理 (Optional Stopping Theorem)。,$\tau$ 为有界停时 | 伊藤公式
+1,D2,arguments,1,4,subquestions[1].atoms/list[1],subquestions[1].atoms/list[4],gt_atom,0.325958,0.325958,False,False,,,,,,,对 $(W_t)_{t\geq 0}$ 在停时 $\tau$ 处应用 Doob 可选停时定理 (Optional Stopping Theorem)。,$\tau$ 为有界停时 | 布朗运动的性质
+1,D2,arguments,1,5,subquestions[1].atoms/list[1],subquestions[1].atoms/list[5],gt_atom,0.325958,0.325958,False,False,,,,,,,对 $(W_t)_{t\geq 0}$ 在停时 $\tau$ 处应用 Doob 可选停时定理 (Optional Stopping Theorem)。,$\tau$ 为有界停时
+1,D3,outcomes,1,1,subquestions[1].atoms/list[1],subquestions[1].atoms/list[1],gt_atom,0.759815,0.759815,True,False,,,,,,,"\[ \mathbb{E}[W_\tau] = 0, \]",$\E(W_\tau) = \int_{-\infty}^{\infty} x f_\tau(x) dx$
+1,D3,outcomes,1,2,subquestions[1].atoms/list[1],subquestions[1].atoms/list[2],gt_atom,0.722689,0.722689,True,False,,,,,,,"\[ \mathbb{E}[W_\tau] = 0, \]",$\E(W_\tau) = \int_{0}^{\tau} W_s dW_s + \frac{1}{2}\int_{0}^{\tau} 1 ds$
+1,D3,outcomes,1,3,subquestions[1].atoms/list[1],subquestions[1].atoms/list[3],gt_atom,0.506690,0.000000,False,True,unrelated,0.000000,Different mathematical objects.,fee887f40ec6da26ed6fa15eb3b1b20942a330502a8382807e27e18b12efe2de,False,,"\[ \mathbb{E}[W_\tau] = 0, \]",$\int_{0}^{\tau} W_s dW_s = \int_{0}^{\tau} W_s \left( \frac{dW_s}{ds} \right) ds$
+1,D3,outcomes,1,4,subquestions[1].atoms/list[1],subquestions[1].atoms/list[4],gt_atom,0.253512,0.253512,False,False,,,,,,,"\[ \mathbb{E}[W_\tau] = 0, \]",$d^2W_s = \frac{1}{ds}$
+1,D3,outcomes,1,5,subquestions[1].atoms/list[1],subquestions[1].atoms/list[5],gt_atom,0.864076,0.864076,True,False,,,,,,,"\[ \mathbb{E}[W_\tau] = 0, \]",$\E(W_\tau) = \frac{\tau}{2}$
+1,D1,required_precondition_coverage,1,1,assumption_global[1],subquestions[1].atoms/list[1],global_assumption,0.000000,0.000000,False,False,,,,,,,$W_t$ 为布朗运动。,
+1,D1,required_precondition_coverage,1,2,assumption_global[1],subquestions[1].atoms/list[2],global_assumption,0.000000,0.000000,False,False,,,,,,,$W_t$ 为布朗运动。,
+1,D1,required_precondition_coverage,1,3,assumption_global[1],subquestions[1].atoms/list[3],global_assumption,0.000000,0.000000,False,False,,,,,,,$W_t$ 为布朗运动。,
+1,D1,required_precondition_coverage,1,4,assumption_global[1],subquestions[1].atoms/list[4],global_assumption,0.000000,0.000000,False,False,,,,,,,$W_t$ 为布朗运动。,
+1,D1,required_precondition_coverage,1,5,assumption_global[1],subquestions[1].atoms/list[5],global_assumption,0.000000,0.000000,False,False,,,,,,,$W_t$ 为布朗运动。,
+1,D1,required_precondition_coverage,2,1,subquestions[1].assumptions[1],subquestions[1].atoms/list[1],local_assumption,0.000000,0.000000,False,False,,,,,,,$\tau$ 为有界停时，,
+1,D1,required_precondition_coverage,2,2,subquestions[1].assumptions[1],subquestions[1].atoms/list[2],local_assumption,0.000000,0.000000,False,False,,,,,,,$\tau$ 为有界停时，,
+1,D1,required_precondition_coverage,2,3,subquestions[1].assumptions[1],subquestions[1].atoms/list[3],local_assumption,0.000000,0.000000,False,False,,,,,,,$\tau$ 为有界停时，,
+1,D1,required_precondition_coverage,2,4,subquestions[1].assumptions[1],subquestions[1].atoms/list[4],local_assumption,0.000000,0.000000,False,False,,,,,,,$\tau$ 为有界停时，,
+1,D1,required_precondition_coverage,2,5,subquestions[1].assumptions[1],subquestions[1].atoms/list[5],local_assumption,0.000000,0.000000,False,False,,,,,,,$\tau$ 为有界停时，,
+1,D1,required_precondition_coverage,3,1,subquestions[1].atoms/list[1].preconditions[1],subquestions[1].atoms/list[1],gt_precondition,0.000000,0.000000,False,False,,,,,,,$(W_t)_{t\geq 0}$ 为鞅。,
+1,D1,required_precondition_coverage,3,2,subquestions[1].atoms/list[1].preconditions[1],subquestions[1].atoms/list[2],gt_precondition,0.000000,0.000000,False,False,,,,,,,$(W_t)_{t\geq 0}$ 为鞅。,
+1,D1,required_precondition_coverage,3,3,subquestions[1].atoms/list[1].preconditions[1],subquestions[1].atoms/list[3],gt_precondition,0.000000,0.000000,False,False,,,,,,,$(W_t)_{t\geq 0}$ 为鞅。,
+1,D1,required_precondition_coverage,3,4,subquestions[1].atoms/list[1].preconditions[1],subquestions[1].atoms/list[4],gt_precondition,0.000000,0.000000,False,False,,,,,,,$(W_t)_{t\geq 0}$ 为鞅。,
+1,D1,required_precondition_coverage,3,5,subquestions[1].atoms/list[1].preconditions[1],subquestions[1].atoms/list[5],gt_precondition,0.000000,0.000000,False,False,,,,,,,$(W_t)_{t\geq 0}$ 为鞅。,
+1,D1,required_precondition_coverage,4,1,subquestions[1].atoms/list[1].preconditions[2],subquestions[1].atoms/list[1],gt_precondition,0.000000,0.000000,False,False,,,,,,,$\tau$ 为有界停时。,
+1,D1,required_precondition_coverage,4,2,subquestions[1].atoms/list[1].preconditions[2],subquestions[1].atoms/list[2],gt_precondition,0.000000,0.000000,False,False,,,,,,,$\tau$ 为有界停时。,
+1,D1,required_precondition_coverage,4,3,subquestions[1].atoms/list[1].preconditions[2],subquestions[1].atoms/list[3],gt_precondition,0.000000,0.000000,False,False,,,,,,,$\tau$ 为有界停时。,
+1,D1,required_precondition_coverage,4,4,subquestions[1].atoms/list[1].preconditions[2],subquestions[1].atoms/list[4],gt_precondition,0.000000,0.000000,False,False,,,,,,,$\tau$ 为有界停时。,
+1,D1,required_precondition_coverage,4,5,subquestions[1].atoms/list[1].preconditions[2],subquestions[1].atoms/list[5],gt_precondition,0.000000,0.000000,False,False,,,,,,,$\tau$ 为有界停时。,
+2,D2,arguments,1,1,subquestions[2].atoms/list[1],subquestions[2].atoms/list[1],gt_atom,0.250363,0.250363,False,False,,,,,,,对过程 $(W_t^2-t)_{t\geq 0}$ 在时刻 $\tau$ 应用 Doob 可选停时定理 (Optional Stopping Theorem)。,τ 为有界停时
+2,D2,arguments,1,2,subquestions[2].atoms/list[1],subquestions[2].atoms/list[2],gt_atom,0.068362,0.068362,False,False,,,,,,,对过程 $(W_t^2-t)_{t\geq 0}$ 在时刻 $\tau$ 应用 Doob 可选停时定理 (Optional Stopping Theorem)。,布朗运动的性质
+2,D3,outcomes,1,1,subquestions[2].atoms/list[1],subquestions[2].atoms/list[1],gt_atom,0.859208,0.859208,True,False,,,,,,,\[ \mathbb{E}[W_\tau^2] = \mathbb{E}[\tau]。 \],\E[W_τ^2] = \frac{τ}{T}
+2,D3,outcomes,1,2,subquestions[2].atoms/list[1],subquestions[2].atoms/list[2],gt_atom,0.795730,0.795730,True,False,,,,,,,\[ \mathbb{E}[W_\tau^2] = \mathbb{E}[\tau]。 \],\E[W_τ] = \frac{τ}{T}
+2,D1,required_precondition_coverage,1,1,assumption_global[1],subquestions[2].atoms/list[1],global_assumption,0.000000,0.000000,False,False,,,,,,,$W_t$ 为布朗运动。,
+2,D1,required_precondition_coverage,1,2,assumption_global[1],subquestions[2].atoms/list[2],global_assumption,0.000000,0.000000,False,False,,,,,,,$W_t$ 为布朗运动。,
+2,D1,required_precondition_coverage,2,1,subquestions[2].assumptions[1],subquestions[2].atoms/list[1],local_assumption,0.000000,0.000000,False,False,,,,,,,$\tau$ 为有界停时，,
+2,D1,required_precondition_coverage,2,2,subquestions[2].assumptions[1],subquestions[2].atoms/list[2],local_assumption,0.000000,0.000000,False,False,,,,,,,$\tau$ 为有界停时，,
+2,D1,required_precondition_coverage,3,1,subquestions[1].atoms/list[1].outcomes[1],subquestions[2].atoms/list[1],previous_outcome,0.000000,0.000000,False,False,,,,,,,"\[ \mathbb{E}[W_\tau] = 0, \]",
+2,D1,required_precondition_coverage,3,2,subquestions[1].atoms/list[1].outcomes[1],subquestions[2].atoms/list[2],previous_outcome,0.000000,0.000000,False,False,,,,,,,"\[ \mathbb{E}[W_\tau] = 0, \]",
+2,D1,required_precondition_coverage,4,1,subquestions[2].atoms/list[1].preconditions[1],subquestions[2].atoms/list[1],gt_precondition,0.000000,0.000000,False,False,,,,,,,$(W_t^2-t)_{t\geq 0}$ 为鞅。,
+2,D1,required_precondition_coverage,4,2,subquestions[2].atoms/list[1].preconditions[1],subquestions[2].atoms/list[2],gt_precondition,0.000000,0.000000,False,False,,,,,,,$(W_t^2-t)_{t\geq 0}$ 为鞅。,
+2,D1,required_precondition_coverage,5,1,subquestions[2].atoms/list[1].preconditions[2],subquestions[2].atoms/list[1],gt_precondition,0.000000,0.000000,False,False,,,,,,,$\tau$ 为有界停时。,
+2,D1,required_precondition_coverage,5,2,subquestions[2].atoms/list[1].preconditions[2],subquestions[2].atoms/list[2],gt_precondition,0.000000,0.000000,False,False,,,,,,,$\tau$ 为有界停时。,

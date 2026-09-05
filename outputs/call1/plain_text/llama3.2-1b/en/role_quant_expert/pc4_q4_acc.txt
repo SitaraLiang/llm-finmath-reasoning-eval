@@ -1,0 +1,27 @@
+Exercise: pc4_q4
+Model: llama3.2:1b
+Variation: role_quant_expert
+Prompt type: prompt_accumulation
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+$\E(W_\tau) = \int_{0}^{\tau} \mathbb{P}(W_s > w) dw$
+
+This can be rewritten as:
+
+$\E(W_\tau) = \int_{0}^{\tau} (1 - \mathbb{P}(W_s > w)) dw$
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+\begin{align*}
+\E(W_\tau^2) &= \E(\left(\sum_{i=1}^\infty (W_t - W_i)_+\right)^2) \\
+&= \E\left(\sum_{i=1}^\infty \left(\sum_{j=1}^{i-1} (W_t - W_j)_+\right)\right)^2 \\
+&= \sum_{k=1}^\infty \E\left(\sum_{i=k}^\infty (W_t - W_i)_+^2\right) \\
+&= \sum_{k=1}^\infty \E(W_\tau-kW_0)^2.
+\end{align*}
+
+Note: $W_0$ is a constant, and $\E(W_\tau-kW_0)$ can be evaluated as the expectation of $W_\tau$ under the Brownian motion starting from zero.

@@ -1,0 +1,35 @@
+pc: '4'
+exercise: '4'
+language: en
+variation: role_quant_expert
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: llama3.2-1b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        arguments:
+        - Calculation
+        outcomes:
+        - E(W_τ) = 1
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        arguments:
+        - Calculation
+        outcomes:
+        - E(W_τ^2)
+    -   preconditions:
+        - τ is a bounded stopping time
+        arguments:
+        - Calculation
+        outcomes:
+        - '[1/2Var(W_s)]_{s=0}^{τ}'
+    -   preconditions:
+        - τ is a bounded stopping time
+        arguments:
+        - Calculation
+        outcomes:
+        - ∫[0,τ] Cov(W_s,W_τ) ds

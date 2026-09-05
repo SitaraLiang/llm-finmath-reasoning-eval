@@ -1,0 +1,43 @@
+pc: '4'
+exercise: '4'
+language: en
+variation: baseline
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: llama3.1-8b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        - W_t is a Brownian motion
+        arguments:
+        - Recall the definition of Brownian Motion
+        outcomes:
+        - E[W_t] = 0 for all t ≥ 0
+    -   preconditions:
+        - τ is a bounded stopping time
+        - E[W_t] = 0 for all t ≥ 0
+        arguments:
+        - Apply the property to a bounded stopping time
+        outcomes:
+        - E[W_τ] = E[E[W_τ | F_τ]]
+    -   preconditions:
+        - E[W_τ] = E[E[W_τ | F_τ]]
+        arguments:
+        - Use the law of iterated expectations
+        outcomes:
+        - E[W_τ] = E[0]
+    -   preconditions:
+        - E[W_τ] = E[0]
+        arguments:
+        - Compute the expectation
+        outcomes:
+        - E[W_τ] = 0
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        arguments:
+        - Calculation
+        outcomes:
+        - E[W_τ²] = E[τ]

@@ -1,0 +1,108 @@
+Exercise: pc4_q4
+Model: tinyllama
+Variation: role_quant_expert
+Prompt type: ground_truth_forcing
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+In a finite sample size of $n=200$, the expected value of the random variable $W_t$ under the assumption that $\tau$ is a bounded stopping time (i.e., where $\inf\{t: \tau\leq t\}<\infty$) can be obtained by the following rigorous mathematical method:
+
+1. Define the event set $E=\{t:\tau\leq t\}$ and its complement $\overline{E}=[0,+\infty[\setminus E$.
+
+2. Let $L$ be a lower bound on the stopping times that occur in $E$, i.e., $L=\inf\{t: \tau\leq t\}<+\infty$.
+
+3. For each time $t\in E\cap [0,L)$, let $X_{t,\infty}$ and $X_{t,-1}$ be the values of $W_t$ before and after $\tau$, respectively. The expected value is then given by:
+
+  - for $t\in (0,L)$ with $W_\tau=\frac{X_{t,1}+X_{t,-1}}{2}$:
+    
+    - $E[W_\tau] = \int_0^L\frac{X_{t+1,1} + X_{t+1,-1}}{2} \, dt$
+      - by definition of the stopping time $\tau$
+
+  - for $t\in E\setminus [L,\infty)$:
+    
+    - $E[W_\tau] = \int_0^L(X_{t+1,1} + X_{t+1,-1}) \, dt-\frac{L}{2}$
+      - by the law of total expectation, using that $\int_0^L f(t) \, dt=0$ for all $f:\mathbb{R}\rightarrow[0,\infty)$ such that $\int_0^\infty f(s)\,ds=\int_0^L f(s)\,ds=L$ and $\lim_{t\rightarrow\infty} f(t)=+\infty$.
+    
+  - by summing over all times $t\in E$, we obtain:
+      
+      - for $t\in (0,L)$ with $W_\tau=\frac{X_{t,1}+X_{t,-1}}{2}$:
+        - $E[W_\tau] = \int_0^L\frac{X_{t+1,1} + X_{t+1,-1}}{2} \, dt$
+      - for $t\in E\setminus [L,\infty)$:
+        - $E[W_\tau] = \int_0^L(X_{t+1,1} + X_{t+1,-1}) \, dt-\frac{L}{2}$
+    
+  - by multiplying both sides by $\frac{1}{2}$, we obtain:
+      
+        - for $t\in (0,L)$ with $W_\tau=\frac{X_{t,1}+X_{t,-1}}{2}$:
+          - $E[(\frac{X_{t+1,1} + X_{t+1,-1}}{2})^2] = \int_0^L\frac{(X_{t+1,1} + X_{t+1,-1})^2}{2}\, dt$
+        - for $t\in E\setminus [L,\infty)$:
+          - $E[(X_{t+1,1}^2 + X_{t+1,-1}^2)] = \int_0^L(X_{t+1,1}+X_{t+1,-1})^2\,dt$
+    
+  
+  The final value is:
+  
+    - for $t\in (0,L)$ with $W_\tau=\frac{X_{t,1}+X_{t,-1}}{2}$:
+      - $E[(\frac{X_{t+1,1} + X_{t+1,-1}}{2})^2] = \int_0^L\frac{(X_{t+1,1}^2 + X_{t+1,-1}^2)}{2}\, dt$
+      
+      - by summing over all times $t\in E$, we obtain:
+        
+        - for $t\in (0,L)$ with $W_\tau=\frac{X_{t,1}+X_{t,-1}}{2}$:
+          - $E[(\frac{X_{t+1,1}^2 + X_{t+1,-1}^2}{2})^2] = \int_0^L(X_{t+1,1}^2+X_{t+1,-1}^2)\,dt$
+          
+          
+      - by multiplying both sides by $\frac{1}{2}$, we obtain:
+       
+         - for $t\in (0,L)$ with $W_\tau=\frac{X_{t,1}+X_{t,-1}}{2}$:
+          - $E[(\frac{X_{t+1,1}^2 + X_{t+1,-1}^2}{2})^2] = \int_0^L\Big(X_{t+1,1}^2+\frac{(X_{t+1,1}+X_{t+1,-1})^2}{2}\Big)\,dt$
+          
+          
+      - by integrating both sides over all times $t\in E$, we obtain:
+       
+         - for $t\in (0,L)$ with $W_\tau=\frac{X_{t,1}+X_{t,-1}}{2}$:
+          - $(E[(\frac{X_{t+1,1}^2 + X_{t+1,-1}^2}{2})^2] = \int_0^L(X_{t+1,1}^2+\frac{(X_{t+1,1}+X_{t+1,-1})^2}{2}\)\,dt$
+          
+          - by multiplying both sides by $\frac{1}{6}$ and dividing through by $2$, we obtain:
+          
+            - for $t\in (0,L)$ with $W_\tau=\frac{X_{t,1}+X_{t,-1}}{2}$:
+              - $(E[(\frac{X_{t+1,1}^2 + X_{t+1,-1}^2}{2})^2] = \int_0^L(X_{t+1,1}^2+\frac{(X_{t+1,1}+X_{t+1,-1})^2}{4}\)\,dt$
+              
+              - by integrating over all times $t\in E$, we obtain:
+               
+                   - for $t\in (0,L)$ with $W_\tau=\frac{X_{t,1}+X_{t,-1}}{2}$:
+                     - $(E[(\frac{X_{t+1,1}^2 + X_{t+1,-1}^2}{2})^2] = \int_0^L(X_{t+1,1}^2+\frac{(X_{t+1,1}+X_{t+1,-1})^2}{4}\)\,dt$
+                     
+                      - by multiplying both sides by $\frac{1}{6}$ and dividing through by $3$, we obtain:
+                      
+                        - for $t\in (0,L)$ with $W_\tau=\frac{X_{t,1}+X_{t,-1}}{2}$:
+                          - $(E[(\frac{X_{t+1,1}^2 + X_{t+1,-1}^2}{2})^2] = \int_0^L(X_{t+1,1}^2+\frac{(X_{t+1,1}+X_{t+1,-1})^2}{3}\)\,dt$
+                            
+                              - by integrating over all times $t\in E$, we obtain:
+                              
+                                  - for $t\in (0,L)$ with $W_\tau=\frac{X_{t,1}+X_{t,-1}}{2}$:
+                                    - $(E[(\frac{X_{t+1,1}^2 + X_{t+1,-1}^2}{2})^2] = \int_0^L(X_{t+1,1}^2+\frac{(X_{t+1,1}+X_{t+1,-1})^2}{3}\)\,dt$
+                                     
+                                        - by multiplying both sides by $\frac{1}{6}$ and dividing through by $5$, we obtain:
+                                        
+                                            - for $t\in (0,L)$ with $W_\tau=\frac{X_{t,1}+X_{t,-1}}{2}$:
+                                              - $(E[(\frac{X_{t+1,1}^2 + X_{t+1,-1}^2}{2})^2] = \int_0^L(X_{t+1,1}-x)^2+(1+x)dF(X_{t+1}+1)dX_{t,1}$
+                              - for $t$ in [$X$ such that $y$, $x, y$
+                      -orate.
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+Global Assumptions:
+- $W_t$ is a Brownian Motion
+
+Previous Questions and Exact Solutions:
+- Question 1: (Not Given)
+- Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Local Assumptions:
+- $\tau$ is a bounded stopping time.
+
+Previous Questions and Exact Solutions:
+- No Previous Questions or Exact Solutions Required

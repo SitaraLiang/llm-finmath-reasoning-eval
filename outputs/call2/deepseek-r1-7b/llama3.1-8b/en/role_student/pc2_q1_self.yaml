@@ -1,0 +1,34 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_student
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: deepseek-r1-7b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - A process \( (X_t)_{t \geq 0} \) is a Brownian motion.
+        arguments:
+        - 'It satisfies the following conditions: \( X_0 = 0 \), it is a centered
+            Gaussian process, and the covariance function is \( \text{Cov}(X_s, X_t)
+            = \min(s, t) \).'
+        outcomes:
+        - \( (X_t)_{t \geq 0} \) is a Brownian motion.
+    -   preconditions:
+        - '\( (X_t)_{t \geq 0} \) satisfies the following conditions: \( X_0 = 0 \),
+            it is a centered Gaussian process, and the covariance function is \( \text{Cov}(X_s,
+            X_t) = \min(s, t) \).'
+        arguments:
+        - It starts at zero and has independent increments due to the covariance structure.
+        outcomes:
+        - \( (X_t)_{t \geq 0} \) is a Lévy process with variance of each increment
+            equal to time.
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Scaling and time change properties of Brownian motion
+        outcomes:
+        - X_t = t W_{1/t} is a Brownian motion

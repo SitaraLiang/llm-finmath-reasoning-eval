@@ -1,0 +1,28 @@
+### Question block 1
+```yml
+atoms:
+  -
+    name: "Processus gaussien centré"
+    preconditions: []
+    arguments: ["$(X_t)_{t\in \R^+}$ est un processus gaussien centr\'e"]
+    outcomes: []
+  -
+    name: "Covariance inférieure ou égale à 0"
+    preconditions: ["Le processus est défini pour tous $s,t\in \R^+$"]
+    arguments: ["${\rm Cov}(X_s,X_t)=\inf(s,t)$"]
+    outcomes: []
+  -
+    name: "Vecteur de covariance satisfait les propriétés"
+    preconditions: ["Le processus est gaussien centré"]
+    arguments: ["$\mathbf{C} = (C_{ij})$ satisfait les propriétés suivantes :"]
+    outcomes:
+      - "C_{11}= \inf(s,t)"
+      - "C_{12}= 0"
+      - "C_{21}= \sup(s,t)"
+      - "C_{22}= \inf(s,t)"
+  -
+    name: "Équation de Brownien"
+    preconditions: ["Le processus est gaussien centré"]
+    arguments: ["$\mathbf{E}\left[(X_t)_{t\in \R^+}| X_0 = 0 \right] = X_t$"]
+    outcomes: []
+```

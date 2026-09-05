@@ -1,0 +1,25 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_student
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: llama3.1-8b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0=0
+        - (X_t)_{t\in \R^+} is a centered Gaussian process
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Definition of Brownian motion
+        outcomes:
+        - Brownian motion
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Brownian motion properties
+        outcomes:
+        - X_t = t * W_(1/t) is a Brownian motion

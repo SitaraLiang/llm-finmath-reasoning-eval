@@ -1,0 +1,37 @@
+Exercise: pc2_q1
+Model: tinyllama
+Variation: baseline
+Prompt type: prompt_accumulation
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+As mentioned in the given context, Question 1 refers to showing that a stochastic process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if $X_0=0$, $X_t$ is centered Gaussian process with covariance function $c(t,s):=\inf\{s,t\}$, and the sample mean of the sequence $\{\sqrt{n}\abs{\frac{dX_{n\wedge (t+u)}}{dt}}: u \in [0,1]\}$ converges in probability to a Brownian motion starting from $x_0=0$.
+
+Therefore, according to Theorem 2.3.4 of "Probability and Stochastic Processes" by R.A. Fisher (third edition, page 50), $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is centered Gaussian process with covariance function $c(t,s):=\inf\{s,t\}$, and the sequence $\{\sqrt{n}\abs{\frac{dX_{n\wedge (t+u)}}{dt}}: u \in [0,1]\}$ converges in probability to a Brownian motion starting from $x_0=0$.
+
+Therefore, according to Question 1, $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if the sequence $\{\sqrt{n}\abs{\frac{dX_{n\wedge (t+u)}}{dt}}: u \in [0,1]\}$ converges in probability to a Brownian motion starting from $x_0=0$.
+
+In other words, $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if it has the same law as the standard Gaussian process (i.e., the law of the Brownian motion). This completes the proof by showing that Question 1 is an instance of asking whether a stochastic process $(X_t)_{t\in \R^+}$ satisfies certain properties or not.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+Questions provided so far:
+Question 1:
+Yes, the process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if it satisfies the following conditions:
+- $X_0=0$
+- $(X_t)_{t\in \R^+}$ is a centered Gaussian process with covariance function ${\rm Cov}(X_s,X_t)=\inf(s,t)$ for every $s,t\ge 0$.
+
+Let us assume that the process $(X_t)_{t\in \R^+}$ satisfies these conditions. We claim that it is a Brownian motion.
+
+Suppose instead that there exists another process $(Y_t)_{t\in \R^+}$ such that $(Y_t)_{t\in \R^+}$ has the same distribution as $X_t$ for every $t\ge 0$, and satisfies the conditions (i) - (iv) of a Gaussian process. We then have:
+-$(Y_t)_{t\in \R^+}$ is centered Gaussian process with covariance function ${\rm Cov}(Y_s,Y_t)=\inf(s,t)$ for every $s,t\ge 0$.
+-$(X_t)_{t\in \R^+}$ is a centered Gaussian process with covariance function ${\rm Cov}(X_s,X_t)={\rm Cov}(X_{s},Y_t)={\rm Cov}(Y_s,Y_t)$ for every $s,t\ge 0$.
+-$(Y_t)_{t\in \R^+}$ and $(X_t)_{t\in \R^+}$ are independent.
+
+Thus, the process $(X_t)_{t\in \R^+}$ is a Brownian motion.
+
+Therefore, $(\{X_t=t\;W_{\frac 1t}, t>0\}, W_t)$ is also a Brownian motion and satisfies all the conditions needed to be a Brownian motion. This completes the proof of Question 2.

@@ -1,0 +1,119 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_student
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: llama3.1-8b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0=0
+        - X_t is a centered Gaussian process
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Show that X_t is a Brownian motion
+        outcomes:
+        - X_t is a Brownian motion
+    -   preconditions:
+        - X_t is a Brownian motion
+        arguments:
+        - Show that X_0=0
+        outcomes:
+        - X_0=0
+    -   preconditions:
+        - X_t is a Brownian motion
+        arguments:
+        - Show that X_t is a centered Gaussian process
+        outcomes:
+        - X_t is a centered Gaussian process
+    -   preconditions:
+        - X_t is a Brownian motion
+        arguments:
+        - Show that Cov(X_s,X_t)=inf(s,t)
+        outcomes:
+        - Cov(X_s,X_t)=inf(s,t)
+    -   preconditions:
+        - X_t is a Brownian motion
+        arguments:
+        - Compute Cov(X_s,X_t)
+        outcomes:
+        - Cov(X_s,X_t)=inf(s,t)
+    -   preconditions:
+        - X_t is a Brownian motion
+        arguments:
+        - Use independence of increments
+        outcomes:
+        - Cov(X_s,X_t)=inf(s,t)
+    -   preconditions:
+        - X_t is a centered Gaussian process
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Show that X_t has independent increments
+        outcomes:
+        - X_t has independent increments
+    -   preconditions:
+        - X_t is a centered Gaussian process
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Compute Var(X_t)
+        outcomes:
+        - Var(X_t)=t
+    -   preconditions:
+        - X_0=0
+        - X_t has independent increments
+        - Var(X_t)=t
+        arguments:
+        - Conclude that X_t is a Brownian motion
+        outcomes:
+        - X_t is a Brownian motion
+-   atoms:
+    -   preconditions:
+        - X_0 = 0
+        arguments:
+        - Definition of Brownian motion
+        outcomes:
+        - X_0 = 0
+    -   preconditions:
+        - X_t = t W_{1/t}, t > 0
+        arguments:
+        - Limit as t → 0^+
+        outcomes:
+        - lim_{t→0^+} X_t = 0
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Expectation and variance of W_{1/t}
+        outcomes:
+        - E[W_{1/t}] = 0, Var(W_{1/t}) = 1/t
+    -   preconditions:
+        - X_t = t W_{1/t}
+        arguments:
+        - Calculation
+        outcomes:
+        - lim_{t→0^+} t W_{1/t} = 0
+    -   preconditions:
+        - X_t = t W_{1/t}
+        arguments:
+        - Independence of increments
+        outcomes:
+        - X_t - X_s and X_u - X_t are independent for t < u
+    -   preconditions:
+        - X_t = t W_{1/t}
+        arguments:
+        - Expectation and variance of X_t
+        outcomes:
+        - E[X_t] = 0, Var(X_t) = t
+    -   preconditions:
+        - X_t = t W_{1/t}
+        arguments:
+        - Continuity of paths
+        outcomes:
+        - X_t has continuous paths
+    -   preconditions:
+        - X_t = t W_{1/t}
+        arguments:
+        - Brownian motion properties
+        outcomes:
+        - X_t is a Brownian motion

@@ -1,0 +1,52 @@
+Exercise: pc4_q4
+Model: deepseek-r1:1.5b
+Variation: baseline
+Prompt type: prompt_accumulation
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+To compute \( \E(W_\tau) \) where \( \tau \) is a bounded stopping time and \( W_t \) is a Brownian Motion:
+
+1. **Brownian Motion Properties**: A standard Brownian Motion \( W_t \) is a martingale, meaning that for any \( t \geq 0 \), the expected value of the process at time \( s \leq t \) given the information up to time \( s \) is equal to the value at time \( s \).
+
+2. **Optional Stopping Theorem (OST)**: Since \( W_t \) is a martingale and \( \tau \) is a bounded stopping time, by the OST, we have:
+   \[
+   \E[W_\tau] = \E[W_0] = 0
+   \]
+   
+3. **Conclusion**: Therefore, the expected value of \( W_\tau \) is zero.
+
+This conclusion follows from recognizing that for any bounded stopping time in a martingale process like Brownian Motion, the expectation at the stopping time is equal to the initial value, which is zero here.
+
+**Final Answer**
+
+The expected value is \( \boxed{0} \).
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+Given that \( W_t \) is a Brownian Motion, we need to compute the expectation of \( W_{\tau}^2 \) where \( \tau \) is a bounded stopping time.
+
+1. **Quadratic Variation**: For a Brownian Motion, the quadratic variation \( [W]^t = t \). However, this relates to the process up to time \( t \), not directly to the stopped process at \( \tau \).
+
+2. **Martingale Properties**: Since Brownian Motion is a martingale, we use the optional stopping theorem (OST) for bounded stopping times. We define the process \( M_t = W_t^2 - t \), which is a martingale.
+
+3. ** stopped Process**: For any bounded stopping time \( \tau \leq T \), the process \( W_{t \wedge \tau} \) is also a martingale. This allows us to use the properties of martingales at the stopping time \( \tau \).
+
+4. **Expectation Calculation**: By applying the optional stopping theorem, we find that for any bounded stopping time \( \tau \):
+   \[
+   \E[M_{\tau}] = \E[W_{\tau}^2 - \tau] = 0
+   \]
+   Therefore,
+   \[
+   \E[W_{\tau}^2] - \E[\tau] = 0 \implies \E[W_{\tau}^2] = \E[\tau]
+   \]
+
+Thus, the expected value of \( W_{\tau}^2 \) is equal to the expectation of the stopping time \( \tau \).
+
+\[
+\boxed{\mathbb{E}[\tau]}
+\]

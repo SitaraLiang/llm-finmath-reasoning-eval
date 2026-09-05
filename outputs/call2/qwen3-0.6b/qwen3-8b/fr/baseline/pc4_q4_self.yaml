@@ -1,0 +1,23 @@
+pc: '4'
+exercise: '4'
+language: fr
+variation: baseline
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: qwen3-0.6b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - Calculation
+        outcomes:
+        - '0'
+        strength: 1
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - W_t est un mouvement brownien
+        outcomes:
+        - E[W_τ²] = 0
+        strength: 0

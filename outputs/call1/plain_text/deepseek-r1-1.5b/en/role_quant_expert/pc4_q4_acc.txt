@@ -1,0 +1,397 @@
+Exercise: pc4_q4
+Model: deepseek-r1:1.5b
+Variation: role_quant_expert
+Prompt type: prompt_accumulation
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+<think>
+Okay, I need to figure out the expected value of \( W_{\tau} \) where \( \tau \) is a bounded stopping time and \( W_t \) is a Brownian motion. Hmm, let me recall some concepts about stochastic processes and stopping times.
+
+First, I know that \( W_t \) is a martingale because it has the property that the expected value of the next step given the current state is equal to the current state. Specifically, for any stopping time \( \tau \), by the optional stopping theorem, if certain conditions are met, we can say something about \( \E(W_{\tau}) \).
+
+Wait, what's the condition? The process must be uniformly integrable or have bounded increments? Let me think. Since \( W_t \) is a Brownian motion, it has independent increments and each increment is normally distributed with mean 0 and variance equal to the time step.
+
+But I'm dealing with \( \tau \) being a stopping time, which could be any random time that's determined by past information. In this case, since \( W_t \) is a martingale and we're applying it at time \( \tau \), maybe I can use the optional stopping theorem here.
+
+But to apply the optional stopping theorem correctly, there are some conditions needed. One of them is that the process should be bounded in its absolute value almost surely or something similar? Wait, no, actually, a key condition is that \( \E(|W_{\tau}|) < \infty \), but I'm not sure if that holds here.
+
+Wait, Brownian motion has increments with variance proportional to time. So \( W_{\tau} = W_0 + X \), where \( X \) is a normal random variable with mean 0 and variance equal to the sum of variances up to time \( \tau \). Since \( W_t \) is continuous in probability, maybe \( \E(|W_{\tau}|) \) is finite?
+
+But actually, if \( \tau \) is bounded, meaning there's some finite \( T \) such that \( \tau \leq T \), then the increments up to \( T \) would have finite expectation. So \( W_{\tau} = W_T - W_0 + X \), but wait, no.
+
+Wait, let me correct that. If I have a stopping time \( \tau \leq T \), then \( W_\tau = W_T - W_{\tau \wedge T} \). But actually, since \( \tau \) is the stopping time, it could be less than or equal to some \( T \), but not necessarily greater.
+
+Wait, perhaps I should think of \( W_{\tau} \) as a random variable. Since \( W_t \) is continuous in probability, which implies that for any bounded stopping time \( \tau \), \( W_{\tau} \) has finite expectation. Because the increments are bounded in variance when you stop at a bounded time.
+
+Wait, actually, if \( \tau \) is bounded by some constant \( T \), then \( W_\tau = W_T - W_{\tau'} \) where \( \tau' = \tau \wedge T \). Since both \( W_T \) and \( W_{\tau'} \) are normally distributed, their difference is also normal with mean 0. Therefore, the expectation of \( W_\tau \) would be 0.
+
+But hold on, does it hold for any bounded stopping time? What if the process isn't a martingale or doesn't have this property?
+
+Wait, no, actually, in general, if you have a uniformly integrable martingale and a bounded stopping time, then \( W_{\tau} \) is also a martingale. But I think we can directly apply the optional stopping theorem here.
+
+The optional stopping theorem states that for a bounded stopping time \( \tau \), if the process \( W_t \) is a martingale and uniformly integrable or has some integrability condition, then \( \E(W_{\tau}) = \E(W_0) \). Since \( W_t \) starts at 0, this would imply that \( \E(W_{\tau}) = 0 \).
+
+But let me verify. Brownian motion is a martingale with respect to its natural filtration. The stopping times in question are bounded, so they are also integrable because the increments are square-integrable and the stopping time has finite expectation.
+
+Therefore, by the optional stopping theorem, \( \E(W_{\tau}) = \E(W_0) = 0 \).
+
+Yes, that makes sense. So the expected value should be zero.
+</think>
+
+The expected value of \( W_{\tau} \) when \( \tau \) is a bounded stopping time is 0.
+
+**Step-by-Step Explanation:**
+
+1. **Martingale Property:** Brownian motion \( W_t \) is a martingale, meaning the expected future price is equal to the current price.
+
+2. **Optional Stopping Theorem Application:** For a uniformly integrable martingale and a bounded stopping time \( \tau \), the theorem states that \( \E(W_{\tau}) = \E(W_0) \).
+
+3. **Initial Condition:** Since \( W_t \) starts at 0, \( \E(W_0) = 0 \).
+
+4. **Conclusion:** Therefore, \( \E(W_{\tau}) = 0 \).
+
+**Final Answer:**
+
+\[
+\E(W_{\tau}) = 0
+\]
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+<think>
+Okay, I need to figure out how to compute the expectation of the square of a Brownian motion at a bounded stopping time. Hmm, let me recall what I know about stochastic calculus and Brownian motions.
+
+So, $W_t$ is a standard Brownian motion, which means it's a continuous martingale with quadratic variation equal to $t$. The problem is asking for $\E[W_\tau^2]$ where $\tau$ is a bounded stopping time. 
+
+First, I remember that for any stopping time $\tau$, the stopped process $(W_t^\tau)$ is still a martingale because of the optional stopping theorem when dealing with bounded stopping times. Since it's a martingale, its expectation at any stopping time should be equal to its initial value. But wait, $W_0$ is 0, so maybe that can help.
+
+Now, if I consider $W_\tau$, which is the value of the Brownian motion at the stopping time $\tau$. To compute its square's expectation, perhaps there's a way to relate it using properties of martingales or variance.
+
+I also recall that for any random variable $X$, $\E[X^2]$ can be written as $\E[\E[(X)^2 | \mathcal{F}_\tau]]$ where the outer expectation is over all information up to time $\tau$. Since $(W_t^\tau)$ is a martingale, its square should also have some nice properties.
+
+Wait, maybe I can use Ito's lemma on $W_\tau^2$. Let me try that. Applying Ito's formula to the process $X_t = W_t^2$, which is differentiable since it's twice continuously differentiable in a neighborhood of 0 (assuming we're in a local coordinate system around 0). 
+
+Ito's lemma says:
+$$
+dX_t = \frac{\partial X}{\partial t} dt + \frac{\partial X}{\partial W_t} dW_t + \frac{1}{2}\frac{\partial^2 X}{\partial W_t^2} (dW_t)^2.
+$$
+
+Calculating each term:
+- $\frac{\partial X}{\partial t} = 0$ because $X_t$ doesn't depend on time.
+- $\frac{\partial X}{\partial W_t} = 2W_t$
+- $\frac{\partial^2 X}{\partial W_t^2} = 2$
+
+Since $(dW_t)^2 = dt$, substituting into Ito's formula gives:
+$$
+dX_t = 0 + 2W_t dW_t + \frac{1}{2}(2)dt = 2W_t dW_t + dt.
+$$
+
+Integrating both sides from 0 to $\tau$:
+$$
+X_\tau - X_0 = \int_0^\tau 2W_t dW_t + \int_0^\tau dt.
+$$
+
+Since $X_0 = W_0^2 = 0$, we have:
+$$
+W_\tau^2 = \int_0^\tau 2W_t dW_t + \tau.
+$$
+
+Now, taking expectations on both sides. The first integral is a stochastic integral with respect to the Brownian motion, so it's a martingale and its expectation should be zero because martingales have zero drift in their increments over stopping times when bounded.
+
+Therefore:
+$$
+\mathbb{E}[W_\tau^2] = \mathbb{E}\left[\int_0^\tau 2W_t dW_t\right] + \mathbb{E}[\tau].
+$$
+
+But the expectation of a stochastic integral with respect to Brownian motion over a bounded stopping time is zero, right? Because for each $t$, $\mathbb{E}[W_t | \mathcal{F}_s]$ is just $W_s$ if $s \leq t$, but when we take the integral up to $\tau$, it's like integrating over an interval where the expectation of the integrand is zero because $W_t$ is a martingale. 
+
+Alternatively, more formally, since $(2W_t) dW_t$ is a martingale increment and $\tau$ is bounded, we can use the property that for any stopping time $\tau$, the stochastic integral $\int_0^\tau 2W_t dW_t$ has expectation zero.
+
+Hence, $\mathbb{E}\left[\int_0^\tau 2W_t dW_t\right] = 0$, so:
+$$
+\mathbb{E}[W_\tau^2] = \mathbb{E}[\tau].
+$$
+
+Wait a second, but is that correct? I remember there's something about the expectation of $X^2$ for martingales. Let me think again.
+
+Actually, using another approach: Since $(W_t^\tau)$ is a bounded variation process because it's a stopped martingale, and it's also a martingale with respect to its own filtration. But in our case, we're dealing with the original filtration up to time $\tau$. Maybe I can use the fact that for any $t \leq \tau$, $(W_t^\tau - W_0)^2$ is predictable and integrable.
+
+Wait, perhaps another way: Let me compute $\mathbb{E}[W_\tau^2]$ directly. Expanding it as:
+
+$$
+\mathbb{E}[W_\tau^2] = \mathbb{E}\left[\int_0^\tau W_t dW_t + \int_0^\tau 1 dt\right].
+$$
+
+But wait, that's not correct because Ito's lemma gave us $W_\tau^2$ as the integral plus $\tau$. So actually:
+
+$$
+W_\tau^2 = \int_0^\tau 2W_t dW_t + \tau.
+$$
+
+Then taking expectations:
+$$
+\mathbb{E}[W_\tau^2] = \mathbb{E}\left[\int_0^\tau 2W_t dW_t\right] + \mathbb{E}[\tau].
+$$
+
+The first expectation is zero because the stochastic integral of a martingale with respect to itself is a martingale increment and, for bounded stopping times, its expectation is zero. So:
+$$
+\mathbb{E}[W_\tau^2] = 0 + \tau = \tau.
+$$
+
+Wait, that can't be right because if $\tau$ is the time until some event, $W_\tau$ would have a variance equal to $\tau$, so its square should have an expectation larger than $\tau$.
+
+Hold on, maybe I made a mistake. Let's go back step by step.
+
+We applied Ito's lemma correctly? Yes, $dX_t = 2W_t dW_t + dt$. Integrating gives:
+$$
+X_\tau - X_0 = \int_0^\tau 2W_t dW_t + \tau.
+$$
+
+So,
+$$
+W_\tau^2 = \int_0^\tau 2W_t dW_t + \tau.
+$$
+
+Then taking expectations:
+- $\mathbb{E}[\int_0^\tau 2W_t dW_t] = 0$ because it's a martingale integral over stopping time, hence expectation zero.
+
+So,
+$$
+\mathbb{E}[W_\tau^2] = \mathbb{E}[\tau].
+$$
+
+But wait, that would mean $\mathbb{E}[W_\tau^2]$ is just the expectation of the stopping time itself. That seems counterintuitive because $W_\tau$ has variance equal to $\tau$, so its square should have a higher expectation.
+
+Alternatively, perhaps I can compute it in another way. Let me consider the process $(X_t = W_t^2 - t)$ which is a martingale because:
+
+$dX_t = 2W_t dW_t + (0 - 1)dt$? Wait, no. Wait, actually, $dX_t = 2W_t dW_t + (2 - 1)dt$, but that doesn't seem right.
+
+Wait, let's compute $(W_t^2 - t)'$. The derivative with respect to t is 0 because it's a function of W_t squared minus linear in t. But in terms of stochastic calculus, the differential would be:
+
+$dX_t = 2W_t dW_t + (0)dt$ because $d/dt (W_t^2 - t)$ is 2W_t dW_t / dt + something? Wait, no.
+
+Wait, actually, for functions of Brownian motion, we have the differential using Itô's formula:
+
+$dX_t = \frac{\partial X}{\partial W} dW_t + \frac{1}{2}\frac{\partial^2 X}{\partial W^2} (dW_t)^2$.
+
+Here, $X_t = W_t^2 - t$, so $\partial X / \partial W = 2W_t$, and $\partial^2 X / \partial W^2 = 2$. So,
+
+$dX_t = 2W_t dW_t + (1/2)(2) dt = 2W_t dW_t + dt$.
+
+Wait, but that's the same as before. Then integrating from 0 to τ:
+
+$W_\tau^2 - W_0^2 = \int_0^\tau 2W_t dW_t + \int_0^\tau dt$, so $W_\tau^2 = \int_0^\tau 2W_t dW_t + \tau$.
+
+Thus, taking expectations:
+
+$\mathbb{E}[W_\tau^2] = \mathbb{E}\left[\int_0^\tau 2W_t dW_t\right] + \tau$.
+
+The first term is zero because the integral of a martingale with respect to itself up to stopping time τ is a martingale increment, and since it's bounded, its expectation is zero. Therefore, $\mathbb{E}[W_\tau^2] = \tau$.
+
+Wait, that can't be right because $W_t$ has variance $\tau$, so $W_\tau^2$ should have an expectation greater than τ. If we set τ=0, then W_0^2 is 0, and the formula gives 0 which matches. For τ=1, if it's a stopping time with expectation 1, but actually for standard Brownian motion, $W_1$ has variance 1, so $E[W_1^2] = 1$. So in that case, according to the formula, $E[W_1^2] = E[τ]$, which is correct because τ=1. 
+
+Wait, but if I set a different stopping time with expectation not equal to its value? That seems impossible since by the Doob optional stopping theorem, for bounded stopping times and martingales, it's valid.
+
+But let me think again about the formula:
+
+$\mathbb{E}[W_\tau^2] = \mathbb{E}[\tau]$.
+
+Is that always true?
+
+Alternatively, perhaps I should use another approach to verify. Maybe using the property of Brownian motion increments.
+
+Let me recall that for a standard Brownian motion $(W_t)$,
+
+$$
+\mathbb{E}\left[ W_\tau^2 \right] = \mathbb{E}[\tau].
+$$
+
+Is this correct?
+
+Wait, let's test it on τ=0: $\mathbb{E}[0] = 0$, and $W_0 = 0$. So equality holds.
+
+Let me try another stopping time. For example, let τ be the first time when W_t reaches 1. Then by reflection principle or something similar, what's E[τ]?
+
+Wait, no, in this case, for Brownian motion, the expectation of τ is known to be $2\sqrt{\pi} \sigma$, but in our case σ=1 because it's standard. Wait, actually, in the standard Brownian motion with σ=1, the expected first passage time to level 1 starting from 0 is indeed infinite? No, wait, no, that's not right.
+
+Wait, hold on. For a symmetric simple random walk on integers, the expectation of τ for reaching +1 starting at 0 is finite, but in continuous Brownian motion, I think it's actually infinite. Hmm, this might be an issue here.
+
+Wait, maybe I need to consider that for standard Brownian motion, $E[\tau] = \infty$ when we're looking for the first passage time to a fixed level. But wait, actually, in the formula, I have E[W_τ^2] = E[τ], which would imply E[W_τ^2] is infinite as well.
+
+But if τ is the first passage time to 1, then W_τ is almost surely 1, so W_τ^2 is 1. Therefore, E[W_τ^2] =1 and E[τ] should be 1? But that's impossible because E[τ] for Brownian motion first hitting 1 starting from 0 is actually infinite.
+
+Wait a second, now I'm confused. Let me clarify:
+
+If τ is the stopping time when W_t reaches 1 for the first time, then $W_\tau = 1$, so $E[W_\tau^2] = 1$. But according to our previous conclusion from Ito's formula, it should be equal to E[τ], which would need to be 1. However, in reality, τ is almost surely infinite because Brownian motion can't reach 1 in finite time a.s.
+
+Therefore, that suggests a contradiction. Where did I go wrong?
+
+Wait, let me check the steps again:
+
+1. I applied Ito's lemma correctly: $dX_t = 2W_t dW_t + dt$.
+
+2. Integrated to get X_τ^2 = integral of 2W_t dW_t + τ.
+
+3. Took expectation and got E[W_τ^2] = E[τ].
+
+But in reality, if τ is the first passage time to 1, $E[W_\tau^2]$ should be 1 because W_τ=1 a.s., but E[τ] is infinite almost surely. Hence, something must have gone wrong.
+
+Wait, maybe I confused X_t and W_t. Let me try again with a different process.
+
+Let me take X_t = W_t + something else? Wait no, let's stick to the original approach.
+
+Alternatively, perhaps my formula was incorrect?
+
+Let me think differently: For a martingale M_t, E[M_t] = E[M_0]. So for $W_\tau$, which is a bounded stopping time, E[W_\tau] should be zero because it's a bounded martingale at stopping time.
+
+Similarly, for the square, perhaps use another property or relation. Let me consider defining Y_t = W_t^2 - t, and then Y_t is a martingale as I saw earlier.
+
+But if Y_t is a martingale, then E[Y_τ] = E[Y_0]. Since Y_0=0, we have E[W_τ^2] = τ. That would imply the formula.
+
+But in reality, when τ is almost surely infinite (for first passage to 1), this contradicts because E[τ] is infinite but E[W_τ^2]=1. Hmm, perhaps I messed up the application of Ito's lemma?
+
+Wait, let me check: When applying Ito's lemma for $X_t = W_t^2$, then:
+
+$dX_t = 2W_t dW_t + (0 - 1)dt$? Wait no, that is not correct. Actually, when X_t = f(W_t), the differential is given by Itô calculus as:
+
+$dX_t = f'(W_t)dW_t + (1/2)f''(W_t)(dW_t)^2$.
+
+Since $f(W) = W^2$, then $f'(W) = 2W$, and $f''(W)=2$. Therefore,
+
+$dX_t = 2W_t dW_t + \frac{1}{2}*2 dt = 2W_t dW_t + dt$.
+
+Which matches what I had earlier. So integrating, X_τ^2 - X_0 = integral of 2W_t dW_t + τ.
+
+But in the case where X_0= W_0^2=0, so indeed:
+
+X_τ = integral of 2W_t dW_t + τ.
+
+Wait, but if I square both sides? Not sure that helps. Alternatively, take expectations.
+
+So,
+
+E[X_τ] = E[ integral of 2W_t dW_t ] + E[τ].
+
+But the expectation of a stochastic integral with respect to Brownian motion over a stopping time is zero because it's a martingale increment. So:
+
+E[X_τ] = 0 + E[τ].
+
+Thus,
+
+E[W_τ^2] = E[τ].
+
+This seems correct, but in the specific case where τ is first passage to 1, which would have infinite expectation, how does this reconcile?
+
+Wait, perhaps I'm misapplying something. Let's test it numerically.
+
+Suppose we take a stopping time τ as the first return to zero of Brownian motion, i.e., W_τ = 0. Then E[W_τ^2] = 0 and E[τ] should be equal? But according to our formula, they are equal.
+
+But in reality, for hitting times of symmetric random walks on integers, τ is a.s. finite but for Brownian motion on real numbers, it's almost surely infinite because the process can escape to infinity without returning.
+
+Wait, so maybe in this case, E[W_τ^2] would not be equal to E[τ], which suggests that my formula might have an error when dealing with stochastic integrals?
+
+Alternatively, perhaps I should consider a different approach. Let me recall that for Brownian motion:
+
+For any t ≥ 0,
+
+$\mathbb{E}[W_t] = 0$,
+
+$\mathbb{E}[W_t^2] = t$.
+
+So in particular, $E[W_τ^2]$ would be equal to E[τ]. So if τ is the first time W_t reaches a certain level, say k, then indeed, $E[W_k^2] = k$, which matches our formula. Wait, but for hitting times of Brownian motion, as I thought earlier, it's infinite almost surely.
+
+But that contradicts since $W_τ$ would be 1 when τ is the first passage to 1. So how can we have finite expectation while τ is a.s. infinite?
+
+Wait, no, actually if W_t reaches 1 at time τ, then W_τ = 1, so E[W_τ^2] =1, but according to our formula, it should be equal to E[τ]. But E[τ] is the expected first passage time, which for Brownian motion to reach 1 in absolute value would actually diverge. Wait, no.
+
+Wait, hold on: The standard result says that for a symmetric simple random walk on integers, the expected return time to 0 starting from 1 is infinite. But for Brownian motion, I think it's different because we can have paths that go to infinity as well. So in the case of Brownian motion, even though W_t never goes beyond ±∞, when you're looking at hitting times for finite barriers like |x| < ∞, their expected hitting times are infinite.
+
+Wait, but if we take τ as hitting time for W_t to reach +1 or -1, then E[τ] is actually finite because the process cannot escape to infinity. Wait, no, Brownian motion can reach any point with positive probability in finite time.
+
+Wait, let me correct myself: For Brownian motion on ℝ starting at 0, the expected first passage time to level ±a for a symmetric random walk is indeed infinite? Or not?
+
+No, actually, for hitting times of intervals (-a,a), I think the expected exit time is infinite because even though the particle can escape to infinity, the probability of returning within finite time is zero in some sense.
+
+Wait, no, that's conflicting with my previous thought. Wait, if the process is recurrent in ℝ, which it is, then for hitting times of compact sets (like [-a,a]), the expected exit time is finite. Hmm, but I might be mixing concepts from discrete and continuous time processes.
+
+Wait, let me recall: In one dimension, Brownian motion on ℝ is recurrent, meaning that with probability 1, every point is visited infinitely often. Therefore, starting at 0, the expected first passage time to any interval [-a,a] is finite because although the particle can escape to infinity, it will almost surely return to the interval after a long time.
+
+But wait, actually in one dimension Brownian motion on ℝ is not recurrent for hitting times of intervals. For example, in discrete time, as we saw with random walks on integers, hitting any interval requires infinite expected time because you have to come back to the origin, which takes infinitely many steps almost surely.
+
+Wait, but I might be confusing between discrete and continuous processes. Let me check with symmetric simple random walk on integers:
+
+- The expected first passage time to +1 starting from 0 is indeed infinite, same for -1.
+But in Brownian motion, it's different because you can escape beyond any finite point. So in that sense, the expected hitting times are not infinite; instead, they are finite because you almost surely return after a long time.
+
+Wait, I'm getting confused here. Let me check with some references mentally:
+
+For continuous-time Brownian motion on ℝ, starting at 0, and considering hitting times to intervals, is it that the expected exit time is finite? Hmm.
+
+I think in continuous case, the expected first passage time for any interval (including unbounded ones) can be infinite. But I might need to verify this.
+
+Alternatively, maybe refer back to our formula: It suggests that $E[W_τ^2] = E[τ]$ even when τ is a.s. infinite. That seems contradictory because if W_τ is 1 almost surely (if we're considering first passage), then $E[W_τ^2]=1$, but according to the formula, it's supposed to be equal to $E[τ]$, which would also have to be 1? But that can't be right.
+
+Wait, perhaps in this case, for hitting time τ of Brownian motion to reach +1, then indeed:
+
+- $W_τ = 1$ almost surely,
+- So $E[W_τ^2] = 1$,
+- Therefore, according to the formula, $E[τ]$ must be equal to 1.
+
+But is that actually true? In reality, for standard Brownian motion, hitting time τ to reach +1 starting from 0 has an infinite expectation. Wait, no:
+
+No, wait: Let me compute E[τ]. For symmetric random walk on integers, the expected first passage time to +1 is known to be infinite, but in continuous Brownian motion, I think it's also different.
+
+Wait, actually, for standard Brownian motion on ℝ, starting at 0, the expected hitting time of ±a is finite only if a is finite. Wait, no:
+
+For symmetric α-stable processes, but even then, maybe not.
+
+Wait, let me compute E[τ] where τ is first passage to |W|=1 for Brownian motion.
+
+Actually, I think that in continuous case, the expected hitting time for Brownian motion on ℝ starting at 0 to reach ±a is indeed finite. Wait, actually, no: For Brownian motion, since it's recurrent, the probability of escaping to infinity is zero almost surely. So perhaps even though you can escape to infinity, once you are near a, say within [1 - ε, 1 + ε], the expected time to reach ±a is finite.
+
+Wait, this is getting confusing. Let me think differently: The formula $E[W_τ^2] = E[τ]$ seems correct for any stopping time τ because when we apply Ito's lemma correctly, it gives us that relationship. So if in some cases, such as hitting times of intervals [-a,a], the expected exit time is finite, but in reality, Brownian motion can escape to infinity.
+
+But wait, perhaps my initial assumption was wrong: That in continuous Brownian motion, $E[W_τ^2] = E[τ]$ for any stopping time τ. Because when we derived it using Ito's lemma and took expectations, that identity came out naturally, which is always true regardless of whether the process is recurrent or not.
+
+So even if τ is a.s. infinite, as long as W_τ exists (i.e., finite almost surely), then $E[W_τ^2] = E[τ]$ still holds by the Ito formula approach.
+
+But in reality, for hitting times of intervals [-a,a], which are compact sets, in discrete Brownian motion, the expected exit time is indeed infinite. But in continuous case, maybe it's different? Wait, no:
+
+Wait, actually, in discrete case, as with simple symmetric random walk on integers, starting at 0, the expected first passage to ±1 is finite? Or is it not?
+
+Wait, if we are talking about stopping times for hitting time of [-a,a], which includes all integers from -a to a.
+
+But in continuous Brownian motion, W_τ can be anything except outside some interval. So actually, if I define τ as the first passage to |W|=1, then in continuous case, starting at 0, we are inside the interval (-1,1). In such a case, by continuity of paths and positive recurrence, Brownian motion will almost surely return to the interval after finite time.
+
+Wait, but is that true? Wait, no: For standard Brownian motion on ℝ, it's recurrent in the sense that every point is visited infinitely often. But for hitting times to intervals like [-a,a], which are compact sets, I think the expected exit time is actually infinite because the particle can escape beyond a.
+
+Wait, confusion arises here between discrete and continuous time processes. Let me try an example:
+
+Suppose we have a symmetric random walk on integers starting at 0. The expected first passage time to ±1 is indeed infinite. However, in continuous Brownian motion, does it also take infinite time?
+
+I think not: For standard Brownian motion, the probability that |W_t| > M as t→∞ approaches zero for any fixed M because of the reflection principle and Gaussian tails.
+
+Wait, but the expected first passage time to [a,b] is finite? Hmm.
+
+Actually, for hitting times in continuous Brownian motion:
+
+If we have a stopping time τ defined as the first time when |W_t| reaches some value k>0. Then, it's actually known that E[τ] = ∞ for any k>0 because the process can escape to infinity with positive probability.
+
+Wait, but in reality, starting from 0, Brownian motion can reach any finite point almost surely but taking infinite time on average? That seems contradictory.
+
+No, wait. Let me look up an example:
+
+In continuous-time Brownian motion, for hitting times of intervals (finite or unbounded), the expected exit time is finite if and only if the interval is centered at the origin. For symmetric α-stable processes, it's different but still...
+
+Wait, actually, I think in the standard case of Brownian motion on ℝ starting at 0, the expected first passage time to any interval [-a,a] is indeed infinite because the particle can escape beyond a with positive probability.
+
+But that contradicts my earlier thought. Maybe it's better to compute E[τ] explicitly for hitting times of intervals in Brownian motion.
+
+Wait, let me recall: For symmetric simple random walk on integers, starting at 0, first passage time to ±1 is almost surely infinite because even though you can come back after finite steps, the expected return time is infinite. Similarly, for Brownian motion, maybe it's also different?
+
+Alternatively, perhaps I should use a different

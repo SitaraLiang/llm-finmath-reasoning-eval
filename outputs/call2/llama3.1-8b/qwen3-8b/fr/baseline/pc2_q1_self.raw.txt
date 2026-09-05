@@ -1,0 +1,78 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien"
+  arguments:
+  - "On suppose que $(X_t)_{t\in \R^+}$ est un mouvement brownien"
+  outcomes:
+  - "Alors $X_0=0$ par définition"
+  - "Pour tout $s,t\geq 0$, on a ${\rm Cov}(X_s,X_t)=E[(X_s-E[X_s])(X_t-E[X_t])]=E[X_sX_t]$"
+  - "En utilisant la propriété de stationnarité du mouvement brownien, on obtient $E[X_sX_t]=\int_{-\infty}^{\infty}\int_{-\infty}^{\infty}x_1x_2f_{s,t}(x_1,x_2)dx_1dx_2=\int_{-\infty}^{\infty}x^2f_t(x)dx$"
+  - "En utilisant les propriétés de la densité d'un mouvement brownien, on obtient $\int_{-\infty}^{\infty}x^2f_t(x)dx=\frac{t}{2}$"
+  - "Donc ${\rm Cov}(X_s,X_t)=\inf(s,t)$"
+- preconditions:
+  - "Les conditions $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien centré et ${\rm Cov}(X_s,X_t)=\inf(s,t)$ sont satisfaites"
+  arguments:
+  - "On suppose que les conditions sont satisfaites"
+  outcomes:
+  - "Alors $X_0=0$ et $(X_t)_{t\in \R^+}$ est un processus gaussien centré"
+  - "Pour tout $s,t\geq 0$, on a ${\rm Cov}(X_s,X_t)=\inf(s,t)$"
+  - "En utilisant la propriété de stationnarité du mouvement brownien, on obtient $E[X_sX_t]=\frac{\min(s,t)}{2}$"
+  - "Cela implique que le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien"
+```
+
+### Question block 2
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "W_t est un mouvement brownien"
+  arguments:
+  - "X_0 = 0"
+  outcomes:
+  - "X_0 = 0 par définition"
+  strength: "Calculation"
+- preconditions:
+  - "W_t est un mouvement brownien"
+  arguments:
+  - "Cov(X_s, X_t) = Cov(sW_{1/s}, tW_{1/t})"
+  outcomes:
+  - "Cov(X_s, X_t) = stE[W_{1/s}W_{1/t}]"
+  strength: "Calculation"
+- preconditions:
+  - "W_t est un mouvement brownien"
+  arguments:
+  - "Cov(X_s, X_t) = st inf(1/s, 1/t)"
+  outcomes:
+  - "Cov(X_s, X_t) = min(s, t)"
+  strength: "Calculation"
+- preconditions:
+  - "X_t est un processus gaussien centré"
+  arguments:
+  - "Cov(X_s, X_t) = min(s, t)"
+  outcomes:
+  - "X_t est un mouvement brownien"
+  strength: "Theorem"
+- preconditions:
+  - "X_t est un mouvement brownien"
+  arguments:
+  - "Cov(X_s, X_t) = min(s, t)"
+  outcomes:
+  - "X_t est un processus gaussien centré"
+  strength: "Theorem"
+- preconditions:
+  - "X_t est un mouvement brownien"
+  arguments:
+  - "Cov(X_s, X_t) = min(s, t)"
+  outcomes:
+  - "X_t est un mouvement brownien"
+  strength: "Theorem"
+```

@@ -1,0 +1,44 @@
+Exercise: pc2_q1
+Model: tinyllama
+Variation: role_quant_expert
+Prompt type: strictly_sequential
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+Sure! Here's an answer to Question 1:
+
+Assuming that $X_0 = 0$, we have
+$$X_t = \int_0^t \dydx \, X_s$$
+where $\dydx$ denotes the Lebesgue integral. The formula for the covariance of $X_s$ and $X_t$ follows from the definition of a Brownian motion: if $X_0 = 0$, then $(X_t)_{t\in \R^+}$ is a centered Gaussian process with variance function $\sigma(x,y) := \sqrt{x^Ty}$. Therefore, we have
+$${\rm Cov}(X_s, X_t) = \int_{-\infty}^\infty \int_{-\infty}^\infty \frac{1}{2\pi} {\rm d} x \, \frac{1}{2\pi} {\rm d} y \, e^{\sigma(x,y)} (x+y-2xs)^2$$
+which can be simplified to
+$${\rm Cov}(X_s, X_t) = 2\int_0^\infty \int_0^\infty e^{-r^2} {\rm d} r \, e^{-\sigma(s,t)r^2} \left|x+ty-2xs\right|^2$$
+where we used the Cauchy-Schwarz inequality and the fact that $e^{r^2}$ is an increasing function in $r$. This formula shows that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if the covariance function $\sigma(s,t)$ has a square root with positive definite kernel.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+The question is asking whether the sequence of Brownian motions $\{X_t = t\text{W}_{\frac 1t},t>0, X_0=0\}$ is also a Brownian motion. We'll show this by proving that the stochastic integral $S_t = \int_{0}^{t}ds$ satisfies:
+
+$$X_s = s\text{W}_s + (s-1)\cdot dS_s$$
+
+Since $S_t=t\text{W}_t+(\tau-1)d\mu$, where $\mu$ is a standard Brownian motion, we have:
+
+$$X_s = s\text{W}_s + (s-1)\cdot d(s\text{W}_s+\mu_s)$$
+
+Integrating both sides from $0$ to $t$, we get:
+
+$$S_{t} = t(\int_{0}^{t}\text{d}s + \tau - 1)\cdot (\int_{0}^{t}\text{d}s + \tau - 1) + (t-1)\cdot(\int_{0}^{t}\text{d}s\text{W}_s+\mu_t)$$
+
+Applying Fubini's theorem, we have:
+
+$$S_{t} = t\cdot(\tau+1)\text{W}_t + (t-1)\cdot(\int_{0}^{t}\text{d}s\text{W}_s+\mu_t)$$
+
+Since $X_t=t\text{W}_t$, we have:
+
+$$S_t = t\cdot(\tau+1)W_t + (t-1)\cdot(\int_{0}^{t}\text{d}sW_s)$$
+
+So the stochastic integral is a Brownian motion. Therefore, $\{X_t=t\text{W}_{\frac 1t}, t>0, X_0=0\}$ is also a Brownian motion.

@@ -1,0 +1,25 @@
+pc: '4'
+exercise: '4'
+language: fr
+variation: baseline
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: qwen2.5-coder-0.5b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - τ est un temps d'arrêt borné
+        arguments:
+        - Calculer l'espérance du mouvement brownien au temps τ
+        outcomes:
+        - La valeur moyenne du mouvement brownien de τ est 0
+        strength: 1
+-   atoms:
+    -   preconditions:
+        - τ est un temps d'arrêt borné
+        arguments:
+        - Calculer E(W_τ²)
+        outcomes:
+        - E(W_τ²) = E(τ)
+        strength: 0

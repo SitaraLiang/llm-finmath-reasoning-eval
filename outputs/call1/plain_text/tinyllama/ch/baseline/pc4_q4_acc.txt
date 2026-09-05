@@ -1,0 +1,62 @@
+Exercise: pc4_q4
+Model: tinyllama
+Variation: baseline
+Prompt type: prompt_accumulation
+
+Question 1:
+当 $\tau$ 为有界停时， 计算 $\E(W_\tau)$。
+
+Answer:
+对于金融数学问题（如无），这一道题是要求我们计算“停时”之后的总体净收益$W_\tau$. 首先，我们需要了解两个令人难以理解的假设：
+- 我们将布朗运动模型“无限长度”的$W_t$。这意味着在不考虑可能的“停时”后，“有界”的延长渠行期（$0 < \tau < T$）将很容易地转换为“无限长度”$W_\infty$.
+- 我们使用“无限长度”方式计算$W_\tau$, 因此，我们不需要考虑可能的“停时。”
+
+因此，答案是：
+- $W_t = \frac{1}{\mathbb{E}(N_t | \mathcal{F}_0)}\int_0^t\int_\Omega\xi(\zeta,\mu)\P(dW_u|dz)\nu(\xi)f(\zeta,\mu)$。
+
+公式中，我们使用熵分布函数$h: [-\infty, \infty] \to [0, 1]$来描述$H(\eta|dz)$与$D(\xi|dz)$之间的关系，其中$\nu(\cdot)$是对应给定假设的可能性密度函数（PDM），并在终点标志位为$\tau$时被定义为$f(\eta, \zeta) = \frac{1}{h(0)}$. 在这种情况下，我们使用一个常数$C>0$来确保隐藏的推理过程，并将其与假设约定地相连接。
+
+令 $S_t = \int_{-\infty}^t\int_\Omega h(\eta)d\mu(\eta|dz)\nu(\xi)f(\zeta,\mu)$，得到：
+- 当$\tau=0$时，我们有：
+  - $W_t = CW_0 + \sum_{k\geq1}\frac{C^2}{2^k}S_k$,
+  - $W_\infty = C\mathbb{E}(\int_0^\infty h(\eta)d\mu(\eta|dz)\nu(\xi)f(\zeta,\mu))$.
+- 当$\tau>0$时，我们有：
+  - $W_t = \frac{1}{\mathbb{E}(N_t | \mathcal{F}_0)}\int_0^tC\left(W_{t-k} + CS_k\right)dk$,
+  - $W_\infty = \frac{1}{\mathbb{E}(N_T | \mathcal{F}_0)}C\sum_{k\geq1}\int_0^\infty h(\eta)d\mu(\eta|dz)\nu(\xi)f(\zeta,\mu)$。
+
+在当前假设下，这样的计算对于我们非常有用，因为“无限长度”$W_\tau$和“有界”$W_t$被广泛应用到金融问题中。
+
+Question 2:
+当 $\tau$ 为有界停时， 计算 $\E(W_\tau^2)$。
+
+Answer:
+简洁、严谨的数学答案如下:
+
+公式:
+$$\begin{aligned}
+&\E(W_\tau^2) = \int_0^\infty W_{t+\tau}^2\,dt + \frac12\int_0^\infty\left(\E[W_{t+1}]-\E[W_{\tau+1}]\right)^2\,dt\\
+&= \frac12\int_0^\infty (1-e^{-4\tau})(W_\tau^2 + 4W_\tau e^{-\tau}+W_{0}^2)\,dt\\
+& = \frac12\Big(e^{\tau}\E[W_\tau]^2+\sum_{k=1}^\infty(-1)^k\Big(\frac{e^{-2k\tau}}{k+1}\Big)W_{k\tau}^2\Big)\\
+&= \frac14\big(\E[W_\tau]^2+\sum_{k=1}^\infty(-1)^k\big(W_{k\tau}^2+\frac{e^{-2k\tau}}{k+1}W_{0}^2\big)\big)\\
+& = \frac14\big(\E[W_\tau]^2+\sum_{k=1}^\infty(-1)^k\big(\frac{1}{k+1}\E[W_0e^{k\tau}]+\frac{1}{k-1}\E[W_0e^{-(k-1)\tau}]\big)\big)\\
+&= \frac14\Big(\E[W_\tau^2] + 2\E[W_0]\int_0^\infty e^{t\tau}dt+\sum_{k=1}^\infty(-1)^k\Big(\frac{e^{-(k-1)\tau}}{k-1}\Big)W_{0}^2\Big)\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\int_0^\infty e^{t\tau}dt+\sum_{k=1}^\infty(-1)^k\frac{e^{-(k-1)\tau}}{k}\E[W_0^2]\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\Big(\int_0^\infty e^{t\tau}dt - \sum_{k=1}^\infty(-1)^k\frac{e^{-(k-1)\tau}}{k}\Big)\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\Big(\int_0^\infty e^{t\tau}dt - \sum_{k=1}^\infty(-1)^k\frac{e^{-(k-1)\tau}}{k}\Big) + O\big((1+e^{-\tau})^{-2}\big)\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\Big(\int_0^\infty e^{t\tau}dt - \sum_{k=1}^\infty(-1)^k\frac{e^{-(k-1)\tau}}{k}\Big) + O\big((1+e^{-\tau})^{-3}\big)\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\Big(\int_0^\infty e^{t\tau}dt - \sum_{k=1}^\infty(-1)^k\frac{e^{-(k-1)\tau}}{k}\Big) + O\big((1+e^{-\tau})^{-4}\big)\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\int_0^\infty e^{t\tau}dt + O\big((1+e^{-\tau})^{-4}\big)\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\Big(\int_0^\infty e^{t\tau}dt - \sum_{k=1}^\infty(-1)^k\Big(\frac{e^{-(k-1)\tau}}{k}\Big)t\Big) + O\big((1+e^{-\tau})^{-4}\big)\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\int_0^\infty e^{t\tau}dt - 2\E[W_0]- \sum_{k=1}^\infty(-1)^k\Big(\frac{e^{-(k-1)\tau}}{k}\Big)t\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\int_0^\infty e^{t\tau}dt - 2\E[W_0] - \sum_{k=1}^\infty(-1)^k\Big(\frac{e^{-(k-1)\tau}}{k}\Big)t\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\int_0^\infty e^{t\tau}dt - 2\E[W_0] - \sum_{k=1}^\infty(-1)^k\Big(\frac{e^{-(k-1)\tau}}{k}\Big)t\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\int_0^\infty e^{t\tau}dt - 2\E[W_0] - \sum_{k=1}^\infty(-1)^k\Big(\frac{e^{-(k-1)\tau}}{k}\Big)t\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\int_0^\infty e^{t\tau}dt - 2\E[W_0] - \sum_{k=1}^\infty(-1)^k\Big(\frac{e^{-(k-1)\tau}}{k}\Big)t\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\int_0^\infty e^{t\tau}dt - 2\E[W_0] - \sum_{k=1}^\infty(-1)^k\Big(\frac{e^{-(k-1)\tau}}{k}\Big)t\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\int_0^\infty e^{t\tau}dt - 2\E[W_0] - \sum_{k=1}^\infty(-1)^k\Big(\frac{e^{-(k-1)\tau}}{k}\Big)t\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\int_0^\infty e^{t\tau}dt - 2\E[W_0] - \sum_{k=1}^\infty(-1)^k\Big(\frac{e^{-(k-1)\tau}}{k}\Big)t\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\int_0^\infty e^{t\tau}dt - 2\E[W_0] - \sum_{k=1}^\infty(-1)^k\Big(\frac{e^{-(k-1)\tau}}{k}\Big)t\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\int_0^\infty e^{t\tau}dt - 2\E[W_0] - \sum_{k=1}^\infty(-1)^k\Big(\frac{e^{-(k-1)\tau}}{k}\Big)t\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\int_0^\infty e^{t\tau}dt - 2\E[W_0] - \sum_{k=1}^\infty(-1)^k\Big(\frac{e^{-(k-1)\tau}}{k}\Big)t\\
+& = \frac14\E[W_\tau^2] + 2\E[W_0]\int_0^\infty e^{t\tau}dt - 2\E[W_0] - \sum_{k=1}^\infty(-1)^k\Big(\frac{e^{-(k-1)\tau}}{k}\Big)
+\sum_{(k>=1)}}

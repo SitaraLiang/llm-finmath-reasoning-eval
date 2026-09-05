@@ -1,0 +1,29 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_quant_expert
+prompt_type: prompt_accumulation
+call1_output_mode: plain_text
+call1_model: llama3.1-8b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0=0
+        - X_t is a centered Gaussian process
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Show that X_t - X_s ~ N(0, t-s) and is independent of (X_u)_{u<s}
+        outcomes:
+        - X_t is a Brownian motion
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        - X_t = t W_{1/t} for t > 0, X_0 = 0
+        arguments:
+        - Definition of Brownian motion
+        - X_t is centered Gaussian
+        - Covariance of X_s and X_t
+        - Initial condition of X_t
+        outcomes:
+        - X_t is a Brownian motion

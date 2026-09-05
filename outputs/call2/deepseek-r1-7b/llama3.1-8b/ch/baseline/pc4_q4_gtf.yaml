@@ -1,0 +1,43 @@
+pc: '4'
+exercise: '4'
+language: ch
+variation: baseline
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: deepseek-r1-7b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - 布朗运动是对称过程
+        - 停时定理
+        outcomes:
+        - E[W_τ] = E[W_0]
+    -   preconditions: []
+        arguments:
+        - D Dynkin公式
+        - f(x) = x
+        outcomes:
+        - E[f(W_τ)] = f(W₀) + E[积分项]
+    -   preconditions: []
+        arguments:
+        - 对称性
+        outcomes:
+        - E[W_τ] = 0
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - τ是有界停时
+        outcomes:
+        - E[W_τ²] = E[τ]
+    -   preconditions: []
+        arguments:
+        - W_t² - t 是一个martingale
+        outcomes:
+        - E[W_τ² - τ] = E[W_0² - 0] => E[W_τ²] = E[τ]
+    -   preconditions: []
+        arguments:
+        - τ是有界停时
+        outcomes:
+        - E[W_τ²] = E[τ]

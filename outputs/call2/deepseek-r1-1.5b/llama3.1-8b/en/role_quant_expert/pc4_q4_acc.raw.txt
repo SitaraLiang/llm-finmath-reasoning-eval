@@ -1,0 +1,41 @@
+### Question block 1
+```yml
+atoms:
+- preconditions:
+  - "τ is a bounded stopping time"
+  arguments:
+  - Calculation
+  outcomes:
+  - "E(W_τ) = 0"
+```
+
+### Question block 2
+The relationship between $E[W_τ^2]$ and $E[τ]$ in continuous-time Brownian motion is a complex topic, and there are several subtleties involved.
+
+To clarify your thoughts, let's break down the key points:
+
+1.  The formula $E[W_τ^2] = E[τ]$ seems to be a natural consequence of applying Ito's lemma and taking expectations.
+2.  However, when dealing with compact sets like [-a,a], the expected exit time can be infinite because the particle can escape beyond a with positive probability.
+
+To further explore this topic, let's consider some specific scenarios:
+
+*   **Hitting times of intervals**: When considering hitting times of intervals, the expected exit time is finite if and only if the interval is centered at the origin. For symmetric α-stable processes, it's different but still...
+*   **Expected first passage time to ±1**: In continuous-time Brownian motion, for hitting times of intervals (finite or unbounded), the expected exit time is finite if and only if the interval is centered at the origin.
+
+To compute $E[τ]$ explicitly for hitting times of intervals in Brownian motion, you can use various techniques such as:
+
+*   **Reflection principle**: This technique allows you to relate the probability of reaching a certain point to the probability of not reaching it.
+*   **Gaussian tails**: The Gaussian distribution has tails that decay exponentially, which can be used to bound the expected exit time.
+
+Some relevant references include:
+
+*   **Karlin and Taylor (1981)**: This book provides an in-depth treatment of stochastic processes, including Brownian motion and hitting times.
+*   **Feller (1971)**: This classic textbook on probability theory covers topics such as Brownian motion and Markov processes.
+
+To further clarify your thoughts, I'd like to ask a few questions:
+
+*   Can you provide more details on why you think $E[W_τ^2] = E[τ]$ might not hold true for hitting times of intervals?
+*   How do you propose computing $E[τ]$ explicitly for hitting times of intervals in Brownian motion?
+*   Are there any specific results or references that you'd like to mention regarding the expected exit time for Brownian motion on ℝ starting at 0?
+
+I'm here to help and provide guidance as needed.

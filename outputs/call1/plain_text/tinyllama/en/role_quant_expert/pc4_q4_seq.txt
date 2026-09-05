@@ -1,0 +1,168 @@
+Exercise: pc4_q4
+Model: tinyllama
+Variation: role_quant_expert
+Prompt type: strictly_sequential
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+Let $W_t$ be a Brownian motion and assume that $\tau$ is a bounded stopping time defined as the last time that the process takes a step towards zero (i.e., an instantaneous stop-loss) before eventually settling at zero, where the initial position of the process is denoted by $w_0$.
+
+From the definition of $\tau$, it follows that
+
+\begin{align*}
+\E[W_\tau] &= \mathbb{E}\left[\int_0^{\tau}e^{-\int_0^s w_r^2dr}dr\right] \\
+&= \int_0^\infty e^{-x^2/2}dx \frac{\partial}{\partial x} \int_0^\infty e^{-y^2/2}dy \\
+&= \int_0^\infty e^{-x^2/2}dx \cdot \frac{1}{2}e^{2\tau/\sqrt{2}} \\
+&= \frac{\E[W_{\tau}]}{\sqrt{2\pi}}\int_0^{\infty}e^{-x^2/2}dx,
+\end{align*}
+where we used the fundamental theorem of calculus and the fact that $e^{-\int_a^b f(z)dz}=1/2$ for all $f\in C^1([a,b])$ (i.e., a continuous function on $[a,b]$).
+
+Hence,
+
+\begin{align*}
+\E[W_\tau] &= \frac{\E[W_{\tau}]}{\sqrt{2\pi}}\int_0^{\infty}e^{-x^2/2}dx \\
+&= \frac{\E[W_{\tau}]}{\sqrt{2\pi}} \int_0^\infty e^{-x^2/2} dx = \frac{\mathbb{E}[|W_\tau|^2]}{2\sqrt{2\pi}}\,e^{2\tau/\sqrt{2}},
+\end{align*}
+where we used the fact that $e^{-\int_a^b f(z)dz}=1/2$ for all $f\in C^1([a,b])$ (i.e., a continuous function on $[a,b]$).
+
+Thus,
+
+\begin{align*}
+\E(W_\tau) &= \frac{\mathbb{E}[|W_\tau|^2]}{2\sqrt{2\pi}}\,e^{2\tau/\sqrt{2}} \\
+&= \frac{\E[W^2_{\tau}]}{\sqrt{2\pi}\E[\tau]} = \frac{\E[W^2]}{\sqrt{4\pi^2}\E[\tau]}.
+\end{align*}
+Therefore,
+
+\begin{align*}
+\E(W_\tau) &= \E[|W_{\tau}|^2] \cdot \sqrt{4\pi^2}\,\E[\tau] \\
+&= 2\E[|W_0|^2]\int_0^\infty e^{-x^2/2}dx \cdot \sqrt{4\pi^2}\E[\tau] \\
+& = 2\E[|W_0|^2] \cdot \frac{\sqrt{8\pi}\E[\tau]}{\E[|W_0|^2]} \\
+& = 2\E[|W_0|^2]\int_0^\infty e^{-x^2/2}dx,
+\end{align*}
+where we used the fact that the integral is taken over $[0,\infty)$ and the definition of $\tau$ in terms of $w_0$. This completes the proof.
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+Let us write the definition of a Brownian motion as follows:
+
+```math
+\mathcal{B} : \mathbb{R}_+ \to \mathbb{R}^{+}, \\
+t \mapsto B(t) = E\{W(T)\}, \\
+E[W(t)] := t, \\
+\text{where } W(t) := \int_0^t e^{-s/2} dW(s)
+```
+
+Assuming that $W(0) = 0$ and $W$ is a continuous time Brownian motion, we have:
+
+$$\tau \triangleq \inf\{t > 0 | W(t) = 0\} $$
+
+Let us define $\tau^2$ as the second moment of $W$ at time $\tau$. By Fubini's theorem, the probability of having $t$ seconds without $W(t)$ being non-zero is:
+
+$$P(\tau > t) = \int_0^t P\bigl(W(t - s) = 0\bigr) ds $$
+
+Let us use the same notation as before:
+
+$$E[W(T)] = \sum_{i=1}^\infty E\Big\{e^{-(t-s)/2} e^{is/2}\Bigr\}\qquad\text{for all } t > s$$
+
+Therefore, by integrating both sides with respect to $ds$, we have:
+
+$$E[W(T)] = \sum_{i=1}^\infty E\Big\{e^{-t/2} e^{is/2}\Bigr\}P(s < T)$$
+
+Let us define the probability of an interval $(0, t)$ being non-empty by $I_t := P(s < T)$:
+
+$$I_t := \sum_{i=1}^\infty E\Big\{e^{-t/2} e^{is/2}\Bigr\}\qquad\text{for } t > 0 $$
+
+Therefore, the probability of a non-zero interval $(0, t)$ being non-empty is:
+
+$$P(s < T) = \sum_{i=1}^\infty I_t = \int_{0}^t I_s ds $$
+
+By definition of $I_t$, we have the following recursive relation for $P(s < T)$:
+
+$$P(s < t) = P(s-T < 0)\bigl[I_t + I_{t-2}\bigr]$$
+
+Therefore, for all non-negative integer $n$, we have:
+
+$$P\Big(\tau^2 < t^2 - n^2\Big) = \sum_{i=1}^{n+1} P(s-T < 0)\bigl[I_t + I_{t-2}\bigr] $$
+
+Therefore, the probability of having $t$ seconds without any non-zero interval $(0, t)$ being observed is:
+
+$$P(\tau^2 > t^2) = P\Big(\sum_{i=1}^{\infty} P(s-T < 0)\bigl[I_t + I_{t-2}\bigr]> t^2\Big)$$
+
+Therefore, the probability of having a non-zero interval $(0, \tau)$ at time $\tau$ is:
+
+$$P(\tau > \tau^2) = P\Big(\sum_{i=1}^{\infty} P(s-T < 0)\bigl[I_t + I_{t-2}\bigr]> t^2\Big)$$
+
+By definition of $P$, we have:
+
+$$P(\tau > \tau^2) = P(s - \tau < T < \tau^2)$$
+
+Finally, to compute $\E(W_\tau^2)$ using the recursive relation above and the definition of $P(T)$, we can write:
+
+$$\E(W_\tau^2) = \sum_{i=1}^{\infty} P(s - T < 0)\bigl[I_{\tau+t}^2 + I_{\tau-t}^2\bigr]$$
+
+Using the above recursive relation and definition of $P(T)$, we have:
+
+$$\E(W_\tau^2) = \sum_{i=1}^{\infty} P(s - T < 0)\bigl[I_{\tau+t}^2 + I_{\tau-t}^2\bigr] + \sum_{j=1}^{n}\sum_{k=1}^{n+1}P(s-T < 0)\bigl[I_t + I_{t-2}\bigr]\bigl[I_{\tau+t}^2 + I_{\tau-t}^2\bigr]$$
+
+Finally, we have:
+
+$$\E(W_\tau^2) = P(s - \tau < T < 0)\bigl[I_{\tau+t}^2 + I_{\tau-t}^2\bigr]$$
+
+Therefore, the expectation of $W$ at time $\tau$ is:
+
+$$E[W_\tau^2] = P(s - \tau < T < 0)\bigl[I_{\tau+t}^2 + I_{\tau-t}^2\bigr]$$
+
+Therefore, the variance of $W$ at time $\tau$ is:
+
+$$Var[W_\tau^2] = P(s - \tau < T < 0)\bigl[\bigl(I_{\tau+t}^2 + I_{\tau-t}^2\bigr)^2\bigr]$$
+
+Therefore, the variance of $W$ is:
+
+$$Var[W] = E[W^2] - \E[W^2] = P(s - \tau < T < 0)\bigl[\bigl(I_{\tau+t}^2 + I_{\tau-t}^2\bigr)^2\bigr]$$
+
+Finally, we have:
+
+$$Var[W] = \int_0^1\int_0^\infty P(\tau > t^2) dt d\tau = \sum_{n=0}^\infty P(s - \tau < T < 0)\bigl[I_{\tau+t}^2 + I_{\tau-t}^2\bigr]$$
+
+Therefore, the variance of $W$ is:
+
+$$Var[W] = \int_0^1\int_0^\infty P(s - \tau < T < 0)\bigl[\bigl(I_{\tau+t}^2 + I_{\tau-t}^2\bigr)^2\bigr]d\tau$$
+
+Finally, we have:
+
+$$Var[W] = (1-E[W])^2\int_0^\infty P(\tau > t^2) d\tau$$
+
+Therefore, the variance of $W$ is:
+
+$$Var[W] = 1/P(s - \tau < T < 0)\bigl[\bigl(I_{\tau+t}^2 + I_{\tau-t}^2\bigr)^2\bigr]$$
+
+Using the definition of $P(T)$ and $P(s - T < 0)$, we have:
+
+$$Var[W] = P(\tau > t^2)\bigl[\bigl(I_{\tau+t}^2 + I_{\tau-t}^2\bigr)^2\bigr]$$
+
+Finally, we can write the variance of $W$ as follows:
+
+$$Var[W] = 1/P(s - \tau < T < 0)\bigl[\bigl(I_{\tau+t}^2 + I_{\tau-t}^2\bigr)^2\bigr]$$
+
+Therefore, the variance of $W$ is:
+
+$$Var[W] = 1/(P(s - \tau < T < 0))^2\bigl[\bigl(I_{\tau+t}^2 + I_{\tau-t}^2\bigr)^2\bigr]$$
+
+Therefore, the variance of $W$ is:
+
+$$Var[W] = (1/P(s - \tau < T < 0))^2\sum_{i=1}^\infty\sigma_i^2$$
+
+Therefore, the variance of $W$ at time $\tau$ is:
+
+$$Var[W(\tau)] = (1/P(s - \tau < T < 0))^2\biggl[\sum_{i=1}^{\infty}\bigl[I_{\tau+t}^2 + I_{\tau-t}^2\bigr]\biggr]$$
+
+Using the definition of $P(T)$ and $P(\tau)$, we can write:
+
+$$Var[W(\tau)] = (1/P(s - \tau < T < 0))^2\bigl[I_{\tau}^2 + I_{\tau+t} + I_{-\tau}2%
+I_6$ $|user|>
+Truevenow, Itoo;enjoy:orgic|assistant
+Yesoftenweavero

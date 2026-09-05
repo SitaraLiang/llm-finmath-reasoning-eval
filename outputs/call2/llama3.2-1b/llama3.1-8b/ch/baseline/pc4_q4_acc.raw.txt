@@ -1,0 +1,14 @@
+### Question block 1
+```yml
+atoms:
+  - preconditions: []
+    arguments:
+      - "τ 为有界停时"
+    outcomes:
+      - formula: "\E(W_τ) = \frac{1}{2π}\int_{−∞}^{∞}exp\left(−\frac{1}{2}(t+τ)^2-1\right)dt"
+  - preconditions: []
+    arguments:
+      - "使用定义的二次函数"
+    outcomes:
+      - formula: "\E(W_τ) = \frac{1}{√2π}e^{−\frac{1}{2}τ^2}"
+```

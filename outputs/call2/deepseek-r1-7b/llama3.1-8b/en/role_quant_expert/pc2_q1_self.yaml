@@ -1,0 +1,23 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_quant_expert
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: deepseek-r1-7b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - A process \( (X_t)_{t \geq 0} \) is given.
+        arguments:
+        - The conditions for a Brownian motion are given.
+        outcomes:
+        - \( (X_t) \) is a Brownian motion if and only if it satisfies the three conditions.
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Calculation
+        outcomes:
+        - X_t = t W_{1/t} is a Brownian motion

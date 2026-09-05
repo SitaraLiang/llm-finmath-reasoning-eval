@@ -1,0 +1,47 @@
+pc: '4'
+exercise: '4'
+language: fr
+variation: baseline
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: llama3.2-1b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - τ est un temps d'arrêt borné
+        arguments:
+        - Calculer l'espérance de W_τ
+        outcomes:
+        - E(W_τ) = E(e^{(W_t - τ)^T})
+    -   preconditions:
+        - τ est un temps d'arrêt borné
+        arguments:
+        - Calculer l'espérance de W_τ
+        outcomes:
+        - E(W_τ) = e^{-∫_{0}^{τ} dW_s}
+    -   preconditions:
+        - τ est un temps d'arrêt borné
+        arguments:
+        - Calculer l'espérance de W_τ
+        outcomes:
+        - E(W_τ) = e^{-τ W_0 + ½τ² W_t²}
+-   atoms:
+    -   preconditions:
+        - τ est un temps d'arrêt borné
+        arguments:
+        - Calculer E(W_τ²)
+        outcomes:
+        - E(W_τ²) = E(e^{2(𝑊_𝑡 - τ)^T})
+    -   preconditions:
+        - τ est un temps d'arrêt borné
+        arguments:
+        - Calculer E(e^{2(𝑊_𝑡 - τ)^T})
+        outcomes:
+        - E(e^{2(𝑊_𝑡 - τ)^T}) = e^{-2∫_{0}^{τ} d𝑊_𝑠}
+    -   preconditions:
+        - τ est un temps d'arrêt borné
+        arguments:
+        - Calculer e^{-2∫_{0}^{τ} d𝑊_𝑠}
+        outcomes:
+        - e^{-2∫_{0}^{τ} d𝑊_𝑠} = e^{-2τ𝑊_0 + 𝑊_𝑡² - τ𝑊_𝑡²}

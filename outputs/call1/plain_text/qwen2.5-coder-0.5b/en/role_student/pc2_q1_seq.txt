@@ -1,0 +1,98 @@
+Exercise: pc2_q1
+Model: qwen2.5-coder:0.5b
+Variation: role_student
+Prompt type: strictly_sequential
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To show that the process \((X_t)_{t\in \mathbb{R}^+}\) is a Brownian motion if and only if \(X_0 = 0\) and \(\text{Cov}(X_s, X_t) = \inf(s, t)\), we need to analyze the properties of both processes.
+
+### Step-by-Step Solution:
+
+#### (1. Show that \(X_0 = 0\))
+- **Definition of Brownian Motion**: A process \((X_t)_{t \in \mathbb{R}^+}\) is a Brownian motion if and only if:
+  \[
+  X_0 = 0
+  \]
+  This follows from the definition of Brownian motion, which states that the random variables in a process are independent and identically distributed (i.e., each \(X_t\) has a uniform distribution on the interval \([0, \infty)\)).
+
+#### (2. Show that \(\text{Cov}(X_s, X_t) = \inf(s, t)\))
+- **Definition of Covariance**: The covariance between two random variables \(X_1\) and \(X_2\) is defined as:
+  \[
+  \text{Cov}(X_1, X_2) = E[X_1 X_2 - (E[X_1])(E[X_2])]
+  \]
+- **Substitute Given Information**: For \(X_0 = 0\), we know from the definition of Brownian motion that:
+  \[
+  X_0^2 = 0^2 = 0
+  \]
+  Therefore, \(\text{Cov}(X_0, X_t) = E[0 - (E[X_1])(E[X_2])] = E(0) = 0\).
+- **Conclusion**: By the definition of covariance, we have:
+  \[
+  \text{Cov}(X_s, X_t) = \inf(s, t)
+  \]
+
+#### (3. Conclusion)
+- Both parts of the proof show that \(X_0 = 0\) and \(\text{Cov}(X_s, X_t) = \inf(s, t)\) are equivalent to \((X_t)_{t \in \mathbb{R}^+}\) being a Brownian motion.
+- Therefore, the process \((X_t)_{t \in \mathbb{R}^+}\) is a Brownian motion if and only if \(X_0 = 0\) and \(\text{Cov}(X_s, X_t) = \inf(s, t)\).
+
+### Final Answer
+\[
+\boxed{X_0 = 0 \text{ and } \text{Cov}(X_s, X_t) = \inf(s, t)}
+\]
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+Let's solve the problem step by step using properties of Brownian motion and geometric expectations.
+
+### Step-by-Step Solution:
+
+1. **Understand the Problem:**
+   We need to show that \( W_t \) is a Brownian motion given that \( \{X_t = t\;W_{\frac{1}{t}}, t > 0, X_0 = 0 \} \).
+
+2. **Geometric Expectation:**
+   The geometric expectation of the sum of independent random variables is the same as their individual expected values:
+   \[
+   E[X_{t+1}] = E[\mathbb{E}[X_t W_{\frac{1}{t}}]] = \mathbb{E}[X_t W_{\frac{1}{t}}] + E[W_{\frac{1}{t}}]
+   \]
+
+3. **Substitute the Given Values:**
+   The given values are:
+   \[
+   \mathbb{E}[W_t W_{\frac{1}{t}}] = \mathbb{E}[X_t^2] \quad \text{(since } X_t\) is a Brownian motion)
+   \]
+   \[
+   E[X_{\frac{1}{t}}] = 0
+   \]
+
+4. **Combine the Equations:**
+   Substitute these values into the geometric expectation equation:
+   \[
+   \mathbb{E}[X_{t+1}] = \mathbb{E}[X_t^2] + 0
+   \]
+   Simplifying this, we get:
+   \[
+   \mathbb{E}[X_{t+1}] = \mathbb{E}[X_t^2]
+   \]
+
+5. **Geometric Mean Property:**
+   For any random variable \( X \) with a constant mean, its geometric mean is the same as the original random variable:
+   \[
+   E[X] = \sqrt{\frac{1}{\mathbb{E}[X^2]}}
+   \]
+   Since \( \{X_t = t\;W_{\frac{1}{t}}, t > 0, X_0 = 0 \} \) has a constant mean of 0, we have:
+   \[
+   E[X] = 0
+   \]
+
+6. **Conclusion:**
+   Therefore, \( W_t \) is indeed a Brownian motion.
+
+### Final Answer:
+\[
+\boxed{\mathbb{E}[X_{t+1}] = \mathbb{E}[X_t^2]}
+\]
+This shows that \( X_t \) is a Brownian motion given the properties of Brownian motion.

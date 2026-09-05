@@ -1,0 +1,73 @@
+Exercise: pc2_q1
+Model: llama3.2:1b
+Variation: role_student
+Prompt type: strictly_sequential
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To prove the equivalence of the processes, we need to show that one implies the other.
+
+First, assume $(X_t)_{t\in \R^+}$ is a Brownian motion with initial condition $X_0=0$. Then it is clear that:
+
+$$
+\begin{aligned}
+{\rm Cov}(X_s,X_t)&=\inf(s,t) \\
+&= X_s - X_s + X_t - X_t \\
+&= 0.
+\end{aligned}
+$$
+
+Next, assume $(X_t)_{t\in \R^+}$ is a centered Gaussian process with covariance matrix $\sigma^2 I$, where $I$ is the identity matrix and $\sigma^2 > 0$. Then we have:
+
+$$
+{\rm Cov}(X_s,X_t)&=\inf(s,t) \\
+&= X_s - X_s + X_t - X_t \\
+&= \sqrt{X_s^2 - (X_s)^2} + \sqrt{(X_t)^2 - (X_t)^2} \\
+&= \sigma\sqrt{s-t}.
+$$
+
+Since $\sigma > 0$ and $s, t > 0$, we must have $\sigma = \inf(s,t)$.
+
+Conversely, assume $(X_t)_{t\in \R^+}$ is a centered Gaussian process with covariance matrix $\sigma^2 I$. Then it follows that:
+
+$$
+\begin{aligned}
+{\rm Cov}(X_s,X_t)&=\sqrt{s-t}.
+\end{aligned}
+$$
+
+Since $s - t > 0$, we must have $\inf(s,t) = \sqrt{s-t}$.
+
+Therefore, $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if $X_0=0$ and ${\rm Cov}(X_s,X_t)=\inf(s,t)$.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+Since $X_t = t W_{\frac 1t},$
+
+we have that $\dfrac{dX_t}{dt} = t \dfrac{dW_{\frac 1t}}{dt}.$
+
+Using Ito's Lemma,
+
+$X_t - X_0 = \int_0^t \left(t \dfrac{dW_{\frac 1s}}{ds}\right) ds$
+
+$= \int_0^t s \cdot \dfrac{dW_s}{dt} ds$
+
+$= \int_0^t s \cdot dW_s.$
+
+Differentiating both sides with respect to $t,$ we get:
+
+$\dfrac{dX_t - X_0}{dt} = \int_0^t s \cdot dW_s.$
+
+Since $s = t\frac{1}{t}$ and $\dfrac{ds}{dt}= 1$, we have that
+
+$$
+\dfrac{dX_t}{dt}=\int_0^t s\cdot dW_s=\int_0^{t\frac{1}{t}}s\cdot dW_s=t\int_0^td{s}\cdot dW_s= \sqrt{\int_{-\infty}^{\infty}(s \cdot dt)^2 \cdot W_t} 
+$$
+
+$= \sqrt{\int_{-\infty}^{\infty}s^2dt \cdot W_t}$.
+
+Since $X_0 = 0$, we have that $\dfrac{dX_0}{dt}=0$.

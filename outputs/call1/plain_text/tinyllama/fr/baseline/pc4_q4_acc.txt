@@ -1,0 +1,76 @@
+Exercise: pc4_q4
+Model: tinyllama
+Variation: baseline
+Prompt type: prompt_accumulation
+
+Question 1:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau)$.
+
+Answer:
+Vous résolvez un exercice de mathématiques financières en réponse à la question suivante :
+
+Question 1:
+Lorsque la moyenne d'arrêt $\tau$ est une durée de temps naturelle, définie par $W_t=\int_0^\tau W(s)\,ds$, qui est un mouvement brownien, il existe une distribution asymptotique $P_\tau(\cdot)$ pour $W$, telle que:
+
+1. $P_\tau(\{W\geq \eta\})=e^{-\eta}\mathbb{E}(e^{\eta T})$ pour toute variable continue $\eta$ non nulle.
+2. $P_\tau(-\infty<w<\eta)\leq 0$ et $P_\tau(\eta\geq w) < \infty$.
+3. Le risque de $W$ dans la période d'arrêt $[\tau, +\infty)$ est infini (pour tout temps naturel $\tau$).
+
+L'existence du $P_\tau(\cdot)$ peut être démontrée par l'intégrale:
+
+$P_\tau(x) = \frac{1}{2}e^{-\sqrt{\pi}\tau\int_0^\tau e^{-s^2/2}ds}\int_0^\infty e^{-\eta\left(\frac{1}{2}\right)^2+\frac{x-\eta}{2}(1-2\eta)}d\eta$
+
+Ceci devient:
+
+$P_\tau(x) = e^{-\sqrt{\pi}\tau\int_0^\tau e^{-s^2/2}ds}\int_{-\infty}^x e^{\eta(\log(1+2\eta)+\log x)\left(\frac{1}{2}\right)^2+(\log(1-2\eta))\left(1-2\eta\right)}d\eta$
+
+Une fois que $\tau$ est une durée de temps naturelle, les valeurs $x$ correspondant à $W_\tau = \int_0^\tau W(s)\,ds$ sont:
+
+$-\infty<x> <  \frac{\sqrt{2\pi}\tau}{e(\log(1+2\eta)+\log x)\left(\frac{1}{2}\right)^2+(\log(1-2\eta))\left(1-2\eta\right)} = e^{\frac{-\sqrt{2\pi}\log 2}{\sigma^2}}x\left(\frac{1}{2}\right)^2+\mathcal{O}(e^{-\frac{1}{2}(\log 2)^2}) < \infty$
+
+C'est donc la distribution asymptotique $P_\tau(\cdot)$ qui contient les valeurs pour $W_\tau$.
+
+Question 2:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau^2)$.
+
+Answer:
+Le calcul de la variance des fluctuations d'un système fini dont les variables sont $X_t$, avec $P$-formule selon la loi $W_t$ Brownienne est donné par:
+
+$$\begin{aligned}
+    \E(X_{t+1}^{2}) &= \E(X_t^2) + 2 \int_0^t \mathrm{d} X_s \, P(X_s > t) \\
+                   &= (\E[X_t^2] + 2 \int_0^t \mathrm{d} X_s \, P(X_s > t)) \\
+                   &\hspace{1cm} + 2 \int_0^t \mathrm{d} X_s P(X_s > t) \\
+                   &= (\E[X_t^2] + 2 \int_0^\infty \mathrm{d} X_t \, P(X_t > t)) \\
+                   &\hspace{1cm} + 2 \int_0^\infty \mathrm{d} X_t \, P(X_t > t) \\
+                   &= \E[X_{t+1}^2] - \E[X_t^2] + 2 \int_0^\infty \mathrm{d} X_t \, P(X_t > t) \\
+                   &= 2 \E[X_{t+1}] \left[P\left(\frac{W_{t+1}-W_t}{2} \ge \frac{t}{2}\right) + 1\right]
+\end{aligned}$$
+
+Le calcul de la covariance entre les variables $X_t$ et $Y_t$ est donné par:
+
+$$\begin{aligned}
+    \E(XY_{t+1}) &= \E(X_t Y_{t+1}) + X_t \E(Y_t) \\
+                  &= (\E[X_t^2] + \E[X_t Y_t] + 2 \int_0^\infty \mathrm{d} X_t \, P(X_t > t) \, Y_{t+1}) \\
+                  &= \frac{1}{2} (\E[XY_t^2] + 2 \E[X_t^2] + \int_0^\infty \mathrm{d} X_t \, P(X_t > t) \, Y_{t+1})
+\end{aligned}$$
+
+Comme $W_t$ est un mouvement brownien, il a deux moments principaux: $P$-formule selon la loi $W_t$ Brownienne est:
+
+$$\begin{aligned}
+    \E(X_{t+1}^2) &= \E(X_t^2) + 2 \int_0^\infty \mathrm{d} X_t \, P(X_t > t) \, Y_{t+1} \\
+                   &\hspace{1cm} = (\E[X_t^2] + 2 \int_0^\infty \mathrm{d} X_t \, P(X_t > t)) \, Y_{t+1}
+\end{aligned}$$
+
+Comme $P$-formule selon la loi $W_t$ Brownienne est la moyenne de la variable $Y_{t+1}$ en fonction du temps $t$, il suffit donc d'entendre les deux formules ci-dessus pour comprendre le calcul de la variance. En prenant le temps $t$, la variance des fluctuations d'un système fini est:
+
+$$\begin{aligned}
+    \Var(X_t) &= \E[(X_{t+1}^2 - 2 \E[X_t^2] + 2 \E[X_t^2])(Y_{t+1})] \\
+              &= (\E[X_t^2] + 2 \E[X_t^2] + 2 \int_0^\infty \mathrm{d} X_t \, P(X_t > t) \, Y_{t+1}) - 2 \E[X_t^2]
+\end{aligned}$$
+
+En utilisant les formules $W_t$ Brownienne, la covariance entre les variables $X_t$ et $Y_{t}$ est donnée par:
+
+$$\begin{aligned}
+    \Cov(X_t, Y_{t}) &= \E[XY_{t+1}] - \E[X_t]\E[Y_{t+1}] \\
+                     & = (\E[X_t^2] + 2 \int_0^\infty \mathrm{d} X_t \, P(X_t > t) \, Y_{t+1}) - 2 \E[X_t^2]
+\end{aligned}$$

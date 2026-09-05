@@ -1,0 +1,65 @@
+Exercise: pc2_q1
+Model: llama3.1:8b
+Variation: baseline
+Prompt type: strictly_sequential
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+## Step 1: Recall the definition of Brownian motion
+A stochastic process $(X_t)_{t\in \R^+}$ is a Brownian motion if it satisfies the following properties:
+- $X_0 = 0$
+- For any $s, t \geq 0$, $\mathbb{E}[X_t] = 0$ and ${\rm Var}(X_t) = t$
+- The increments are independent: for any $0 \leq s < t < u$, $X_u - X_t$ is independent of $X_s$
+- For any $s, t \geq 0$, $\mathbb{E}[(X_t - X_s)^2] = |t-s|$
+
+## Step 2: Show that if $(X_t)_{t\in \R^+}$ is a Brownian motion, then it satisfies the given conditions
+If $(X_t)_{t\in \R^+}$ is a Brownian motion, then:
+- $X_0 = 0$ by definition
+- For any $s, t \geq 0$, $\mathbb{E}[X_t] = 0$ and ${\rm Var}(X_t) = t$
+- The increments are independent: for any $0 \leq s < t < u$, $X_u - X_t$ is independent of $X_s$
+
+## Step 3: Show that if $(X_t)_{t\in \R^+}$ satisfies the given conditions, then it is a Brownian motion
+If $(X_t)_{t\in \R^+}$ satisfies:
+- $X_0 = 0$
+- For any $s, t \geq 0$, $\mathbb{E}[X_t] = 0$ and ${\rm Var}(X_t) = t$
+- The increments are independent: for any $0 \leq s < t < u$, $X_u - X_t$ is independent of $X_s$
+
+## Step 4: Show that the covariance function satisfies the given condition
+If $(X_t)_{t\in \R^+}$ is a Brownian motion, then:
+${\rm Cov}(X_s,X_t)=\mathbb{E}[(X_s - \mathbb{E}[X_s])(X_t - \mathbb{E}[X_t])]=\mathbb{E}[(X_s)(X_t)]=\inf(s,t)$
+
+## Step 5: Show that the process is a centered Gaussian process
+Since $(X_t)_{t\in \R^+}$ has zero mean and finite variance, it is a centered Gaussian process.
+
+The final answer is: $\boxed{1}$
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+## Step 1: Recall the definition of a Brownian motion
+A stochastic process $\{W_t, t \geq 0\}$ is a Brownian motion if it satisfies the following properties:
+- $W_0 = 0$
+- $W_t$ has continuous paths for all $t \geq 0$
+- $E[W_t] = 0$ for all $t \geq 0$
+- $Var(W_t) = t$ for all $t \geq 0$
+- For any $s, t \geq 0$, the increments $W_s$ and $W_t - W_s$ are independent.
+
+## Step 2: Verify that $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ satisfies the first property of a Brownian motion
+Since $W_0 = 0$, we have $X_0 = 0$ as well.
+
+## Step 3: Verify that $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ satisfies the second property of a Brownian motion
+Since $W_t$ has continuous paths for all $t \geq 0$, and $t W_{\frac 1t}$ is also continuous in $t$, we have that $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ satisfies the second property.
+
+## Step 4: Verify that $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ satisfies the third property of a Brownian motion
+We have $E[X_t] = E[t W_{\frac 1t}] = t E[W_{\frac 1t}] = 0$.
+
+## Step 5: Verify that $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ satisfies the fourth property of a Brownian motion
+We have $Var(X_t) = Var(t W_{\frac 1t}) = t^2 Var(W_{\frac 1t}) = t$.
+
+## Step 6: Verify that $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ satisfies the fifth property of a Brownian motion
+For any $s, t > 0$, we have that $X_s$ and $X_t - X_s$ are independent since they are functions of independent increments of $W_{\frac 1t}$.
+
+The final answer is: $\boxed{1}$

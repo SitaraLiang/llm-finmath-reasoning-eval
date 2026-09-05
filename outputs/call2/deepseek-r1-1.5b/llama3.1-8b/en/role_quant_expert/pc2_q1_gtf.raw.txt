@@ -1,0 +1,26 @@
+### Question block 1
+```yml
+atoms:
+- preconditions:
+  - "X_0 = 0"
+  - "(X_t)_{t ∈ ℝ⁺} is a centered Gaussian process"
+  - "Cov(X_s, X_t) = inf(s,t)"
+- arguments:
+  - "Brownian motion properties"
+- outcomes:
+  - "A process (X_t)_{t ∈ ℝ⁺} is a Brownian motion"
+
+### Question block 2
+The process $X_t = t W_{1/t}$ does not satisfy the stationarity condition required for standard Brownian Motion (BM), where $Var(X_b - X_a) = |b - a|$. Instead, you've calculated that $Var(X_b - X_a) = b + a$, which is different.
+
+You've also explored various transformations and substitutions to try to adjust the scaling or relate it to a standard BM. However, these attempts don't seem to lead to a conclusive answer.
+
+To summarize:
+
+* The process $X_t = t W_{1/t}$ does not satisfy the stationarity condition required for standard BM.
+* It's not simply a scaled version of a standard BM either.
+* Various transformations and substitutions have been explored, but they don't seem to lead to a conclusive answer.
+
+If you'd like to continue exploring this problem or discuss possible next steps, I'm here to help!
+
+However, based on the calculations and explorations provided, it seems that $X_t = t W_{1/t}$ is not a standard Brownian Motion.

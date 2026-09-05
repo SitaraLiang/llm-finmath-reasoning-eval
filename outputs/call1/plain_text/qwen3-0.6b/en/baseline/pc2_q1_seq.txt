@@ -1,0 +1,80 @@
+Exercise: pc2_q1
+Model: qwen3:0.6b
+Variation: baseline
+Prompt type: strictly_sequential
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To show that a process $(X_t)_{t \in \mathbb{R}^+}$ is a **Brownian motion** if and only if $X_0 = 0$ and $\text{Cov}(X_s, X_t) = \inf(s, t)$, we proceed as follows:
+
+---
+
+### **1. If $(X_t)_{t \in \mathbb{R}^+}$ is a Brownian motion, then $\text{Cov}(X_s, X_t) = \inf(s, t)$**
+
+- **Definition of Brownian motion**: A process $(X_t)_{t \in \mathbb{R}^+}$ is a **Brownian motion** if:
+  - $X_0 = 0$,
+  - The increments $X_t - X_s$ are **independent and identically distributed** (i.i.d.),
+  - The covariance $\text{Cov}(X_s, X_t) = \inf(s, t)$.
+
+- **Implication**: For Brownian motion, the covariance between $X_s$ and $X_t$ is given by:
+  $$
+  \text{Cov}(X_s, X_t) = \inf(s, t)
+  $$
+  This is a standard property of Brownian motion. Therefore, if $(X_t)_{t \in \mathbb{R}^+}$ satisfies this condition, it is a Brownian motion.
+
+---
+
+### **2. If $\text{Cov}(X_s, X_t) = \inf(s, t)$, then $(X_t)_{t \in \mathbb{R}^+}$ is a Brownian motion**
+
+- **Assumption**: The process $(X_t)_{t \in \mathbb{R}^+}$ satisfies $\text{Cov}(X_s, X_t) = \inf(s, t)$.
+- **Implication**: This condition implies that the process is a **Brownian motion**. This is because:
+  - The covariance $\text{Cov}(X_s, X_t) = \inf(s, t)$ implies that the process is a **Gaussian process** with zero mean and covariance matrix $\text{Cov}(X_s, X_t) = \inf(s, t)$.
+  - In standard Brownian motion, the covariance between $X_s$ and $X_t$ is exactly $\inf(s, t)$, and the process is a **Gaussian process** with zero mean.
+
+Thus, the process $(X_t)_{t \in \mathbb{R}^+}$ is a Brownian motion if and only if $X_0 = 0$ and $\text{Cov}(X_s, X_t) = \inf(s, t)$.
+
+---
+
+### **Final Answer**
+
+$$
+\boxed{X_0 = 0 \text{ and } \text{Cov}(X_s, X_t) = \inf(s, t)}
+$$
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+To show that the process $ X_t = t \cdot W_{1t} $ is a Brownian motion, we proceed as follows:
+
+---
+
+### **Step 1: Properties of $ X_t $**
+
+We are given that $ W_t $ is a standard Brownian motion. This means:
+
+- $ W_t $ is a normal process with mean 0 and variance $ t $.
+- $ W_t $ satisfies the properties of a martingale: $ \mathbb{E}[W_t] = 0 $, $ \mathbb{Var}(W_t) = t $, and $ W_t $ is independent of $ W_s $ for $ s < t $.
+
+We are to show that $ X_t = t \cdot W_{1t} $ is also a Brownian motion.
+
+---
+
+### **Step 2: Expectation and Variance**
+
+We compute the expected value and variance of $ X_t $:
+
+- $ \mathbb{E}[X_t] = \mathbb{E}[t \cdot W_{1t}] = t \cdot \mathbb{E}[W_{1t}] = t \cdot 0 = 0 $, since $ W_{1t} $ is a normal process with mean 0.
+- $ \mathbb{Var}(X_t) = \mathbb{Var}(t \cdot W_{1t}) = t^2 \cdot \mathbb{Var}(W_{1t}) = t^2 \cdot 1 = t $, which matches the variance of a standard Brownian motion.
+
+---
+
+### **Step 3: Conclusion**
+
+Since $ X_t $ has mean 0, variance $ t $, and is a normal process, it follows that $ X_t $ is a standard Brownian motion. Therefore, $ X_t = t \cdot W_{1t} $ is a Brownian motion.
+
+$$
+\boxed{X_t = t \cdot W_{1t} \text{ is a Brownian motion.}}
+$$

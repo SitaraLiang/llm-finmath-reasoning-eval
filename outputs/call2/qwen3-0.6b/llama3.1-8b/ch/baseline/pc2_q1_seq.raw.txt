@@ -1,0 +1,10 @@
+### Question block 1
+```yml
+atoms:
+- preconditions: [X₀=0]
+  arguments: ["zero-mean Gaussian process"]
+  outcomes: ["\text{covariance function is}\inf(s,t)"]
+- preconditions: ["\text{covariance function is}\inf(s,t)"]
+  arguments: ["zero-mean Gaussian process"]
+  outcomes: [X₀=0]
+```

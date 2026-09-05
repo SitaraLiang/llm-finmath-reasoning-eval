@@ -1,0 +1,40 @@
+pc: '2'
+exercise: '1'
+language: fr
+variation: baseline
+prompt_type: strictly_sequential
+call1_output_mode: plain_text
+call1_model: tinyllama
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien
+        arguments:
+        - On doit montrer que $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien
+            centré et ${\rm Cov}(X_s,X_t)=\inf(s,t)$
+        outcomes:
+        - Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien si et seulement
+            si $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien centré et ${\rm
+            Cov}(X_s,X_t)=\inf(s,t)$
+        strength: 1
+    -   preconditions:
+        - Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien
+        arguments:
+        - On doit montrer que $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien
+            centré et ${\rm Cov}(X_s,X_t)=\inf(s,t)$
+        outcomes:
+        - Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien si et seulement
+            si $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien centré et ${\rm
+            Cov}(X_s,X_t)=\inf(s,t)$
+        strength: 1
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - La question 1 indique que si les cours des bons sont un mouvement brownien,
+            il s'agit aussi d'un type de capital privé.
+        outcomes:
+        - Les cours des bons et du courant sont deux types d’activités qui peuvent
+            être associés aux flux de capitaux privés en France, suivant la question
+            1.
+        strength: 1

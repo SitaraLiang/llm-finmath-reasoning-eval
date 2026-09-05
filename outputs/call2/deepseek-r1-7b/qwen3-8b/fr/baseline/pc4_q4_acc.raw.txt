@@ -1,0 +1,34 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "tau est un temps d'arrêt borné"
+  - "W_t est un mouvement brownien standard"
+  arguments:
+  - "Appliquer le théorème de stopping de Doob"
+  outcomes:
+  - "E[W_tau] = E[W_0]"
+- preconditions:
+  - "W_0 = 0"
+  arguments:
+  - "En substituant W_0 = 0 dans E[W_tau] = E[W_0]"
+  outcomes:
+  - "E[W_tau] = 0"
+```
+
+### Question block 2
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions: ["$\tau$ est un temps d'arrêt borné"]
+  arguments: ["Calculer $\E(W_\tau^2)$"]
+  outcomes: ["$\E(W_\tau^2) = \E(\tau)$"]
+  strength: "Calculation"
+```

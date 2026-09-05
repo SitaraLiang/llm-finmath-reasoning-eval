@@ -1,0 +1,23 @@
+pc: '4'
+exercise: '4'
+language: en
+variation: role_student
+prompt_type: strictly_sequential
+call1_output_mode: plain_text
+call1_model: llama3.2-1b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - When τ is a bounded stopping time
+        arguments:
+        - Calculation
+        outcomes:
+        - E(W_τ) = 1/P({τ < ∞})
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        arguments:
+        - Ito's lemma
+        outcomes:
+        - $\E(W_{\tau}^2) = \int_0^\tau W_s dW_s - \frac{1}{2}\tau$

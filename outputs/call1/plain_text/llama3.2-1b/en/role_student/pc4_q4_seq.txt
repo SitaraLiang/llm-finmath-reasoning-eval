@@ -1,0 +1,22 @@
+Exercise: pc4_q4
+Model: llama3.2:1b
+Variation: role_student
+Prompt type: strictly_sequential
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+$\E(W_\tau) = \frac{1}{\mathbb{P}(\{\tau < \infty\})}$
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+$\E(W_{\tau}^2) = \int_0^\tau (W_s)^2 ds$
+
+$$= \int_0^\tau W_s dW_s - \frac{1}{2}\int_0^\tau (dW_s)^2 + \left(\int_0^\tau 1 \, dW_s\right)$$
+
+Using Ito's lemma for the second and third terms:
+
+$$= \int_0^\tau W_s dW_s - \frac{1}{2}\tau$$

@@ -1,0 +1,160 @@
+Exercise: pc2_q1
+Model: llama3.2:1b
+Variation: baseline
+Prompt type: self_history
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+Let's solve the first part of the problem.
+
+To show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if $X_0=0$ and $\text{Cov}(X_s,X_t)=\inf(s,t)$, we need to prove two statements:
+
+(i) If $(X_t)_{t\in \R^+}$ is a Brownian motion, then $X_0=0$ and $\text{Cov}(X_s,X_t)=\inf(s,t)$.
+
+(ii) If $X_0=0$ and $\text{Cov}(X_s,X_t)=\inf(s,t)$ for all $s,t\in \R^+$, then $(X_t)_{t\in \R^+}$ is a Brownian motion.
+
+To prove (i), we note that by definition of the Brownian motion, it is a martingale, i.e., $\mathbb{E}[X_t | \mathcal{F}_s] = X_s$ for all $s<t$. We also know that $X_0=0$. Now, let's consider the case where $(X_t)_{t\in \R^+}$ is a martingale and $\text{Cov}(X_s,X_t)=\inf(s,t)$.
+
+Using the Optional Stopping Theorem, we have:
+$$
+\mathbb{E}\left[\sup_{s\leq t} \text{Cov}(X_s,X_t)\right] = \lim_{t\to\infty} \mathbb{E}\left[\text{Cov}(X_s,X_t) | \mathcal{F}_0\right]
+$$
+since $X_0=0$.
+
+Since the process is a martingale, we have $\text{Cov}(X_s,X_t)=\inf(s,t)$ almost surely. Therefore, we get:
+$$
+\lim_{t\to\infty} \mathbb{E}\left[\sup_{s\leq t} \text{Cov}(X_s,X_t)\right] = 0
+$$
+
+This implies that the supremum of $\text{Cov}(X_s,X_t)$ is zero, which means that there exists a $T>0$ such that for all $t>T$, we have:
+$$
+\sup_{s\leq t} \text{Cov}(X_s,X_t) = 0
+$$
+
+Now, let's consider the martingale property. We know that $\mathbb{E}[X_t] = X_0 + \int_0^t \text{Cov}(X_u,X_t) du$. Since $X_0=0$, we have:
+$$
+\mathbb{E}[X_t] = \int_0^t \text{Cov}(X_u,X_t) du
+$$
+
+Using the fact that $\sup_{s\leq t} \text{Cov}(X_s,X_t)=0$ and $X_t=X_t$, we get:
+$$
+\mathbb{E}[X_t] = 0
+$$
+
+Since $X_t$ is a martingale, it satisfies the strong Markov property. Therefore, for any $s<t$, we have:
+$$
+\int_0^t \text{Cov}(X_u,X_t) du = \int_0^{u} \text{Cov}(X_s,X_u) dU + \int_{u}^t \text{Cov}(X_u,X_s) dU
+$$
+
+Using the fact that $\text{Cov}(X_s,X_t)=\inf(s,t)$, we get:
+$$
+\int_0^{u} \text{Cov}(X_s,X_u) dU + \int_{u}^t \text{Cov}(X_u,X_s) dU = 0
+$$
+
+Since $X_0=0$, we have $\mathbb{E}[X_t] = X_0 = 0$. Therefore, we get:
+$$
+\sup_{s\leq t} \text{Cov}(X_s,X_t) = 0
+$$
+
+which implies that $\text{Cov}(X_s,X_t)=\inf(s,t)$ for all $s,t\in \R^+$.
+
+To prove (ii), we note that if $X_0=0$ and $\text{Cov}(X_s,X_t)=\inf(s,t)$, then it is clear that the process satisfies the martingale property. Since the martingale property implies the existence of a local time, which is equivalent to the existence of a Brownian motion, we conclude that $(X_t)_{t\in \R^+}$ is a Brownian motion.
+
+Therefore, we have shown that:
+
+* If $(X_t)_{t\in \R^+}$ is a Brownian motion, then $X_0=0$ and $\text{Cov}(X_s,X_t)=\inf(s,t)$.
+* If $X_0=0$ and $\text{Cov}(X_s,X_t)=\inf(s,t)$ for all $s,t\in \R^+$, then $(X_t)_{t\in \R^+}$ is a Brownian motion.
+
+This completes the proof.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+## Step 1: Understand the problem statement
+We are given a Brownian motion $W_t$ and we need to show that the process $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is also a Brownian motion.
+
+## Step 2: Recall the definition of a Brownian motion
+A Brownian motion is a stochastic process $(X_t)_{t\in \R^+}$ that satisfies the following properties:
+- $X_0 = 0$
+- $X_t$ is continuous on $\mathcal{F}_s$ for all $s < t$
+
+## Step 3: Use the strong Markov property
+The strong Markov property states that for a Brownian motion $W_t$, the conditional distribution of $X_s$ given $W_{\frac 1s}$ is independent of the past values of $W_u$ for $0 \leq s < u$. We can use this property to show that $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ satisfies the martingale property.
+
+## Step 4: Show that $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a martingale
+Using the strong Markov property, we can write:
+$$
+\mathbb{E}[X_t | W_s] = X_s \quad \text{for all} \ s < t
+$$
+
+Since $X_0 = 0$, we have $\mathbb{E}[X_t|W_0] = 0$ for all $t$. Therefore, the process is a martingale.
+
+## Step 5: Show that $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ satisfies the martingale property
+Using the law of iterated expectations, we can write:
+$$
+\mathbb{E}[X_t] = \mathbb{E}[\mathbb{E}[X_t | W_s]] = \mathbb{E}[X_s]
+$$
+
+Since $W_t$ is a Brownian motion, it satisfies the martingale property. Therefore, we get:
+$$
+\sup_{s \leq t} X_u - X_s = 0
+$$
+
+## Step 6: Show that $\text{Cov}(X_t,X_u) = \inf(t,u)$ for all $t,u>0$
+Using the law of iterated expectations, we can write:
+$$
+\mathbb{E}\left[\sup_{s \leq t} X_s - X_0\right]^2 = \int_0^t \mathbb{E}[X_u] du - X_0^2
+$$
+
+Since $W_t$ is a Brownian motion, it satisfies the martingale property. Therefore, we get:
+$$
+\int_0^t \sup_{s \leq u} X_s dW_u = 0
+$$
+
+Using the fact that $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion, we get:
+$$
+\int_0^t X_u du = 2 W_u - u |_{u=\infty}
+$$
+
+## Step 7: Show that $\text{Cov}(X_t,X_u) = \inf(t,u)$ for all $t,u>0$
+Using the definition of covariance, we can write:
+$$
+\text{Cov}\left(X_t,X_u\right) = E\left[X_t X_u - X_u X_t\right] = E\left[\sup_{s \leq t} (X_s - X_0) (\sup_{u \leq s} (X_u - X_0))\right]
+$$
+
+Since $W_t$ is a Brownian motion, it satisfies the martingale property. Therefore, we get:
+$$
+\text{Cov}\left(X_t,X_u\right) = 2 E[W_u W_u] - u u |_{u=\infty}
+$$
+
+Using the fact that $\sup_{s \leq t} X_s = X_t$ and $W_t$ is a Brownian motion, we get:
+$$
+\text{Cov}\left(X_t,X_u\right) = 2 W_u^2 - u u |_{u=\infty}
+$$
+
+## Step 8: Show that $\sup_{s \leq t} X_s = X_t$ for all $t>0$
+Using the fact that $W_t$ is a Brownian motion, we get:
+$$
+\mathbb{E}\left[\sup_{s \leq t} (X_s - X_0) | W_u\right] = 0
+$$
+
+Since $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion, we get:
+$$
+\sup_{s \leq t} (X_s - X_0) = 0
+$$
+
+## Step 9: Show that $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion
+Using the strong Markov property, we can write:
+$$
+\mathbb{E}\left[\sup_{s \leq t} (X_s - X_0) | W_u\right] = 0
+$$
+
+Since $W_t$ is a Brownian motion, it satisfies the martingale property. Therefore, we get:
+$$
+\inf(t,u) = 0
+$$
+
+The final answer is: $\boxed{0}$

@@ -1,0 +1,26 @@
+### Question block 1
+```yml
+atoms:
+- preconditions:
+  - "A process (X_t)_{t\in \R^+} is given."
+  - "X_0=0"
+  - "(X_t)_{t\in \R^+} is a centered Gaussian process"
+  - "Cov(X_s,X_t)=inf(s,t)"
+- arguments:
+  - "Brownian motion properties"
+- outcomes:
+  - "The process (X_t)_{t\in \R^+} is a Brownian motion."
+```
+
+### Question block 2
+```yml
+atoms:
+- preconditions:
+  - A continuity assumption on the paths of $W$ is needed for the Brownian motion definition (continuous version via Kolmogorov's theorem)
+  arguments:
+  - The continuous Brownian motion is given by the formula $$ X_t = \sqrt{2} W_{\frac 1t}, $$
+  outcomes:
+  - It follows a Gaussian distribution with variance $2t$ and zero mean.
+- preconditions:
+  - Disjoint increments are independent, so the definition of Brownian motion implies that the increment $X_t$ also follows a Gaussian distribution (with variance $2t$) and hence is also a Brownian motion.
+```

@@ -1,0 +1,37 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: baseline
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: llama3.1-8b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - 'A Brownian motion is a stochastic process $(X_t)_{t\in \R^+}$ that satisfies
+            the following properties:'
+        arguments:
+        - Calculation
+        outcomes:
+        - The process has continuous paths
+    -   preconditions:
+        - For any $s<t$, $X_t-X_s$ is independent of $\{X_u, u\leq s\}$
+        arguments:
+        - Calculation
+        outcomes:
+        - The process has continuous paths
+    -   preconditions:
+        - For any $s<t$, $X_t-X_s$ has a normal distribution with mean 0 and variance
+            $t-s$
+        arguments:
+        - Calculation
+        outcomes:
+        - The process has continuous paths
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Transformation of Brownian motion
+        outcomes:
+        - '{X_t=t\;W_{\frac 1t}, t>0, X_0=0} is a Brownian motion too'

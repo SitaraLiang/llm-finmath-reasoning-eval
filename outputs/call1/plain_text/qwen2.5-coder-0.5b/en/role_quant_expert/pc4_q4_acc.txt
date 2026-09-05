@@ -1,0 +1,71 @@
+Exercise: pc4_q4
+Model: qwen2.5-coder:0.5b
+Variation: role_quant_expert
+Prompt type: prompt_accumulation
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+To compute the expected value of a Brownian motion $W_t$, we use the following formula:
+
+\[
+\mathbb{E}(W_t) = \frac{\sigma^2}{2} T \int_{0}^{t} W_s \, ds + c \quad \text{for bounded stopping time}
+\]
+
+where:
+- $\sigma$ is the drift rate of the Brownian motion,
+- $T$ is the stopping time,
+- $c$ is a constant that does not depend on $W_t$, but is often set to zero for simplicity.
+
+This formula accounts for both continuous and discrete processes. It shows how the expected value changes with respect to time, allowing us to evaluate the process at different points over the given stopping period without explicitly integrating it in the numerator or denominator.
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+To solve this problem, we need to understand the properties of Brownian Motion and how they affect stochastic processes under certain conditions. Let's break down each question step by step.
+
+### Question 1: When \(\tau\) is a bounded stopping time
+
+The expected value of a Brownian motion \(W_t\), denoted as \(\E(W_t)\), is the long-term average of the process over a finite interval \([0, t]\). For a bounded stopping time \(\tau\), this means that we are considering a range of times for which the process can be stopped.
+
+For \(\tau\) to be bounded, there must exist \(T > 0\) such that the process does not eventually stop. In other words, the expected value \(\E(W_t)\) is always less than or equal to \(\frac{1}{2}\). This is because the expected value of a Brownian motion can only decrease over time under certain conditions.
+
+### Question 2: When \(\tau\) is a bounded stopping time
+
+We need to compute \(\E(W_\tau^2)\), where \(W_t\) is a Brownian motion. Let's analyze this step by step:
+
+1. **Define the process**: Let \(W_t = X_t - X_0\). Since \(X_0\) is the initial value, \(W_t = 0\) for all \(t > 0\).
+
+2. **Expected value of the squared process**: The expected value of \(W^2_t = (X_t - X_0)^2\) is given by:
+   \[
+   E(W^2_t) = E((X_t - X_0)^2) = E(X_t^2 - 2X_tX_0 + X_0^2) = E(X_t^2) - 2E(X_tX_0) + E(X_0^2)
+   \]
+
+3. **Analyze the quadratic expression**: The term \(E(X_t^2)\) is a constant with respect to \(t\), which does not depend on the initial value of \(X_0\). Therefore, for any finite \(t > 0\):
+   \[
+   E(X_t^2) = E(2E(X_tX_0)) + E(X_0^2) = 2E(X_tX_0) + E(X_0^2)
+   \]
+
+4. **Consider the bounded stopping time \(\tau\)**: Since \(\tau\) is a bounded stopping time, we can use the fact that \(W_{\tau}\) and \(W_{\tau^2}\) are related through the properties of Brownian Motion.
+
+5. **Simplify using the properties of Brownian motion**: Given that \(\tau > 0\), we can use the property that if a process is bounded at time \(\tau\), then its variance decreases exponentially. Specifically, for \(\tau > 0\), we have:
+   \[
+   \E(W_{\tau^2}) = E(2E(X_tX_0)) + E(X_0^2) \geq 4E(X_t^2)
+   \]
+   Since \(E(X_t^2)\) is a constant and does not depend on the initial value of \(X_0\), we can combine this inequality with the fact that the process has an exponential variance:
+   \[
+   E(W_{\tau^2}) = 4E(X_t^2) + O(\epsilon)
+   \]
+   As \(\tau\) approaches infinity, \(O(\epsilon)\) becomes insignificant, and we can approximate:
+   \[
+   \E(W_{\tau^2}) \approx 4E(X_t^2)
+   \]
+
+6. **Final result**: Therefore, when \(\tau\) is a bounded stopping time, the expected value of \(W_\tau^2\) is approximately 4 times the expected value of \(W_t\).
+
+The final answer to Question 2 is:
+\[
+\boxed{4E(W_t)}
+\]

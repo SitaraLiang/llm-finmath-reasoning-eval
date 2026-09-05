@@ -1,0 +1,115 @@
+Exercise: pc4_q4
+Model: llama3.2:1b
+Variation: baseline
+Prompt type: prompt_accumulation
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+Let's solve the first question.
+
+Given that $\tau$ is a bounded stopping time, we can express it as:
+
+$$\tau = \inf\{t \geq 0: W_t = w_0, W_s \in [w_0, S]\}$$
+
+where $W_s$, $W_t$, and $S$ are stochastic processes.
+
+We know that $\E(W_\tau) = 0$ by the optional stopping theorem. To prove this, let's consider two cases:
+
+Case 1: $\tau < s$
+
+In this case, we can write:
+
+$$\tau \leq t < \tau + h$$
+
+for some $h > 0$. Then,
+
+$$W_\tau = W_t$$
+
+Taking expectations on both sides, we get:
+
+$$\E(W_\tau) = \E(W_t)$$
+
+Since $\tau$ is a bounded stopping time, we know that $W_s \in [w_0, S]$ for some $s$. Therefore,
+
+$$\E(W_\tau) = 0$$
+
+Case 2: $\tau \geq s$
+
+In this case, we can write:
+
+$$\tau - h \leq t < \tau$$
+
+for some $h > 0$ and $t \in [s, \tau]$. Then,
+
+$$W_\tau = W_t + (W_\tau - W_t)_{[s, \tau]}$$
+
+Taking expectations on both sides, we get:
+
+$$\E(W_\tau) = \E(W_t) + \E((W_\tau - W_t)_+[s, \tau])$$
+
+Since $s$ is a stopping time, $\E((W_\tau - W_t)_+[s, \tau]) = 0$. Therefore,
+
+$$\E(W_\tau) = \E(W_t)$$
+
+Combining the results from both cases, we get:
+
+$$\E(W_\tau) = 0$$
+
+Therefore, when $\tau$ is a bounded stopping time, we have $\E(W_\tau) = 0$.
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+$\E(W_\tau^2)$
+
+Since $W_t$ is a Brownian Motion, we can apply the Arcsine Law for the last zero of a standard Brownian Motion:
+
+$$
+\mathbb{P}(\min_{t \leq T} W_t = 0) = \frac{\pi}{2}\arcsin{\sqrt{\frac{s-T}{S_T}}} 
+$$
+
+where $s$ is the starting time, $T$ is the stopping time, and $S_T$ is the last price of the underlying asset.
+
+Since $\tau$ is a bounded stopping time, we can write:
+
+$$
+\min_{t \leq T} W_t = 0 \quad \text{if and only if} \quad \tau \geq s
+$$
+
+Using this relationship, we can rewrite the Arcsine Law as:
+
+$$
+\mathbb{P}(W_\tau^2 = 1) = \frac{\pi}{2}\arcsin{\sqrt{\frac{s-\tau}{S_T}}}
+$$
+
+Taking the expected value of both sides, we get:
+
+$$
+\begin{aligned}
+\E(W_\tau^2) &= \int_{0}^\tau \frac{\pi}{2}\arcsin{\sqrt{\frac{s-\tau}{S_T}}} s^{s-1} ds \\
+&= \frac{\pi S_0}{2} \int_{0}^\tau \arcsin{\sqrt{\frac{s}{S_T}}}(S_T)^{s-1} ds
+\end{aligned}
+$$
+
+where $S_0$ is the initial price of the underlying asset.
+
+Using the Arcsine Substitution Formula, we can rewrite the integral as:
+
+$$
+\begin{aligned}
+\E(W_\tau^2) &= \frac{\pi S_0}{2} \int_{0}^\tau \arcsin{\sqrt{\frac{s}{S_T}}} s^{s-1} ds \\
+&= \frac{\pi S_0}{2} \int_{0}^\tau (s^{s-1}-\frac{1}{s+\frac{1}{2}\arcsin(\sqrt{\frac{s}{S_T}})-\frac{s}{S_T})}(S_T)^{(s-1)/2} ds
+\end{aligned}
+$$
+
+This integral can be evaluated using standard techniques from probability theory and stochastic calculus. After some manipulations, we get:
+
+$$
+\begin{aligned}
+\E(W_\tau^2) &= \frac{\pi S_0}{2} (S_T)^{-1/2} + \sqrt{\frac{\pi S_0 S_T}{2}} (\arcsin(\sqrt{\frac{s}{S_T}}))^2 \\
+&= \boxed{S_T}
+\end{aligned}
+$$

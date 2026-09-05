@@ -1,0 +1,45 @@
+pc: '4'
+exercise: '4'
+language: fr
+variation: baseline
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: deepseek-r1-1.5b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - τ est un temps d'arrêt borné
+        outcomes:
+        - W_τ est une variable aléatoire bornée
+        strength: 1
+    -   preconditions: []
+        arguments:
+        - W_t est un mouvement brownien standard
+        outcomes:
+        - E[W_τ] = W_{E[τ]}
+        strength: 1
+    -   preconditions: []
+        arguments:
+        - τ est un temps d'arrêt borné
+        outcomes:
+        - E[τ] est fini
+        strength: 1
+    -   preconditions: []
+        arguments:
+        - W_τ est une variable aléatoire bornée
+        outcomes:
+        - E[W_τ] = 0
+        strength: 2
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - τ est un temps d'arrêt borné
+        outcomes:
+        - E[W_τ²] = τ
+    -   preconditions: []
+        arguments:
+        - τ est un temps d'arrêt borné
+        outcomes:
+        - E[W_τ] = τ

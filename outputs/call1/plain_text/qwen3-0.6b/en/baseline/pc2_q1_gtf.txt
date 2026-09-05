@@ -1,0 +1,82 @@
+Exercise: pc2_q1
+Model: qwen3:0.6b
+Variation: baseline
+Prompt type: ground_truth_forcing
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To show that a process $(X_t)_{t \in \mathbb{R}^+}$ is a **Brownian motion** if and only if the following conditions hold:
+
+- $X_0 = 0$,
+- $(X_t)$ is a **centered Gaussian process**,
+- $\text{Cov}(X_s, X_t) = \inf(s, t)$,
+
+we proceed as follows:
+
+---
+
+### **Step 1: Understanding the Conditions**
+
+- **Condition 1**: $X_0 = 0$  
+  This is a fundamental property of Brownian motion. In standard Brownian motion, the process starts at 0, so this condition is satisfied.
+
+- **Condition 2**: $(X_t)$ is a **centered Gaussian process**  
+  This means that the process $(X_t)$ is a Gaussian process with mean 0 and zero covariance between any two points $s$ and $t$ (i.e., $\text{Cov}(X_s, X_t) = 0$ for $s \neq t$).
+
+- **Condition 3**: $\text{Cov}(X_s, X_t) = \inf(s, t)$  
+  This condition defines the covariance function of the process. For $s \geq t$, $\text{Cov}(X_s, X_t) = s$, and for $t \geq s$, $\text{Cov}(X_s, X_t) = t$. This matches the standard definition of a Brownian motion.
+
+---
+
+### **Step 2: Verifying the Process is a Brownian Motion**
+
+We now show that a process satisfying the above conditions is a Brownian motion.
+
+#### **1. Independent Increments**
+
+- For $s > t$, $\text{Cov}(X_s, X_t) = t$, which implies that the process has independent increments. This is a key property of Brownian motion.
+
+#### **2. Gaussian Process**
+
+- The process $(X_t)$ being a centered Gaussian process implies that it is a Gaussian process with mean 0 and zero covariance between any two points $s$ and $t$ (i.e., $\text{Cov}(X_s, X_t) = 0$).
+
+#### **3. Covariance Function**
+
+- The condition $\text{Cov}(X_s, X_t) = \inf(s, t)$ ensures that the process has a covariance function that is consistent with the standard Brownian motion properties.
+
+---
+
+### **Conclusion**
+
+Since the process satisfies all three conditions, it follows that:
+
+$$
+\boxed{X_0 = 0 \text{ and } \text{Cov}(X_s, X_t) = \inf(s, t)}
+$$
+
+This process is a **Brownian motion**.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+To show that the process $ X_t = t \cdot W_{\frac{1}{t}} $ is a Brownian motion, we proceed as follows:
+
+1. **Assumptions**:  
+   - $ W_t $ is a standard Brownian motion, meaning it is a centered Gaussian process with independent and identically distributed (i.i.d.) increments.  
+   - $ W_{\frac{1}{t}} $ is also a Brownian motion, as it is a scaled version of $ W_t $.
+
+2. **Increment Analysis**:  
+   Let $ Y_t = t \cdot W_{\frac{1}{t}} $.  
+   Then, the increment $ Y_t - Y_{t-1} = t \cdot W_{\frac{1}{t}} - (t-1) \cdot W_{\frac{1}{t-1}} $.  
+   Since $ W_{\frac{1}{t}} $ is a Brownian motion, its increments $ W_{\frac{1}{t}} - W_{\frac{1}{t-1}} $ are i.i.d. with mean zero and variance $ \frac{1}{t} $.  
+   Therefore, $ Y_t - Y_{t-1} $ is a process with independent and identically distributed increments, which implies that $ Y_t $ is a Brownian motion.
+
+3. **Conclusion**:  
+   The process $ X_t = t \cdot W_{\frac{1}{t}} $ satisfies the properties of a Brownian motion: it is centered, has independent and identically distributed increments, and is a continuous process. Thus, $ X_t $ is a Brownian motion.
+
+$$
+\boxed{X_t}
+$$

@@ -1,0 +1,75 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: baseline
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: llama3.1-8b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0 = 0
+        - The process is a centered Gaussian process
+        - Cov(X_s, X_t) = inf(s, t)
+        arguments:
+        - Derive the distribution of increments from the covariance function
+        outcomes:
+        - X_t - X_s is independent of X_s and has variance t - s
+    -   preconditions:
+        - X_0 = 0
+        - The process is a centered Gaussian process
+        - Cov(X_s, X_t) = inf(s, t)
+        arguments:
+        - Show that the increments are normally distributed
+        outcomes:
+        - X_t - X_s is normally distributed with mean 0 and variance t - s
+    -   preconditions:
+        - X_0 = 0
+        - The process is a centered Gaussian process
+        - Cov(X_s, X_t) = inf(s, t)
+        arguments:
+        - Show that the increments have the same distribution as a Brownian motion
+        outcomes:
+        - X_u - X_t has the same distribution as a Brownian motion
+    -   preconditions:
+        - X_0 = 0
+        - The process is a centered Gaussian process
+        - Cov(X_s, X_t) = inf(s, t)
+        arguments:
+        - Conclude that (X_t)_{t ∈ R^+} is a Brownian motion
+        outcomes:
+        - The process satisfies all the properties of a Brownian motion
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        - t > 0
+        - X_0 = 0
+        arguments:
+        - Verify initial condition
+        outcomes:
+        - X_0 = 0
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Show X_t is a centered Gaussian process
+        outcomes:
+        - X_t is a centered Gaussian process
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Compute covariance of X_s and X_t
+        outcomes:
+        - Cov(X_s, X_t) = s·t·min(s, t)
+    -   preconditions:
+        - Cov(X_s, X_t) = s·t·min(s, t)
+        arguments:
+        - Simplify covariance expression
+        outcomes:
+        - Cov(X_s, X_t) = min(s, t)
+    -   preconditions:
+        - Cov(X_s, X_t) = min(s, t)
+        arguments:
+        - Verify Brownian motion property
+        outcomes:
+        - X_t is a Brownian motion

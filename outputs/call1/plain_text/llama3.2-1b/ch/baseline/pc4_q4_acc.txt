@@ -1,0 +1,68 @@
+Exercise: pc4_q4
+Model: llama3.2:1b
+Variation: baseline
+Prompt type: prompt_accumulation
+
+Question 1:
+当 $\tau$ 为有界停时， 计算 $\E(W_\tau)$。
+
+Answer:
+$\E(W_\tau) = \frac{1}{2\pi}\int_{-\infty}^{\infty}\exp\left(-\frac{1}{2}(t+\tau)^2-1\right)dt$.
+
+通过使用定义的二次函数可简化该表达式为
+
+$\E(W_\tau) = \frac{1}{\sqrt{2\pi}}e^{-\frac{1}{2}\tau^2}.$
+
+Question 2:
+当 $\tau$ 为有界停时， 计算 $\E(W_\tau^2)$。
+
+Answer:
+$\E(W_\tau^2) = \int_0^\infty \mathbb{E}(X_\tau)^2 d\mu(\tau)$，其中 $W_t$ 是布朗运动。
+
+我们知道 $\mathbb{E}(X_{\tau+1}) = X_\tau + 0.5(W_{\tau+1} - W_\tau)^2 + \theta \sigma^2$, where $\theta \in (0,1)$ 和 $X_0$ 是一个白噪声信号。
+
+我们可以将此等式重写为 $\mathbb{E}(W_{\tau+1}) = X_\tau + 0.5(W_{\tau+1} - W_\tau)^2$. 将该方程代入$\E(W_\tau^2)$中，我们得到
+
+$$
+\开始{对齐*}
+\E(W_\tau^2) &amp;= \int_0^\infty \mathbb{E}(X_{\tau+1})^2 d\mu(\tau) \\
+&amp;= \int_0^\infty (X_\tau + 0.5(W_{\tau+1} - W_\tau)^2)^2 d\mu(\tau)
+\结束{对齐*}
+$$
+
+我们可以使用引理来简化此表达式：
+
+$$
+\开始{对齐*}
+\E(W_\tau^2) &amp;= \int_0^\infty X_\tau^2 + 4X_\tau W_{\tau+1} d\mu(\tau) + 2W_{\tau+1}^2 \\
+&amp;\quad - 2(X_\tau + W_{\tau+1})^2 d\mu(\tau)
+\结束{对齐*}
+$$
+
+将表达式重写为 $$X_\tau = X_{\tau+1} - 0.5(W_{\tau+1} - W_\tau)^2$$，我们得到
+
+$$
+\开始{对齐*}
+\E(W_\tau^2) &amp;= \int_0^\infty (X_{\tau+1})^2 d\mu(\tau) \\
+&amp;\quad + 4 \int_0^\infty X_{\tau+1} W_{\tau+1} d\mu(\tau) - 2 \int_0^\infty (X_\tau + W_{\tau+1})^2 d\mu(\tau)
+\结束{对齐*}
+$$
+
+由于 $X_{\tau+1}$ 是白噪声信号，我们可以将 $\int_0^\infty X_{\tau+1} d\mu(\tau)$ 重写为 $\mathbb{E}(X_\tau) + \sigma^2$。因此，
+
+$$
+\开始{对齐*}
+\E(W_\tau^2) &amp;= (\mathbb{E}(X_\tau))^2 + 4 \int_0^\infty X_{\tau+1} W_{\tau+1} d\mu(\tau) - 2 \left( \mathbb{E}(X_\tau)^2 + \sigma^2 \right)
+\结束{对齐*}
+$$
+
+将表达式重写为 $\int_0^\infty X_{\tau+1} W_{\tau+1} d\mu(\tau) = 0$，我们得到
+
+$$
+\开始{对齐*}
+\E(W_\tau^2) &amp;= (\mathbb{E}(X_\tau))^2 + 2 \sigma^2 - 2 \left( \mathbb{E}(X_\tau)^2 + \sigma^2 \right) \\
+&amp;= -\mathbb{E}(X_\tau)^2 + \sigma^2
+\结束{对齐*}
+$$
+
+因此，当 $\tau$ 为有界停时，$\E(W_\tau^2) = 0$。

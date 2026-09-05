@@ -1,0 +1,30 @@
+Exercise: pc4_q4
+Model: deepseek-r1:1.5b
+Variation: baseline
+Prompt type: ground_truth_forcing
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+Given that $\tau$ is a bounded stopping time, we need to compute $E(W_\tau)$ where $W_t$ is a Brownian Motion process.
+
+1. **Brownian Motion Properties**: Brownian Motion $W_t$ has independent increments, is Gaussian, starts at zero, and each increment from 0 to t is normally distributed with mean zero.
+2. **Bounded Stopping Time**: Since $\tau$ is bounded, there exists a finite number T such that $\tau \leq T$ almost surely.
+3. **Expected Value of Increments**: For any $t \geq 0$, the expected value $E[W_t] = 0$ because each increment before t contributes an expected value of zero due to the Gaussian nature and independence.
+4. **Summing Increments**: $W_\tau$ is the sum of increments from 0 to $\tau$. Each term in this sum has an expected value of zero.
+5. **Linearity of Expectation**: Since expectation is linear, the expected value of the sum (which is $W_\tau$) is the sum of the expectations, each of which is zero.
+
+Thus, $E(W_\tau) = 0$.
+
+\[
+\boxed{0}
+\]
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+To compute \(\E(W_{\tau}^2)\) where \(\tau\) is a bounded stopping time, we can use Itô's lemma. 
+
+First, consider the function \(f(W_t) = W_t^2\). Applying Itô's lemma to this function, we get:

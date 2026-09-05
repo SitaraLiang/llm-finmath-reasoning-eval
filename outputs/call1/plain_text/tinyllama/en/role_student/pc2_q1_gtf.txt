@@ -1,0 +1,48 @@
+Exercise: pc2_q1
+Model: tinyllama
+Variation: role_student
+Prompt type: ground_truth_forcing
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+In the context of financial mathematics, a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if:
+- $X_0=0$,
+- $X_t$ is centered Gaussian with covariance function ${\rm Cov}(X_s,X_t)=\inf(s,t)$ for all $s,t\ge 0$, and
+- the process $(X_t)_{t\in \R^+}$ has a continuous sample path.
+
+The proof can be found in various financial textbooks or articles on the topic of Gaussian Brownian motion or continuous-time random walk. In summary, any process that satisfies these properties is a Brownian motion.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+Global assumptions:
+- The process $(X_t)_{t\in \R^+}$ is a Brownian motion.
+
+Previous questions and exact solutions:
+1. Question 1:
+    !python/tuple
+     -    -    preconditions:
+         - For $s < t$ we have
+            $X_t = X_s + (X_t - X_s)$
+            which can be written as
+            $X_t = \mathbb{E}[X_t|X_0=s]$
+            where the expectation is taken with respect to the probability measure
+            induced by the Brownian motion.
+     -    preconditions:
+         - Independent increments and centered Gaussian process, i.e.
+            The law of $X$ is a Gaussian centered at $t$.
+         - Variance $t-s$, or variance $s$.
+     - !!python/tuple
+         -    preconditions:
+             - Disjoint increments are independent, and the law of increment is Gaussian centered of variance $t-s$, i.e. $\mathcal{N}(0, s)$.
+         - Conclusion: Since $W_t$ is a Brownian motion, so is $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$
+2. Question 2:
+    !python/tuple
+        - !!python/list
+             -    - preconditions:
+                   - Disjoint increments are independent and have variance $s$, or variance $s$.
+                   - The law of increment is Gaussian centered of variance $t-s$, i.e. $\mathcal{N}(0, s)$.
+                   - Since $W_t$ is a Brownian motion, so is $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$

@@ -1,0 +1,51 @@
+pc: '2'
+exercise: '1'
+language: fr
+variation: baseline
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: qwen2.5-coder-0.5b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - X_0 = 0
+        - (X_t)_{t\in \R^+} est un processus gaussien centré
+        - ${\rm Cov}(X_s,X_t)=\inf(s,t)$
+        outcomes:
+        - Le mouvement brownien est le plus courant pour tous les processus de temps,
+            indépendamment de leurs directions de parcours et des paramètres spécifiques.
+    -   preconditions: []
+        arguments:
+        - X_0 = 0
+        - (X_t)_{t\in \R^+} est un processus gaussien centré
+        - ${\rm Cov}(X_s,X_t)=\inf(s,t)$
+        outcomes:
+        - Le mouvement brownien satisfait les conditions de Gauss et de covariance.
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - W_t est un mouvement brownien
+        outcomes:
+        - X_t=t\;W_{\frac 1t} est un mouvement brownien
+    -   preconditions: []
+        arguments:
+        - Cov(X_s,X_t)=inf(s,t)
+        outcomes:
+        - Cov(W_{\frac 1t}, X_t) = inf(\frac 1t, t)
+    -   preconditions: []
+        arguments:
+        - s < t
+        outcomes:
+        - min(\frac 1t, t) = \frac 1t
+    -   preconditions: []
+        arguments:
+        - W_{\frac 1t} >= W_t
+        outcomes:
+        - Le mouvement brownien est un mouvement armonique de temps
+    -   preconditions: []
+        arguments:
+        - X_s + (X_t - X_s) = W_{\frac 1t}
+        outcomes:
+        - W_{\frac 1t} est un mouvement gaussien centré

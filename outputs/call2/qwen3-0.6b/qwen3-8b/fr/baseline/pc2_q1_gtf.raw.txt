@@ -1,0 +1,30 @@
+### Question block 1
+<think>
+
+```yml
+atoms:
+- preconditions:
+  - "Le processus $(X_t)_{t\in \mathbb{R}^+}$ est un processus gaussien centré."
+  - "La covariance $\text{Cov}(X_s, X_t) = \inf(s, t)$ pour tous $s, t \in \mathbb{R}^+$."
+  - "La valeur initiale $X_0 = 0$."
+  arguments:
+  - "La propriété de covariance $\inf(s, t)$ implique que les incrémentes sont indépendantes et gaussiennes."
+  outcomes:
+  - "Le processus $(X_t)_{t\in \mathbb{R}^+}$ est un mouvement brownien."
+- preconditions:
+  - "Le processus $(X_t)_{t\in \mathbb{R}^+}$ est un mouvement brownien."
+  arguments:
+  - "Un mouvement brownien est un processus gaussien centré avec $\text{Cov}(X_s, X_t) = \inf(s, t)$."
+  outcomes:
+  - "La valeur initiale $X_0 = 0$."
+  - "La covariance $\text{Cov}(X_s, X_t) = \inf(s, t)$ pour tous $s, t \in \mathbb{R}^+$."
+```
+
+### Question block 2
+<think>
+</think>
+
+```yaml
+query: "Quel est le résultat de la multiplication de 5 par 7 ?"
+response: "Le résultat de la multiplication de 5 par 7 est 35."
+```

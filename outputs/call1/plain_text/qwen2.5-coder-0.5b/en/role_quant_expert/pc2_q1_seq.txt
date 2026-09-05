@@ -1,0 +1,123 @@
+Exercise: pc2_q1
+Model: qwen2.5-coder:0.5b
+Variation: role_quant_expert
+Prompt type: strictly_sequential
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+The solution to the problem of proving that a process $\{X_t\}_{t\in \mathbb{R}^+\}$ is a Brownian motion if and only if $X_0=0$, $(X_t)_{t\in \mathbb{R}^+}$ is a centered Gaussian process, and ${\rm Cov}(X_s,X_t)=\inf(s,t)$ can be found using the properties of Brownian motions and covariance matrices.
+
+1. **Statement 1**: A process $\{X_t\}_{t\in \mathbb{R}^+\}$ is a Brownian motion if and only if $X_0=0$.
+2. **Proof**:
+   - We start by noting that the Gaussian process $(X_t)_{t\in \mathbb{R}^+}$ has a common expectation, which can be expressed as $\mu_X = 0$. This means that for any point in time $t$, the average of the sequence $\{X_t\}_{t\in \mathbb{R}^+\}$ is zero.
+   - We also know that $(X_t)_{t\in \mathbb{R}^+}$ is centered, meaning that there exists a mean $\mu$ and a standard deviation $\sigma$ such that $X_t = \mu + \sigma Z$, where $Z$ is a normal random variable. This can be written in the form $X_t = X_0 + \sigma T$, where $T$ is a time variable.
+   - The covariance matrix of $(X_t)_{t\in \mathbb{R}^+}$, denoted as $\Sigma$, is given by:
+     \[
+     \Sigma = E[X_t X_t^T] = E[(\mu + \sigma Z)^2] = E[\mu^2 + 2 \mu \sigma Z + (\sigma Z)^2] = E[\mu^2 + 2 \mu \sigma Z + \sigma^2 Z^2] = E[\mu^2 + (3\sigma Z)^2]
+     \]
+   - Using the properties of expectation and covariance, we can further simplify the expression inside the expectation:
+     \[
+     \Sigma = E[\mu^2 + 9\sigma^2 Z^2]
+     \]
+     Since $\mu$ is the mean and $\sigma$ is the standard deviation, it follows that $E[\mu] = 0$ and $E[9\sigma^2 Z^2] = 9E[\sigma^2 Z^2]$.
+   - Therefore, we have:
+     \[
+     \Sigma = E[\mu + 9\sigma^2 Z^2] = \mu + 9E[\sigma^2 Z^2]
+     \]
+   - If $X_0=0$, then $\mu_X = 0$. Substituting this into the equation, we get:
+     \[
+     0 + 9E[\sigma^2 Z^2] = 0
+     \]
+     Simplifying this equation, we find:
+     \[
+     9E[\sigma^2 Z^2] = 0
+     \]
+     Dividing both sides by 9, we get:
+     \[
+     E[\sigma^2 Z^2] = 0
+     \]
+
+3. **Statement 2**: A process $\{X_t\}_{t\in \mathbb{R}^+}$ is a centered Gaussian process if and only if ${\rm Cov}(X_s,X_t)=\inf(s,t)$.
+4. **Proof**:
+   - We have already shown that $E[\sigma^2 Z^2] = 0$ from Statement 1. This means that the covariance matrix $\Sigma$ is zero, which implies that the covariance function is constant for all $X_t$ and all time $t$.
+   - In a centered Gaussian process, the covariance function must be a linear function of $Z$. Let's denote this linear function by:
+     \[
+     \gamma(s,z) = c e^{-(s^2 + z^2)/2}
+     \]
+   - For the covariance matrix $\Sigma$, we have:
+     \[
+     \Sigma = E[\gamma(s,z)^2] = E[c e^{-(s^2 + z^2)/2}] = c E[1] = c
+     \]
+     This shows that the covariance matrix is constant for all $X_t$ and all time $t$, which means that the covariance function is constant for all $X_t$ and all time $t$.
+   - Therefore, we have:
+     \[
+     {\rm Cov}(X_s,X_t) = \gamma(s,z) = c e^{-(s^2 + z^2)/2}
+     \]
+     Since $\Sigma = 0$, this implies that the covariance function is constant for all $X_t$ and all time $t$.
+
+In summary, a process $\{X_t\}_{t\in \mathbb{R}^+}$ is a Brownian motion if and only if $X_0=0$, $(X_t)_{t\in \mathbb{R}^+}$ is a centered Gaussian process, and ${\rm Cov}(X_s,X_t)=\inf(s,t)$.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+To show that the process $\{X_t = t \cdot W_{\frac{1}{t}}, t > 0, X_0 = 0\}$ is a Brownian motion, we need to verify that it satisfies the properties of Brownian motion, such as its covariance function.
+
+The Brownian motion is defined by:
+\[dW_t = dX_t + W_t^2.\]
+
+Given $\{X_t = t \cdot W_{\frac{1}{t}}, t > 0, X_0 = 0\}$, we can substitute $t$ with a new variable $u = \frac{1}{t}$. This substitution transforms the process into:
+\[dW_u = dX_u + W_u^2.\]
+
+By the definition of Brownian motion, we have:
+\[dX_u = dX_t + W_u^2.\]
+
+Substitute this expression for $dW_u$ into our given equation:
+\[\left( \frac{1}{t} \right) dW_t = \left( t \cdot W_{\frac{1}{t}} \right) + W_t^2.\]
+
+Simplify both sides of the equation:
+\[ \frac{1}{t^2} dW_t = t \cdot W_{\frac{1}{t}} + W_t^2.\]
+
+Since $dW_t = dX_t + W_t^2$, we can substitute this into the equation:
+\[\frac{1}{t^2} = t \cdot W_{\frac{1}{t}} + W_t^2.\]
+
+Divide both sides by $W_t$ (assuming $W_t \neq 0$):
+\[ \frac{1}{t^2} = t + W_t.\]
+
+Rearrange the equation to isolate terms involving $X_t$:
+\[ t - W_t = \frac{1}{t^2} - 1.\]
+
+Factor out the common term on both sides of the equation:
+\[ W_t (t - 1) = \frac{1}{t^2} - 1.\]
+
+Divide both sides by $\frac{1}{t}$:
+\[ t^2 - t = \frac{1}{t} - 1.\]
+
+Rearrange to isolate $t$:
+\[ t^2 - t + 1 = \frac{1}{t}.\]
+
+Multiply through by $t$ to clear the fraction on the right side:
+\[ t^3 - t^2 + t = 1.\]
+
+This is a polynomial equation in $t$. To show that this polynomial satisfies the properties of Brownian motion, we need to check if it is a perfect square trinomial and has no real roots.
+
+A quadratic equation $ax^2 + bx + c$ with real roots can be factored as:
+\[ (a+b)^2 = a^2 + 2ab + b^2. \]
+
+For the given polynomial $t^3 - t^2 + t$, we can see that:
+- $a = 1$
+- $b = -1$
+- $c = 1$
+
+Now, calculate $(a + b)^2$ and $(a - b)^2$:
+\[ (a + b)^2 = 1^2 + 2 \cdot 1 \cdot (-1) + (-1)^2 = 1 - 2 - 1 = -2. \]
+\[ (a - b)^2 = 1^2 + 2 \cdot 1 \cdot 1 + (-1)^2 = 1 + 2 + 1 = 4. \]
+
+Therefore:
+\[ t^3 - t^2 + t = -(2)^2 = 4 - 4 = 0. \]
+
+Since $t^3 - t^2 + t = 0$, the polynomial has no real roots, which confirms that $\{X_t = t \cdot W_{\frac{1}{t}}, t > 0, X_0 = 0\}$ is a Brownian motion.
+
+Hence, we have shown that the process $\{X_t = t \cdot W_{\frac{1}{t}}, t > 0, X_0 = 0\}$ is a Brownian motion.

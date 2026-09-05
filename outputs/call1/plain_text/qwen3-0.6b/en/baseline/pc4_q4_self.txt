@@ -1,0 +1,86 @@
+Exercise: pc4_q4
+Model: qwen3:0.6b
+Variation: baseline
+Prompt type: self_history
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+To compute the expected value of $ \mathbb{E}(W_\tau) $, where $ \tau $ is a **bounded stopping time**, we rely on the fundamental properties of Brownian motion and the martingale structure of the process.
+
+---
+
+### Key Properties of Brownian Motion
+
+- $ W_t $ is a **continuous-time stochastic process** with independent and identically distributed increments.
+- $ W_t $ is a **martingale**, meaning that for any stopping time $ \tau $, the process satisfies:
+  $$
+  \mathbb{E}(W_\tau) = W_0
+  $$
+  This holds regardless of the stopping time $ \tau $, as long as $ W_\tau $ is a martingale.
+
+---
+
+### Role of $ \tau $ as a Bounded Stopping Time
+
+- A **bounded stopping time** $ \tau $ is a random variable such that $ \tau $ is finite in expectation.
+- This does not affect the expectation $ \mathbb{E}(W_\tau) $, as the process $ W_t $ is a martingale, and its expectation at any stopping time is equal to its initial value.
+
+---
+
+### Conclusion
+
+Since $ \tau $ is a bounded stopping time, and $ W_t $ is a martingale, we conclude that:
+
+$$
+\mathbb{E}(W_\tau) = W_0 = 0
+$$
+
+---
+
+### Final Answer
+
+$$
+\boxed{0}
+$$
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+To compute $ \mathbb{E}(W_\tau^2) $, where $ \tau $ is a **bounded stopping time**, we rely on the properties of Brownian motion and the martingale structure of the process.
+
+---
+
+### Key Properties of Brownian Motion
+
+- $ W_t $ is a **continuous-time stochastic process** with independent and identically distributed (i.i.d.) increments.
+- $ W_t $ is a **martingale**, meaning that for any stopping time $ \tau $, the process satisfies:
+  $$
+  \mathbb{E}(W_\tau) = W_0
+  $$
+  This holds regardless of the stopping time $ \tau $, as long as $ W_\tau $ is a martingale.
+
+---
+
+### Role of $ \tau $ as a Bounded Stopping Time
+
+- A **bounded stopping time** $ \tau $ is a random variable such that $ \tau $ is finite in expectation.
+- This does not affect the expectation $ \mathbb{E}(W_\tau) $, as the process $ W_t $ is a martingale, and its expectation at any stopping time is equal to its initial value.
+
+---
+
+### Conclusion
+
+Since $ \tau $ is a bounded stopping time, and $ W_t $ is a martingale, we conclude that:
+
+$$
+\mathbb{E}(W_\tau) = W_0 = 0
+$$
+
+Thus, the expected value of $ W_\tau^2 $ is:
+
+$$
+\boxed{0}
+$$

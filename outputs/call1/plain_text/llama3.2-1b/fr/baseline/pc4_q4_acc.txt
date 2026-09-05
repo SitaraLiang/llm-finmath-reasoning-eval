@@ -1,0 +1,52 @@
+Exercise: pc4_q4
+Model: llama3.2:1b
+Variation: baseline
+Prompt type: prompt_accumulation
+
+Question 1:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau)$.
+
+Answer:
+Pour résoudre ce problème, on utilise l'équation du montant actuel pour le mouvement brownien :
+
+$$
+W_t = W_0 e^{-rt} + \frac{r}{2}\left(e^{-(r-\sigma^2)t} - 1\right)
+$$
+
+Notez que $t$ est un temps d'arrêt, qui est à l'origine de $\tau$. Nous calculons donc le montant actuel : 
+
+$$
+W_\tau = W_0 e^{-\tau r}
+$$
+
+Question 2:
+Lorsque $\tau$ est un temps d'arr\^et born\'e, calculer $\E(W_\tau^2)$.
+
+Answer:
+$\E(W_\tau^2) = \E\left(\exp\left(2\int_0^\tau W_s ds - s\right)\right).$
+
+## Calcul 
+$\begin{aligner*}
+\E(W_\tau^2)&amp;=\E\left(\exp\left(2\int_0^\tau W_s ds - \tau\right)\droite)\\
+&amp;=1+\E\left(\exp\left(2\int_0^\tau W_s ds - \tau\right)\right)
+\end{align*}$
+
+## Explication
+$\begin{aligner*}
+\E(W_\tau^2)&amp;=\E\left(\exp\left(2\int_0^\tau W_s ds - \tau\right)\droite)\\
+&amp;=1+\E\left(\exp\left(2\int_0^\tau (W_\sigma-s) d(W_\sigma-S) - \tau\right)\droite)
+\end{align*}$
+
+## Calcul 
+$\begin{aligner*}
+\E(W_\tau^2)&amp;=1+\E\left(\exp\left(2\int_0^\tau (W_\sigma-s) d(W_\sigma-S) - \tau\right)\droite)\\
+&amp;=\frac{1}{\frac{\sigma^2-2}{\sqrt{\sigma^2+6\sigma t}}+\frac{2\sigma t-3\sigma}{(\sigma^2+6\sigma t)^{3/2}}}\\
+&amp;\qquad + 1-\frac{\frac{2\sigma t-3\sigma}{(\sigma^2+6\sigma t)^{3/2}}}{\frac{\sigma^2-2}{\sqrt{\sigma^2+6\sigma t}}+\frac{2\sigma t-3\sigma}{(\sigma^2+6\sigma t)^{3/2}}}
+\end{align*}$
+
+## Explication
+$\begin{aligner*}
+\E(W_\tau^2)&amp;=1+\E\left(\exp\left(2\int_0^\tau (W_\sigma-s) d(W_\sigma-S) - \tau\right)\droite)\\
+&amp;=\frac{1}{\frac{\sigma^2-2}{\sqrt{\sigma^2+6\sigma t}}+\frac{2\sigma t-3\sigma}{(\sigma^2+6\sigma t)^{3/2}}}\\
+&amp;\qquad + 1-\frac{\frac{2\sigma t-3\sigma}{(\sigma^2+6\sigma t)^{3/2}}}{\frac{\sigma^2-2}{\sqrt{\sigma^2+6\sigma t}}+\frac{2\sigma t-3\sigma}{(\sigma^2+6\sigma t)^{3/2}}}\\
+\end{align*}$

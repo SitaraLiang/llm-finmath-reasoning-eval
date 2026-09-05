@@ -1,0 +1,12 @@
+### Question block 1
+<think>
+</think>
+
+The expected value of the martingale process $ W_\tau $ at the bounded stopping time $ \tau $ is equal to the expected value of the process at time 0, i.e., $ \mathbb{E}[W_\tau] = \mathbb{E}[W_0] $. This result follows from the **optional stopping theorem**, which applies under the condition that $ \tau $ is a bounded stopping time. 
+
+### Key Points:
+1. **Martingale Property**: For a martingale $ \{W_t\} $, the expectation at any time $ t $ is equal to the expectation at time 0: $ \mathbb{E}[W_t] = \mathbb{E}[W_0] $.
+2. **Bounded Stopping Time**: Since $ \tau $ is bounded (i.e., $ \tau \leq T $ for some finite $ T $), the optional stopping theorem guarantees that $ \mathbb{E}[W_\tau] = \mathbb{E}[W_0] $.
+3. **Conclusion**: The equality $ \mathbb{E}[W_\tau] = \mathbb{E}[W_0] $ holds because the martingale property and the boundedness of $ \tau $ together ensure that the stopping time does not introduce any bias in the expectation. 
+
+Thus, the expected value of the process at the stopping time $ \tau $ is preserved as the initial value $ W_0 $.

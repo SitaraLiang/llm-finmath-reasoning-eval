@@ -1,0 +1,42 @@
+Exercise: pc4_q4
+Model: llama3.1:8b
+Variation: baseline
+Prompt type: self_history
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+## Step 1: Recall the definition of Brownian Motion
+A Brownian motion $W_t$ has the property that for any $t \geq 0$, $\E[W_t] = 0$.
+
+## Step 2: Apply the property to a bounded stopping time
+Since $\tau$ is a bounded stopping time, we can consider it as a random variable with values in $[0,T]$ for some fixed $T$. Then, by linearity of expectation and the fact that $\E[W_t] = 0$, we have:
+
+$$\E[W_\tau] = \E[\E[W_\tau | \mathcal{F}_\tau]]$$
+
+## Step 3: Use the law of iterated expectations
+By the law of iterated expectations, we can write:
+
+$$\E[W_\tau] = \E[\E[W_\tau | \mathcal{F}_\tau]] = \E[0]$$
+
+The final answer is: $\boxed{0}$
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+## Step 1: Recall the definition of Brownian Motion
+A Brownian motion $W_t$ has the property that for any $t \geq 0$, $\E[W_t] = 0$ and $\E[W_t^2] = t$.
+
+## Step 2: Apply the property to a bounded stopping time
+Since $\tau$ is a bounded stopping time, we can consider it as a random variable with values in $[0,T]$ for some fixed $T$. Then, by linearity of expectation and the fact that $\E[W_t^2] = t$, we have:
+
+$$\E[W_\tau^2] = \E[\tau]$$
+
+## Step 3: Use the properties of Brownian Motion
+Since $\tau$ is a bounded stopping time, it has finite expectation. Therefore, we can write:
+
+$$\E[W_\tau^2] = \E[\tau]$$
+
+The final answer is: $\boxed{\E[\tau]}$

@@ -1,0 +1,60 @@
+### Question block 1
+Voici la sortie en format YAML :
+
+```yml
+atoms:
+  - 
+    preconditions: []
+    arguments:
+      - "Un processus (X_t)_{t\in \R^+} est un mouvement brownien"
+    outcomes:
+      - "X_0 = 0"
+      - "(X_t)_{t\in \R^+} est un processus gaussien centré"
+      - "{\rm Cov}(X_s,X_t)=\inf(s,t)"
+  - 
+    preconditions: []
+    arguments:
+      - "Un processus (X_t)_{t\in \R^+} satisfait les trois conditions suivantes :"
+    outcomes:
+      - "X_0 = 0"
+      - "(X_t) est un processus gaussien centré"
+      - "{\rm Cov}(X_s, X_t) = \min(s,t)"
+  - 
+    preconditions: []
+    arguments:
+      - "Un processus (X_t)_{t\in \R^+} satisfait les trois conditions suivantes :"
+    outcomes:
+      - "X_0 = 0"
+      - "(X_t) est un processus gaussien centré"
+      - "{\rm Cov}(X_s, X_t) = \min(s,t)"
+```
+
+J'ai suivi les règles de sortie obligatoires pour produire ce bloc YAML. J'ai également essayé de conserver exactement les formules de la source et d'indiquer les chaines contenant de la syntaxe LaTeX ou YAML spéciale entre guillemets.
+
+### Question block 2
+```yml
+atoms:
+  - 
+    preconditions: []
+    arguments: ["t > 0"]
+    outcomes: []
+    strength: ""
+  - 
+    name: "X_0 = 0"
+    preconditions: []
+    arguments: ["t = 0"]
+    outcomes: []
+    strength: ""
+  - 
+    name: "Martingale à launed"
+    preconditions: []
+    arguments: ["t > s >= 0"]
+    outcomes: []
+    strength: ""
+  - 
+    name: "Covariance"
+    preconditions: []
+    arguments: ["s, t > 0"]
+    outcomes: []
+    strength: ""
+```

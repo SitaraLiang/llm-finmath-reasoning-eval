@@ -1,0 +1,171 @@
+Exercise: pc2_q1
+Model: llama3.2:1b
+Variation: role_student
+Prompt type: self_history
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if $X_0=0$ and $\text{Cov}(X_s, X_t) = \inf(s, t)$, we proceed by induction on $n$.
+
+First, consider the base case $n = 1$. A standard Brownian motion $(B_t)_{t\in \R^+}$ satisfies $X_0 = 0$ and $\text{Cov}(B_s, B_t) = s - t$, which is precisely the condition given. Thus, we have verified the base case.
+
+Assume now that the result holds for all processes of dimension up to $n-1$. We need to show it also holds for a process of dimension $n$.
+
+Consider a standard Brownian motion $(B_t)_{t\in \R^+}$. By the multivariate central limit theorem, we have:
+$$
+\text{Cov}(B_s, B_t) = s - t.
+$$
+
+Using Ito's formula, we can write $X_t$ as an expectation of a deterministic process. Applying the result from the base case to this deterministic process, and taking expectations, we obtain that $(X_t)$ is a centered Gaussian process.
+
+Now, let's show that if $(X_t)_{t\in \R^+}$ satisfies $\text{Cov}(X_s,X_t)=\inf(s,t)$, then it is a Brownian motion. Since $X_0 = 0$ by assumption, we can apply Ito's formula to obtain:
+
+$$
+\begin{aligned}
+dX_t &= d(X_t) + \frac{1}{2}\sigma^2 X_t dt \\
+&= X_t \cdot (dt + \sigma^2 dt)
+\end{aligned}
+$$
+
+where $\sigma > 0$ is the volatility of $X$. Define a new process $Y_s = s - t$. Then, we have:
+
+$$
+\begin{aligned}
+dX_s &= d(X_s) \\
+&= X_s Y_s ds + \sigma^2 X_s dt
+\end{aligned}
+$$
+
+where $\text{Cov}(X_s,Y_s)=s$ by assumption. Rearranging terms and applying Ito's formula again, we obtain:
+
+$$
+\begin{aligned}
+dY_s &= d(Y_s) \\
+&= Y_s (\text{Var} X_t) ds + 2\sigma^2 Y_s dt
+\end{aligned}
+$$
+
+where $\text{Cov}(X_s,Y_t)=\inf(s,t)$ by assumption. Since $Y_0 = 0$, we can apply the strong Markov property to deduce that:
+
+$$
+\begin{aligned}
+dY_s &= d(Y_s)
+\end{aligned}
+$$
+
+Now, let's show that $\text{Cov}(X_t,Y_t) = \inf(t,t)$ for all $t$. Using Ito's formula again, we obtain:
+
+$$
+\begin{aligned}
+\text{Cov}(X_t, Y_t) &= \frac{1}{2}\sigma^2 (\partial_0 X_t)^2 + 2\sigma^2 \sqrt{\frac{1-2\sigma^2}{4\pi t}} (Y_t)_t
+\end{aligned}
+$$
+
+where $\partial_0$ denotes the partial derivative with respect to $X$. Since $(B_t)_{t\in \R^+}$ is a standard Brownian motion, we have:
+
+$$
+\begin{aligned}
+(B_t)_t &= t
+\end{aligned}
+$$
+
+Thus, we obtain:
+
+$$
+\begin{aligned}
+\text{Cov}(X_t,Y_t) &= \frac{\sigma^2}{2} + 0 = \sigma^2
+\end{aligned}
+$$
+
+Therefore, $\text{Cov}(X_t,Y_t)=\inf(t,t)$ for all $t$. This shows that the process $(X_t)_{t\in \R^+}$ is a Brownian motion.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+$$
+dX_t = d(X_t) + \frac{1}{2}\sigma^2 (X_t - X_0)^2 dt \\
+= d(X_t) + \sigma^2 X_t dt
+$$
+
+where $\text{Cov}(X_s,X_t)=\inf(s,t)$ by assumption.
+
+Since $W_{s-t}$ is a standard Brownian motion, we have:
+
+$$
+\begin{aligned}
+dW_{s-t} &= d(W_{s-t}) \\
+&= W_{s-t} dt + \sigma^2 (W_{s-t}-X_0)^2 ds
+\end{aligned}
+$$
+
+Rearranging terms and applying Ito's formula again, we obtain:
+
+$$
+\begin{aligned}
+dW_s &= d(W_s) \\
+&= W_s dt + 2\sigma^2 W_s (W_s - X_0)
+\end{aligned}
+$$
+
+Since $X_0 = 0$, we have:
+
+$$
+\begin{aligned}
+dW_s &= d(W_s) \\
+&= W_s dt + \sigma^2 (W_s)^2 ds
+\end{aligned}
+$$
+
+Applying Ito's formula again, we obtain:
+
+$$
+\begin{aligned}
+dX_t &= X_t d(W_t) \\
+&= X_t \left( W_t dt + \frac{1}{2}\sigma^2 (W_t)^2 dt - tdt \right)
+\end{aligned}
+$$
+
+Since $(X_t)_{t\in \R^+}$ is a centered Gaussian process, we have:
+
+$$
+\begin{aligned}
+dY_t &= d(Y_t) \\
+&= Y_t (\text{Var} X_t) dt + 2\sigma^2 Y_t (W_t)^2 ds
+\end{aligned}
+$$
+
+where $\text{Cov}(X_s,Y_t)=s$ by assumption.
+
+Since $X_0 = 0$, we have:
+
+$$
+\begin{aligned}
+Y_0 &= 0 \\
+dY_0 &= d(Y_0) \\
+&= Y_0 (\text{Var} X_t) dt + \sigma^2 Y_0 (W_t)^2 ds - tdt
+\end{aligned}
+$$
+
+Thus, we obtain:
+
+$$
+\begin{aligned}
+dY_t &= d(Y_t)
+\end{aligned}
+$$
+
+Applying the strong Markov property to deduce that:
+
+$$
+\begin{aligned}
+dX_t &= X_t \left( W_t dt + \sigma^2 (W_t)^2 dt - tdt \right) \\
+&= X_t Y_t dt + 2\sigma^2 X_t Y_t (W_t)^2 ds
+\end{aligned}
+$$
+
+Hence, $(X_t)_{t\in \R^+}$ is a Brownian motion.
+
+Therefore, the process $\left(\frac{X_t}{t}\; W_{1/t}, t>0,X_0=0 \right)$ is a Brownian motion.

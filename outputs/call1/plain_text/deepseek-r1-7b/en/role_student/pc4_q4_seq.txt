@@ -1,0 +1,95 @@
+Exercise: pc4_q4
+Model: deepseek-r1:7b
+Variation: role_student
+Prompt type: strictly_sequential
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+<think>
+Okay, so I need to figure out the expected value of W_τ where τ is a bounded stopping time. Hmm, let's start by recalling what Brownian motion and stopping times are.
+
+Brownian motion, or Wiener process, is a continuous-time stochastic process with independent increments, right? It starts at zero, has no drift, and the variance increases linearly with time. So W_t is a martingale because its expected value at any future time is equal to its current value.
+
+Now, stopping times are random times where the decision to stop depends only on the information available up to that time. A bounded stopping time means there's some finite time T such that τ ≤ T almost surely. That should be important because it ensures we don't have issues with unbounded expectations or anything like that.
+
+I remember from the theory of martingales that if you have a martingale and a stopping time, under certain conditions, the expected value of the process at the stopping time is equal to its initial value. Specifically, the Optional Stopping Theorem (OST) comes into play here.
+
+The OST says that if M_t is a uniformly integrable martingale and τ is a bounded stopping time, then E[M_τ] = E[M_0]. In our case, W_t is a martingale, so M_t = W_t. Since τ is bounded, it satisfies the conditions for the OST.
+
+So applying this theorem directly, we get that E[W_τ] = E[W_0]. But wait, what's W_0? For standard Brownian motion, W_0 is 0 almost surely because it starts at zero. Therefore, E[W_0] = 0.
+
+Putting it all together, the expected value of W_τ when τ is a bounded stopping time should be 0.
+</think>
+
+The expected value of \( W_\tau \) for a bounded stopping time \( \tau \) can be determined using the Optional Stopping Theorem. Since Brownian motion \( W_t \) is a martingale and \( \tau \) is bounded, we have:
+
+\[
+\E[W_\tau] = \E[W_0] = 0
+\]
+
+**Answer:**  
+\boxed{0}
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+<think>
+Okay, so I need to find the expected value of \( W_{\tau}^2 \) where \( \tau \) is a bounded stopping time. Hmm, let's start by recalling what I know about Brownian motion and stopping times.
+
+First, I remember that for a standard Brownian motion \( W_t \), it has independent increments and is a martingale. Also, the quadratic variation of \( W_t \) is \( t \). That might be useful here.
+
+Since \( \tau \) is a bounded stopping time, there exists some integer \( N \) such that \( \tau \leq N \) almost surely. This boundedness condition should help in applying certain theorems or properties related to stopping times.
+
+I also recall the Optional Stopping Theorem (OST). The OST says that if we have a martingale and a stopping time, under some conditions, the expected value of the process at the stopping time is equal to its initial value. But wait, in this case, \( W_t \) itself is a martingale, right? So applying OST directly might give me something.
+
+But hold on, \( W_{\tau}^2 \) isn't exactly \( W_{\tau} \); it's the square of the process at the stopping time. Is there an extension of the OST that applies to squared processes?
+
+Yes! I remember that if we have a martingale and consider its quadratic variation, then under certain conditions, we can compute expectations involving these terms. Specifically, for \( W_t^2 \), since it's related to the quadratic variation.
+
+Wait, actually, another approach: Maybe use Itô's formula? But Itô's formula is more advanced and might be overkill here. Let me think if there's a simpler way.
+
+Alternatively, I remember that \( W_{\tau}^2 - \tau \) is also a martingale. Is that correct? Because the quadratic variation of Brownian motion up to time \( t \) is \( t \), so perhaps when stopped at \( \tau \), we have some relation.
+
+Let me verify: If I consider \( M_t = W_t^2 - t \). Then, since \( W_t \) is a martingale and the quadratic variation of \( W_t \) is \( t \), by Itô's formula, \( dM_t = 2W_t dW_t + dt - dt = 2W_t dW_t \). So yes, \( M_t \) is a martingale.
+
+Therefore, since \( M_t \) is a martingale and \( \tau \) is a bounded stopping time, by the OST, we have that \( \E[M_{\tau}] = \E[M_0] \). But \( M_0 = 0^2 - 0 = 0 \), so \( \E[W_{\tau}^2 - \tau] = 0 \).
+
+Thus, this implies \( \E[W_{\tau}^2] = \E[\tau] \).
+
+Wait a second, is that correct? Because if I have \( W_{\tau}^2 - \tau \) as a martingale, then yes, the expectation at stopping time equals its initial value. So indeed, \( \E[W_{\tau}^2] = \E[\tau] \).
+
+But hold on, is there another way to see this without using Itô's formula? Maybe through the properties of Brownian motion and optional stopping.
+
+Alternatively, I can think about expanding \( W_{\tau}^2 \) in terms of its expectation. Since \( W_t \) has independent increments with variance \( t \), perhaps conditioning on \( \tau \).
+
+But that might get complicated. Alternatively, using the fact that for any bounded stopping time \( \tau \), we have \( \E[W_{\tau}] = 0 \). But since we're dealing with the square, maybe it's related to the variance.
+
+Wait, actually, another approach: Since \( W_t \) is a martingale and \( \tau \) is bounded, then \( W_{\tau} \) is also integrable. Moreover, using the fact that quadratic variation of \( W_t \) up to time \( t \) is \( t \), so when stopped at \( \tau \), we have \( \E[W_{\tau}^2] = \E[\tau] \).
+
+Yes, this seems consistent with what I found earlier. So putting it all together, the expectation of \( W_{\tau}^2 \) is equal to the expectation of \( \tau \).
+
+Therefore, the answer should be \( \E[W_{\tau}^2] = \E[\tau] \).
+</think>
+
+To compute \( \mathbb{E}[W_{\tau}^2] \) where \( \tau \) is a bounded stopping time, we can utilize properties of Brownian motion and the Optional Stopping Theorem.
+
+1. **Quadratic Variation**: Recall that for standard Brownian motion \( W_t \), the quadratic variation is \( [W]_t = t \).
+
+2. **Martingale Property**: Consider the process \( M_t = W_t^2 - t \). By Itô's formula, this is a martingale since its differential is \( dM_t = 2W_t dW_t \), which has no drift term.
+
+3. **Application of OST**: Since \( M_t \) is a martingale and \( \tau \) is a bounded stopping time, by the Optional Stopping Theorem, we have:
+   \[
+   \mathbb{E}[M_{\tau}] = \mathbb{E}[M_0] = 0
+   \]
+   
+4. **Expectation Calculation**: This implies:
+   \[
+   \mathbb{E}[W_{\tau}^2 - \tau] = 0 \quad \Rightarrow \quad \mathbb{E}[W_{\tau}^2] = \mathbb{E}[\tau]
+   \]
+
+Thus, the expected value of \( W_{\tau}^2 \) is equal to the expectation of the stopping time \( \tau \).
+
+Answer: \(\boxed{\mathbb{E}[W_{\tau}^2] = \mathbb{E}[\tau]}\)

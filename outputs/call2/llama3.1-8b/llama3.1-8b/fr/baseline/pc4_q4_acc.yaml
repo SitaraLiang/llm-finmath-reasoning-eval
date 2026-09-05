@@ -1,0 +1,97 @@
+pc: '4'
+exercise: '4'
+language: fr
+variation: baseline
+prompt_type: prompt_accumulation
+call1_output_mode: plain_text
+call1_model: llama3.1-8b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - tau est un temps d'arrêt borné
+        outcomes:
+        - Calculer E(W_tau)
+    -   preconditions: []
+        arguments:
+        - 'W_t satisfait l''équation différentielle : dW_t/dt = σB_t'
+        outcomes:
+        - Définition du mouvement brownien
+    -   preconditions: []
+        arguments:
+        - Puisque W_tau est une fonction continue de tau, on peut utiliser le théorème
+            de la moyenne
+        outcomes:
+        - Utilisation du théorème de la moyenne
+    -   preconditions: []
+        arguments:
+        - 'Le mouvement brownien est un processus gaussien : W_tau ~ N(0, σ^2tau)'
+        outcomes:
+        - Utilisation de la propriété du mouvement brownien
+    -   preconditions: []
+        arguments:
+        - Calculer l'espérance de W_tau
+        outcomes:
+        - Calcul de l'espérance
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - tau
+        - sigma
+        - mu
+        outcomes:
+        - E(W_tau^2)
+    -   preconditions: []
+        arguments:
+        - W_t
+        - t
+        - B_t
+        outcomes:
+        - dW_t/dt = sigma B_t
+    -   preconditions: []
+        arguments:
+        - tau
+        - A
+        - W_t
+        outcomes:
+        - tau = inf{t >= 0, W_t in A}
+    -   preconditions: []
+        arguments:
+        - E(W_tau^2)
+        - f_{W_tau}(w)
+        outcomes:
+        - E(W_tau^2) = int_0^infty W_tau^2 f_{W_tau}(w) dw
+    -   preconditions: []
+        arguments:
+        - E(W_t^2)
+        - t
+        outcomes:
+        - E(W_t^2) = t
+    -   preconditions: []
+        arguments:
+        - f_{W_tau}(w)
+        - sigma
+        - tau
+        - mu
+        outcomes:
+        - f_{W_tau}(w) = (1/sqrt(2*pi*sigma^2*tau)) * e^(-(w-mu)^2/(2*sigma^2*tau))
+    -   preconditions: []
+        arguments:
+        - E(W_tau^2)
+        - f_{W_tau}(w)
+        outcomes:
+        - E(W_tau^2) = int_0^infty w^2 f_{W_tau}(w) dw
+    -   preconditions: []
+        arguments:
+        - int_0^infty w^2 e^(-aw) dw
+        - a
+        outcomes:
+        - int_0^infty w^2 e^(-aw) dw = (2/a^3)
+    -   preconditions: []
+        arguments:
+        - E(W_tau^2)
+        - sigma
+        - tau
+        outcomes:
+        - E(W_tau^2) = sigma^2*tau

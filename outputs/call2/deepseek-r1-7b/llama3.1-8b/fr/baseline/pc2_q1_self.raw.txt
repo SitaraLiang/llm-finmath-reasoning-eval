@@ -1,0 +1,64 @@
+### Question block 1
+Voici la sortie en format YAML :
+
+```yml
+atoms:
+- 
+  - preconditions: []
+    arguments:
+      - "X_0 = 0"
+      - "(X_t) est gaussien centré"
+      - "{\rm Cov}(X_s, X_t) = \inf(s,t)"
+    outcomes:
+      - "Le processus (X_t) satisfait toutes les propriétés caractéristiques d'un mouvement brownien."
+- 
+  - preconditions: []
+    arguments:
+      - "X_0 = 0"
+      - "(X_t) est gaussien centré"
+      - "{\rm Cov}(X_s, X_t) = \inf(s,t)"
+    outcomes:
+      - "Le processus (X_t) satisfait toutes les propriétés caractéristiques d'un mouvement brownien."
+- 
+  - preconditions: []
+    arguments:
+      - "Les accroissements browniens sont gaussiens et centrés"
+    outcomes:
+      - "(X_t) est un processus gaussien centré"
+- 
+  - preconditions: []
+    arguments:
+      - "{\rm Cov}(X_s, X_t) = \inf(s,t)"
+    outcomes:
+      - "Les accroissements sont non corrélés pour s ≠ t"
+- 
+  - preconditions: []
+    arguments:
+      - "X_0 = 0"
+      - "(X_t) est gaussien centré"
+      - "{\rm Cov}(X_s, X_t) = \inf(s,t)"
+    outcomes:
+      - "Le processus (X_t) satisfait toutes les propriétés caractéristiques d'un mouvement brownien."
+```
+
+### Question block 2
+```yml
+atoms:
+  - 
+    preconditions: []
+    arguments: [0]
+    outcomes: []
+  - 
+    name: Processus gaussien centré
+    preconditions: []
+    arguments: []
+    outcomes: []
+  - 
+    name: Covariance
+    preconditions: []
+    arguments: [s, t]
+    outcomes:
+      - "st \* Cov(W_{1/s}, W_{1/t})"
+      - "0 si s != t"
+      - "t si s = t"
+```

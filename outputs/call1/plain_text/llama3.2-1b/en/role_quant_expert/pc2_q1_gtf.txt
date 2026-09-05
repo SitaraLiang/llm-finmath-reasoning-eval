@@ -1,0 +1,105 @@
+Exercise: pc2_q1
+Model: llama3.2:1b
+Variation: role_quant_expert
+Prompt type: ground_truth_forcing
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+Since the problem requires a concise rigorous mathematical answer in English without hiding reasoning or providing long explanations, I will address the question directly.
+
+To prove that $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, and ${\rm Cov}(X_s,X_t)=\inf(s,t)$, we can use the following steps:
+
+\begin{equation*}
+X_t = X_0 + \int_0^t W_u du
+\end{equation*}
+
+where $W_u$ is a Brownian motion independent of $X_0$. We also have
+
+$$
+{\rm Cov}(X_s,X_t) = {\rm Cov}\left(X_0 + \int_0^s W_u du, X_0 + \int_0^t W_v du\right)
+$$
+
+Since the covariance is linear in each $W_u$, we can expand it as:
+
+$$
+{\rm Cov}(X_s,X_t) = {\rm Cov}\left(X_0,\int_0^s W_u du\right) + {\rm Cov}\left(\int_0^s W_u du, X_0+\int_0^t W_v du\right)
+$$
+
+Using the definition of covariance and the fact that $W_u$ is centered Gaussian process, we can simplify this to:
+
+$$
+{\rm Cov}(X_s,X_t) = {\rm Cov}\left(X_0,\int_0^s W_u du\right) + \inf(s,t){\rm Cov}(W_u,W_v)
+$$
+
+Since $X_0=0$ and the covariance is symmetric, we have:
+
+$$
+{\rm Cov}(X_s,X_t) = \inf(s,t){\rm Cov}(W_u,W_v)
+$$
+
+Using Fubini's theorem on the double integral of $\text{Cov}(W_u,W_v)$, we can rewrite it as:
+
+$$
+{\rm Cov}(X_s,X_t) = \int_0^s \int_0^t {\rm Cov}(W_u,W_v) du dv
+$$
+
+Since $W_u$ and $W_v$ are independent, their covariance is zero unless they are both zero. Therefore, we have:
+
+$$
+{\rm Cov}(X_s,X_t) = 0\quad\text{or}\quad \int_0^s \int_0^t {\rm Cov}(W_u,W_v) du dv
+$$
+
+The first term is equal to $-{\rm Cov}(X_s,X_t)$, which implies that:
+
+$$
+2{\rm Cov}(X_s,X_t) = \int_0^s \int_0^t {\rm Cov}(W_u,W_v) du dv
+$$
+
+This equation holds if and only if:
+
+$$
+\text{Cov}\left(\sum_{i=1}^n W_{u_i}, X_s\right) = 0
+$$
+
+for all $s \in [0,t]$, which is the definition of a centered Gaussian process.
+
+Therefore, we have shown that $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if:
+
+$X_0=0$
+$(X_t)_{t\in \R^+}$ is a centered Gaussian process
+${\rm Cov}(X_s,X_t)=\inf(s,t)$
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+## Step 1: Decompose the process $(X_t)_{t\in \R^+}$ into two parts
+We decompose $X_t$ into two independent parts: $X_s = X_s' + (X_t - X_s')$, where $\{X_s', s > 0\}$ is a centered Gaussian process with variance zero.
+
+## Step 2: Apply the property ${\rm Cov}(X_s,X_t)=\inf(s,t)$
+Using the given assumption, we can write:
+$\text{Cov}(X_t - X_s, X_v - X_u) = \text{Cov}(X_t - X_s', X_v - X_u') + \text{Cov}(X_s' - X_s', X_u' - X_u)$
+
+## Step 3: Use the independence of $X_s'$ and $X_u'$
+Since $\{X_s', s > 0\}$ is a centered Gaussian process, we have:
+$\text{Cov}(X_s' - X_s', X_u' - X_u) = \inf(s,u)$
+
+## Step 4: Use the property of Brownian motion
+We know that $W_t$ is a Brownian motion. Using Kolmogorov's theorem, we can show that:
+$\text{Cov}(X_t - X_s', X_v - X_u') = \min(s,v)$
+
+## Step 5: Combine the results to obtain the final expression
+Combining the results from steps 2-4, we get:
+$\text{Cov}(X_t - X_s, X_v - X_u) = \inf(s,v) + \inf(u,v) = \min(s,u,v)$
+
+## Step 6: Conclude that $(\{X_t=tW_{\frac1t}, t>0, X_0=0\})$ is a Brownian motion
+Since $W_t$ is a standard Brownian motion and the result from step 5 holds for all $s < u \leq v$, we can conclude that:
+$(\{X_t=tW_{\frac1t}, t>0, X_0=0\})$ is a centered Gaussian process with variance zero.
+
+## Step 7: Conclude that $(X_t)_{t\in \R^+}$ is a Brownian motion
+Since $\inf(s,u,v)$ is zero for all $s < u \leq v$, we can conclude that:
+$(X_t)_{t\in \R^+}$ is a centered Gaussian process with variance zero. Therefore, it is also a standard Brownian motion.
+
+The final answer is: $\boxed{0}$

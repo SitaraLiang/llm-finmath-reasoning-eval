@@ -1,0 +1,38 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions: []
+  arguments: ["Le mouvement brownien $W_t$ est défini comme une suite de variables aléatoires continues $(W_t)_{t\geq0}$ avec les propriétés suivantes : $\E(W_t)=0$ et $\mathrm{Var}(W_t)=t$"]
+  outcomes: ["Définition du mouvement brownien"]
+- preconditions: ["$\tau$ est un temps d'arrêt borné"]
+  arguments: ["Théorème d'arrêt anticipé"]
+  outcomes: ["$\E(X_\tau)=\E(\E(X_\tau|{\cal F}_\tau))$"]
+- preconditions: ["$\tau$ est un temps d'arrêt borné"]
+  arguments: ["Application du théorème d'arrêt anticipé à $W_\tau$"]
+  outcomes: ["$\E(W_\tau)=\E(\E(W_\tau|{\cal F}_\tau))$"]
+- preconditions: ["$\E(W_t)=0$ pour tout $t\geq0$"]
+  arguments: ["Propriété du mouvement brownien"]
+  outcomes: ["$\E(W_\tau)=\E(0)$"]
+- preconditions: ["$\tau$ est un temps d'arrêt borné"]
+  arguments: ["${\cal F}_\tau$ contient toutes les informations disponibles jusqu’à ce moment"]
+  outcomes: ["$\E(W_\tau|{\cal F}_\tau)=W_\tau$"]
+- preconditions: ["$\E(W_\tau)=\E(\E(W_\tau|{\cal F}_\tau))$"]
+  arguments: ["Calcul de l'espérance conditionnelle finale"]
+  outcomes: ["$\E(W_\tau)=\E(W_\tau)$"]
+- preconditions: ["$\tau$ est un temps d'arrêt borné"]
+  arguments: ["$\E(W_\tau)=\E(\E(W_\tau|{\cal F}_0))$"]
+  outcomes: ["$\E(W_\tau)=\E(\E(W_\tau|{\cal F}_0))$"]
+- preconditions: ["$\E(W_\tau|{\cal F}_0)$ est une variable aléatoire gaussienne centrée"]
+  arguments: ["Propriété du mouvement brownien"]
+  outcomes: ["$\mathrm{Var}(W_\tau)=\E(\mathrm{Var}(W_\tau|{\cal F}_0))$"]
+- preconditions: ["$\E(W_\tau|{\cal F}_0)=\E(W_\tau)$"]
+  arguments: ["Propriété du mouvement brownien"]
+  outcomes: ["$\mathrm{Var}(W_\tau)=\E(\mathrm{Var}(W_\tau|{\cal F}_0))=\mathrm{Var}(W_\tau)$"]
+- preconditions: ["$\E(W_\tau)=\E(\E(W_\tau|{\cal F}_0))$"]
+  arguments: ["Calcul de l'espérance conditionnelle finale"]
+  outcomes: ["$\E(W_\tau)=\E(\E(W_\tau|{\cal F}_0))=0$"]
+```

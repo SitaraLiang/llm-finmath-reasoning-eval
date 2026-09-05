@@ -1,0 +1,52 @@
+pc: '4'
+exercise: '4'
+language: fr
+variation: baseline
+prompt_type: prompt_accumulation
+call1_output_mode: plain_text
+call1_model: qwen2.5-coder-0.5b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - tau est un temps d'arrêt borné
+        outcomes:
+        - calculer E(W_tau)
+    -   preconditions: []
+        arguments:
+        - equation de Brownien
+        outcomes:
+        - W_t = (w_0*e^(it_t)) / sqrt(1 - e^(it_t) + 1)
+    -   preconditions: []
+        arguments:
+        - E(W_tau) = w_0 / sqrt(1 - e^(it_t))
+        outcomes:
+        - valeur de E(W_tau) est egale a (w_0) / (sqrt(1 - e^(it_t)) + 1)
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - tau est un temps d'arrêt borné
+        outcomes:
+        - E(W_tau^2)
+        strength: 1
+    -   preconditions: []
+        arguments:
+        - equation du mouvement brownien
+        - propriétés de la variance en temps réel (Var[W(t)])
+        outcomes:
+        - variance en temps réel est une fonction de t qui dépend directement de la
+            moyenne μ du mouvement brownien
+        strength: 1
+    -   preconditions: []
+        arguments:
+        - tau = t
+        outcomes:
+        - \[ \var[W(t)] = \mu^2 \]
+        strength: 1
+    -   preconditions: []
+        arguments:
+        - résultat
+        outcomes:
+        - \[\boxed{\mu^2}\]
+        strength: 1

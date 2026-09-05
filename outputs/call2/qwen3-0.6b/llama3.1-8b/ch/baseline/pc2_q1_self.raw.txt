@@ -1,0 +1,21 @@
+### Question block 1
+```yml
+atoms:
+- preconditions: [X₀=0]
+  arguments: ["X是零均值高斯过程"]
+  outcomes: ["Cov(X_s,X_t)=inf(s,t)"]
+- preconditions: []
+  arguments: ["X是布朗运动"]
+  outcomes: ["X₀=0", "Cov(X_s,X_t)=s·t"]
+```
+
+### Question block 2
+```yml
+atoms:
+- preconditions: [X₀=0]
+  arguments: ["\boxed{布朗运动的定义}","\boxed{协方差 Cov(X_s,X_t)=s·t}"]
+  outcomes: ["\boxed{X_t \text{ is a Brownian motion if and only if } X_0 = 0 \text{ and } \text{Cov}(X_s, X_t) = \inf(s, t)}"]
+- preconditions: [协方差 Cov(X_s,X_t)=s·t]
+  arguments: ["\boxed{题目中的条件}","\boxed{\inf(s,t)}"]
+  outcomes: ["\boxed{X_t \text{ is a Brownian motion if and only if } X_0 = 0 \text{ and } \text{Cov}(X_s, X_t) = \inf(s, t)}"]
+```

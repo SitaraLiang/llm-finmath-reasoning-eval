@@ -1,0 +1,27 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions: []
+  arguments:
+  - "Lorsque $\tau$ est un temps d'arr\^et born\'e"
+  outcomes:
+  - "Calculer $\E(W_\tau)$"
+  strength: "Calculation"
+- preconditions:
+  - "On utilise l'équation du montant actuel pour le mouvement brownien"
+  arguments:
+  - "$$ W_t = W_0 e^{-rt} + \frac{r}{2}\left(e^{-(r-\sigma^2)t} - 1\right) $$"
+  outcomes:
+  - "Notez que $t$ est un temps d'arrêt, qui est à l'origine de $\tau$"
+  strength: "Definition"
+- preconditions:
+  - "Nous calculons donc le montant actuel"
+  arguments:
+  - "$$ W_\tau = W_0 e^{-\tau r} $$"
+  outcomes: []
+  strength: "Calculation"
+```

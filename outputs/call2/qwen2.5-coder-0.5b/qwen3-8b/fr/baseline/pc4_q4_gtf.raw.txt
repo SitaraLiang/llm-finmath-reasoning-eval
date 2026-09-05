@@ -1,0 +1,50 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "τ est un temps d'arrêt borné"
+  arguments:
+  - "Calculer E(W_τ)"
+  outcomes:
+  - "W_τ = E(W_t) - β W_t"
+  strength: "Calculation"
+- preconditions:
+  - "τ est un temps d'arrêt borné"
+  arguments:
+  - "Multiplier l'équation par 2"
+  outcomes:
+  - "W_{2τ} = 2 (E(W_t) - β W_t)"
+  strength: "Calculation"
+- preconditions:
+  - "τ est un temps d'arrêt non borné"
+  arguments:
+  - "Utiliser le facteur de covariance 1 + β²"
+  outcomes:
+  - "W_{2τ} = 2 (E(W_t) - β W_t) · 1 + 2 β²"
+  strength: "Theorem"
+- preconditions:
+  - "τ est un temps d'arrêt non borné"
+  arguments:
+  - "Simplifier l'expression"
+  outcomes:
+  - "W_{2τ} = 2 (E(W_t) - β W_t) + 2 β²"
+  strength: "Calculation"
+- preconditions:
+  - "τ est un temps d'arrêt non borné"
+  arguments:
+  - "Utiliser le facteur de variance 1 + 4β²"
+  outcomes:
+  - "E(W_{2τ}) = 2 (E(W_t) - β W_t) + 2 β² · 1 + (2 β²)^2"
+  strength: "Theorem"
+- preconditions:
+  - "τ est un temps d'arrêt non borné"
+  arguments:
+  - "Simplifier l'expression"
+  outcomes:
+  - "E(W_{2τ}) = 2 (E(W_t) - β W_t) + 2 β² + 4 β^4"
+  strength: "Calculation"
+```

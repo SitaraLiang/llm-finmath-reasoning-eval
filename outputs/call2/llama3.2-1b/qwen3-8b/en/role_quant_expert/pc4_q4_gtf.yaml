@@ -1,0 +1,24 @@
+pc: '4'
+exercise: '4'
+language: en
+variation: role_quant_expert
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: llama3.2-1b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - Let $W_t$ be a Brownian motion with $\tau$ being a bounded stopping time.
+        arguments:
+        - Calculation
+        outcomes:
+        - $\E(W_\tau) = 1$
+-   atoms:
+    -   preconditions:
+        - When $\tau$ is a bounded stopping time
+        arguments:
+        - Calculation
+        outcomes:
+        - $\E(W_\tau^2) = \left[\frac{1}{2}\mathrm{Var}(W_s)\right]_{s=0}^{\tau} P(0)
+            + 2\int_0^\tau \mathrm{Cov}(W_s,W_\tau) ds P(0)$

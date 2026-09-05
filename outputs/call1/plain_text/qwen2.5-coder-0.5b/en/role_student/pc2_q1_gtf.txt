@@ -1,0 +1,65 @@
+Exercise: pc2_q1
+Model: qwen2.5-coder:0.5b
+Variation: role_student
+Prompt type: ground_truth_forcing
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+A process $(X_t)_{t\in \mathbb{R}^+$$ is a Brownian motion if and only if $X_0=0$, $(X_t)_{t\in \mathbb{R}^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t)$.
+
+Let's break down the question into two parts:
+
+1. **Show that $(X_t)_{t\in \mathbb{R}^+$$ is a Brownian motion if and only if $X_0=0$, $(X_t)_{t\in \mathbb{R}^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t)$."
+2. **Show that $(X_t)_{t\in \mathbb{R}^+$$ is a Brownian motion if and only if $X_0=0$, $(X_t)_{t\in \mathbb{R}^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t)$."
+
+### Part 1: Show that $(X_t)_{t\in \mathbb{R}^+$$ is a Brownian motion if and only if $X_0=0$, $(X_t)_{t\in \mathbb{R}^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t)$."
+
+To show that a process $(X_t)_{t\in \mathbb{R}^+$$ is a Brownian motion if and only if $X_0=0$, $(X_t)_{t\in \mathbb{R}^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t)$, we need to prove that the two processes are not necessarily identical. However, we can demonstrate this by assuming they are not identical.
+
+1. **Assume $X_0=0$ and $(X_t)_{t\in \mathbb{R}^+}$ is a centered Gaussian process.**
+2. **Since $(X_t)_{t\in \mathbb{R}^+$$ is a centered Gaussian process, it follows that $(X_s)_{s\in \mathbb{R}^+}$ is also a centered Gaussian process.** This is because the covariance matrix of a centered Gaussian process with mean 0 and variance 1 is always constant.
+3. **Now, consider the equation ${\rm Cov}(X_s,X_t)=\inf(s,t)$.**
+   - If $(X_t)_{t\in \mathbb{R}^+}$ is a centered Gaussian process, then $s$ must be zero because $\text{Cov}(0, t) = 0$. This implies that $\inf(t, s) = 0$, which means $X_s$ is a Brownian motion.
+   - However, if $(X_t)_{t\in \mathbb{R}^+}$ is not centered Gaussian process (i.e., $\text{Cov}(X_s,X_t) > \inf(s,t)$), then there must exist some $s < t$ such that $\text{Cov}(X_s, X_t) > \inf(s,t)$. This means that the variance of the difference between $X_s$ and $X_t$ is not constant, which contradicts the given condition ${\rm Cov}(X_s,X_t)=\inf(s,t)$.
+
+Therefore, the two processes are identical if and only if $X_0=0$, $(X_t)_{t\in \mathbb{R}^+}$ is a centered Gaussian process, and ${\rm Cov}(X_s,X_t)=\inf(s,t)$. This can be written as:
+\[ X_0 = 0, \quad (X_t)_{t\in \mathbb{R}^+} = (X_s)_{s\in \mathbb{R}^+}, \quad \text{Cov}(X_s,X_t) = \inf(s,t). \]
+
+### Part 2: Show that $(X_t)_{t\in \mathbb{R}^+$$ is a Brownian motion if and only if $X_0=0$, $(X_t)_{t\in \mathbb{R}^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t)$."
+
+To show that $(X_t)_{t\in \mathbb{R}^+$$ is a Brownian motion if and only if $X_0=0$, $(X_t)_{t\in \mathbb{R}^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t)$.
+
+1. **Assume $X_0=0$ and $(X_t)_{t\in \mathbb{R}^+}$ is not a centered Gaussian process (i.e., $\text{Cov}(X_s,X_t) < \inf(s,t)$).**
+2. **If $(X_t)_{t\in \mathbb{R}^+}$ is not centered Gaussian process, then there must exist some $s < t$ such that $\text{Cov}(X_s, X_t) < \inf(s,t)$. This means that the variance of the difference between $X_s$ and $X_t$ is not constant, which contradicts the given condition ${\rm Cov}(X_s,X_t)=\inf(s,t)$.**
+3. **Now, consider the equation ${\rm Cov}(X_s,X_t)=\inf(s,t)$.**
+   - If $(X_t)_{t\in \mathbb{R}^+}$ is not centered Gaussian process, then there must exist some $s < t$ such that $\text{Cov}(X_s, X_t) > \inf(s,t)$. This means that the variance of the difference between $X_s$ and $X_t$ is constant, which contradicts the given condition ${\rm Cov}(X_s,X_t)=\inf(s,t)$.
+4. **Since $(X_t)_{t\in \mathbb{R}^+}$ is not a centered Gaussian process (i.e., $\text{Cov}(X_s,X_t) < \inf(s,t)$), then there must exist some $s < t$ such that $\text{Cov}(X_s, X_t) > \inf(s,t)$. This means that the variance of the difference between $X_s$ and $X_t$ is constant. Therefore, $(X_t)_{t\in \mathbb{R}^+$$ is a Brownian motion.
+
+Therefore, the two processes are identical if and only if $X_0=0$, $(X_t)_{t\in \mathbb{R}^+}$ is not a centered Gaussian process (i.e., $\text{Cov}(X_s,X_t) < \inf(s,t)$), and ${\rm Cov}(X_s,X_t)=\inf(s,t)$. This can be written as:
+\[ X_0 = 0, \quad (X_t)_{t\in \mathbb{R}^+} = (X_s)_{s\in \mathbb{R}^+}, \quad \text{Cov}(X_s,X_t)=\inf(s,t). \]
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+To show that \( \{X_t = t \cdot W_{\frac{1}{t}}, t > 0, X_0 = 0 \} \) is a Brownian motion, we need to establish the necessary conditions for the law of increments to hold.
+
+### Global Assumptions:
+- **Independence of \( X_s \) and \( X_t - X_s \)**: This is a requirement for a process to be a Brownian motion.
+- **Standard Brownian Motion has Gaussian increments**: This is another crucial property that is necessary for Brownian motion to hold.
+
+### Previous Questions and Exact Solutions:
+1. **Question 1**:
+   - **Preconditions**: We show that \( \{X_t = t \cdot W_{\frac{1}{t}}, t > 0, X_0 = 0 \} \) is a Brownian motion if and only if \( X_0 = 0 \), \( (X_t)_{t \in \R^+} \) is a centered Gaussian process, and the covariance is bounded.
+   - **Exact Solution**: The solution involves decomposing \( X_t = X_s + (X_t - X_s) \). The covariance of this decomposition is calculated to be \(\min(s,t)\).
+
+2. **Question 2**:
+   - **Preconditions**: We show that \( \{X_t = t \cdot W_{\frac{1}{t}}, t > 0, X_0 = 0 \} \) is a Brownian motion if and only if \( \{W_t\}, W_{\frac{1}{t}}, W_{t+1}\) are independent. Additionally, the law of increments is Gaussian centered of variance \( t - s \), i.e., \(\mathcal{N}(0, t-s)\).
+
+### Local Assumptions:
+- **No Constraints**: There are no additional local assumptions needed to show the properties of \( \{X_t = t \cdot W_{\frac{1}{t}}, t > 0, X_0 = 0 \} \) being a Brownian motion.
+
+### Conclusion:
+The solution to both questions is that \( \{X_t = t \cdot W_{\frac{1}{t}}, t > 0, X_0 = 0 \} \) is indeed a Brownian motion if and only if \( (X_t)_{t \in \R^+}, \{W_t\}, W_{\frac{1}{t}}, W_{t+1}\) are independent.

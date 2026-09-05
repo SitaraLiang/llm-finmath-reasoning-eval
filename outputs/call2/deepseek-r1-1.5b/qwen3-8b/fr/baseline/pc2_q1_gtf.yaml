@@ -1,0 +1,65 @@
+pc: '2'
+exercise: '1'
+language: fr
+variation: baseline
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: deepseek-r1-1.5b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0 = 0
+        - X_t est un processus gaussien centré
+        - Cov(X_s, X_t) = inf(s, t)
+        arguments:
+        - Montrer que X_0 = 0 est une condition nécessaire pour un mouvement brownien
+        - Montrer que X_t est un processus gaussien centré est une condition nécessaire
+            pour un mouvement brownien
+        - Montrer que Cov(X_s, X_t) = inf(s, t) est une condition nécessaire pour
+            un mouvement brownien
+        outcomes:
+        - X_0 = 0 est une condition nécessaire pour un mouvement brownien
+        - X_t est un processus gaussien centré est une condition nécessaire pour un
+            mouvement brownien
+        - Cov(X_s, X_t) = inf(s, t) est une condition nécessaire pour un mouvement
+            brownien
+        strength: 1
+    -   preconditions:
+        - X_0 = 0
+        - X_t est un processus gaussien centré
+        - Cov(X_s, X_t) = inf(s, t)
+        arguments:
+        - Montrer que X_0 = 0 est une condition suffisante pour un mouvement brownien
+        - Montrer que X_t est un processus gaussien centré est une condition suffisante
+            pour un mouvement brownien
+        - Montrer que Cov(X_s, X_t) = inf(s, t) est une condition suffisante pour
+            un mouvement brownien
+        outcomes:
+        - X_0 = 0 est une condition suffisante pour un mouvement brownien
+        - X_t est un processus gaussien centré est une condition suffisante pour un
+            mouvement brownien
+        - Cov(X_s, X_t) = inf(s, t) est une condition suffisante pour un mouvement
+            brownien
+        strength: 1
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - X_0 = 0
+        outcomes: []
+    -   preconditions: []
+        arguments:
+        - X_t = t W_{1/t} est un processus gaussien centré
+        outcomes: []
+    -   preconditions: []
+        arguments:
+        - Cov(X_t, X_s) = min(t, s)
+        outcomes: []
+    -   preconditions: []
+        arguments:
+        - Cov(X_s - X_t, X_u - X_v) = 0 pour t < s < u < v
+        outcomes: []
+    -   preconditions: []
+        arguments:
+        - Les trajectoires de X_t sont continues
+        outcomes: []

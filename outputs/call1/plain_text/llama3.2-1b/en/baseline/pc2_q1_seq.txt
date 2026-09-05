@@ -1,0 +1,134 @@
+Exercise: pc2_q1
+Model: llama3.2:1b
+Variation: baseline
+Prompt type: strictly_sequential
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+Given the process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if:
+
+$$
+X_0 = 0,
+$$
+
+$$
+(X_t)_{t\in \R^+} \text{ is a centered Gaussian process,} \\
+{\rm Cov}(X_s,X_t)=\inf(s,t).
+$$
+
+To show that the first condition implies the second, we start by assuming that $X_0=0$. Then, for any fixed $s>0$, let $t=s$ and use the definition of covariance:
+
+$$
+{\rm Cov}(X_s,X_t) = {\rm Cov}(\int_{0}^t X_u \, du, \int_{0}^s X_v \, dv)
+$$
+
+Using Fubini's theorem on the inner integral (which is a normal integral), we get:
+
+$$
+{\rm Cov}(X_s,X_t) = \int_0^s {\rm Cov}\left(\int_u X_u \, du, X_v \right) \, dv.
+$$
+
+Since $X_0=0$, this simplifies to:
+
+$$
+{\rm Cov}(X_s,X_t) = -\int_{u=t}^{t+s} X_u^2 \, du.
+$$
+
+For any $t>0$, we can define a new process $(Y_t)_{t\in \R^+}$ as:
+
+$$
+Y_t = \left\{ \begin{array}{ll}
+X_s & \text{if } u=s, \\
+0 & \text{otherwise}.
+\end{array} \right.
+$$
+
+Using the fact that $X_0=0$ and the above expression for ${\rm Cov}(X_s,X_t)$, we get:
+
+$$
+{\rm Cov}(Y_s,Y_t) = {\rm Cov}(X_s,X_t),
+$$
+
+which implies that $(Y_t)_{t\in \R^+}$ is also a centered Gaussian process.
+
+To show that the second condition implies the first, assume that $X_0=0$ and $(X_t)_{t\in \R^+}$ is a centered Gaussian process. We need to show that $(X_t)_{t\in \R^+}$ is a Brownian motion. To do this, we use Ito's lemma for the function $f(t,x)=x$. 
+
+Let $\Delta t=\inf\{s,t:s>t\}$. Then:
+
+$$
+dX_s = f(X_s,X_t)\Delta t + \frac{1}{2}\sigma^2(dX_{\Delta t})^2,
+$$
+
+where $\sigma$ is the volatility of $(X_t)_{t\in \R^+}$.
+
+Using Ito's lemma for $f(t,x)=x$, we get:
+
+$$
+dX_s = X_s dX_s + X_s\frac{1}{2}\sigma^2 dt,
+$$
+
+where $\frac{1}{2}\sigma^2$ is the time derivative of the variance (since $(X_t)_{t\in \R^+}$ is a centered Gaussian process). This implies that $dX_s=X_s dW_s$, where $W_s$ is a standard Brownian motion.
+
+Since $\Delta t=\inf\{s,t:s>t\}=0$, we have:
+
+$$
+X_0 = X_s,
+$$
+
+which shows that $(X_t)_{t\in \R^+}$ is indeed a Brownian motion.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+To show that $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion, we need to verify that it satisfies the following properties:
+
+(i) $X_t$ is a martingale;
+
+(ii) $X_t$ has stationary increments;
+
+(iii) $X_t - X_s$ is independent of $W_{\frac 1s}$ for $s < t$.
+
+We start by computing the first partial derivatives of $X_t$ with respect to $t$. We have:
+
+$$
+\begin{aligned}
+X_t &= t\;W_{\frac 1t} \\
+\frac{\partial X_t}{\partial t} &= \frac{\partial (t\;W_{\frac 1t})}{\partial t} = W_{\frac 1t} \cdot \frac{\partial}{\partial t}(t)W_{\frac 1t} = W_{\frac 1t}
+\end{aligned}
+$$
+
+Since $W_t$ is a martingale, we have $\mathbb{E}[X_t | \mathcal{F}_s] = X_s$ for any $s < t$. We also know that $\mathbb{E}[(X_t - X_s)^2 | \mathcal{F}_s] = \mathrm{Var}(W_{\frac 1s}) = s$, which implies that $\mathbb{E}[X_t| \mathcal F_s] = X_s + s$.
+
+Now, we can compute the second partial derivatives of $X_t$. We have:
+
+$$
+\begin{aligned}
+\frac{\partial^2 X_t}{\partial t^2} &= \frac{\partial (t\;W_{\frac 1t})}{\partial t} = W_{\frac 1t} \cdot \frac{\partial}{\partial t}(t)W_{\frac 1t} + W_{\frac 1t} \cdot \left(-\frac{1}{t^2}\right)W_{\frac 1t} \\
+&= -W_{\frac 1t} + W_{\frac 1t} = 0
+\end{aligned}
+$$
+
+The first and second partial derivatives of $X_t$ are zero, which implies that $X_t$ is a process with stationary increments.
+
+To show that $X_t - X_s$ is independent of $W_{\frac 1s}$ for $s < t$, we can use the fact that the difference between two martingales is also a martingale. We have:
+
+$$
+\begin{aligned}
+(X_t - X_s)^2 &= (t\;W_{\frac 1t} - s\;W_{\frac 1s})^2 \\
+&= t^2 W_{\frac 1t}^2 - 2tsW_{\frac 1t}W_{\frac 1s} + s^2 W_{\frac 1s}^2
+\end{aligned}
+$$
+
+Since $W_t$ is a martingale, we have $\mathbb{E}[X_t| \mathcal F_s] = X_s$, which implies that:
+
+$$
+\begin{aligned}
+\mathbb{E}[X_t - X_s | \mathcal F_s] &= \mathbb{E}[(t\;W_{\frac 1t}) - (s\;W_{\frac 1s})| \mathcal F_s] \\
+&= t - s
+\end{aligned}
+$$
+
+This shows that $(X_t - X_s)^2$ is a function of $s$, which implies that the difference between two martingales is also a martingale. Therefore, $X_t - X_s$ is independent of $W_{\frac 1s}$ for $s < t$.

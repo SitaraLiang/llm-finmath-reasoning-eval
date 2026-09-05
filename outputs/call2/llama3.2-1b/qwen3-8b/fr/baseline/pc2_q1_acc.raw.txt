@@ -1,0 +1,80 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien."
+  arguments:
+  - "On doit montrer que $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien centré et ${\rm Cov}(X_s,X_t)=\inf(s,t).$"
+  outcomes:
+  - "La réponse est : Oui."
+  strength: 1
+- preconditions:
+  - "On suppose que $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien centré et ${\rm Cov}(X_s,X_t)=\inf(s,t).$"
+  arguments:
+  - "On doit montrer que $(X_t)_{t\in \R^+}$ est un mouvement brownien."
+  outcomes:
+  - "La réponse est : Oui."
+  strength: 1
+```
+
+### Question block 2
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "W_t est un mouvement brownien"
+  arguments:
+  - "On considère le processus X_t = t W_{1/t} pour t > 0 et X_0 = 0"
+  outcomes:
+  - "X_t est un mouvement brownien"
+  strength: "Calculation"
+- preconditions:
+  - "W_t est un mouvement brownien"
+  arguments:
+  - "On définit Y_t comme un processus brownien de covariance σ"
+  outcomes:
+  - "(X_t - t * (1/t))^2 = (Y_t - σ)^2"
+  strength: "Definition"
+- preconditions:
+  - "W_t est un mouvement brownien"
+  arguments:
+  - "On applique l'inégalité des quartiles"
+  outcomes:
+  - "(X_t - t * (1/t)) ≥ Y_{1/2} - σ"
+  strength: "Theorem"
+- preconditions:
+  - "W_t est un mouvement brownien"
+  arguments:
+  - "On applique l'inégalité des quartiles"
+  outcomes:
+  - "(X_t - t * (1/t)) ≤ Y_{1/2} + σ"
+  strength: "Theorem"
+- preconditions:
+  - "W_t est un mouvement brownien"
+  arguments:
+  - "On conclut que X_t - t * (1/t) est strictement inférieur ou égal à sa moyenne"
+  outcomes:
+  - "L'ensemble des carrés de X_t - t * (1/t) est strictement inférieur ou égal à son average"
+  strength: "Property"
+- preconditions:
+  - "W_t est un mouvement brownien"
+  arguments:
+  - "On conclut que X_t - t * (1/t) est un mouvement brownien si et seulement s'il est un processus gaussien centré"
+  outcomes:
+  - "X_t est un mouvement brownien"
+  strength: "Theorem"
+- preconditions:
+  - "W_t est un mouvement brownien"
+  arguments:
+  - "On calcule (Y_{1/2} - σ)^2"
+  outcomes:
+  - "(Y_{1/2} - σ)^2"
+  strength: "Calculation"
+```

@@ -1,0 +1,57 @@
+Exercise: pc4_q4
+Model: llama3.1:8b
+Variation: role_student
+Prompt type: ground_truth_forcing
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+## Step 1: Recall the definition of Brownian Motion
+A Brownian Motion $W_t$ satisfies the following properties:
+- $W_0 = 0$
+- $W_t - W_s \sim \mathcal{N}(0, t-s)$ for $t > s$
+- The increments are independent
+
+## Step 2: Recall the definition of a bounded stopping time
+A stopping time $\tau$ is said to be bounded if there exists a constant $M$ such that $\tau < M$ almost surely.
+
+## Step 3: Compute the expectation using the properties of Brownian Motion
+Since $W_t \sim \mathcal{N}(0, t)$ for any $t$, we have:
+$\E(W_\tau) = \int_{-\infty}^{\infty} x f(x) dx$
+where $f(x)$ is the probability density function of a normal distribution with mean 0 and variance $\tau$.
+
+## Step 4: Evaluate the integral
+Since the mean of a normal distribution is 0, we have:
+$\E(W_\tau) = \int_{-\infty}^{\infty} x f(x) dx = 0$
+
+The final answer is: $\boxed{0}$
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+## Step 1: Recall the properties of Brownian Motion
+Brownian motion $(W_t)_{t\geq 0}$ has the property that it is a martingale, meaning its expected value at any time $t$ is equal to its initial value.
+
+## Step 2: Apply Doob's optional stopping theorem
+Since $\tau$ is a bounded stopping time and $(W_t)_{t\geq 0}$ is a martingale, we can apply Doob's optional stopping theorem. This theorem states that for a martingale $(X_t)_{t\geq 0}$ and a bounded stopping time $\tau$, the expected value of $X_\tau$ is equal to the initial value of $X_0$. In this case, since Brownian motion starts at 0, its expected value remains 0.
+
+## Step 3: Compute the second moment using the martingale property
+However, for the second moment $\E(W_\tau^2)$, we cannot directly apply Doob's optional stopping theorem because it does not provide information about higher moments. Instead, we use the fact that Brownian motion has independent increments and is normally distributed with mean 0 and variance equal to its time parameter $t$. Therefore, for a bounded stopping time $\tau$, the distribution of $W_\tau$ is normal with mean 0 and variance $\E(\tau)$.
+
+## Step 4: Calculate the expected value of the second moment
+Using the properties of the normal distribution, we can compute the expected value of the second moment as follows:
+\[ \mathbb{E}[W_\tau^2] = \mathrm{Var}(W_\tau) + (\mathbb{E}[W_\tau])^2. \]
+Since $\mathbb{E}[W_\tau] = 0$ from Doob's optional stopping theorem, we have
+\[ \mathbb{E}[W_\tau^2] = \mathrm{Var}(W_\tau). \]
+
+## Step 5: Determine the variance of $W_\tau$
+Since $\tau$ is a bounded stopping time and Brownian motion has independent increments, the variance of $W_\tau$ is equal to the expected value of $\tau$, i.e.,
+\[ \mathrm{Var}(W_\tau) = \E(\tau). \]
+
+## Step 6: Combine the results
+Combining the results from steps 4 and 5, we have
+\[ \mathbb{E}[W_\tau^2] = \E(\tau). \]
+
+The final answer is: $\boxed{\E(\tau)}$

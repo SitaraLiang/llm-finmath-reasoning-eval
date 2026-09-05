@@ -1,0 +1,25 @@
+pc: '4'
+exercise: '4'
+language: en
+variation: role_student
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: deepseek-r1-1.5b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - Let $ \tau $ be a bounded stopping time.
+        - Let $ W_t $ be a standard Brownian Motion.
+        arguments:
+        - Martingale Property
+        outcomes:
+        - E(W_\\tau) = 0
+-   atoms:
+    -   preconditions:
+        - τ is a bounded stopping time
+        - W is a standard Brownian motion
+        arguments:
+        - Calculation
+        outcomes:
+        - E(W_τ²) = E(τ)

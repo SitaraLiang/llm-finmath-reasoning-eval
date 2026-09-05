@@ -1,0 +1,58 @@
+Exercise: pc4_q4
+Model: qwen2.5-coder:0.5b
+Variation: role_student
+Prompt type: self_history
+
+Question 1:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau)$.
+
+Answer:
+To solve the problem of finding \(\E(W_\tau)\) when \(\tau\) is a bounded stopping time, we need to use some properties of Brownian Motion and Stochastic Integration.
+
+Firstly, recall that for a Brownian Motion \(W_t\), the expected value of its path can be computed using the formula:
+\[
+\mathbb{E}(W_t) = \int_0^t W_s \, ds
+\]
+However, since we are given that \(\tau\) is a bounded stopping time, the integral can be simplified. Specifically, if \(\tau\) is in the interval \([a, b]\), then:
+\[
+\mathbb{E}(W_\tau) = \int_a^b W_s \, ds
+\]
+This is because the expected value of a Brownian Motion over an interval is the same as the expected value of its path on that interval.
+
+Now, we can substitute this formula into our given equation:
+\[
+\mathbb{E}(W_\tau) = \int_a^b W_s \, ds = \left[ W_a + W_b \right]_a^b
+\]
+This means that the expected value of \(W_{\tau}\) is the sum of the values of \(W_a\) and \(W_b\) at points \(t = a\) and \(t = b\), respectively.
+
+Therefore, the final answer is:
+\[
+\boxed{\left[ W_a + W_b \right]_a^b}
+\]
+
+Question 2:
+When $\tau$ is a bounded stopping time, compute $\E(W_\tau^2)$.
+
+Answer:
+To solve the problem of finding \(\E(W_{\tau}^2)\) when \(\tau\) is a bounded stopping time, we can use some properties of Brownian Motion and Stochastic Integration.
+
+First, recall that for a Brownian Motion \(W_t\), the expected value of its path can be computed using the formula:
+\[
+\mathbb{E}(W_t) = \int_0^t W_s \, ds
+\]
+However, since we are given that \(\tau\) is a bounded stopping time, the integral can be simplified. Specifically, if \(\tau\) is in the interval \([a, b]\), then:
+\[
+\mathbb{E}(W_\tau) = \int_a^b W_s \, ds
+\]
+This is because the expected value of a Brownian Motion over an interval is the same as the expected value of its path on that interval.
+
+Now, we can substitute this formula into our given equation:
+\[
+\mathbb{E}(W_{\tau}^2) = \int_a^b W_s^2 \, ds
+\]
+This means that the expected value of \(W_{\tau}^2\) is the sum of the squares of the values of \(W_a\) and \(W_b\) at points \(t = a\) and \(t = b\), respectively.
+
+Therefore, the final answer is:
+\[
+\boxed{\int_a^b W_s^2 \, ds}
+\]

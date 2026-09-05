@@ -1,0 +1,26 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_student
+prompt_type: self_history
+call1_output_mode: plain_text
+call1_model: qwen2.5-coder-0.5b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0=0
+        - (X_t)_{t\in \R^+} is a centered Gaussian process
+        - Cov(X_s,X_t)=inf(s,t)
+        arguments:
+        - Definition of Brownian motion
+        outcomes:
+        - A process (X_t)_{t\in \R^+} is a Brownian motion if and only if X_0=0, (X_t)_{t\in
+            \R^+} is a centered Gaussian process, Cov(X_s,X_t)=inf(s,t)
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Calculation
+        outcomes:
+        - X_t=t\;W_{\frac 1t} is a Brownian motion

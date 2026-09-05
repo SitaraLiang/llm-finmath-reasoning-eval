@@ -1,0 +1,28 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien si et seulement si: $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien centr\'e, ${\rm Cov}(X_s,X_t)=\inf(s,t)$."
+  arguments:
+  - "Soit $(X_t)_{t\in \R^+}$ une donnée de processus $(X_t)_{t\in \R^+}$. Soient-ils centr\'es et inférieurs ou égaux à $\inf(0,T)$. Si c'est le cas, alors:"
+  outcomes:
+  - "1. $X_s=X_0$ pour tout $s<t$ ;"
+  - "2. ${\rm Cov}(X_{t+s},X_{t})={\rm Cov}(X_s,X_t)$ pour tout $s\in \R^+$. "
+- preconditions:
+  - "Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien si et seulement si: $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien centr\'e, ${\rm Cov}(X_s,X_t)=\inf(s,t)$."
+  arguments:
+  - "La condition de centralit\'e et la condensation du premier des deux conditions suivent directement d'entre elles. Les conditions sur la covariance sont alors les mêmes pour deux processus centraux."
+  outcomes:
+  - "1. Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien."
+  - "2. Le processus $(X_s+X_0)_{s\in \R^+}$ est centr\'e, i.e. ${\rm Cov}(X_{t+s},X_t)={\rm Cov}(X_s,X_t)$ pour tout $s\in \R^+$. "
+  - "3. Le processus $(X_{t+s})_{s\in \R^+}$ est centr\'e et inf\'erieur ou égal au premier terme de la succession $X_0,\ldots, X_s$. "
+- preconditions:
+  - "Le processus $(X_t)_{t\in \R^+}$ est un mouvement brownien si et seulement si: $X_0=0$, $(X_t)_{t\in \R^+}$ est un processus gaussien centr\'e, ${\rm Cov}(X_s,X_t)=\inf(s,t)$."
+  arguments:
+  - "Si $s<t$ alors: $(X_t)_{t\in \R^+}=(X_{s+t})_{t\in \R^+} = (X_t+X_{s+t})_{t\in \R^+}$. Soit $a=\inf(0,T)$ et considère le processus $(X_t+X_{s+t})_{t\in \R^+}$ : il est centr\'e, puisque la condition de centralit\'e pour les deux proches processus $(X_t)_{t\in \R^+}$ et $(X_t+X_{s+t})_{t\in \R^+}$ est suffisante. Il s'agit alors d'appliquer la condition de centration sur le premier terme de la succession $X_0,\ldots, X_s$. "
+  outcomes:
+  - "1. Si $s<t$ alors: $(X_t)_{t\in \R

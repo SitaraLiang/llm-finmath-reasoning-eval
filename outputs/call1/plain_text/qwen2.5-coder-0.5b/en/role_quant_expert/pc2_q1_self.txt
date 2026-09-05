@@ -1,0 +1,148 @@
+Exercise: pc2_q1
+Model: qwen2.5-coder:0.5b
+Variation: role_quant_expert
+Prompt type: self_history
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To show that the process \((X_t)_{t \in \mathbb{R} + \infty}\) defined by \(X_0 = 0\) and a centered Gaussian process \(\{X_s\}\), where \(\{\rm Cov}(X_s, X_t) = \inf(s, t)\), is a Brownian motion, we need to verify that for all \(t > 0\),
+
+\[ E[X_t] = E[\exp[-X_t]] \]
+
+Let's proceed step-by-step:
+
+1. **Define the process:**
+   - We start with the centered Gaussian process \(\{X_s\}\) where \(\{\rm Cov}(X_s, X_t) = \inf(s, t)\).
+   - The process \(X_t\) is defined by:
+     \[
+     X_t = E[X_s + sI] \quad \text{for some Brownian integer } I
+     \]
+
+2. **Expand the exponent:**
+   - Using the properties of the Gaussian process and the covariance condition, we can expand the exponent as follows:
+     \[
+     E[X_t] = E[E[X_s + sI]]
+     \]
+   - The expectation of a centered Gaussian random variable \(X_i\) with mean 0 and variance 1 is given by \(E[X_i] = i\).
+
+3. **Use the fact that \(\{X_s\}\) is centered:**
+   - By the definition of the centered Gaussian process, we know that \(\mathbb{E}[X_s^2] = \frac{1}{2}\). Since \(\{\rm Cov}(X_s, X_t) = \inf(s, t)\), we have:
+     \[
+     E[X_s^2 + sI] = \frac{1}{2} + sE[I]
+     \]
+
+4. **Substitute the expanded form of \(X_t\):**
+   - Substitute \(X_t = i\) into the expanded form of \(E[X_s^2 + sI]\):
+     \[
+     E[i] = \frac{1}{2} + si
+     \]
+
+5. **Add \(i\) to both sides:**
+   - The expectation of a random variable is the sum of its expected values, so:
+     \[
+     E[X_t] = \left(\frac{1}{2} + si\right) + i = \frac{1}{2} + 2si
+     \]
+
+6. **Simplify the expression:**
+   - Combine like terms on the right-hand side:
+     \[
+     E[X_t] = \frac{1}{2} + 2si + i^2 = \frac{1}{2} + 2si + (-1) = \frac{1}{2} + 2si - 1 = \frac{1}{2} + 2si - 1
+     \]
+
+7. **Combine the constants on the left-hand side:**
+   - Combine \(\frac{1}{2}\) and \(2i\):
+     \[
+     E[X_t] = \frac{1}{2} + 2i + \frac{4}{2}i = \frac{1}{2} + \frac{6}{2}i
+     \]
+
+8. **Use the property of Brownian motion:**
+   - For any Brownian integer \(I\), we have:
+     \[
+     E[X_t] = i
+     \]
+   - Therefore, for all \(t > 0\):
+     \[
+     E[X_t] = i = \frac{1}{2} + 2si
+     \]
+
+Thus, the process \((X_t)_{t \in \mathbb{R} + \infty}\) is indeed a Brownian motion.
+
+The final answer to Question 1 is:
+\[
+\boxed{\text{True}}
+\]
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+To show that the process \(\{X_t = t\; W_{\frac{1}{t}}, t > 0\}\) defined by \(W_0 = 0\) and \(X_t = t\; W_{\frac{1}{t}}\) is a Brownian motion, we need to verify that for all \(t > 0\),
+
+\[ E[X_t] = E[\exp[-X_t]] \]
+
+Let's proceed step-by-step:
+
+1. **Define the process:**
+   - We start with the Brownian motion \(W_0 = 0\) and the random variable \(X_t = t\; W_{\frac{1}{t}}\).
+
+2. **Expand the exponent:**
+   - Using the properties of the Brownian integer \(I\) and the fact that \(\{\rm Cov}(W_s, X_t) = \inf(s, t)\), we can expand the exponent as follows:
+     \[
+     E[X_t] = E[\exp[-W_t]]
+     \]
+   - The expectation of a centered Gaussian random variable \(X_i\) with mean 0 and variance 1 is given by \(E[X_i] = i\).
+
+3. **Use the fact that \(W_s\) is centered:**
+   - By the definition of the centered Gaussian process, we know that \(\mathbb{E}[W_s^2] = \frac{1}{2}\). Since \(\{\rm Cov}(X_s, X_t) = \inf(s, t)\), we have:
+     \[
+     E[W_s^2 + sI] = \frac{1}{2} + sE[I]
+     \]
+
+4. **Substitute the expanded form of \(X_t\):**
+   - Substitute \(W_t = t\) into the expanded form of \(E[X_s^2 + sI]\):
+     \[
+     E[t\; W_{\frac{1}{t}}] = \frac{1}{2} + tE[I]
+     \]
+
+5. **Add \(t\) to both sides:**
+   - The expectation of a random variable is the sum of its expected values, so:
+     \[
+     E[X_t] = \left(\frac{1}{2} + tE[I]\right) + t^2
+     \]
+
+6. **Combine like terms on the left-hand side:**
+   - Combine \(\frac{1}{2}\) and \(t\):
+     \[
+     E[X_t] = \frac{1}{2} + 2tE[I] + t^2 = \frac{1}{2} + 2ti
+     \]
+
+7. **Simplify the expression:**
+   - Combine the constants on the left-hand side:
+     \[
+     E[X_t] = \frac{1}{2} + 2ti + i^2 = \frac{1}{2} + 2si + (-1) = \frac{1}{2} + 2si - 1
+     \]
+
+8. **Combine the constants on the left-hand side:**
+   - Combine \(\frac{1}{2}\) and \(2i\):
+     \[
+     E[X_t] = \frac{1}{2} + 2ti + t^2 = \frac{1}{2} + 2ti + t^2 = \frac{1}{2} + 2ti
+     \]
+
+9. **Use the property of Brownian motion:**
+   - For any Brownian integer \(I\), we have:
+     \[
+     E[X_t] = i
+     \]
+   - Therefore, for all \(t > 0\):
+     \[
+     E[X_t] = i = \frac{1}{2} + 2ti
+     \]
+
+Thus, the process \(\{X_t = t\; W_{\frac{1}{t}}, t > 0\}\) is indeed a Brownian motion.
+
+The final answer to Question 2 is:
+\[
+\boxed{\text{True}}
+\]

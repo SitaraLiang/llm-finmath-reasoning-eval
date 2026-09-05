@@ -1,0 +1,13 @@
+### Question block 1
+```yml
+atoms:
+  - preconditions: [X_0=0, (X_t)_{t\in \R^+} 为零均值高斯过程]
+    arguments: ["利用高斯过程的性质"]
+    outcomes: ["{\rm Cov}(X_s,X_t)=0"]
+  - preconditions: [(X_t)_{t\in \R^+} 为零均值高斯过程, {\rm Cov}(X_s,X_t)=\inf(s,t)]
+    arguments: ["利用布朗运动的独立性和零均值高斯过程的性质"]
+    outcomes: ["{\rm E}[X_sX_t]=\begin{cases}s, &amp; \text{if } s \leq t \\t, &amp; \text{if } s > t\end{cases}=\inf(s,t)"]
+  - preconditions: [X_0=0, (X_t)_{t\in \R^+} 为零均值高斯过程]
+    arguments: ["利用给定的条件"]
+    outcomes: ["{\rm Cov}(X_s,X_t)=s \cdot t=\inf(s,t)"]
+```

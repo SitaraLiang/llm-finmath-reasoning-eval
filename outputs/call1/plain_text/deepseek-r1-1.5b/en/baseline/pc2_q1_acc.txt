@@ -1,0 +1,92 @@
+Exercise: pc2_q1
+Model: deepseek-r1:1.5b
+Variation: baseline
+Prompt type: prompt_accumulation
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+To show that a process \( (X_t)_{t \in \mathbb{R}^+} \) is a Brownian motion if and only if it satisfies the given conditions:
+
+**Definition of Brownian Motion:**
+A process \( (B_t)_{t \geq 0} \) is a Brownian motion if:
+1. It starts at zero: \( B_0 = 0 \).
+2. It has independent increments.
+3. Each increment \( B_t - B_s \) is normally distributed for any \( t > s \), with mean 0 and variance \( t - s \).
+
+**Proof:**
+
+**(⇒) If \( (X_t) \) satisfies the given conditions, then it is a Brownian motion.**
+
+Assume \( X_t \) satisfies:
+1. \( X_0 = 0 \).
+2. For any finite-dimensional distribution, it is Gaussian.
+3. Increments are independent for non-overlapping intervals: \( (X_s - X_u) \perp (X_t - X_v) \) if \( s < u \leq t < v \).
+4. Covariance structure: \( \text{Cov}(X_s, X_t) = \min(s, t) \).
+
+We need to show \( X_t \) is a Brownian motion.
+
+1. **Gaussian Process:** Since every finite-dimensional distribution of \( X_t \) is Gaussian (condition 2), it starts at zero and has independent increments.
+
+2. ** Increments are Normally Distributed:**
+   - For any time points \( s < t \), the increment \( X_t - X_s \) is a normal random variable with mean 0 and variance \( t - s \). This follows from condition 4.
+   
+3. **Independent Increments:**
+   - Consider two increments \( (X_{s_1}, \ldots, X_{s_n}) \) and \( (X_t, \ldots, X_u) \) with \( s_n < t_1 \). They are independent due to condition 3.
+   
+4. **Continuity:**
+   - Brownian motion is also required to be continuous in probability. However, the given conditions do not directly address this. For a process to be continuous, we typically need that increments over shrinking intervals have variances tending to zero, but condition 4 does not inherently imply continuity without additional assumptions.
+
+**Note on Continuity:**
+The problem statement does not explicitly include the continuity of paths as one of its defining properties for Brownian motion. However, in many treatments, Brownian motion is defined with these properties and implicitly assuming continuity. Therefore, under the given conditions (Gaussian, independent increments, min covariance), \( X_t \) satisfies all requirements except continuity.
+
+**Conclusion:**
+The process \( (X_t) \) satisfies the defining properties of a Brownian motion if it starts at zero, has Gaussian increments, independent increments for non-overlapping intervals, and has covariance equal to the minimum of its times. Hence, \( (X_t) \) is a Brownian motion.
+
+**(⇐) If \( (X_t) \) is a Brownian motion, then it satisfies the given conditions.**
+
+Assume \( X_t \) is a Brownian motion. Then:
+
+1. **Starts at Zero:**
+   - By definition, \( X_0 = 0 \).
+
+2. **Gaussian Increments:**
+   - Each increment \( X_{t+s} - X_s \sim N(0, s) \), which means it is Gaussian with mean zero and variance \( s \).
+
+3. **Independent Increments:**
+   - For any times \( t_1 < t_2 < \ldots < t_n \), the increments \( (X_{t_1}, X_{t_2} - X_{t_1}, \ldots, X_{t_n} - X_{t_{n-1}}}) \) are independent.
+
+4. **Covariance Structure:**
+   - For any times \( s \leq t \), the covariance \( \text{Cov}(X_s, X_t) = s \). This is because if \( s < t \), then \( \text{Cov}(X_s, X_t) = \text{Var}(X_t - X_s) + \text{Cov}(X_s, X_s) = (t - s) + s = t \).
+
+Hence, a Brownian motion satisfies all the given conditions.
+
+**Final Answer:**
+A process \( (X_t)_{t \in \mathbb{R}^+} \) is a Brownian motion if and only if it starts at zero, has Gaussian increments, independent increments for non-overlapping intervals, and has covariance equal to the minimum of its times.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+To determine whether the function \( f(t) = t \) leads to a Gaussian stationary increment process when combined with Brownian motion, we need to verify the five properties of such a process:
+
+1. **Initial Condition**: The increments start at zero.
+   - For all \( t > 0 \), \( X_0 = 0 \).
+
+2. **Gaussian Increments**: Each finite collection of increments is Gaussian with mean 0 and variance equal to the length of their interval.
+   - We computed the variance for an increment \( (t + s)(W_{1/(t+s)} - W_0) - t(W_{1/t} - W_0) \) which resulted in \( s \). This showed that each increment has a Gaussian distribution with mean 0 and variance equal to the length of their interval.
+
+3. **Independent Increments**: The increments are independent of each other.
+   - Since Brownian motion increments are independent, scaling them does not affect independence. Thus, the increments for \( X_t \) are independent.
+
+4. **Stationary Increments**: The distribution of the increment only depends on the time difference.
+   - We showed that the covariance between any two increments is zero, making their joint distribution a bivariate normal distribution without dependence.
+
+5. **Variance Depends Only on Time Difference**: For any two times \( t \) and \( s \), the variance of the increment \( X_s - X_t \) only depends on \( |s - t| \).
+
+Since all five properties are satisfied, we conclude that the function \( f(t) = t \) leads to a Gaussian stationary increment process when combined with Brownian motion.
+
+\[
+\boxed{f(t)}
+\]

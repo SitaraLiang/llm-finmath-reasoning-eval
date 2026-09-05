@@ -1,0 +1,56 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_quant_expert
+prompt_type: prompt_accumulation
+call1_output_mode: plain_text
+call1_model: deepseek-r1-7b
+call2_model: qwen3:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - X_0 = 0
+        - X is a centered Gaussian process
+        - Cov(X_s, X_t) = min(s, t)
+        arguments:
+        - Brownian motion characterization
+        outcomes:
+        - X is a Brownian motion
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        - X_t = t W_{1/t} for t > 0 and X_0 = 0
+        arguments:
+        - Verification of Brownian motion properties for X_t
+        outcomes:
+        - X_t is a Brownian motion
+    -   preconditions:
+        - X_0 = 0
+        arguments:
+        - Initial condition
+        outcomes:
+        - X_0 = 0
+    -   preconditions:
+        - X_t = t W_{1/t} for t > 0
+        arguments:
+        - Independent increments
+        outcomes:
+        - Increments of X_t are independent
+    -   preconditions:
+        - X_t = t W_{1/t} for t > 0
+        arguments:
+        - Gaussian increments
+        outcomes:
+        - Increments of X_t are Gaussian with mean 0 and variance t - s
+    -   preconditions:
+        - X_t = t W_{1/t} for t > 0
+        arguments:
+        - Continuous sample paths
+        outcomes:
+        - Sample paths of X_t are continuous
+    -   preconditions:
+        - X_t = t W_{1/t} for t > 0
+        arguments:
+        - Covariance structure
+        outcomes:
+        - Cov(X_s, X_t) = min(s, t)

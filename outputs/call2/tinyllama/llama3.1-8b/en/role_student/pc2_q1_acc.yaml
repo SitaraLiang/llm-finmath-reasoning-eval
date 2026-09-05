@@ -1,0 +1,39 @@
+pc: '2'
+exercise: '1'
+language: en
+variation: role_student
+prompt_type: prompt_accumulation
+call1_output_mode: plain_text
+call1_model: tinyllama
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions:
+        - A process (X_t)_{t\in \R^+} is a Brownian motion
+        arguments:
+        - X_0=0
+        outcomes:
+        - (X_t)_{t\in \R^+} is a centered Gaussian process
+        - Cov(X_s,X_t)=inf(s,t)
+    -   preconditions:
+        - (X_t)_{t\in \R^+} is a Brownian motion
+        arguments:
+        - for all t\in \R^+ and \epsilon > 0, there exists an s_\epsilon>0 such that
+            s<s_\epsilon implies (X_{s+t}-X_s)(\sigma(X_t))^\top \geq \epsilon^2
+        outcomes:
+        - (X_t)_{t\in \R^+} is a centered Gaussian process
+        - Cov(X_s,X_t)=inf(s,t)
+    -   preconditions:
+        - (X_t)_{t\in \R^+} is a Brownian motion
+        arguments:
+        - for all s, t\in \R^+ and \tau > 0, there exists an a>0 such that |X_{\tau+t}-X_\tau|
+            \leq a|X_t| for all (x,t)\in \R^2
+        outcomes:
+        - (X_t)_{t\in \R^+} is a Brownian motion
+-   atoms:
+    -   preconditions:
+        - W_t is a Brownian motion
+        arguments:
+        - Law of total variance in stochastic calculus
+        outcomes:
+        - $\{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too

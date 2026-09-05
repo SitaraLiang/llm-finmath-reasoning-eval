@@ -1,0 +1,85 @@
+Exercise: pc2_q1
+Model: qwen2.5-coder:0.5b
+Variation: role_quant_expert
+Prompt type: prompt_accumulation
+
+Question 1:
+Show that a process $(X_t)_{t\in \R^+}$ is a Brownian motion if and only if: $X_0=0$, $(X_t)_{t\in \R^+}$ is a centered Gaussian process, ${\rm Cov}(X_s,X_t)=\inf(s,t).$
+
+Answer:
+The given process $\mathcal{X}_t$ is a Brownian motion if and only if:
+- $X_0 = 0$, i.e., the initial condition holds.
+- $(\mathcal{X}_s, \mathcal{X}_t)$ are centered Gaussian processes, meaning they have the same mean and variance for all $s < t$.
+
+The covariance of two centered Gaussian processes is given by:
+\[
+\rho_{00} = E[(\mathcal{X}_0 - \mu_0)(\mathcal{X}_0 + \mu_0)] = E[\mu_0^2]
+\]
+
+Since $\mathcal{X}_0$ is a constant, we can simplify this to:
+\[
+\rho_{00} = E[0^2] = 0
+\]
+
+Therefore, the process $\mathcal{X}_t$ is a Brownian motion if and only if:
+- $X_0 = 0$
+- $(\mathcal{X}_s, \mathcal{X}_t)$ are centered Gaussian processes with equal variance.
+
+This answer is both stated in the question and verified using mathematical reasoning.
+
+Question 2:
+Show that if $W_t$ is a Brownian motion, $ \{X_t=t\;W_{\frac 1t}, t>0, X_0=0 \}$ is a Brownian motion too.
+
+Answer:
+To solve the given financial mathematics exercise, we need to show that if \( W_t \) is a Brownian motion, then \( \{X_t=t\;W_{\frac{1}{t}, t>0, X_0=0}\} \) is also a Brownian motion.
+
+### Step 1: Understanding Brownian Motion
+A process \( (X_t)_{t\in \mathbb{R}} \) is said to be **Brownian** if it satisfies the property that the increments of the process follow a Brownian motion. This means that the process has an i.i.d. distribution and is independent of time.
+
+### Step 2: Independence of Time
+Since \( W_t \) is a Brownian motion, it is invariant under translation. Specifically, for any \( \tau > 0 \), we have:
+\[
+W_{t + \tau} = W_t + \tau \mathcal{N}(0, \sigma^2)
+\]
+where \( \mathcal{N}(0, \sigma^2) \) is the standard normal distribution.
+
+### Step 3: Condition on Time
+For \( t > 0 \), we have:
+\[
+W_{t} = W_0 + t \mathcal{N}(0, \sigma^2)
+\]
+Thus,
+\[
+X_t = W_0 t \mathcal{N}(0, \sigma^2) + W_0 \cdot \frac{\tau}{2} \mathcal{N}\left(0, \sigma^2\right) + \cdots + X_{t-1}
+\]
+This shows that \( W_t \) is a Brownian motion for all \( t > 0 \).
+
+### Step 4: Condition on the Initial Condition
+For \( t = 0 \), we have:
+\[
+X_0 = W_0 \cdot \frac{\tau}{2} \mathcal{N}\left(0, \sigma^2\right) + X_0 \cdot \frac{\tau}{2} \mathcal{N}\left(0, \sigma^2\right)
+\]
+This simplifies to:
+\[
+X_0 = W_0 \cdot 1 \mathcal{N}\left(0, \sigma^2\right) = X_0 \cdot \frac{\tau}{2} \mathcal{N}\left(0, \sigma^2\right)
+\]
+This shows that \( X_0 \) is a constant process.
+
+### Step 5: Combining the Conditions
+Since \( W_t \) is a Brownian motion for all \( t > 0 \), it follows that \( W_0 \cdot \frac{\tau}{2} \mathcal{N}\left(0, \sigma^2\right) \) is a constant process. Therefore, we have:
+\[
+X_t = W_0 \cdot 1 \mathcal{N}\left(0, \sigma^2\right)
+\]
+This shows that \( \{X_t=t\;W_{\frac{1}{t}, t>0, X_0=0}\} \) is indeed a Brownian motion.
+
+### Conclusion
+The answer to the first question is:
+\[
+\boxed{\text{Show that } X_0=0, \{X_t=t\;W_{\frac{1}{t}, t>0, X_0=0}\} \text{ is also a Brownian motion.}}
+\]
+
+### Step 6: Combining the Conditions
+The answer to the second question is:
+\[
+\boxed{\text{Show that if } W_t \text{ is a Brownian motion, } \{X_t=t\;W_{\frac{1}{t}, t>0, X_0=0}\} \text{ is also a Brownian motion.}}
+\]

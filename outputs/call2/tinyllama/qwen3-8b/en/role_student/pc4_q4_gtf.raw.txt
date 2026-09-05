@@ -1,0 +1,29 @@
+### Question block 1
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "When $\tau$ is a bounded stopping time"
+  arguments:
+  - "Calculation"
+  outcomes:
+  - "$\E(W_\tau)$"
+```
+
+### Question block 2
+<think>
+
+</think>
+
+```yml
+atoms:
+- preconditions:
+  - "Let $W_t$ be a Brownian motion, $\tau$ be a bounded stopping time, and $t\geq 0$. Then: $(W_t)_{t\ge 0}$ is a martingale."
+  arguments:
+  - Applying Doob's optional stopping theorem to $(W_t)_{t\ge 0}$ at $\tau$ yields: $$\mathbb{E}[W_\tau^2] = \E[W_{\tau}]^2 + \int_{\tau}^T \E[W_s^2|\F_{s-}]ds$$
+  outcomes:
+  - $\E(W_\tau^2)$ is zero for all bounded stopping times $\tau$
+```

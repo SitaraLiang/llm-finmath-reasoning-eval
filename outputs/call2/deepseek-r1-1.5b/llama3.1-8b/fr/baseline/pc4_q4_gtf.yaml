@@ -1,0 +1,59 @@
+pc: '4'
+exercise: '4'
+language: fr
+variation: baseline
+prompt_type: ground_truth_forcing
+call1_output_mode: plain_text
+call1_model: deepseek-r1-1.5b
+call2_model: llama3.1:8b
+subquestions:
+-   atoms:
+    -   preconditions: []
+        arguments:
+        - W_t est un mouvement brownien standard aléatoire continue
+        - $\tau$ est un temps d'arrêt borné
+        outcomes:
+        - E(W_τ) = 0
+    -   preconditions: []
+        arguments:
+        - Un temps d'arrêt τ borné signifie qu'il existe un temps fixe T où pour tout
+            t > T, W_t reste borné
+        outcomes:
+        - E(W_τ) = 0
+    -   preconditions: []
+        arguments:
+        - L'espire de la variable aléatoire augmentée orthogonale par le processus
+            drift est égale à sa valeur initiale
+        outcomes:
+        - E(M_T) = M_0
+-   atoms:
+    -   -   preconditions: []
+            arguments:
+            - tau est un temps d'arret borne
+            outcomes:
+            - Calculer E(W_tau^2)
+    -   -   preconditions: []
+            arguments:
+            - W_t est un mouvement brownien
+            outcomes:
+            - Utiliser le theoreme d'arrêt optionnel de Doob
+    -   -   preconditions: []
+            arguments:
+            - E[W_tau] = E[W_0]
+            outcomes:
+            - E[W_tau] = 0
+    -   -   preconditions: []
+            arguments:
+            - Utiliser une identite de projection
+            outcomes:
+            - E[W_{tau + h}^2 | F_tau] = W_tau^2
+    -   -   preconditions: []
+            arguments:
+            - W_{tau + h} et W_tau sont independants
+            outcomes:
+            - E[W_{tau + h}^2 | F_tau] = E[W_tau^2]
+    -   -   preconditions: []
+            arguments:
+            - Sommer pour tout h > 0
+            outcomes:
+            - E[W_tau^2] = E[0] = 0
