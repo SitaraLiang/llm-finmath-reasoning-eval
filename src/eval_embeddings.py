@@ -253,7 +253,8 @@ def score_statement_pairs(
     threshold_step: float,
     language: str,
     judge_low_margin: float,
-    judge_high_threshold: float,
+    judge_high_margin: float,
+    judge_high_threshold: float | None,
 ) -> dict:
     data = load_yaml(pairs_path)
     embedder = EmbeddingModel(model_name)
@@ -287,9 +288,14 @@ def score_statement_pairs(
     selected_metrics = threshold_metrics(rows, selected_threshold)
     recommended_metrics = threshold_metrics(rows, recommended_threshold)
     generated_judge_low = max(0.0, recommended_threshold - judge_low_margin)
-    if generated_judge_low > judge_high_threshold:
+    generated_judge_high = (
+        min(1.0, recommended_threshold + judge_high_margin)
+        if judge_high_threshold is None
+        else judge_high_threshold
+    )
+    if generated_judge_low > generated_judge_high:
         raise SystemExit(
-            "Error: generated judge low threshold exceeds --judge-high-threshold."
+            "Error: generated judge low threshold exceeds the generated judge high threshold."
         )
 
     output_rows = []
@@ -413,7 +419,7 @@ def score_statement_pairs(
         "embedding_threshold": recommended_threshold,
         "selected_embedding_threshold": round(float(selected_threshold), 6),
         "judge_low_threshold": round(generated_judge_low, 6),
-        "judge_high_threshold": round(float(judge_high_threshold), 6),
+        "judge_high_threshold": round(float(generated_judge_high), 6),
         "pair_count": len(output_rows),
         "balanced_accuracy": round(float(recommended_metrics["balanced_accuracy"]), 6),
     }
@@ -675,10 +681,19 @@ def build_parser() -> argparse.ArgumentParser:
         help="Set judge low threshold to recommended embedding threshold minus this margin.",
     )
     pairs.add_argument(
+        "--judge-high-margin",
+        type=float,
+        default=0.10,
+        help="Set judge high threshold to recommended embedding threshold plus this margin.",
+    )
+    pairs.add_argument(
         "--judge-high-threshold",
         type=float,
-        default=1.0,
-        help="Generated conservative judge upper threshold. Default: 1.0.",
+        default=None,
+        help=(
+            "Explicit judge upper threshold override. By default it is generated "
+            "as recommended embedding threshold plus --judge-high-margin."
+        ),
     )
 
     matrix = subparsers.add_parser(
@@ -703,7 +718,9 @@ def main() -> None:
     if args.command == "pairs":
         if args.judge_low_margin < 0 or args.judge_low_margin > 1:
             raise SystemExit("Error: --judge-low-margin must be in [0, 1].")
-        if args.judge_high_threshold < 0 or args.judge_high_threshold > 1:
+        if args.judge_high_margin < 0 or args.judge_high_margin > 1:
+            raise SystemExit("Error: --judge-high-margin must be in [0, 1].")
+        if args.judge_high_threshold is not None and not 0 <= args.judge_high_threshold <= 1:
             raise SystemExit("Error: --judge-high-threshold must be in [0, 1].")
         output_root = resolve_path(args.output_dir, project_root)
         calibration_path = (
@@ -736,6 +753,7 @@ def main() -> None:
                     args.threshold_step,
                     language,
                     args.judge_low_margin,
+                    args.judge_high_margin,
                     args.judge_high_threshold,
                 ))
         update_calibration_registry(
@@ -743,7 +761,12 @@ def main() -> None:
             calibration_entries,
             {
                 "judge_low_margin": round(float(args.judge_low_margin), 6),
-                "judge_high_threshold": round(float(args.judge_high_threshold), 6),
+                "judge_high_margin": round(float(args.judge_high_margin), 6),
+                "judge_high_threshold_override": (
+                    round(float(args.judge_high_threshold), 6)
+                    if args.judge_high_threshold is not None
+                    else None
+                ),
             },
         )
         print(f"Wrote calibration registry: {calibration_path}")

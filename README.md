@@ -251,11 +251,12 @@ python src/seed_pairs.py --language fr --concept-count 12
 ```
 
 The calibration registry is keyed by embedding model and language. By default,
-the generated judge interval starts at `recommended_threshold - 0.10` (clamped
-to zero) and ends at `1.0`. The policy can be overridden with
-`--judge-low-margin` and `--judge-high-threshold`. Command-line evaluation
-thresholds take priority over the registry; missing registry entries fall back
-to `config/evaluation/base.yaml`.
+the generated judge interval is symmetric around the recommended embedding
+threshold: `threshold - 0.10` to `threshold + 0.10`, clamped to `[0, 1]`.
+The margins can be overridden with `--judge-low-margin` and
+`--judge-high-margin`; `--judge-high-threshold` remains available as an explicit
+upper-bound override. Command-line evaluation thresholds take priority over the
+registry; missing registry entries fall back to `config/evaluation/base.yaml`.
 
 ### Step 3: Generate Call 1 answers
 
