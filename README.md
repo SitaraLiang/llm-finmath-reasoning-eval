@@ -191,13 +191,11 @@ python src/parser.py --input data/raw_tex --output data/ground_truth
 This produces one file per language and exercise under
 `data/ground_truth/{lang}/pc{n}_q{m}.yaml`.
 
-### Step 2: Refresh the calibration data when necessary
+### Step 2: Refresh the calibration data (when necessary)
 
-This step is required after adding exercises that introduce new mathematical
-concepts or substantially new formulations. If the added exercises contain only
-concepts already represented in `formulation_pairs.yaml`, the existing calibrated
-threshold may be reused, although regenerating the statement inventory is still
-recommended.
+The existing calibrated threshold may be reused when new exercises remain in the
+same language and mathematical domain, even if they introduce a few concepts not
+currently represented in `formulation_pairs.yaml`. Update and version the calibration only after a substantial domain expansion. 
 
 1. Extract all assumptions, preconditions, arguments, and outcomes from the
    current ground truth:
@@ -273,6 +271,10 @@ For the direct-YAML experiment, which bypasses Call 2 and response selection:
 python src/call1.py \
   --config config/call1/experiments/baseline_direct_yaml.yaml
 ```
+
+Without further configuration, the plain text experiment file processes all three supported
+languages. To customize the languages, models, modes, or other settings, see
+[Detailed Configuration Reference](#detailed-configuration-reference).
 
 ### Step 4: Convert and select plain-text answers
 
