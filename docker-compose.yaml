@@ -16,7 +16,7 @@ services:
               capabilities: [gpu]
               count: all
     volumes:
-      - /tmp/xinyi_ollama_data:/root/.ollama
+      - ${OLLAMA_DATA_PATH:?Set OLLAMA_DATA_PATH to a host directory}:/root/.ollama
     ports:
       - "11434:11434"
     restart: unless-stopped

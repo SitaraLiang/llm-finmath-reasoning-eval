@@ -11,6 +11,9 @@ The project introduces a structured evaluation framework for analyzing and diagn
   - [LaTeX annotation reference](#latex-annotation-reference)
   - [Evaluation dimensions](#evaluation-dimensions)
 - [Setup](#setup)
+  - [Native Ollama](#native-ollama-recommended-for-macos)
+  - [Docker Ollama](#docker-ollama-linux-with-nvidia-gpus)
+  - [Models](#models)
 - [Usage](#usage)
   - [Step 1: Import and parse exercises](#step-1-import-and-parse-exercises)
   - [Step 2: Refresh calibration data](#step-2-refresh-the-calibration-data-when-necessary)
@@ -142,13 +145,75 @@ The aggregate `overall_mean_score` averages D1, D2, and D3. The aggregate
 
 ## Setup
 
+Create the Python environment from the repository root:
+
 ```bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Install and run Ollama, then pull the models you want to test:
+The scripts call the Ollama API at
+`http://localhost:11434/api/generate` by default. Choose either the native or
+Docker setup below; do not start both servers on port `11434` at the same time.
+
+### Native Ollama (recommended for macOS)
+
+Install [Ollama](https://ollama.com/download), start the application or server,
+and verify that its API is available:
+
+```bash
+ollama serve
+curl http://localhost:11434/api/tags
+```
+
+On macOS, the Ollama application may already run the server, in which case
+`ollama serve` is unnecessary. Pull only the models required by the experiment
+configuration you plan to run, for example:
+
+```bash
+ollama pull llama3.1:8b
+```
+
+### Docker Ollama (Linux with NVIDIA GPUs)
+
+This setup requires Linux, an NVIDIA GPU, NVIDIA Container Toolkit, and a
+running Docker service. First choose where Ollama will store its downloaded
+models, then start the container:
+
+```bash
+export OLLAMA_DATA_PATH="/path/to/ollama_data"
+mkdir -p "$OLLAMA_DATA_PATH"
+docker compose up -d
+```
+
+Optionally verify the container and API:
+
+```bash
+docker compose ps
+curl http://localhost:11434/api/tags
+```
+
+Pull and list models inside the container:
+
+```bash
+docker exec ollama ollama pull llama3.1:8b
+docker exec ollama ollama list
+```
+
+Stop Ollama when it is no longer needed:
+
+```bash
+docker compose down
+```
+
+The Compose file uses GPU 0 by default; change `CUDA_VISIBLE_DEVICES` if needed.
+
+### Models
+
+The complete set of models referenced by the provided experiments is listed
+below. With native Ollama, use these commands directly. With Docker, prefix each
+pull with `docker exec ollama ollama` as shown above.
 
 ```bash
 ollama pull tinyllama
@@ -163,7 +228,9 @@ ollama pull qwen3:8b
 ollama pull gemma3:12b
 ```
 
-For Call 2, `llama3.1:8b` is currently the strongest baseline observed for strict YAML formatting. Smaller models are useful as baselines, but often fail on schema or YAML syntax.
+For Call 2, `llama3.1:8b` is currently the strongest baseline observed for
+strict YAML formatting. Smaller models are useful as baselines, but often fail
+on schema or YAML syntax.
 
 ## Usage
 
