@@ -23,7 +23,12 @@ DIMENSIONS = {
 
 
 class EmbeddingModel:
-    """Small wrapper around sentence-transformers cosine embeddings."""
+    """Small wrapper around sentence-transformers cosine embeddings.
+
+    Negative cosine similarities are treated as zero throughout the benchmark.
+    A negative embedding direction indicates no useful semantic correspondence
+    for these coverage-oriented metrics, not a stronger mathematical penalty.
+    """
 
     def __init__(self, model_name: str) -> None:
         try:
@@ -49,7 +54,8 @@ class EmbeddingModel:
     def cosine(self, text_a: str, text_b: str) -> float:
         import numpy as np
 
-        return float(np.dot(self.encode(text_a), self.encode(text_b)))
+        raw_similarity = float(np.dot(self.encode(text_a), self.encode(text_b)))
+        return max(0.0, raw_similarity)
 
 
 def resolve_path(path: Path, root: Path) -> Path:

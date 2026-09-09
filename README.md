@@ -318,6 +318,9 @@ python src/seed_pairs.py --language fr --concept-count 12
 The calibration registry is keyed by embedding model and language. By default,
 the generated judge interval is symmetric around the recommended embedding
 threshold: `threshold - 0.10` to `threshold + 0.10`, clamped to `[0, 1]`.
+Embedding cosine similarities are also clipped to `[0, 1]`: negative cosine
+values are treated as zero because they indicate no useful semantic match for
+the benchmark's coverage-oriented metrics.
 The margins can be overridden with `--judge-low-margin` and
 `--judge-high-margin`; `--judge-high-threshold` remains available as an explicit
 upper-bound override. Command-line evaluation thresholds take priority over the
@@ -363,7 +366,8 @@ Evaluate selected plain-text responses:
 
 ```bash
 python src/evaluate.py \
-  --config config/evaluation/experiments/baseline_plain_text_en.yaml
+  --config config/evaluation/experiments/baseline_plain_text_en.yaml \
+  --no-judge
 ```
 
 Evaluate direct-YAML responses:
@@ -374,9 +378,7 @@ python src/evaluate.py \
 ```
 
 Evaluation produces per-case matrices and aggregate reports by model and
-strategy. Depending on the configuration, ambiguous embedding matches can be
-reviewed by an LLM judge. Existing output groups are skipped when
-`output.overwrite_existing` is `false`.
+strategy.
 
 ## Detailed Configuration Reference
 

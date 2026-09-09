@@ -1573,6 +1573,16 @@ def build_parser() -> argparse.ArgumentParser:
         default=None,
         help="YAML cache path for LLM judge decisions. Default: <output>/judge_cache.yaml.",
     )
+    parser.add_argument(
+        "--no-judge",
+        action="store_true",
+        help="Disable the configured LLM judge and run embedding-only evaluation.",
+    )
+    parser.add_argument(
+        "--overwrite-existing",
+        action="store_true",
+        help="Recompute and overwrite evaluation groups that already contain results.",
+    )
     parser.add_argument("--project-root", type=Path, default=Path.cwd())
     return parser
 
@@ -1595,7 +1605,9 @@ def main() -> None:
     prediction_root = resolve_path(prediction_path, project_root)
     ground_truth_root = resolve_path(ground_truth_path, project_root)
     output_base_root = resolve_path(output_path, project_root)
-    overwrite_existing = bool(get_nested(config, ["output", "overwrite_existing"], True))
+    overwrite_existing = args.overwrite_existing or bool(
+        get_nested(config, ["output", "overwrite_existing"], True)
+    )
 
     embedding_model = cli_or_config(args.model, config, ["embedding", "model"], DEFAULT_MODEL)
     default_threshold = float(get_nested(config, ["embedding", "threshold"], 0.415))
@@ -1605,7 +1617,11 @@ def main() -> None:
 
     judge_model = cli_or_config(args.judge_model, config, ["judge", "model"], "")
     judge_enabled = bool(get_nested(config, ["judge", "enabled"], False))
-    if args.judge_model is not None:
+    if args.no_judge and args.judge_model is not None:
+        parser.error("--no-judge cannot be combined with --judge-model.")
+    if args.no_judge:
+        judge_enabled = False
+    elif args.judge_model is not None:
         judge_enabled = True
     method_directory = "with_judge" if judge_enabled else "embedding_only"
     judge_endpoint = cli_or_config(
