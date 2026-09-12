@@ -7,7 +7,7 @@ The project introduces a structured evaluation framework for analyzing and diagn
 
 ## Table of Contents
 
-- [Pipeline](#pipeline)
+- [Data Format and Metrics](#data-format-and-metrics)
   - [LaTeX annotation reference](#latex-annotation-reference)
   - [Evaluation dimensions](#evaluation-dimensions)
 - [Setup](#setup)
@@ -26,59 +26,7 @@ The project introduces a structured evaluation framework for analyzing and diagn
 - [Notes](#notes)
 
 
-## Pipeline
-
-1. **Import LaTeX exercises**
-   - Overleaf is treated as the single source of truth.
-   - `src/import.py` copies downloaded `.tex` files into `data/raw_tex/{lang}/`.
-   - Imported filenames are normalized from `pc{n}_q{m}_{lang}.tex` to `pc{n}_q{m}.tex`.
-
-2. **Parse annotated LaTeX to ground truth**
-   - `src/parser.py` reads tagged LaTeX from `data/raw_tex/{lang}/`.
-   - It writes ground-truth YAML to `data/ground_truth/{lang}/`.
-   - YAML uses Python lists for ordered proof lists and `!!python/tuple` for unordered mathematical sets.
-
-3. **Call 1: generate model answers**
-   - `src/call1.py` prompts Ollama models to solve each exercise.
-   - Plain-text outputs are stored under `outputs/call1/plain_text/{model}/{lang}/{variation}/`.
-   - Direct proof-atom YAML outputs are stored under `outputs/call1/yaml/{model}/{lang}/{variation}/` and bypass Call 2.
-   - Call 1 configurations are composed from shared settings, an output mode, and one multilingual variation under `config/call1/`.
-   - Each strategy gets its own file:
-     - `pc2_q1_seq.txt`: strictly sequential
-     - `pc2_q1_acc.txt`: prompt accumulation
-     - `pc2_q1_gtf.txt`: ground-truth forcing
-     - `pc2_q1_self.txt`: self history
-   - Strategy meanings:
-     - **strictly sequential (`seq`)**: the model answers only the current subquestion, with its local assumptions.
-     - **prompt accumulation (`acc`)**: the model sees all questions up to the current one, but answers only the current subquestion.
-     - **ground-truth forcing (`gtf`)**: the model sees previous questions together with their ground-truth solutions, then answers the current subquestion.
-     - **self history (`self`)**: the model sees previous questions together with its own previous answers, then answers the current subquestion.
-   - Failed generations are written separately under the corresponding `outputs/call1/{mode}/` directory.
-
-4. **Call 2: convert answers to proof-atom YAML**
-   - `src/call2.py` converts Call 1 text answers into the structured YAML format.
-   - Current recommended mode is `per_question`: each `Question N:` block is converted separately, then Python assembles the final `subquestions` list.
-   - Validation and repair helpers live in `src/conversion_validator.py`.
-   - Successful conversions write only `.yaml`; raw model text is saved as `.raw.txt` only for failed conversions.
-   - The current zero-shot per-question experiment writes to `outputs/call2/`.
-   - Failed conversions are summarized in `{output_root}/error_files.yaml`.
-
-5. **Select Call 2 conversions**
-   - `src/select_responses.py` validates and ranks all available Call 2
-     conversions for each Call 1 response.
-   - Ranking compares candidates only with the Call 1 source; it never reads the
-     ground truth.
-   - Selected YAML files are stored unchanged under `outputs/selected_responses/`.
-   - `outputs/selected_responses/selection_report.yaml` records candidate scores,
-     validation failures, close decisions, and cases where every converter failed.
-
-6. **Evaluation**
-   - `src/extract_statements.py` extracts statements separately to `data/evaluation/{lang}/ground_truth_statements.csv`.
-   - `data/evaluation/{lang}/formulation_pairs.yaml` stores independently curated formulation pairs for each language.
-   - `src/eval_embeddings.py` scores formulation pairs and writes calibration outputs under `outputs/evaluation/`.
-   - `src/evaluate.py` builds D1/D2/D3 alignment tables, a D4 order report, and aggregate summaries.
-   - Evaluation can run in embedding-only mode or with an optional second-stage LLM judge for ambiguous embedding matches.
-   - Downstream stages use composable `base.yaml` and `experiments/` configurations, matching the Call 1 structure.
+## Data Format and Metrics
 
 ### LaTeX Annotation Reference
 
@@ -342,6 +290,19 @@ python src/call1.py \
   --config config/call1/experiments/baseline_direct_yaml.yaml
 ```
 
+Call 1 tests four strategies; each produces its own file (for example,
+`pc2_q1_seq.txt`):
+
+| Strategy | Context provided for the current subquestion |
+|---|---|
+| Strictly sequential (`seq`) | Only the current subquestion and its local assumptions. |
+| Prompt accumulation (`acc`) | All questions so far, without previous answers. |
+| Ground-truth forcing (`gtf`) | Previous questions and their ground-truth answers. |
+| Self history (`self`) | Previous questions and the model's own answers. |
+
+Outputs are stored under `outputs/call1/{plain_text,yaml}/{model}/{lang}/{variation}/`;
+generation failures are recorded in each mode's `error_files.yaml`.
+
 Without further configuration, the plain text experiment file processes all three supported
 languages. To customize the languages, models, modes, or other settings, see
 [Detailed Configuration Reference](#detailed-configuration-reference).
@@ -358,7 +319,10 @@ python src/select_responses.py --config config/selection/experiments/baseline_en
 
 Call 2 converts one question block at a time. The selector excludes missing or
 invalid conversions and ranks the remaining candidates without consulting the
-ground truth.
+ground truth. Call 2 validation and repair live in `src/conversion_validator.py`;
+failed conversions are listed in `outputs/call2/error_files.yaml`. Selection
+results and close decisions are recorded in
+`outputs/selected_responses/selection_report.yaml`.
 
 ### Step 5: Evaluate
 
